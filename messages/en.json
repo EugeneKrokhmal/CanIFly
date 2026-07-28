@@ -1,0 +1,233 @@
+{
+  "meta": {
+    "title": "CanIFly — UAS Airspace Status",
+    "description": "One-tap airspace status for drone pilots in Spain. Clear, Restricted, or Prohibited — filtered by your drone class."
+  },
+  "nav": {
+    "map": "Map",
+    "faq": "FAQ",
+    "contacts": "Contacts",
+    "privacy": "Privacy",
+    "account": "Account",
+    "publicProfile": "Public profile",
+    "logIn": "Log in",
+    "logOut": "Log out",
+    "myAccount": "My account",
+    "menu": "Menu",
+    "langEs": "ES",
+    "langEn": "EN"
+  },
+  "auth": {
+    "createAccount": "Create account",
+    "logIn": "Log in",
+    "close": "Close",
+    "registerBlurb": "Instant signup — no email confirmation needed.",
+    "loginBlurb": "Sign in to report obstacles on the map.",
+    "name": "Name",
+    "namePlaceholder": "How others see you",
+    "operatorNumber": "Operator number",
+    "optional": "(optional)",
+    "operatorPlaceholder": "e.g. ESP-OP-XXXX",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 6 characters",
+    "pleaseWait": "Please wait…",
+    "register": "Register",
+    "haveAccount": "Already have an account?",
+    "newHere": "New here?",
+    "networkError": "Network error"
+  },
+  "account": {
+    "loading": "Loading account…",
+    "loginPrompt": "Log in to manage your account.",
+    "logIn": "Log in",
+    "eyebrow": "Account",
+    "title": "My account",
+    "publicProfile": "Public profile",
+    "profilePhoto": "Profile photo",
+    "upload": "Upload",
+    "remove": "Remove",
+    "name": "Name",
+    "bio": "Bio",
+    "optional": "(optional)",
+    "bioPlaceholder": "Short intro for other pilots",
+    "operatorNumber": "Operator number",
+    "operatorPlaceholder": "e.g. ESP-OP-XXXX",
+    "saved": "Saved",
+    "saving": "Saving…",
+    "saveChanges": "Save changes",
+    "photoTooLarge": "Photo must be under 5 MB",
+    "networkError": "Network error",
+    "failed": "Failed ({status})",
+    "dangerZone": "Danger zone",
+    "dangerBlurb": "Permanently delete your account and all obstacles you reported.",
+    "deleteConfirm": "Delete your account permanently? Your obstacles will be removed.",
+    "deleting": "Deleting…",
+    "deleteAccount": "Delete account"
+  },
+  "map": {
+    "loading": "Loading map…",
+    "checkingAirspace": "Checking airspace…",
+    "tapToCheck": "Tap the map to check",
+    "swipeUpControls": "Swipe up for controls",
+    "locateHint": " · Locate on the right",
+    "swipeUp": "Swipe up",
+    "locateMe": "Locate me",
+    "collapsePanel": "Collapse panel",
+    "flightControls": "Flight controls",
+    "obstacleFallback": "Obstacle"
+  },
+  "sidebar": {
+    "flightProfile": "Flight profile",
+    "flightProfileHint": "Pick your drone, set a ceiling, then tap the map.",
+    "aircraft": "Aircraft",
+    "locateMe": "Locate me",
+    "ceilingAgl": "Ceiling AGL",
+    "flightCheck": "Flight check",
+    "tapTakeoff": "Tap a takeoff point on the map to see overlapping UAS zones.",
+    "lat": "Lat",
+    "lng": "Lng",
+    "ceiling": "Ceiling",
+    "class": "Class",
+    "zones": "Zones",
+    "source": "Source",
+    "zonesHeading": "Zones · {count}",
+    "reason": "Reason: {reasons}",
+    "contact": "Contact: {contact}",
+    "freeBand": "Free band up to ~{meters}m",
+    "vlosHint": "VLOS up to ~{meters}m often allowed outside aerodrome zones",
+    "noCoordHint": "No aerodrome coordination usually needed below ~{meters}m",
+    "noFlightHint": "No drone flight without coordination",
+    "restrictionProhibited": "Prohibited",
+    "restrictionAuth": "Auth required",
+    "restrictionConditional": "Conditional",
+    "restrictionNone": "No restriction",
+    "sourceAero": "Aero",
+    "sourceUrbano": "Urban",
+    "sourceInfra": "Infra",
+    "offline": "offline"
+  },
+  "status": {
+    "clear": "Clear",
+    "limited": "Limited",
+    "restricted": "Restricted",
+    "prohibited": "Prohibited"
+  },
+  "obstacle": {
+    "reportTitle": "Report obstacle",
+    "reportHint": "Flag construction, cranes, power lines, air sports, or anything else for other pilots.",
+    "addOnMap": "Add on map",
+    "logInToReport": "Log in to report",
+    "type": "Type",
+    "approxHeight": "Approx. height",
+    "message": "Message",
+    "optional": "(optional)",
+    "messagePlaceholder": "e.g. Active crane until Friday",
+    "photo": "Photo",
+    "photoPreviewAlt": "Obstacle preview",
+    "remove": "Remove",
+    "addPhoto": "Add photo",
+    "photoFormats": "JPEG, PNG or WebP · max 5 MB",
+    "photoTooLarge": "Photo must be under 5 MB",
+    "pinnedAt": "Pinned at {lat}, {lng}",
+    "tapToPlace": "Tap the map to place the obstacle.",
+    "cancel": "Cancel",
+    "saving": "Saving…",
+    "save": "Save",
+    "construction": "Construction / building",
+    "crane": "Crane",
+    "electric_line": "Electric lines",
+    "air_sports": "Air sports nearby",
+    "other": "Other"
+  },
+  "pilot": {
+    "eyebrow": "Pilot",
+    "operator": "Operator · {number}",
+    "communityReporter": "Community obstacle reporter",
+    "reportedHeading": "Reported obstacles · {count}",
+    "noneYet": "No obstacles reported yet.",
+    "viewOnMap": "View on map",
+    "backToMap": "← Back to map",
+    "unavailable": "Profile unavailable.",
+    "loading": "Loading profile…"
+  },
+  "cookie": {
+    "aria": "Cookie consent",
+    "title": "Cookies & local storage",
+    "body": "We use essential storage to remember your drone profile and consent choice. Optional analytics cookies are off unless you accept. See our",
+    "privacyLink": "Privacy & cookies",
+    "reject": "Reject non-essential",
+    "accept": "Accept all"
+  },
+  "faq": {
+    "eyebrow": "Help",
+    "title": "FAQ",
+    "intro": "Quick answers about status labels, registration, and data sources.",
+    "backToMap": "← Back to map",
+    "items": {
+      "status": {
+        "q": "What does Clear / Limited / Restricted / Prohibited mean?",
+        "a": "Clear means no hard UAS geographical restriction at your ceiling. Limited means you can usually fly without prior zone coordination up to a stated height (e.g. ~45m). Restricted means authorization or coordination may be required. Prohibited means no flight without explicit coordination (e.g. airport surface zones)."
+      },
+      "auth": {
+        "q": "Does REQ_AUTHORISATION mean I need a pilot number?",
+        "a": "No. It means that zone may require prior authorization or coordination with the zone authority (e.g. ENAIRE Planea, Aena). Separately, Spain usually requires AESA UAS operator registration and open-category training for most flights."
+      },
+      "data": {
+        "q": "Where does the airspace data come from?",
+        "a": "Live UAS geographical zones come from ENAIRE servAIS. Aircraft traffic and tracks come from the OpenSky Network (ADS-B). Drone models come from the open OpenDroneList catalog."
+      },
+      "track": {
+        "q": "Is the dashed plane path a real flight plan?",
+        "a": "No. Solid lines are flown tracks from OpenSky. Dashed lines are a short straight-line estimate from current heading and speed — not a filed route."
+      },
+      "official": {
+        "q": "Is CanIFly official advice?",
+        "a": "No. Always verify with ENAIRE Drones / AESA before flying. Rules and zone texts change; this app is a planning aid, not legal clearance."
+      }
+    }
+  },
+  "privacy": {
+    "eyebrow": "Legal",
+    "title": "Privacy & cookies",
+    "intro": "Short notice for visitors in the EU / EEA under GDPR and ePrivacy rules. CanIFly is a planning aid, not an official authority site.",
+    "storeTitle": "What we store",
+    "storeEssentialLabel": "Essential:",
+    "storeEssential": "your cookie consent choice, and (on this device) your selected drone class / ceiling so the map works between visits.",
+    "storeOptionalLabel": "Optional:",
+    "storeOptional": "we do not load advertising or third-party marketing cookies. If we add anonymous product analytics later, they only run after you tap \"Accept all\".",
+    "thirdTitle": "Third-party requests",
+    "thirdBody": "The app calls ENAIRE servAIS (airspace), OpenSky (aircraft traffic), Open-Meteo (weather), and OpenDroneList (drone catalog). Those services receive the technical data needed for the request (e.g. map coordinates). Review their own privacy policies for details.",
+    "choicesTitle": "Your choices",
+    "choicesBodyBefore": "Use ",
+    "choicesReject": "Reject non-essential",
+    "choicesBodyMid": " to keep only essential storage, or ",
+    "choicesAccept": "Accept all",
+    "choicesBodyAfter": " if optional analytics are introduced. Clear site data in your browser to reset the banner.",
+    "backToMap": "← Back to map"
+  },
+  "contacts": {
+    "eyebrow": "Links",
+    "title": "Contacts",
+    "intro": "Official channels for coordination, registration, and zone data. Zone-specific emails also appear in the map sidebar when you tap a point.",
+    "backToMap": "← Back to map",
+    "items": {
+      "planea": {
+        "title": "ENAIRE Planea",
+        "detail": "Authorization requests for controlled airspace / CTR operations"
+      },
+      "drones": {
+        "title": "ENAIRE Drones",
+        "detail": "Official UAS geographical zones and alerts"
+      },
+      "aesa": {
+        "title": "AESA — drones",
+        "detail": "Operator registration, open category rules, geographical zones guide"
+      },
+      "aip": {
+        "title": "AIP UAS (ENAIRE)",
+        "detail": "Published ED-318 / ZGUAS data packages"
+      }
+    }
+  }
+}

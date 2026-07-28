@@ -1,0 +1,233 @@
+{
+  "meta": {
+    "title": "CanIFly — Estado del espacio aéreo UAS",
+    "description": "Estado del espacio aéreo en un toque para pilotos de drones en España. Libre, Restringido o Prohibido — según la clase de tu dron."
+  },
+  "nav": {
+    "map": "Mapa",
+    "faq": "FAQ",
+    "contacts": "Contactos",
+    "privacy": "Privacidad",
+    "account": "Cuenta",
+    "publicProfile": "Perfil público",
+    "logIn": "Entrar",
+    "logOut": "Salir",
+    "myAccount": "Mi cuenta",
+    "menu": "Menú",
+    "langEs": "ES",
+    "langEn": "EN"
+  },
+  "auth": {
+    "createAccount": "Crear cuenta",
+    "logIn": "Entrar",
+    "close": "Cerrar",
+    "registerBlurb": "Registro al instante — sin confirmar email.",
+    "loginBlurb": "Entra para reportar obstáculos en el mapa.",
+    "name": "Nombre",
+    "namePlaceholder": "Cómo te ven los demás",
+    "operatorNumber": "Número de operador",
+    "optional": "(opcional)",
+    "operatorPlaceholder": "p. ej. ESP-OP-XXXX",
+    "email": "Email",
+    "password": "Contraseña",
+    "passwordHint": "Al menos 6 caracteres",
+    "pleaseWait": "Espera…",
+    "register": "Registrarse",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "newHere": "¿Nuevo aquí?",
+    "networkError": "Error de red"
+  },
+  "account": {
+    "loading": "Cargando cuenta…",
+    "loginPrompt": "Entra para gestionar tu cuenta.",
+    "logIn": "Entrar",
+    "eyebrow": "Cuenta",
+    "title": "Mi cuenta",
+    "publicProfile": "Perfil público",
+    "profilePhoto": "Foto de perfil",
+    "upload": "Subir",
+    "remove": "Quitar",
+    "name": "Nombre",
+    "bio": "Bio",
+    "optional": "(opcional)",
+    "bioPlaceholder": "Breve presentación para otros pilotos",
+    "operatorNumber": "Número de operador",
+    "operatorPlaceholder": "p. ej. ESP-OP-XXXX",
+    "saved": "Guardado",
+    "saving": "Guardando…",
+    "saveChanges": "Guardar cambios",
+    "photoTooLarge": "La foto debe pesar menos de 5 MB",
+    "networkError": "Error de red",
+    "failed": "Error ({status})",
+    "dangerZone": "Zona de peligro",
+    "dangerBlurb": "Elimina permanentemente tu cuenta y todos los obstáculos que hayas reportado.",
+    "deleteConfirm": "¿Eliminar tu cuenta de forma permanente? Se borrarán tus obstáculos.",
+    "deleting": "Eliminando…",
+    "deleteAccount": "Eliminar cuenta"
+  },
+  "map": {
+    "loading": "Cargando mapa…",
+    "checkingAirspace": "Comprobando espacio aéreo…",
+    "tapToCheck": "Toca el mapa para comprobar",
+    "swipeUpControls": "Desliza hacia arriba para controles",
+    "locateHint": " · Localízate a la derecha",
+    "swipeUp": "Desliza",
+    "locateMe": "Localízame",
+    "collapsePanel": "Cerrar panel",
+    "flightControls": "Controles de vuelo",
+    "obstacleFallback": "Obstáculo"
+  },
+  "sidebar": {
+    "flightProfile": "Perfil de vuelo",
+    "flightProfileHint": "Elige tu dron, fija un techo y toca el mapa.",
+    "aircraft": "Aeronave",
+    "locateMe": "Localízame",
+    "ceilingAgl": "Techo AGL",
+    "flightCheck": "Comprobación de vuelo",
+    "tapTakeoff": "Toca un punto de despegue en el mapa para ver las zonas UAS que se solapan.",
+    "lat": "Lat",
+    "lng": "Lng",
+    "ceiling": "Techo",
+    "class": "Clase",
+    "zones": "Zonas",
+    "source": "Fuente",
+    "zonesHeading": "Zonas · {count}",
+    "reason": "Motivo: {reasons}",
+    "contact": "Contacto: {contact}",
+    "freeBand": "Banda libre hasta ~{meters}m",
+    "vlosHint": "VLOS hasta ~{meters}m suele permitirse fuera de zonas de aeródromo",
+    "noCoordHint": "Normalmente no hace falta coordinar con el aeródromo por debajo de ~{meters}m",
+    "noFlightHint": "Sin vuelo de dron sin coordinación",
+    "restrictionProhibited": "Prohibido",
+    "restrictionAuth": "Autorización requerida",
+    "restrictionConditional": "Condicional",
+    "restrictionNone": "Sin restricción",
+    "sourceAero": "Aero",
+    "sourceUrbano": "Urbano",
+    "sourceInfra": "Infra",
+    "offline": "sin conexión"
+  },
+  "status": {
+    "clear": "Libre",
+    "limited": "Limitado",
+    "restricted": "Restringido",
+    "prohibited": "Prohibido"
+  },
+  "obstacle": {
+    "reportTitle": "Reportar obstáculo",
+    "reportHint": "Señala obras, grúas, líneas eléctricas, deportes aéreos u otras cosas para otros pilotos.",
+    "addOnMap": "Añadir en el mapa",
+    "logInToReport": "Entra para reportar",
+    "type": "Tipo",
+    "approxHeight": "Altura aprox.",
+    "message": "Mensaje",
+    "optional": "(opcional)",
+    "messagePlaceholder": "p. ej. Grúa activa hasta el viernes",
+    "photo": "Foto",
+    "photoPreviewAlt": "Vista previa del obstáculo",
+    "remove": "Quitar",
+    "addPhoto": "Añadir foto",
+    "photoFormats": "JPEG, PNG o WebP · máx. 5 MB",
+    "photoTooLarge": "La foto debe pesar menos de 5 MB",
+    "pinnedAt": "Anclado en {lat}, {lng}",
+    "tapToPlace": "Toca el mapa para colocar el obstáculo.",
+    "cancel": "Cancelar",
+    "saving": "Guardando…",
+    "save": "Guardar",
+    "construction": "Construcción / edificio",
+    "crane": "Grúa",
+    "electric_line": "Líneas eléctricas",
+    "air_sports": "Deportes aéreos cerca",
+    "other": "Otro"
+  },
+  "pilot": {
+    "eyebrow": "Piloto",
+    "operator": "Operador · {number}",
+    "communityReporter": "Reportero de obstáculos de la comunidad",
+    "reportedHeading": "Obstáculos reportados · {count}",
+    "noneYet": "Aún no ha reportado obstáculos.",
+    "viewOnMap": "Ver en el mapa",
+    "backToMap": "← Volver al mapa",
+    "unavailable": "Perfil no disponible.",
+    "loading": "Cargando perfil…"
+  },
+  "cookie": {
+    "aria": "Consentimiento de cookies",
+    "title": "Cookies y almacenamiento local",
+    "body": "Usamos almacenamiento esencial para recordar tu perfil de dron y la elección de consentimiento. Las cookies analíticas opcionales están desactivadas salvo que aceptes. Consulta nuestro aviso de",
+    "privacyLink": "Privacidad y cookies",
+    "reject": "Rechazar no esenciales",
+    "accept": "Aceptar todas"
+  },
+  "faq": {
+    "eyebrow": "Ayuda",
+    "title": "FAQ",
+    "intro": "Respuestas rápidas sobre etiquetas de estado, registro y fuentes de datos.",
+    "backToMap": "← Volver al mapa",
+    "items": {
+      "status": {
+        "q": "¿Qué significan Libre / Limitado / Restringido / Prohibido?",
+        "a": "Libre significa que no hay una restricción geográfica UAS dura a tu techo. Limitado suele permitir volar sin coordinación previa hasta una altura indicada (p. ej. ~45 m). Restringido puede exigir autorización o coordinación. Prohibido implica que no se puede volar sin coordinación explícita (p. ej. zonas de superficie de aeropuerto)."
+      },
+      "auth": {
+        "q": "¿REQ_AUTHORISATION significa que necesito un número de piloto?",
+        "a": "No. Significa que esa zona puede requerir autorización o coordinación previa con la autoridad de la zona (p. ej. ENAIRE Planea, Aena). Por separado, en España suele ser necesario el registro de operador UAS en AESA y formación de categoría abierta para la mayoría de vuelos."
+      },
+      "data": {
+        "q": "¿De dónde salen los datos del espacio aéreo?",
+        "a": "Las zonas geográficas UAS en vivo vienen de ENAIRE servAIS. El tráfico y las trazas de aeronaves, de OpenSky Network (ADS-B). Los modelos de drones, del catálogo abierto OpenDroneList."
+      },
+      "track": {
+        "q": "¿La línea discontinua del avión es un plan de vuelo real?",
+        "a": "No. Las líneas sólidas son trazas voladas de OpenSky. Las discontinuas son una estimación corta en línea recta a partir del rumbo y la velocidad actuales — no una ruta presentada."
+      },
+      "official": {
+        "q": "¿CanIFly es un consejo oficial?",
+        "a": "No. Verifica siempre con ENAIRE Drones / AESA antes de volar. Las reglas y los textos de zona cambian; esta app es una ayuda de planificación, no una autorización legal."
+      }
+    }
+  },
+  "privacy": {
+    "eyebrow": "Legal",
+    "title": "Privacidad y cookies",
+    "intro": "Aviso breve para visitantes en la UE / EEE bajo el RGPD y las normas de ePrivacy. CanIFly es una ayuda de planificación, no un sitio de autoridad oficial.",
+    "storeTitle": "Qué almacenamos",
+    "storeEssentialLabel": "Esencial:",
+    "storeEssential": "tu elección de consentimiento de cookies y (en este dispositivo) la clase / techo de dron seleccionados para que el mapa funcione entre visitas.",
+    "storeOptionalLabel": "Opcional:",
+    "storeOptional": "no cargamos cookies publicitarias ni de marketing de terceros. Si más adelante añadimos analítica anónima del producto, solo se ejecutará tras pulsar «Aceptar todas».",
+    "thirdTitle": "Peticiones a terceros",
+    "thirdBody": "La app llama a ENAIRE servAIS (espacio aéreo), OpenSky (tráfico), Open-Meteo (tiempo) y OpenDroneList (catálogo de drones). Esos servicios reciben los datos técnicos necesarios para la petición (p. ej. coordenadas del mapa). Consulta sus propias políticas de privacidad.",
+    "choicesTitle": "Tus opciones",
+    "choicesBodyBefore": "Usa ",
+    "choicesReject": "Rechazar no esenciales",
+    "choicesBodyMid": " para quedarte solo con el almacenamiento esencial, o ",
+    "choicesAccept": "Aceptar todas",
+    "choicesBodyAfter": " si se introducen analíticas opcionales. Borra los datos del sitio en el navegador para restablecer el banner.",
+    "backToMap": "← Volver al mapa"
+  },
+  "contacts": {
+    "eyebrow": "Enlaces",
+    "title": "Contactos",
+    "intro": "Canales oficiales para coordinación, registro y datos de zonas. Los emails específicos de zona también aparecen en la barra lateral del mapa al tocar un punto.",
+    "backToMap": "← Volver al mapa",
+    "items": {
+      "planea": {
+        "title": "ENAIRE Planea",
+        "detail": "Solicitudes de autorización para espacio aéreo controlado / operaciones CTR"
+      },
+      "drones": {
+        "title": "ENAIRE Drones",
+        "detail": "Zonas geográficas UAS oficiales y alertas"
+      },
+      "aesa": {
+        "title": "AESA — drones",
+        "detail": "Registro de operador, reglas de categoría abierta, guía de zonas geográficas"
+      },
+      "aip": {
+        "title": "AIP UAS (ENAIRE)",
+        "detail": "Paquetes de datos ED-318 / ZGUAS publicados"
+      }
+    }
+  }
+}
