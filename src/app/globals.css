@@ -284,17 +284,6 @@ body {
   transition: transform var(--as-dur-fast) var(--as-ease-spring);
 }
 
-.as-pin-main {
-  width: 36px;
-  height: 36px;
-  background: var(--as-rausch);
-  border: 2px solid #fff;
-  font-family: var(--font-display), sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  animation: as-pop var(--as-dur-med) var(--as-ease-spring) both;
-}
-
 .as-scroll {
   scrollbar-width: thin;
   scrollbar-color: #dddddd transparent;

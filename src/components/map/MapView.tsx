@@ -142,15 +142,6 @@ function stylePinEl(
   ].join(";");
 }
 
-function createMainPinEl(): HTMLDivElement {
-  const el = document.createElement("div");
-  el.className = "as-pin as-pin-main";
-  stylePinEl(el, { size: 36, bg: "#ff385c", fontSize: 14 });
-  el.textContent = "A";
-  el.setAttribute("aria-label", "Selected takeoff point");
-  return el;
-}
-
 function createNumberPinEl(n: number): HTMLDivElement {
   const el = document.createElement("div");
   el.className = "as-pin";
@@ -206,7 +197,6 @@ export function MapView({ className }: MapViewProps) {
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const mainMarkerRef = useRef<maplibregl.Marker | null>(null);
   const pendingMarkerRef = useRef<maplibregl.Marker | null>(null);
   const zoneMarkersRef = useRef<maplibregl.Marker[]>([]);
   const popupRef = useRef<maplibregl.Popup | null>(null);
@@ -837,7 +827,6 @@ export function MapView({ className }: MapViewProps) {
       ro?.disconnect();
       trackAbortRef.current?.abort();
       popupRef.current?.remove();
-      mainMarkerRef.current?.remove();
       pendingMarkerRef.current?.remove();
       for (const m of zoneMarkersRef.current) m.remove();
       zoneMarkersRef.current = [];
@@ -993,22 +982,6 @@ export function MapView({ className }: MapViewProps) {
     statusError,
     zones,
   ]);
-
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!mapReady || !map || !selectedPoint) return;
-
-    if (!mainMarkerRef.current) {
-      mainMarkerRef.current = new maplibregl.Marker({
-        element: createMainPinEl(),
-        anchor: "center",
-      })
-        .setLngLat([selectedPoint.lng, selectedPoint.lat])
-        .addTo(map);
-    } else {
-      mainMarkerRef.current.setLngLat([selectedPoint.lng, selectedPoint.lat]);
-    }
-  }, [mapReady, selectedPoint]);
 
   useEffect(() => {
     const map = mapRef.current;
