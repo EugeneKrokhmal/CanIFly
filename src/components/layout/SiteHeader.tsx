@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { BrandLogo } from "@/components/BrandLogo";
+import { LocationSearchPopup } from "@/components/layout/LocationSearchPopup";
 import { WeatherWidget } from "@/components/layout/WeatherWidget";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useAuthStore } from "@/stores/auth";
@@ -13,6 +14,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const user = useAuthStore((s) => s.user);
   const loading = useAuthStore((s) => s.loading);
@@ -28,6 +30,7 @@ export function SiteHeader() {
 
   useEffect(() => {
     setMenuOpen(false);
+    setSearchOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -55,7 +58,7 @@ export function SiteHeader() {
         </span>
       </Link>
 
-      <nav className="hidden items-center gap-1 rounded-full border border-[#dddddd] bg-white p-1 shadow-[var(--as-shadow)] md:flex">
+      <nav className="hidden h-8 items-center gap-0.5 rounded-full border border-[#dddddd] bg-white p-0.5 shadow-[var(--as-shadow)] md:flex">
         {NAV.map((item) => {
           const active =
             item.href === "/"
@@ -65,7 +68,7 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="as-press-soft rounded-full px-4 py-2 text-[13px] font-semibold"
+              className="as-press-soft inline-flex h-full items-center rounded-full px-3.5 text-[12px] font-semibold"
               style={{
                 color: active ? "#222222" : "#717171",
                 background: active ? "#f7f7f7" : "transparent",
@@ -78,6 +81,18 @@ export function SiteHeader() {
       </nav>
 
       <div className="flex items-center gap-1.5 sm:gap-2">
+        <button
+          type="button"
+          onClick={() => {
+            setMenuOpen(false);
+            setSearchOpen(true);
+          }}
+          className="as-press grid h-8 w-8 place-items-center rounded-full border border-[#dddddd] bg-white text-[#222222]"
+          aria-label={t("search")}
+        >
+          <SearchIcon />
+        </button>
+
         <WeatherWidget />
 
         {!loading && (
@@ -86,10 +101,10 @@ export function SiteHeader() {
               <>
                 <Link
                   href="/account"
-                  className="as-press flex max-w-[11rem] items-center gap-2 rounded-full border border-[#dddddd] py-1 pl-1 pr-3 hover:bg-[#f7f7f7]"
+                  className="as-press inline-flex h-8 max-w-[11rem] items-center gap-1.5 rounded-full border border-[#dddddd] py-0 pl-1 pr-2.5 hover:bg-[#f7f7f7]"
                   title={t("myAccount")}
                 >
-                  <span className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full bg-[#f7f7f7] text-[11px] font-bold text-[#717171]">
+                  <span className="grid h-6 w-6 shrink-0 place-items-center overflow-hidden rounded-full bg-[#f7f7f7] text-[11px] font-bold text-[#717171]">
                     {user.avatarUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -108,7 +123,7 @@ export function SiteHeader() {
                 <button
                   type="button"
                   onClick={() => void logout()}
-                  className="as-press rounded-full border border-[#dddddd] px-3 py-1.5 text-[12px] font-semibold text-[#222222] hover:bg-[#f7f7f7]"
+                  className="as-press inline-flex h-8 items-center rounded-full border border-[#dddddd] px-3 text-[12px] font-semibold text-[#222222] hover:bg-[#f7f7f7]"
                 >
                   {t("logOut")}
                 </button>
@@ -117,7 +132,7 @@ export function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setAuthModalOpen(true, "login")}
-                className="as-press rounded-full border border-[#dddddd] px-3 py-1.5 text-[12px] font-semibold text-[#222222] hover:bg-[#f7f7f7]"
+                className="as-press inline-flex h-8 items-center rounded-full border border-[#dddddd] px-3 text-[12px] font-semibold text-[#222222] hover:bg-[#f7f7f7]"
               >
                 {t("logIn")}
               </button>
@@ -244,7 +259,32 @@ export function SiteHeader() {
           )}
         </div>
       </div>
+
+      <LocationSearchPopup
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+      />
     </header>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle
+        cx="11"
+        cy="11"
+        r="6.5"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
+      <path
+        d="M16.5 16.5L21 21"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }
 

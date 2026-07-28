@@ -7,6 +7,7 @@ import {
 } from "@canifly/middleware";
 import { useObstaclesStore } from "@/stores/obstacles";
 import { useAuthStore } from "@/stores/auth";
+import { compressImageFile } from "@/lib/image/compress";
 
 const TYPES: ObstacleType[] = [
   "construction",
@@ -152,14 +153,34 @@ export function ReportObstaclePanel() {
                   className="sr-only"
                   onChange={(e) => {
                     const file = e.target.files?.[0] ?? null;
+                    e.target.value = "";
                     if (!file) return;
-                    if (file.size > 5 * 1024 * 1024) {
+                    if (!file.type.startsWith("image/")) {
+                      useObstaclesStore.setState({
+                        error: t("photoFormats"),
+                      });
+                      return;
+                    }
+                    if (file.size > 12 * 1024 * 1024) {
                       useObstaclesStore.setState({
                         error: t("photoTooLarge"),
                       });
                       return;
                     }
-                    setPhoto(file);
+                    void (async () => {
+                      const compressed = await compressImageFile(file, {
+                        maxEdge: 1600,
+                        quality: 0.82,
+                      });
+                      if (compressed.size > 5 * 1024 * 1024) {
+                        useObstaclesStore.setState({
+                          error: t("photoTooLarge"),
+                        });
+                        return;
+                      }
+                      useObstaclesStore.setState({ error: null });
+                      setPhoto(compressed);
+                    })();
                   }}
                 />
               </label>

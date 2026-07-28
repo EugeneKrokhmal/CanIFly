@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAuthStore } from "@/stores/auth";
+import { compressImageFile } from "@/lib/image/compress";
 
 export default function AccountPage() {
   const t = useTranslations("account");
@@ -69,19 +70,34 @@ export default function AccountPage() {
   }
 
   const onPickAvatar = (file: File | null) => {
-    if (avatarPreview?.startsWith("blob:")) URL.revokeObjectURL(avatarPreview);
-    if (!file) {
-      setAvatarFile(null);
-      setAvatarPreview(removeAvatar ? null : user.avatarUrl);
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      setError(t("photoTooLarge"));
-      return;
-    }
-    setRemoveAvatar(false);
-    setAvatarFile(file);
-    setAvatarPreview(URL.createObjectURL(file));
+    void (async () => {
+      if (avatarPreview?.startsWith("blob:")) URL.revokeObjectURL(avatarPreview);
+      if (!file) {
+        setAvatarFile(null);
+        setAvatarPreview(removeAvatar ? null : user.avatarUrl);
+        return;
+      }
+      if (!file.type.startsWith("image/")) {
+        setError(t("photoTooLarge"));
+        return;
+      }
+      if (file.size > 12 * 1024 * 1024) {
+        setError(t("photoTooLarge"));
+        return;
+      }
+      const compressed = await compressImageFile(file, {
+        maxEdge: 512,
+        quality: 0.85,
+      });
+      if (compressed.size > 5 * 1024 * 1024) {
+        setError(t("photoTooLarge"));
+        return;
+      }
+      setError(null);
+      setRemoveAvatar(false);
+      setAvatarFile(compressed);
+      setAvatarPreview(URL.createObjectURL(compressed));
+    })();
   };
 
   const onSave = async (e: FormEvent) => {

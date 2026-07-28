@@ -115,7 +115,7 @@ export function WeatherWidget() {
   if (error) {
     return (
       <div
-        className="flex items-center rounded-full border border-[#dddddd] bg-white px-2.5 py-1.5 text-[12px] text-[#b0b0b0] sm:px-3"
+        className="inline-flex h-8 items-center rounded-full border border-[#dddddd] bg-white px-2.5 text-[12px] text-[#b0b0b0] sm:px-3"
         title="Weather unavailable"
       >
         —
@@ -125,7 +125,7 @@ export function WeatherWidget() {
 
   if (!weather) {
     return (
-      <div className="h-8 w-10 animate-pulse rounded-full bg-[#f7f7f7] sm:h-9 sm:w-[7.5rem]" />
+      <div className="h-8 w-10 animate-pulse rounded-full bg-[#f7f7f7] sm:w-[7.5rem]" />
     );
   }
 
@@ -135,12 +135,12 @@ export function WeatherWidget() {
 
   return (
     <div
-      className="flex items-center gap-1 rounded-full border border-[#dddddd] bg-white px-2 py-1 shadow-[var(--as-shadow)] sm:gap-2 sm:px-3 sm:py-1.5"
+      className="inline-flex h-8 items-center gap-1.5 rounded-full border border-[#dddddd] bg-white px-2.5 shadow-[var(--as-shadow)] sm:gap-2 sm:px-3"
       title={title}
       aria-label={title}
     >
       <WeatherIcon kind={weatherKind(weather.weatherCode)} />
-      <span className="text-[13px] font-semibold text-[#222222]">
+      <span className="text-[12px] font-semibold text-[#222222]">
         {weather.temperatureC}°
       </span>
       <span className="hidden text-[12px] text-[#717171] md:inline">
