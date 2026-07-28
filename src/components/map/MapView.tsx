@@ -58,6 +58,23 @@ function createPendingPinEl(): HTMLDivElement {
   return el;
 }
 
+/** Selected takeoff / query point — compact pin (no letter badge). */
+function createSelectionPinEl(): HTMLDivElement {
+  const el = document.createElement("div");
+  el.className = "as-selection-pin";
+  el.setAttribute("aria-label", "Selected point");
+  el.style.cssText = [
+    "width:22px",
+    "height:22px",
+    "border-radius:50%",
+    "background:#ff385c",
+    "border:3px solid #fff",
+    "box-shadow:0 2px 10px rgba(0,0,0,0.35)",
+    "pointer-events:none",
+  ].join(";");
+  return el;
+}
+
 /** Top-down jet silhouette pointing north (0°) for icon-rotate = track. */
 function createPlaneIconImageData(
   fill: string,
@@ -197,8 +214,10 @@ export function MapView({ className }: MapViewProps) {
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
+  const selectionMarkerRef = useRef<maplibregl.Marker | null>(null);
   const pendingMarkerRef = useRef<maplibregl.Marker | null>(null);
   const zoneMarkersRef = useRef<maplibregl.Marker[]>([]);
+  const geolocateControlRef = useRef<maplibregl.GeolocateControl | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const statusPopupActiveRef = useRef(false);
   const trackAbortRef = useRef<AbortController | null>(null);
@@ -211,6 +230,8 @@ export function MapView({ className }: MapViewProps) {
 
   const setSelectedPoint = useDroneProfileStore((s) => s.setSelectedPoint);
   const selectedPoint = useDroneProfileStore((s) => s.selectedPoint);
+  const locateAndFocus = useDroneProfileStore((s) => s.locateAndFocus);
+  const geolocateNonce = useDroneProfileStore((s) => s.geolocateNonce);
   const mapCameraRequest = useDroneProfileStore((s) => s.mapCameraRequest);
   const clearMapCameraRequest = useDroneProfileStore(
     (s) => s.clearMapCameraRequest,
@@ -243,6 +264,7 @@ export function MapView({ className }: MapViewProps) {
   const loadBboxRef = useRef(loadBbox);
   const loadObstaclesBboxRef = useRef(loadObstaclesBbox);
   const setViewportRef = useRef(setViewport);
+  const locateAndFocusRef = useRef(locateAndFocus);
   const placementModeRef = useRef(placementMode);
   const setPendingPointRef = useRef(setPendingPoint);
   const authUserRef = useRef(authUser);
@@ -252,6 +274,7 @@ export function MapView({ className }: MapViewProps) {
   loadBboxRef.current = loadBbox;
   loadObstaclesBboxRef.current = loadObstaclesBbox;
   setViewportRef.current = setViewport;
+  locateAndFocusRef.current = locateAndFocus;
   placementModeRef.current = placementMode;
   setPendingPointRef.current = setPendingPoint;
   authUserRef.current = authUser;
@@ -352,13 +375,26 @@ export function MapView({ className }: MapViewProps) {
       new maplibregl.NavigationControl({ showCompass: false }),
       "top-right",
     );
-    map.addControl(
-      new maplibregl.GeolocateControl({
-        positionOptions: { enableHighAccuracy: true },
-        trackUserLocation: false,
-      }),
-      "top-right",
-    );
+    const geolocate = new maplibregl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true,
+        timeout: 12_000,
+        maximumAge: 60_000,
+      },
+      trackUserLocation: true,
+      showUserLocation: true,
+      showAccuracyCircle: true,
+    });
+    geolocateControlRef.current = geolocate;
+    geolocate.on("geolocate", (e) => {
+      const pos = e as GeolocationPosition;
+      if (!pos?.coords) return;
+      locateAndFocusRef.current({
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      });
+    });
+    map.addControl(geolocate, "top-right");
 
     map.on("load", () => {
       map.addSource(SOURCE_ID, {
@@ -827,11 +863,13 @@ export function MapView({ className }: MapViewProps) {
       ro?.disconnect();
       trackAbortRef.current?.abort();
       popupRef.current?.remove();
+      selectionMarkerRef.current?.remove();
       pendingMarkerRef.current?.remove();
       for (const m of zoneMarkersRef.current) m.remove();
       zoneMarkersRef.current = [];
       map.remove();
       mapRef.current = null;
+      geolocateControlRef.current = null;
       setMapReady(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- init once
@@ -842,19 +880,49 @@ export function MapView({ className }: MapViewProps) {
   }, [trafficOn]);
 
   useEffect(() => {
+    if (!mapReady || geolocateNonce <= 0) return;
+    geolocateControlRef.current?.trigger();
+  }, [mapReady, geolocateNonce]);
+
+  useEffect(() => {
     const map = mapRef.current;
-    if (!map || !obstacles) return;
+    if (!mapReady || !map || !obstacles) return;
     const source = map.getSource(OBSTACLE_SOURCE) as
       | maplibregl.GeoJSONSource
       | undefined;
     if (source) source.setData(obstacles);
-  }, [obstacles]);
+  }, [mapReady, obstacles]);
 
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
     map.getCanvas().style.cursor = placementMode ? "crosshair" : "";
   }, [placementMode]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!mapReady || !map) return;
+
+    if (!selectedPoint) {
+      selectionMarkerRef.current?.remove();
+      selectionMarkerRef.current = null;
+      return;
+    }
+
+    if (!selectionMarkerRef.current) {
+      selectionMarkerRef.current = new maplibregl.Marker({
+        element: createSelectionPinEl(),
+        anchor: "center",
+      })
+        .setLngLat([selectedPoint.lng, selectedPoint.lat])
+        .addTo(map);
+    } else {
+      selectionMarkerRef.current.setLngLat([
+        selectedPoint.lng,
+        selectedPoint.lat,
+      ]);
+    }
+  }, [mapReady, selectedPoint]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -880,7 +948,7 @@ export function MapView({ className }: MapViewProps) {
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !collection) return;
+    if (!mapReady || !map || !collection) return;
     const source = map.getSource(SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
     if (!source) return;
 
@@ -897,7 +965,7 @@ export function MapView({ className }: MapViewProps) {
     });
 
     source.setData({ type: "FeatureCollection", features });
-  }, [collection]);
+  }, [mapReady, collection]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1013,7 +1081,7 @@ export function MapView({ className }: MapViewProps) {
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    if (!mapReady || !map) return;
 
     for (const m of zoneMarkersRef.current) m.remove();
     zoneMarkersRef.current = [];
@@ -1037,7 +1105,7 @@ export function MapView({ className }: MapViewProps) {
         .addTo(map);
       zoneMarkersRef.current.push(marker);
     });
-  }, [zones, collection]);
+  }, [mapReady, zones, collection]);
 
   const zoomHint =
     trafficOn && mapZoom < minZoom

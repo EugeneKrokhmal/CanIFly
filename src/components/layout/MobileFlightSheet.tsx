@@ -39,7 +39,7 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
   const summary = useDroneProfileStore((s) => s.summary);
   const loading = useDroneProfileStore((s) => s.statusLoading);
   const selectedPoint = useDroneProfileStore((s) => s.selectedPoint);
-  const locateAndFocus = useDroneProfileStore((s) => s.locateAndFocus);
+  const requestGeolocate = useDroneProfileStore((s) => s.requestGeolocate);
 
   const [expanded, setExpanded] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -151,17 +151,7 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
   };
 
   const locate = () => {
-    if (!navigator.geolocation) return;
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        locateAndFocus({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-      },
-      () => undefined,
-      { enableHighAccuracy: true, timeout: 10000 },
-    );
+    requestGeolocate();
   };
 
   return (

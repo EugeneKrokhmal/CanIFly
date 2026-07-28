@@ -34,6 +34,7 @@ function AirspaceStatusBinder() {
 function MapDeepLink() {
   const searchParams = useSearchParams();
   const locateAndFocus = useDroneProfileStore((s) => s.locateAndFocus);
+  const requestGeolocate = useDroneProfileStore((s) => s.requestGeolocate);
 
   useEffect(() => {
     const latRaw = searchParams.get("lat");
@@ -55,18 +56,9 @@ function MapDeepLink() {
       }
     }
 
-    if (!navigator.geolocation) return;
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        locateAndFocus({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-      },
-      () => undefined,
-      { enableHighAccuracy: true, timeout: 12000, maximumAge: 60_000 },
-    );
-  }, [searchParams, locateAndFocus]);
+    // Show the MapLibre user-location dot + center the map.
+    requestGeolocate();
+  }, [searchParams, locateAndFocus, requestGeolocate]);
 
   return null;
 }

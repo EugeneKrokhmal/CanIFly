@@ -50,6 +50,9 @@ interface DroneProfileState {
   setSelectedDrone: (d: SelectedDrone | null) => void;
   setSelectedPoint: (p: { lat: number; lng: number } | null) => void;
   locateAndFocus: (p: { lat: number; lng: number }, zoom?: number) => void;
+  /** Bump to ask MapView's GeolocateControl to show the blue “you are here” dot. */
+  geolocateNonce: number;
+  requestGeolocate: () => void;
   clearMapCameraRequest: () => void;
   setStatusResult: (payload: {
     status: AirspaceStatus;
@@ -74,6 +77,7 @@ export const useDroneProfileStore = create<DroneProfileState>()(
       selectedDrone: null,
       selectedPoint: null,
       mapCameraRequest: null,
+      geolocateNonce: 0,
       status: null,
       summary: null,
       zones: [],
@@ -108,6 +112,8 @@ export const useDroneProfileStore = create<DroneProfileState>()(
             nonce: (s.mapCameraRequest?.nonce ?? 0) + 1,
           },
         })),
+      requestGeolocate: () =>
+        set((s) => ({ geolocateNonce: s.geolocateNonce + 1 })),
       clearMapCameraRequest: () => set({ mapCameraRequest: null }),
       setStatusResult: (payload) =>
         set({

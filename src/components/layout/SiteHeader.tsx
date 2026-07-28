@@ -78,35 +78,6 @@ export function SiteHeader() {
       </nav>
 
       <div className="flex items-center gap-1.5 sm:gap-2">
-        <div
-          className="flex items-center rounded-full border border-[#dddddd] p-0.5 text-[11px] font-bold"
-          role="group"
-          aria-label="Language"
-        >
-          <button
-            type="button"
-            onClick={() => switchLocale("es")}
-            className="as-press rounded-full px-2 py-1"
-            style={{
-              color: locale === "es" ? "#222222" : "#717171",
-              background: locale === "es" ? "#f7f7f7" : "transparent",
-            }}
-          >
-            {t("langEs")}
-          </button>
-          <button
-            type="button"
-            onClick={() => switchLocale("en")}
-            className="as-press rounded-full px-2 py-1"
-            style={{
-              color: locale === "en" ? "#222222" : "#717171",
-              background: locale === "en" ? "#f7f7f7" : "transparent",
-            }}
-          >
-            {t("langEn")}
-          </button>
-        </div>
-
         <WeatherWidget />
 
         {!loading && (
@@ -154,7 +125,7 @@ export function SiteHeader() {
           </div>
         )}
 
-        <div ref={menuRef} className="relative md:hidden">
+        <div ref={menuRef} className="relative">
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
@@ -166,63 +137,109 @@ export function SiteHeader() {
           </button>
           {menuOpen && (
             <div className="as-pop absolute right-0 top-[calc(100%+6px)] w-48 overflow-hidden rounded-xl border border-[#ebebeb] bg-white py-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
-              {NAV.map((item) => {
-                const active =
-                  item.href === "/"
-                    ? pathname === "/"
-                    : pathname.startsWith(item.href);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="block px-3.5 py-2.5 text-[14px] font-semibold transition-colors duration-150"
+              <div className="md:hidden">
+                {NAV.map((item) => {
+                  const active =
+                    item.href === "/"
+                      ? pathname === "/"
+                      : pathname.startsWith(item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="block px-3.5 py-2.5 text-[14px] font-semibold transition-colors duration-150"
+                      style={{
+                        color: active ? "#222222" : "#717171",
+                        background: active ? "#f7f7f7" : "transparent",
+                      }}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
+                <div className="my-1 border-t border-[#ebebeb]" />
+              </div>
+
+              <div className="px-3.5 py-2">
+                <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-[#717171]">
+                  {t("language")}
+                </p>
+                <div
+                  className="flex items-center rounded-full border border-[#dddddd] p-0.5 text-[12px] font-bold"
+                  role="group"
+                  aria-label={t("language")}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {
+                      switchLocale("es");
+                      setMenuOpen(false);
+                    }}
+                    className="as-press flex-1 rounded-full px-2 py-1.5"
                     style={{
-                      color: active ? "#222222" : "#717171",
-                      background: active ? "#f7f7f7" : "transparent",
+                      color: locale === "es" ? "#222222" : "#717171",
+                      background: locale === "es" ? "#f7f7f7" : "transparent",
                     }}
                   >
-                    {item.label}
-                  </Link>
-                );
-              })}
-              <div className="my-1 border-t border-[#ebebeb]" />
-              {user ? (
-                <>
-                  <Link
-                    href="/account"
-                    className="block truncate px-3.5 py-2.5 text-[14px] font-semibold text-[#222222]"
+                    {t("langEs")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      switchLocale("en");
+                      setMenuOpen(false);
+                    }}
+                    className="as-press flex-1 rounded-full px-2 py-1.5"
+                    style={{
+                      color: locale === "en" ? "#222222" : "#717171",
+                      background: locale === "en" ? "#f7f7f7" : "transparent",
+                    }}
                   >
-                    {t("account")}
-                  </Link>
-                  <Link
-                    href={`/pilots/${user.id}`}
-                    className="block truncate px-3.5 py-2.5 text-[14px] font-semibold text-[#717171]"
-                  >
-                    {t("publicProfile")}
-                  </Link>
+                    {t("langEn")}
+                  </button>
+                </div>
+              </div>
+
+              <div className="md:hidden">
+                <div className="my-1 border-t border-[#ebebeb]" />
+                {user ? (
+                  <>
+                    <Link
+                      href="/account"
+                      className="block truncate px-3.5 py-2.5 text-[14px] font-semibold text-[#222222]"
+                    >
+                      {t("account")}
+                    </Link>
+                    <Link
+                      href={`/pilots/${user.id}`}
+                      className="block truncate px-3.5 py-2.5 text-[14px] font-semibold text-[#717171]"
+                    >
+                      {t("publicProfile")}
+                    </Link>
+                    <button
+                      type="button"
+                      className="block w-full px-3.5 py-2.5 text-left text-[14px] font-semibold text-[#222222]"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        void logout();
+                      }}
+                    >
+                      {t("logOut")}
+                    </button>
+                  </>
+                ) : (
                   <button
                     type="button"
                     className="block w-full px-3.5 py-2.5 text-left text-[14px] font-semibold text-[#222222]"
                     onClick={() => {
                       setMenuOpen(false);
-                      void logout();
+                      setAuthModalOpen(true, "login");
                     }}
                   >
-                    {t("logOut")}
+                    {t("logIn")}
                   </button>
-                </>
-              ) : (
-                <button
-                  type="button"
-                  className="block w-full px-3.5 py-2.5 text-left text-[14px] font-semibold text-[#222222]"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    setAuthModalOpen(true, "login");
-                  }}
-                >
-                  {t("logIn")}
-                </button>
-              )}
+                )}
+              </div>
             </div>
           )}
         </div>

@@ -57,7 +57,7 @@ export function SidebarPanel() {
   const queryMs = useDroneProfileStore((s) => s.queryMs);
   const backend = useDroneProfileStore((s) => s.backend);
   const dataVersion = useDroneProfileStore((s) => s.dataVersion);
-  const locateAndFocus = useDroneProfileStore((s) => s.locateAndFocus);
+  const requestGeolocate = useDroneProfileStore((s) => s.requestGeolocate);
   const weightClass = useDroneProfileStore((s) => s.weightClass);
   const setWeightClass = useDroneProfileStore((s) => s.setWeightClass);
   const maxAltitudeAgl = useDroneProfileStore((s) => s.maxAltitudeAgl);
@@ -101,17 +101,7 @@ export function SidebarPanel() {
   };
 
   const locate = () => {
-    if (!navigator.geolocation) return;
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        locateAndFocus({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-      },
-      () => undefined,
-      { enableHighAccuracy: true, timeout: 10000 },
-    );
+    requestGeolocate();
   };
 
   const statusText = status
