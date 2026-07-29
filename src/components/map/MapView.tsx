@@ -257,12 +257,12 @@ export function MapView({ className }: MapViewProps) {
   const { collection, loadBbox } = useZoneLayers();
   const { collection: obstacles, loadBbox: loadObstaclesBbox } = useObstacles();
   const {
-    collection: aircraft,
     pastPaths,
     futurePaths,
     count: aircraftCount,
     error: trafficError,
     setViewport,
+    subscribeLive,
     minZoom,
   } = useAircraftTraffic(trafficOn);
 
@@ -1018,10 +1018,26 @@ export function MapView({ className }: MapViewProps) {
 
   useEffect(() => {
     const map = mapRef.current;
+    if (!mapReady || !map || !trafficOn) return;
+    return subscribeLive((fc) => {
+      const source = map.getSource(AC_SOURCE) as
+        | maplibregl.GeoJSONSource
+        | undefined;
+      if (source) source.setData(fc);
+    });
+  }, [mapReady, subscribeLive, trafficOn]);
+
+  useEffect(() => {
+    const map = mapRef.current;
     if (!mapReady || !map) return;
-    const source = map.getSource(AC_SOURCE) as maplibregl.GeoJSONSource | undefined;
-    if (source) source.setData(aircraft);
-  }, [aircraft, mapReady]);
+    if (trafficOn) return;
+    const source = map.getSource(AC_SOURCE) as
+      | maplibregl.GeoJSONSource
+      | undefined;
+    if (source) {
+      source.setData({ type: "FeatureCollection", features: [] });
+    }
+  }, [mapReady, trafficOn]);
 
   useEffect(() => {
     const map = mapRef.current;

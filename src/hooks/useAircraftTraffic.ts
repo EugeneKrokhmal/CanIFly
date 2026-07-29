@@ -5,27 +5,55 @@ import type { Bbox } from "@canifly/middleware";
 import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
 
 /**
- * Live ADS-B positions + light dead reckoning between snaps.
+ * Live ADS-B positions with smooth rAF dead reckoning between snaps.
  * Uses community feeds (adsb.lol / airplanes.live / adsb.fi) via the API.
  * Past tracks load only when the user clicks an aircraft (MapView → /api/traffic/track).
  */
 const POLL_MS = 15_000;
-/** Never hit the API more often than this, even on big pans. */
 const MIN_FETCH_GAP_MS = 8_000;
 const RATE_LIMIT_BACKOFF_MS = 10 * 60_000;
-/** Match default map zoom so traffic shows on first paint (Spain overview). */
 const MIN_ZOOM = 6;
 const VIEWPORT_DEBOUNCE_MS = 600;
-const TICK_MS = 1_000;
 /** Cap coasting — prefer a fresh poll over long extrapolation. */
 const MAX_COAST_S = 25;
 const FUTURE_HORIZON_S = 10 * 60;
+/** Soft catch-up when a new ADS-B fix arrives (avoids teleport). */
+const BLEND_MS = 900;
+/** Rebuild dashed future paths at this cadence (not every frame). */
+const FUTURE_REFRESH_MS = 2_000;
+
 const EMPTY: GeoJSON.FeatureCollection = {
   type: "FeatureCollection",
   features: [],
 };
 
 type LngLat = [number, number];
+
+type MotionPlane = {
+  icao24: string;
+  props: GeoJSON.GeoJsonProperties;
+  /** Last ADS-B fix (lng/lat). */
+  fixLng: number;
+  fixLat: number;
+  fixAlt: number | null;
+  trackDeg: number;
+  velocityMs: number;
+  verticalRateMs: number;
+  seenPosSec: number;
+  /** Wall clock when this fix was applied. */
+  fixAt: number;
+  /** Displayed pose (smooth). */
+  lng: number;
+  lat: number;
+  alt: number | null;
+  heading: number;
+  /** Optional blend from previous display toward the new coasted path. */
+  blendFromLng?: number;
+  blendFromLat?: number;
+  blendFromHeading?: number;
+  blendFromAlt?: number | null;
+  blendT0?: number;
+};
 
 function destination(
   lng: number,
@@ -50,37 +78,72 @@ function destination(
   return [((λ2 * 180) / Math.PI + 540) % 360 - 180, (φ2 * 180) / Math.PI];
 }
 
+function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
+function lerpAngle(a: number, b: number, t: number): number {
+  let d = ((b - a + 540) % 360) - 180;
+  return (a + d * t + 360) % 360;
+}
+
+function easeOutCubic(t: number): number {
+  return 1 - (1 - t) ** 3;
+}
+
+function coastFromFix(
+  plane: MotionPlane,
+  now: number,
+): { lng: number; lat: number; alt: number | null; heading: number } {
+  const elapsed =
+    (now - plane.fixAt) / 1000 + Math.max(0, plane.seenPosSec);
+  const dt = Math.min(Math.max(elapsed, 0), MAX_COAST_S);
+  const heading = plane.trackDeg;
+  if (plane.velocityMs < 5 || dt < 0.05) {
+    return {
+      lng: plane.fixLng,
+      lat: plane.fixLat,
+      alt: plane.fixAlt,
+      heading,
+    };
+  }
+  const [lng, lat] = destination(
+    plane.fixLng,
+    plane.fixLat,
+    heading,
+    plane.velocityMs * dt,
+  );
+  const alt =
+    plane.fixAlt != null && Number.isFinite(plane.verticalRateMs)
+      ? plane.fixAlt + plane.verticalRateMs * dt
+      : plane.fixAlt;
+  return { lng, lat, alt, heading };
+}
+
 function buildFutureCollection(
-  aircraft: GeoJSON.Feature[],
+  planes: MotionPlane[],
 ): GeoJSON.FeatureCollection {
   const features: GeoJSON.Feature[] = [];
-  for (const f of aircraft) {
-    if (f.geometry.type !== "Point") continue;
-    const p = f.properties ?? {};
-    if (p.onGround) continue;
-    const [lng, lat] = f.geometry.coordinates as LngLat;
-    const track =
-      typeof p.trackDeg === "number" && Number.isFinite(p.trackDeg)
-        ? p.trackDeg
-        : null;
-    const vel =
-      typeof p.velocityMs === "number" && Number.isFinite(p.velocityMs)
-        ? p.velocityMs
-        : 0;
-    if (track == null || vel < 5) continue;
-
+  for (const plane of planes) {
+    if (plane.velocityMs < 5) continue;
     const ahead = destination(
-      lng,
-      lat,
-      track,
-      Math.min(vel * FUTURE_HORIZON_S, 120_000),
+      plane.lng,
+      plane.lat,
+      plane.heading,
+      Math.min(plane.velocityMs * FUTURE_HORIZON_S, 120_000),
     );
     features.push({
       type: "Feature",
-      geometry: { type: "LineString", coordinates: [[lng, lat], ahead] },
+      geometry: {
+        type: "LineString",
+        coordinates: [
+          [plane.lng, plane.lat],
+          ahead,
+        ],
+      },
       properties: {
-        icao24: String(p.icao24 ?? ""),
-        callsign: p.callsign ?? null,
+        icao24: plane.icao24,
+        callsign: plane.props?.callsign ?? null,
         kind: "future",
         horizonMin: FUTURE_HORIZON_S / 60,
       },
@@ -89,50 +152,153 @@ function buildFutureCollection(
   return { type: "FeatureCollection", features };
 }
 
-/** Extrapolate airborne positions along heading × speed since the ADS-B fix. */
-function coastAircraft(
-  snapshot: GeoJSON.Feature[],
-  elapsedSinceFetchSec: number,
-): GeoJSON.Feature[] {
-  return snapshot.map((f) => {
-    if (f.geometry.type !== "Point") return f;
-    const p = f.properties ?? {};
-    if (p.onGround) return f;
-    const [lng, lat] = f.geometry.coordinates as LngLat;
-    const track =
-      typeof p.trackDeg === "number" && Number.isFinite(p.trackDeg)
-        ? p.trackDeg
-        : null;
-    const vel =
-      typeof p.velocityMs === "number" && Number.isFinite(p.velocityMs)
-        ? p.velocityMs
-        : 0;
-    if (track == null || vel < 5) return f;
+function planesToCollection(planes: MotionPlane[]): GeoJSON.FeatureCollection {
+  return {
+    type: "FeatureCollection",
+    features: planes.map((plane) => ({
+      type: "Feature" as const,
+      geometry: {
+        type: "Point" as const,
+        coordinates: [plane.lng, plane.lat],
+      },
+      properties: {
+        ...plane.props,
+        altitudeM: plane.alt,
+        trackDeg: plane.heading,
+        velocityMs: plane.velocityMs,
+        verticalRateMs: plane.verticalRateMs,
+      },
+    })),
+  };
+}
 
-    const seenPos =
-      typeof p.seenPosSec === "number" && Number.isFinite(p.seenPosSec)
-        ? Math.max(0, p.seenPosSec)
-        : 0;
-    const dt = Math.min(
-      Math.max(elapsedSinceFetchSec + seenPos, 0),
-      MAX_COAST_S,
-    );
-    if (dt < 0.4) return f;
+function featureToMotion(
+  f: GeoJSON.Feature,
+  now: number,
+  prev?: MotionPlane,
+): MotionPlane | null {
+  if (f.geometry.type !== "Point") return null;
+  const p = f.properties ?? {};
+  const icao24 = String(p.icao24 ?? "");
+  if (!icao24) return null;
+  const [fixLng, fixLat] = f.geometry.coordinates as LngLat;
+  if (!Number.isFinite(fixLng) || !Number.isFinite(fixLat)) return null;
 
-    const next = destination(lng, lat, track, vel * dt);
-    const alt =
-      typeof p.altitudeM === "number" &&
-      typeof p.verticalRateMs === "number" &&
-      Number.isFinite(p.verticalRateMs)
-        ? p.altitudeM + p.verticalRateMs * dt
-        : p.altitudeM;
+  const trackDeg =
+    typeof p.trackDeg === "number" && Number.isFinite(p.trackDeg)
+      ? p.trackDeg
+      : 0;
+  const velocityMs =
+    typeof p.velocityMs === "number" && Number.isFinite(p.velocityMs)
+      ? p.velocityMs
+      : 0;
+  const verticalRateMs =
+    typeof p.verticalRateMs === "number" && Number.isFinite(p.verticalRateMs)
+      ? p.verticalRateMs
+      : 0;
+  const seenPosSec =
+    typeof p.seenPosSec === "number" && Number.isFinite(p.seenPosSec)
+      ? Math.max(0, p.seenPosSec)
+      : 0;
+  const fixAlt =
+    typeof p.altitudeM === "number" && Number.isFinite(p.altitudeM)
+      ? p.altitudeM
+      : null;
 
-    return {
-      ...f,
-      geometry: { type: "Point", coordinates: next },
-      properties: { ...p, altitudeM: alt },
-    };
-  });
+  const base: MotionPlane = {
+    icao24,
+    props: p,
+    fixLng,
+    fixLat,
+    fixAlt,
+    trackDeg,
+    velocityMs,
+    verticalRateMs,
+    seenPosSec,
+    fixAt: now,
+    lng: fixLng,
+    lat: fixLat,
+    alt: fixAlt,
+    heading: trackDeg,
+  };
+
+  // Seed display from coasted fix so age is respected immediately.
+  const coasted = coastFromFix(base, now);
+  base.lng = coasted.lng;
+  base.lat = coasted.lat;
+  base.alt = coasted.alt;
+  base.heading = coasted.heading;
+
+  if (prev) {
+    const jumpM = haversineM(prev.lng, prev.lat, base.lng, base.lat);
+    // Soft blend only when the jump would be noticeable.
+    if (jumpM > 40) {
+      base.blendFromLng = prev.lng;
+      base.blendFromLat = prev.lat;
+      base.blendFromHeading = prev.heading;
+      base.blendFromAlt = prev.alt;
+      base.blendT0 = now;
+      base.lng = prev.lng;
+      base.lat = prev.lat;
+      base.alt = prev.alt;
+      base.heading = prev.heading;
+    }
+  }
+
+  return base;
+}
+
+function haversineM(
+  lng1: number,
+  lat1: number,
+  lng2: number,
+  lat2: number,
+): number {
+  const R = 6371000;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+
+function advancePlanes(planes: Map<string, MotionPlane>, now: number): void {
+  for (const plane of planes.values()) {
+    const target = coastFromFix(plane, now);
+    if (
+      plane.blendT0 != null &&
+      plane.blendFromLng != null &&
+      plane.blendFromLat != null
+    ) {
+      const t = Math.min(1, (now - plane.blendT0) / BLEND_MS);
+      const e = easeOutCubic(t);
+      plane.lng = lerp(plane.blendFromLng, target.lng, e);
+      plane.lat = lerp(plane.blendFromLat, target.lat, e);
+      plane.heading = lerpAngle(
+        plane.blendFromHeading ?? target.heading,
+        target.heading,
+        e,
+      );
+      plane.alt =
+        plane.blendFromAlt != null && target.alt != null
+          ? lerp(plane.blendFromAlt, target.alt, e)
+          : target.alt ?? plane.blendFromAlt ?? null;
+      if (t >= 1) {
+        plane.blendT0 = undefined;
+        plane.blendFromLng = undefined;
+        plane.blendFromLat = undefined;
+        plane.blendFromHeading = undefined;
+        plane.blendFromAlt = undefined;
+      }
+    } else {
+      plane.lng = target.lng;
+      plane.lat = target.lat;
+      plane.alt = target.alt;
+      plane.heading = target.heading;
+    }
+  }
 }
 
 function viewportMovedEnough(prev: Bbox | null, next: Bbox): boolean {
@@ -154,8 +320,7 @@ function viewportMovedEnough(prev: Bbox | null, next: Bbox): boolean {
 }
 
 /**
- * Live ADS-B positions + estimated future path.
- * Past tracks load only when the user clicks an aircraft (MapView → /api/traffic/track).
+ * Live ADS-B positions + smooth motion between polls.
  */
 export function useAircraftTraffic(enabled: boolean) {
   const [collection, setCollection] =
@@ -171,13 +336,16 @@ export function useAircraftTraffic(enabled: boolean) {
   const zoomRef = useRef(0);
   const abortRef = useRef<AbortController | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const rafRef = useRef<number | null>(null);
   const cooldownUntilRef = useRef(0);
   const lastFetchAtRef = useRef(0);
-  const snapshotRef = useRef<GeoJSON.Feature[]>([]);
-  const snapshotAtRef = useRef(0);
+  const planesRef = useRef<Map<string, MotionPlane>>(new Map());
   const hasDataRef = useRef(false);
   const forceFetchRef = useRef(false);
+  const lastFutureAtRef = useRef(0);
+  const liveListenersRef = useRef(
+    new Set<(fc: GeoJSON.FeatureCollection) => void>(),
+  );
 
   const clearTimer = () => {
     if (timerRef.current) {
@@ -186,14 +354,34 @@ export function useAircraftTraffic(enabled: boolean) {
     }
   };
 
-  const publishCoast = useCallback(() => {
-    if (!snapshotRef.current.length || !snapshotAtRef.current) return;
-    const elapsed = (Date.now() - snapshotAtRef.current) / 1000;
-    const features = coastAircraft(snapshotRef.current, elapsed);
-    setCollection({ type: "FeatureCollection", features });
-    setFuturePaths(buildFutureCollection(features));
-    setCount(features.length);
+  const publishLive = useCallback((fc: GeoJSON.FeatureCollection) => {
+    for (const listener of liveListenersRef.current) {
+      listener(fc);
+    }
   }, []);
+
+  const clearPlanes = useCallback(() => {
+    planesRef.current.clear();
+    hasDataRef.current = false;
+    setCollection(EMPTY);
+    setFuturePaths(EMPTY);
+    setCount(0);
+    publishLive(EMPTY);
+  }, [publishLive]);
+
+  const subscribeLive = useCallback(
+    (listener: (fc: GeoJSON.FeatureCollection) => void) => {
+      liveListenersRef.current.add(listener);
+      // Push current pose immediately so the map isn't empty until next frame.
+      if (planesRef.current.size > 0) {
+        listener(planesToCollection([...planesRef.current.values()]));
+      }
+      return () => {
+        liveListenersRef.current.delete(listener);
+      };
+    },
+    [],
+  );
 
   const scheduleNext = useCallback(
     (delayMs: number) => {
@@ -228,12 +416,7 @@ export function useAircraftTraffic(enabled: boolean) {
     }
 
     if (zoomRef.current < MIN_ZOOM) {
-      snapshotRef.current = [];
-      snapshotAtRef.current = 0;
-      hasDataRef.current = false;
-      setCollection(EMPTY);
-      setFuturePaths(EMPTY);
-      setCount(0);
+      clearPlanes();
       setError(null);
       scheduleNext(POLL_MS);
       return;
@@ -280,22 +463,31 @@ export function useAircraftTraffic(enabled: boolean) {
         return;
       }
 
-      const features = data.features ?? [];
-      snapshotRef.current = features;
-      snapshotAtRef.current = Date.now();
-      hasDataRef.current = features.length > 0;
-      setCollection({ type: "FeatureCollection", features });
-      setCount(data.meta?.count ?? features.length);
-      setUpdatedAt(Date.now());
+      const now = Date.now();
+      const next = new Map<string, MotionPlane>();
+      const prev = planesRef.current;
+      for (const f of data.features ?? []) {
+        const motion = featureToMotion(f, now, prev.get(String(f.properties?.icao24 ?? "")));
+        if (motion) next.set(motion.icao24, motion);
+      }
+      planesRef.current = next;
+      hasDataRef.current = next.size > 0;
+
+      const fc = planesToCollection([...next.values()]);
+      setCollection(fc);
+      setCount(data.meta?.count ?? next.size);
+      setUpdatedAt(now);
       setError(data.meta?.error ?? null);
-      setFuturePaths(buildFutureCollection(features));
+      setFuturePaths(buildFutureCollection([...next.values()]));
+      lastFutureAtRef.current = now;
+      publishLive(fc);
       scheduleNext(POLL_MS);
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
       setError("unavailable");
       scheduleNext(POLL_MS);
     }
-  }, [enabled, scheduleNext]);
+  }, [clearPlanes, enabled, publishLive, scheduleNext]);
 
   fetchTrafficRef.current = fetchTraffic;
 
@@ -315,19 +507,13 @@ export function useAircraftTraffic(enabled: boolean) {
 
       if (empty || moved || stale) {
         if (moved) {
-          // Drop off-screen leftovers immediately; refill for the new view.
           forceFetchRef.current = true;
-          snapshotRef.current = [];
-          snapshotAtRef.current = 0;
-          hasDataRef.current = false;
-          setCollection(EMPTY);
-          setFuturePaths(EMPTY);
-          setCount(0);
+          clearPlanes();
         }
         void fetchTraffic();
       }
     },
-    [enabled, fetchTraffic],
+    [clearPlanes, enabled, fetchTraffic],
   );
 
   const setViewport = useDebouncedCallback(
@@ -339,31 +525,46 @@ export function useAircraftTraffic(enabled: boolean) {
 
   useEffect(() => {
     if (!enabled) {
-      snapshotRef.current = [];
-      snapshotAtRef.current = 0;
-      hasDataRef.current = false;
-      setCollection(EMPTY);
-      setFuturePaths(EMPTY);
-      setCount(0);
+      clearPlanes();
       setError(null);
       clearTimer();
-      if (tickRef.current) {
-        clearInterval(tickRef.current);
-        tickRef.current = null;
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
       return;
     }
 
     void fetchTraffic();
-    tickRef.current = setInterval(publishCoast, TICK_MS);
+
+    const tick = () => {
+      rafRef.current = requestAnimationFrame(tick);
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") {
+        return;
+      }
+      const planes = planesRef.current;
+      if (planes.size === 0) return;
+
+      const now = Date.now();
+      advancePlanes(planes, now);
+      const list = [...planes.values()];
+      const fc = planesToCollection(list);
+      publishLive(fc);
+
+      if (now - lastFutureAtRef.current >= FUTURE_REFRESH_MS) {
+        lastFutureAtRef.current = now;
+        setFuturePaths(buildFutureCollection(list));
+        setCollection(fc);
+        setCount(list.length);
+      }
+    };
+    rafRef.current = requestAnimationFrame(tick);
 
     const onVisibility = () => {
       if (document.visibilityState === "visible") {
         const age = Date.now() - lastFetchAtRef.current;
         if (!lastFetchAtRef.current || age > MIN_FETCH_GAP_MS) {
           void fetchTraffic();
-        } else {
-          publishCoast();
         }
       }
     };
@@ -372,13 +573,13 @@ export function useAircraftTraffic(enabled: boolean) {
     return () => {
       clearTimer();
       abortRef.current?.abort();
-      if (tickRef.current) {
-        clearInterval(tickRef.current);
-        tickRef.current = null;
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [enabled, fetchTraffic, publishCoast]);
+  }, [clearPlanes, enabled, fetchTraffic, publishLive]);
 
   return {
     collection,
@@ -390,6 +591,7 @@ export function useAircraftTraffic(enabled: boolean) {
     updatedAt,
     error,
     setViewport,
+    subscribeLive,
     minZoom: MIN_ZOOM,
   };
 }
