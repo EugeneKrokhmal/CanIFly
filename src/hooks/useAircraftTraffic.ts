@@ -5,20 +5,20 @@ import type { Bbox } from "@canifly/middleware";
 import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
 
 /**
- * Live ADS-B positions + estimated future path.
+ * Live ADS-B positions + light dead reckoning between snaps.
  * Uses community feeds (adsb.lol / airplanes.live / adsb.fi) via the API.
  * Past tracks load only when the user clicks an aircraft (MapView → /api/traffic/track).
  */
-const POLL_MS = 45_000;
+const POLL_MS = 15_000;
 /** Never hit the API more often than this, even on big pans. */
-const MIN_FETCH_GAP_MS = 18_000;
+const MIN_FETCH_GAP_MS = 8_000;
 const RATE_LIMIT_BACKOFF_MS = 10 * 60_000;
 /** Match default map zoom so traffic shows on first paint (Spain overview). */
 const MIN_ZOOM = 6;
-const VIEWPORT_DEBOUNCE_MS = 800;
-const TICK_MS = 2_000;
-/** Cap how far we coast after the last ADS-B snap. */
-const MAX_COAST_S = 150;
+const VIEWPORT_DEBOUNCE_MS = 600;
+const TICK_MS = 1_000;
+/** Cap coasting — prefer a fresh poll over long extrapolation. */
+const MAX_COAST_S = 25;
 const FUTURE_HORIZON_S = 10 * 60;
 const EMPTY: GeoJSON.FeatureCollection = {
   type: "FeatureCollection",
@@ -89,14 +89,11 @@ function buildFutureCollection(
   return { type: "FeatureCollection", features };
 }
 
-/** Extrapolate airborne positions along heading × speed since snapshot. */
+/** Extrapolate airborne positions along heading × speed since the ADS-B fix. */
 function coastAircraft(
   snapshot: GeoJSON.Feature[],
-  elapsedSec: number,
+  elapsedSinceFetchSec: number,
 ): GeoJSON.Feature[] {
-  const dt = Math.min(Math.max(elapsedSec, 0), MAX_COAST_S);
-  if (dt < 0.5) return snapshot;
-
   return snapshot.map((f) => {
     if (f.geometry.type !== "Point") return f;
     const p = f.properties ?? {};
@@ -111,6 +108,16 @@ function coastAircraft(
         ? p.velocityMs
         : 0;
     if (track == null || vel < 5) return f;
+
+    const seenPos =
+      typeof p.seenPosSec === "number" && Number.isFinite(p.seenPosSec)
+        ? Math.max(0, p.seenPosSec)
+        : 0;
+    const dt = Math.min(
+      Math.max(elapsedSinceFetchSec + seenPos, 0),
+      MAX_COAST_S,
+    );
+    if (dt < 0.4) return f;
 
     const next = destination(lng, lat, track, vel * dt);
     const alt =
