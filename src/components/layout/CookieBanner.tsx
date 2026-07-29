@@ -52,17 +52,17 @@ export function CookieBanner() {
       aria-label={t("aria")}
       aria-live="polite"
     >
-      <div className="as-rise pointer-events-auto w-full max-w-3xl rounded-2xl border border-[#dddddd] bg-white p-4 shadow-[0_8px_28px_rgba(0,0,0,0.16)] sm:p-5">
+      <div className="as-rise pointer-events-auto w-full max-w-3xl rounded-2xl border border-[var(--as-line)] bg-[var(--as-surface)] p-4 shadow-[0_8px_28px_rgba(0,0,0,0.16)] sm:p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
           <div className="min-w-0 flex-1">
-            <p className="text-[15px] font-semibold text-[#222222]">
+            <p className="text-[15px] font-semibold text-[var(--as-ink)]">
               {t("title")}
             </p>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-[#717171]">
+            <p className="mt-1.5 text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
               {t("body")}{" "}
               <Link
                 href="/privacy"
-                className="font-semibold text-[#222222] underline underline-offset-2"
+                className="font-semibold text-[var(--as-ink)] underline underline-offset-2"
               >
                 {t("privacyLink")}
               </Link>
@@ -73,14 +73,14 @@ export function CookieBanner() {
             <button
               type="button"
               onClick={() => choose("rejected")}
-              className="as-press rounded-lg border border-[#dddddd] bg-white px-4 py-2.5 text-[14px] font-semibold text-[#222222] hover:bg-[#f7f7f7]"
+              className="as-press rounded-lg border border-[var(--as-line)] bg-[var(--as-surface)] px-4 py-2.5 text-[14px] font-semibold text-[var(--as-ink)] hover:bg-[var(--as-surface-muted)]"
             >
               {t("reject")}
             </button>
             <button
               type="button"
               onClick={() => choose("accepted")}
-              className="as-press rounded-lg bg-[#222222] px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-[#000000]"
+              className="as-press rounded-lg bg-[var(--as-ink)] px-4 py-2.5 text-[14px] font-semibold text-[var(--as-ink-invert)] hover:opacity-90"
             >
               {t("accept")}
             </button>

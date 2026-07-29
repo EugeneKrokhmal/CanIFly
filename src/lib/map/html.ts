@@ -25,11 +25,15 @@ export function aircraftPopupHtml(input: {
 
 export function obstaclePopupHtml(input: {
   title: string;
+  kindLabel?: string | null;
   heightM: number;
+  heightLabel?: string;
   message?: string | null;
   photoUrl?: string | null;
   authorName?: string | null;
   authorId?: string | null;
+  /** Locale-aware path, e.g. /en/pilots/... */
+  authorHref?: string | null;
   createdAt?: string | null;
   canDelete?: boolean;
   id?: string;
@@ -58,7 +62,7 @@ export function obstaclePopupHtml(input: {
 
   const authorLink =
     input.authorName && input.authorId
-      ? `<a href="/pilots/${escapeHtml(input.authorId)}" style="color:#222222;font-weight:600;text-decoration:underline;text-underline-offset:2px">${escapeHtml(input.authorName)}</a>`
+      ? `<a href="${escapeHtml(input.authorHref ?? `/pilots/${input.authorId}`)}" style="color:var(--as-ink);font-weight:600;text-decoration:underline;text-underline-offset:2px">${escapeHtml(input.authorName)}</a>`
       : input.authorName
         ? escapeHtml(input.authorName)
         : "";
@@ -68,7 +72,7 @@ export function obstaclePopupHtml(input: {
   if (dateLabel) metaParts.push(escapeHtml(dateLabel));
   const meta =
     metaParts.length > 0
-      ? `<div style="margin-top:8px;font-size:12px;color:#717171">${metaParts.join(" · ")}</div>`
+      ? `<div style="margin-top:8px;font-size:12px;color:var(--as-ink-soft)">${metaParts.join(" · ")}</div>`
       : "";
 
   const del =
@@ -86,15 +90,21 @@ export function obstaclePopupHtml(input: {
 
   const voteRow = input.id
     ? `<div style="margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-  <button type="button" data-obstacle-vote="up" data-obstacle-id="${escapeHtml(input.id)}" ${canVote ? "" : "disabled "}style="border:1px solid ${upActive ? "#008a05" : "#dddddd"};background:${upActive ? "#008a0514" : "#fff"};color:${upActive ? "#008a05" : "#222222"};border-radius:999px;padding:4px 10px;font:inherit;font-size:12px;font-weight:600;cursor:${canVote ? "pointer" : "default"};opacity:${canVote ? "1" : "0.7"}">▲ ${escapeHtml(likes)}</button>
-  <button type="button" data-obstacle-vote="down" data-obstacle-id="${escapeHtml(input.id)}" ${canVote ? "" : "disabled "}style="border:1px solid ${downActive ? "#c13515" : "#dddddd"};background:${downActive ? "#c1351514" : "#fff"};color:${downActive ? "#c13515" : "#222222"};border-radius:999px;padding:4px 10px;font:inherit;font-size:12px;font-weight:600;cursor:${canVote ? "pointer" : "default"};opacity:${canVote ? "1" : "0.7"}">▼ ${escapeHtml(dislikes)}</button>
-  ${inactive ? `<span style="font-size:11px;font-weight:600;color:#717171">Inactive</span>` : ""}
+  <button type="button" data-obstacle-vote="up" data-obstacle-id="${escapeHtml(input.id)}" ${canVote ? "" : "disabled "}style="border:1px solid ${upActive ? "var(--as-clear)" : "var(--as-line)"};background:${upActive ? "color-mix(in srgb, var(--as-clear) 14%, transparent)" : "var(--as-surface)"};color:${upActive ? "var(--as-clear)" : "var(--as-ink)"};border-radius:999px;padding:4px 10px;font:inherit;font-size:12px;font-weight:600;cursor:${canVote ? "pointer" : "default"};opacity:${canVote ? "1" : "0.7"}">▲ ${escapeHtml(likes)}</button>
+  <button type="button" data-obstacle-vote="down" data-obstacle-id="${escapeHtml(input.id)}" ${canVote ? "" : "disabled "}style="border:1px solid ${downActive ? "var(--as-prohibited)" : "var(--as-line)"};background:${downActive ? "color-mix(in srgb, var(--as-prohibited) 14%, transparent)" : "var(--as-surface)"};color:${downActive ? "var(--as-prohibited)" : "var(--as-ink)"};border-radius:999px;padding:4px 10px;font:inherit;font-size:12px;font-weight:600;cursor:${canVote ? "pointer" : "default"};opacity:${canVote ? "1" : "0.7"}">▼ ${escapeHtml(dislikes)}</button>
+  ${inactive ? `<span style="font-size:11px;font-weight:600;color:var(--as-ink-soft)">Inactive</span>` : ""}
 </div>`
     : "";
 
+  const kindChip = input.kindLabel
+    ? `<div style="margin-bottom:4px;font-size:11px;font-weight:600;color:var(--as-ink-soft);text-transform:uppercase;letter-spacing:0.04em">${escapeHtml(input.kindLabel)}</div>`
+    : "";
+  const heightText = input.heightLabel ?? `~${input.heightM} m AGL`;
+
   return `<div class="as-ac-popup-inner">
+  ${kindChip}
   <strong>${escapeHtml(input.title)}</strong>
-  <div>~${escapeHtml(input.heightM)} m AGL</div>
+  <div>${escapeHtml(heightText)}</div>
   ${msg ? `<div>${escapeHtml(msg)}</div>` : ""}
   ${photo}
   ${meta}
@@ -102,6 +112,7 @@ export function obstaclePopupHtml(input: {
   ${del}
 </div>`;
 }
+
 
 const STATUS_POPUP_COLOR: Record<string, string> = {
   clear: "#008a05",
@@ -141,11 +152,11 @@ export function airspacePopupHtml(input: {
   }
 
   const status = input.status ?? "clear";
-  const color = STATUS_POPUP_COLOR[status] ?? "#222222";
+  const color = STATUS_POPUP_COLOR[status] ?? "var(--as-ink)";
   const label = STATUS_POPUP_LABEL[status] ?? status;
   const zones =
     input.zoneNames && input.zoneNames.length > 0
-      ? `<div style="margin-top:8px;font-size:12px;color:#717171">${escapeHtml(
+      ? `<div style="margin-top:8px;font-size:12px;color:var(--as-ink-soft)">${escapeHtml(
           input.zoneNames.slice(0, 3).join(" · "),
         )}${input.zoneNames.length > 3 ? "…" : ""}</div>`
       : "";

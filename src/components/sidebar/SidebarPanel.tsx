@@ -8,7 +8,6 @@ import {
 } from "@canifly/middleware";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 import { DronePicker } from "@/components/sidebar/DronePicker";
-import { ReportObstaclePanel } from "@/components/sidebar/ReportObstaclePanel";
 
 function statusColor(status: AirspaceStatus): string {
   if (status === "clear" || status === "limited") return "var(--as-clear)";
@@ -40,7 +39,7 @@ function stripHtml(html: string): string {
 
 function sectionLabel(text: string) {
   return (
-    <h2 className="text-[12px] font-semibold text-[#222222]">{text}</h2>
+    <h2 className="text-[12px] font-semibold text-[var(--as-ink)]">{text}</h2>
   );
 }
 
@@ -109,12 +108,12 @@ export function SidebarPanel() {
     : null;
 
   return (
-    <aside className="flex h-full w-full flex-col overflow-hidden bg-white text-[#222222]">
-      <div className="border-b border-[#ebebeb] px-5 pb-4 pt-5">
-        <p className="text-[12px] font-semibold text-[#222222]">
+    <aside className="flex h-full w-full flex-col overflow-hidden bg-[var(--as-surface)] text-[var(--as-ink)]">
+      <div className="border-b border-[var(--as-line-soft)] px-5 pb-4 pt-5">
+        <p className="text-[12px] font-semibold text-[var(--as-ink)]">
           {t("flightProfile")}
         </p>
-        <p className="mt-1 text-[13px] leading-relaxed text-[#717171]">
+        <p className="mt-1 text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
           {t("flightProfileHint")}
         </p>
       </div>
@@ -144,13 +143,13 @@ export function SidebarPanel() {
                   onClick={() => setWeightClass(opt.id)}
                   className="as-press rounded-xl border px-2 py-2.5 text-center"
                   style={{
-                    borderColor: active ? "#222222" : "#dddddd",
-                    background: active ? "#f7f7f7" : "#fff",
-                    boxShadow: active ? "inset 0 0 0 1px #222" : undefined,
+                    borderColor: active ? "var(--as-ink)" : "var(--as-line)",
+                    background: active ? "var(--as-hover)" : "var(--as-surface)",
+                    boxShadow: active ? "inset 0 0 0 1px var(--as-ink)" : undefined,
                   }}
                 >
                   <div className="text-[15px] font-bold">{opt.label}</div>
-                  <div className="text-[11px] text-[#717171]">{opt.hint}</div>
+                  <div className="text-[11px] text-[var(--as-ink-soft)]">{opt.hint}</div>
                 </button>
               );
             })}
@@ -158,12 +157,12 @@ export function SidebarPanel() {
 
           <label className="mt-5 block">
             <div className="mb-2 flex items-baseline justify-between">
-              <span className="text-[12px] font-semibold text-[#222222]">
+              <span className="text-[12px] font-semibold text-[var(--as-ink)]">
                 {t("ceilingAgl")}
               </span>
-              <span className="text-[18px] font-bold text-[#222222]">
+              <span className="text-[18px] font-bold text-[var(--as-ink)]">
                 {maxAltitudeAgl}
-                <span className="ml-1 text-[12px] font-medium text-[#717171]">
+                <span className="ml-1 text-[12px] font-medium text-[var(--as-ink-soft)]">
                   m
                 </span>
               </span>
@@ -180,13 +179,11 @@ export function SidebarPanel() {
           </label>
         </section>
 
-        <ReportObstaclePanel />
-
         <section className="mt-8">
           {sectionLabel(t("flightCheck"))}
 
           {!selectedPoint && !loading && (
-            <p className="mt-3 text-[14px] leading-relaxed text-[#717171]">
+            <p className="mt-3 text-[14px] leading-relaxed text-[var(--as-ink-soft)]">
               {t("tapTakeoff")}
             </p>
           )}
@@ -200,7 +197,7 @@ export function SidebarPanel() {
           )}
 
           {error && (
-            <p className="mt-4 rounded-xl bg-[#fff8f6] px-3 py-2 text-sm text-[#c13515]">
+            <p className="mt-4 rounded-xl bg-[var(--as-hover-warm)] px-3 py-2 text-sm text-[var(--as-prohibited)]">
               {error}
             </p>
           )}
@@ -208,7 +205,7 @@ export function SidebarPanel() {
           {!loading && status && statusText && (
             <div
               key={`${status}-${selectedPoint?.lat}`}
-              className="as-status-flash mt-4 rounded-2xl border border-[#ebebeb] bg-[#f7f7f7] p-4"
+              className="as-status-flash mt-4 rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface-muted)] p-4"
             >
               <div
                 className="inline-flex rounded-full px-3 py-1 text-[13px] font-bold"
@@ -219,44 +216,44 @@ export function SidebarPanel() {
               >
                 {statusText}
               </div>
-              <p className="mt-3 text-[14px] leading-relaxed text-[#222222]">
+              <p className="mt-3 text-[14px] leading-relaxed text-[var(--as-ink)]">
                 {summary}
               </p>
               {selectedPoint && (
-                <dl className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2 text-[12px] text-[#717171]">
+                <dl className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2 text-[12px] text-[var(--as-ink-soft)]">
                   <div>
-                    <dt className="font-medium text-[#b0b0b0]">{t("lat")}</dt>
-                    <dd className="mt-0.5 text-[#222222]">
+                    <dt className="font-medium text-[var(--as-muted)]">{t("lat")}</dt>
+                    <dd className="mt-0.5 text-[var(--as-ink)]">
                       {selectedPoint.lat.toFixed(5)}°
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-medium text-[#b0b0b0]">{t("lng")}</dt>
-                    <dd className="mt-0.5 text-[#222222]">
+                    <dt className="font-medium text-[var(--as-muted)]">{t("lng")}</dt>
+                    <dd className="mt-0.5 text-[var(--as-ink)]">
                       {selectedPoint.lng.toFixed(5)}°
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-medium text-[#b0b0b0]">
+                    <dt className="font-medium text-[var(--as-muted)]">
                       {t("ceiling")}
                     </dt>
-                    <dd className="mt-0.5 text-[#222222]">
+                    <dd className="mt-0.5 text-[var(--as-ink)]">
                       {maxAltitudeAgl} m AGL
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-medium text-[#b0b0b0]">{t("class")}</dt>
-                    <dd className="mt-0.5 text-[#222222]">
+                    <dt className="font-medium text-[var(--as-muted)]">{t("class")}</dt>
+                    <dd className="mt-0.5 text-[var(--as-ink)]">
                       {weightClass.toUpperCase()}
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-medium text-[#b0b0b0]">{t("zones")}</dt>
-                    <dd className="mt-0.5 text-[#222222]">{zones.length}</dd>
+                    <dt className="font-medium text-[var(--as-muted)]">{t("zones")}</dt>
+                    <dd className="mt-0.5 text-[var(--as-ink)]">{zones.length}</dd>
                   </div>
                   <div>
-                    <dt className="font-medium text-[#b0b0b0]">{t("source")}</dt>
-                    <dd className="mt-0.5 text-[#222222]">
+                    <dt className="font-medium text-[var(--as-muted)]">{t("source")}</dt>
+                    <dd className="mt-0.5 text-[var(--as-ink)]">
                       {backend ?? "—"}
                       {queryMs != null ? ` · ${queryMs}ms` : ""}
                     </dd>
@@ -296,8 +293,8 @@ export function SidebarPanel() {
                       }}
                       className="as-press w-full cursor-pointer rounded-2xl border px-3 py-3 text-left"
                       style={{
-                        borderColor: active ? "#222222" : "#ebebeb",
-                        background: active ? "#f7f7f7" : "#fff",
+                        borderColor: active ? "var(--as-ink)" : "var(--as-line-soft)",
+                        background: active ? "var(--as-hover)" : "var(--as-surface)",
                       }}
                     >
                       <div className="flex items-start gap-3">
@@ -305,20 +302,20 @@ export function SidebarPanel() {
                           {n}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block text-[14px] font-semibold leading-snug text-[#222222]">
+                          <span className="block text-[14px] font-semibold leading-snug text-[var(--as-ink)]">
                             {(z.name || z.identifier)
                               .replace(/<[^>]+>/g, " ")
                               .replace(/\s+/g, " ")
                               .trim()}
                           </span>
-                          <span className="mt-1 block text-[12px] text-[#717171]">
+                          <span className="mt-1 block text-[12px] text-[var(--as-ink-soft)]">
                             {restrictionLabel(String(z.restriction))} ·{" "}
                             {Math.round(z.lowerLimitM)}–
                             {Math.round(z.upperLimitM)}m {z.lowerRef} ·{" "}
                             {sourceLabel(z.source)}
                           </span>
                           {z.reason.length > 0 && (
-                            <span className="mt-1 block text-[12px] text-[#717171]">
+                            <span className="mt-1 block text-[12px] text-[var(--as-ink-soft)]">
                               {t("reason", { reasons: z.reason.join(", ") })}
                             </span>
                           )}
@@ -338,16 +335,16 @@ export function SidebarPanel() {
                               </span>
                             )}
                           {plain && (
-                            <span className="mt-2 block whitespace-pre-line text-[13px] leading-relaxed text-[#717171]">
+                            <span className="mt-2 block whitespace-pre-line text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
                               {plain}
                             </span>
                           )}
                           {z.contact && (
-                            <span className="mt-2 block break-all text-[12px] text-[#222222]">
+                            <span className="mt-2 block break-all text-[12px] text-[var(--as-ink)]">
                               {t("contact", { contact: z.contact })}
                             </span>
                           )}
-                          <span className="mt-1 block text-[11px] text-[#b0b0b0]">
+                          <span className="mt-1 block text-[11px] text-[var(--as-muted)]">
                             ID {z.identifier}
                           </span>
                         </span>
@@ -362,7 +359,7 @@ export function SidebarPanel() {
       </div>
 
       {(backend || dataVersion) && (
-        <div className="border-t border-[#ebebeb] px-5 py-3 text-[11px] text-[#b0b0b0]">
+        <div className="border-t border-[var(--as-line-soft)] px-5 py-3 text-[11px] text-[var(--as-muted)]">
           {backend ? `ENAIRE ${backend}` : t("offline")}
           {dataVersion ? ` · ${dataVersion}` : ""}
           {queryMs != null ? ` · ${queryMs}ms` : ""}

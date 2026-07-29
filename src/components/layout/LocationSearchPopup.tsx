@@ -120,7 +120,7 @@ export function LocationSearchPopup({
         }}
       />
       <div
-        className="as-gpu relative w-full max-w-md overflow-hidden rounded-2xl border border-[#ebebeb] bg-white shadow-[0_12px_40px_rgba(0,0,0,0.18)]"
+        className="as-gpu relative w-full max-w-md overflow-hidden rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] shadow-[0_12px_40px_rgba(0,0,0,0.18)]"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible
@@ -138,8 +138,8 @@ export function LocationSearchPopup({
           {t("title")}
         </h2>
 
-        <div className="flex items-center gap-2 border-b border-[#ebebeb] px-3 py-2.5">
-          <SearchGlyph className="shrink-0 text-[#717171]" />
+        <div className="flex items-center gap-2 border-b border-[var(--as-line-soft)] px-3 py-2.5">
+          <SearchGlyph className="shrink-0 text-[var(--as-ink-soft)]" />
           <input
             ref={inputRef}
             type="search"
@@ -151,7 +151,7 @@ export function LocationSearchPopup({
               runSearch(v);
             }}
             placeholder={t("placeholder")}
-            className="min-w-0 flex-1 bg-transparent text-[15px] font-medium text-[#222222] outline-none placeholder:text-[#b0b0b0]"
+            className="min-w-0 flex-1 bg-transparent text-[15px] font-medium text-[var(--as-ink)] outline-none placeholder:text-[var(--as-muted)]"
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -160,7 +160,7 @@ export function LocationSearchPopup({
           <button
             type="button"
             onClick={onClose}
-            className="as-press shrink-0 rounded-full px-2 py-1 text-[13px] font-semibold text-[#717171] hover:bg-[#f7f7f7] hover:text-[#222222]"
+            className="as-press shrink-0 rounded-full px-2 py-1 text-[13px] font-semibold text-[var(--as-ink-soft)] hover:bg-[var(--as-surface-muted)] hover:text-[var(--as-ink)]"
           >
             {t("close")}
           </button>
@@ -168,13 +168,13 @@ export function LocationSearchPopup({
 
         <div className="max-h-[min(60dvh,22rem)] overflow-y-auto">
           {query.trim().length < 2 && (
-            <p className="px-4 py-6 text-center text-[13px] text-[#717171]">
+            <p className="px-4 py-6 text-center text-[13px] text-[var(--as-ink-soft)]">
               {t("hint")}
             </p>
           )}
 
           {query.trim().length >= 2 && loading && (
-            <p className="px-4 py-6 text-center text-[13px] text-[#717171]">
+            <p className="px-4 py-6 text-center text-[13px] text-[var(--as-ink-soft)]">
               {t("searching")}
             </p>
           )}
@@ -189,7 +189,7 @@ export function LocationSearchPopup({
             !loading &&
             !error &&
             hits.length === 0 && (
-              <p className="px-4 py-6 text-center text-[13px] text-[#717171]">
+              <p className="px-4 py-6 text-center text-[13px] text-[var(--as-ink-soft)]">
                 {t("empty")}
               </p>
             )}
@@ -201,9 +201,9 @@ export function LocationSearchPopup({
                   <button
                     type="button"
                     onClick={() => pick(hit)}
-                    className="flex w-full flex-col gap-0.5 px-4 py-2.5 text-left hover:bg-[#f7f7f7]"
+                    className="flex w-full flex-col gap-0.5 px-4 py-2.5 text-left hover:bg-[var(--as-surface-muted)]"
                   >
-                    <span className="text-[14px] font-semibold text-[#222222]">
+                    <span className="text-[14px] font-semibold text-[var(--as-ink)]">
                       {hit.name}
                       {hit.countryCode === "ES" && (
                         <span className="ml-1.5 text-[11px] font-semibold text-[#ff385c]">
@@ -211,7 +211,7 @@ export function LocationSearchPopup({
                         </span>
                       )}
                     </span>
-                    <span className="truncate text-[12px] text-[#717171]">
+                    <span className="truncate text-[12px] text-[var(--as-ink-soft)]">
                       {hit.label}
                     </span>
                   </button>
@@ -221,7 +221,7 @@ export function LocationSearchPopup({
           )}
         </div>
 
-        <p className="border-t border-[#ebebeb] px-4 py-2 text-[10px] text-[#b0b0b0]">
+        <p className="border-t border-[var(--as-line-soft)] px-4 py-2 text-[10px] text-[var(--as-muted)]">
           {t("attribution")}
         </p>
       </div>

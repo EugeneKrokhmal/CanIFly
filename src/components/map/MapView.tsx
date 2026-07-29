@@ -8,14 +8,17 @@ import {
   ENAIRE_ZONE_STYLE,
   SPAIN_CENTER,
   obstacleLabel,
+  pinKindLabel,
   type ObstacleType,
+  type PinKind,
 } from "@canifly/middleware";
 import { useLocale, useTranslations } from "next-intl";
 import { aircraftPopupHtml, airspacePopupHtml, obstaclePopupHtml } from "@/lib/map/html";
 import {
   addObstacleImages,
-  OBSTACLE_ICON_IDS,
+  obstacleIconImageExpression,
 } from "@/lib/map/obstacle-icons";
+import { MapAddPinFab, MapAddPinSheet } from "@/components/map/MapAddPinSheet";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 import { useAuthStore } from "@/stores/auth";
 import { useObstaclesStore } from "@/stores/obstacles";
@@ -47,12 +50,12 @@ const FUTURE_LINE = "aircraft-future-line";
 const PLANE_ICON_AIR = "plane-air";
 const PLANE_ICON_GND = "plane-gnd";
 
-function createPendingPinEl(): HTMLDivElement {
+function createPendingPinEl(kind: PinKind = "obstacle"): HTMLDivElement {
   const el = document.createElement("div");
   el.style.width = "18px";
   el.style.height = "18px";
   el.style.borderRadius = "50%";
-  el.style.background = "#ff385c";
+  el.style.background = kind === "fly_spot" ? "#0d7a4f" : "#ff385c";
   el.style.border = "3px solid #fff";
   el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
   return el;
@@ -232,6 +235,7 @@ export function MapView({ className }: MapViewProps) {
   const selectedPoint = useDroneProfileStore((s) => s.selectedPoint);
   const locateAndFocus = useDroneProfileStore((s) => s.locateAndFocus);
   const geolocateNonce = useDroneProfileStore((s) => s.geolocateNonce);
+  const suppressGeolocate = useDroneProfileStore((s) => s.suppressGeolocate);
   const mapCameraRequest = useDroneProfileStore((s) => s.mapCameraRequest);
   const clearMapCameraRequest = useDroneProfileStore(
     (s) => s.clearMapCameraRequest,
@@ -243,6 +247,7 @@ export function MapView({ className }: MapViewProps) {
   const statusLoading = useDroneProfileStore((s) => s.statusLoading);
   const statusError = useDroneProfileStore((s) => s.statusError);
   const placementMode = useObstaclesStore((s) => s.placementMode);
+  const pinKind = useObstaclesStore((s) => s.kind);
   const pendingPoint = useObstaclesStore((s) => s.pendingPoint);
   const setPendingPoint = useObstaclesStore((s) => s.setPendingPoint);
   const deleteObstacle = useObstaclesStore((s) => s.deleteObstacle);
@@ -381,7 +386,7 @@ export function MapView({ className }: MapViewProps) {
         timeout: 12_000,
         maximumAge: 60_000,
       },
-      trackUserLocation: true,
+      trackUserLocation: false,
       showUserLocation: true,
       showAccuracyCircle: true,
     });
@@ -389,6 +394,8 @@ export function MapView({ className }: MapViewProps) {
     geolocate.on("geolocate", (e) => {
       const pos = e as GeolocationPosition;
       if (!pos?.coords) return;
+      // Prefer an explicit camera request (e.g. View on map deep-link).
+      if (useDroneProfileStore.getState().mapCameraRequest) return;
       locateAndFocusRef.current({
         lat: pos.coords.latitude,
         lng: pos.coords.longitude,
@@ -453,21 +460,7 @@ export function MapView({ className }: MapViewProps) {
         type: "symbol",
         source: OBSTACLE_SOURCE,
         layout: {
-          "icon-image": [
-            "match",
-            ["get", "type"],
-            "construction",
-            OBSTACLE_ICON_IDS.construction,
-            "crane",
-            OBSTACLE_ICON_IDS.crane,
-            "electric_line",
-            OBSTACLE_ICON_IDS.electric_line,
-            "air_sports",
-            OBSTACLE_ICON_IDS.air_sports,
-            "other",
-            OBSTACLE_ICON_IDS.other,
-            OBSTACLE_ICON_IDS.other,
-          ],
+          "icon-image": obstacleIconImageExpression() as maplibregl.ExpressionSpecification,
           "icon-size": [
             "interpolate",
             ["linear"],
@@ -672,6 +665,9 @@ export function MapView({ className }: MapViewProps) {
       const p = f.properties ?? {};
       const [lng, lat] = f.geometry.coordinates as [number, number];
       const type = String(p.type ?? "") as ObstacleType;
+      const kind = (String(p.kind ?? "obstacle") === "fly_spot"
+        ? "fly_spot"
+        : "obstacle") as PinKind;
       const title =
         obstacleLabel(type, localeRef.current) ||
         String(p.type ?? obstacleFallbackRef.current);
@@ -692,13 +688,22 @@ export function MapView({ className }: MapViewProps) {
       statusPopupActiveRef.current = false;
       popupRef.current?.remove();
 
+      const heightM = Number(p.heightM ?? 0);
       const popupProps = {
         title,
-        heightM: Number(p.heightM ?? 0),
+        kindLabel: pinKindLabel(kind, localeRef.current),
+        heightM,
+        heightLabel:
+          kind === "fly_spot"
+            ? `~${heightM} m AGL ceiling`
+            : `~${heightM} m AGL`,
         message: p.message ? String(p.message) : null,
         photoUrl: p.photoUrl ? String(p.photoUrl) : null,
         authorName: p.authorName ? String(p.authorName) : null,
         authorId: ownerId || null,
+        authorHref: ownerId
+          ? `/${localeRef.current}/pilots/${ownerId}`
+          : null,
         createdAt: p.createdAt ? String(p.createdAt) : null,
         canDelete,
         id,
@@ -715,6 +720,7 @@ export function MapView({ className }: MapViewProps) {
         offset: 12,
         className: "as-ac-popup",
         maxWidth: "260px",
+        closeOnClick: true,
       })
         .setLngLat([lng, lat])
         .setHTML(obstaclePopupHtml(popupProps))
@@ -723,9 +729,14 @@ export function MapView({ className }: MapViewProps) {
 
       const wirePopup = () => {
         const el = popup.getElement();
+        // Keep map from treating popup UI clicks as map clicks.
+        el?.addEventListener("mousedown", (ev) => ev.stopPropagation());
+        el?.addEventListener("click", (ev) => ev.stopPropagation());
         el?.querySelector("[data-obstacle-delete]")?.addEventListener(
           "click",
-          () => {
+          (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
             void (async () => {
               const err = await deleteObstacleRef.current(id);
               if (!err) popup.remove();
@@ -733,7 +744,9 @@ export function MapView({ className }: MapViewProps) {
           },
         );
         el?.querySelectorAll("[data-obstacle-vote]").forEach((btn) => {
-          btn.addEventListener("click", () => {
+          btn.addEventListener("click", (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
             if (!authUserRef.current) {
               setAuthModalOpenRef.current(true, "login");
               return;
@@ -848,11 +861,19 @@ export function MapView({ className }: MapViewProps) {
       setSelectedPoint({ lat: e.lngLat.lat, lng: e.lngLat.lng });
     });
 
-    const onResize = () => map.resize();
+    const onResize = () => {
+      const el = containerRef.current;
+      if (!el || el.clientWidth < 2 || el.clientHeight < 2) return;
+      map.resize();
+    };
     window.addEventListener("resize", onResize);
     const ro =
       typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(() => map.resize())
+        ? new ResizeObserver((entries) => {
+            const rect = entries[0]?.contentRect;
+            if (!rect || rect.width < 2 || rect.height < 2) return;
+            map.resize();
+          })
         : null;
     if (containerRef.current && ro) ro.observe(containerRef.current);
 
@@ -880,9 +901,9 @@ export function MapView({ className }: MapViewProps) {
   }, [trafficOn]);
 
   useEffect(() => {
-    if (!mapReady || geolocateNonce <= 0) return;
+    if (!mapReady || geolocateNonce <= 0 || suppressGeolocate) return;
     geolocateControlRef.current?.trigger();
-  }, [mapReady, geolocateNonce]);
+  }, [mapReady, geolocateNonce, suppressGeolocate]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -897,7 +918,25 @@ export function MapView({ className }: MapViewProps) {
     const map = mapRef.current;
     if (!map) return;
     map.getCanvas().style.cursor = placementMode ? "crosshair" : "";
+    // Sheet open/close / pin placement changes overlay layout — keep WebGL sized.
+    requestAnimationFrame(() => {
+      const el = containerRef.current;
+      if (!el || el.clientWidth < 2 || el.clientHeight < 2) return;
+      map.resize();
+    });
   }, [placementMode]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!mapReady || !map || !selectedPoint) return;
+    // Status popup + marker can shift MapLibre layout; re-measure after paint.
+    const id = requestAnimationFrame(() => {
+      const el = containerRef.current;
+      if (!el || el.clientWidth < 2 || el.clientHeight < 2) return;
+      map.resize();
+    });
+    return () => cancelAnimationFrame(id);
+  }, [mapReady, selectedPoint]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -936,7 +975,7 @@ export function MapView({ className }: MapViewProps) {
 
     if (!pendingMarkerRef.current) {
       pendingMarkerRef.current = new maplibregl.Marker({
-        element: createPendingPinEl(),
+        element: createPendingPinEl(pinKind),
         anchor: "center",
       })
         .setLngLat([pendingPoint.lng, pendingPoint.lat])
@@ -944,7 +983,7 @@ export function MapView({ className }: MapViewProps) {
     } else {
       pendingMarkerRef.current.setLngLat([pendingPoint.lng, pendingPoint.lat]);
     }
-  }, [placementMode, pendingPoint]);
+  }, [placementMode, pendingPoint, pinKind]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1123,38 +1162,42 @@ export function MapView({ className }: MapViewProps) {
         <button
           type="button"
           onClick={() => setTrafficOn((v) => !v)}
-          className="pointer-events-auto rounded-full border border-[#dddddd] bg-white px-3 py-1.5 text-[12px] font-semibold text-[#222222] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:px-4 sm:py-2 sm:text-[13px]"
+          className="pointer-events-auto rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-3 py-1.5 text-[12px] font-semibold text-[var(--as-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:px-4 sm:py-2 sm:text-[13px]"
         >
           Traffic {trafficOn ? "on" : "off"}
           {trafficOn ? ` · ${aircraftCount}` : ""}
         </button>
         {trafficOn && mapZoom >= minZoom && (
-          <div className="pointer-events-none hidden max-w-[15rem] rounded-xl bg-white/95 px-3 py-2 text-[12px] leading-snug text-[#717171] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:block">
+          <div className="pointer-events-none hidden max-w-[15rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-3 py-2 text-[12px] leading-snug text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:block">
             Solid = flown path · dashed ≈ 10 min ahead (estimate)
           </div>
         )}
         {trafficOn && trackLabel && (
-          <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-[#dddddd] bg-white px-3 py-1.5 text-[12px] font-semibold text-[#222222] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:py-2 sm:text-[13px]">
+          <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-3 py-1.5 text-[12px] font-semibold text-[var(--as-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:py-2 sm:text-[13px]">
             <span className="max-w-[10rem] truncate sm:max-w-[12rem]">{trackLabel}</span>
             <button
               type="button"
               onClick={clearTrack}
-              className="text-[#b0b0b0] hover:text-[#222222]"
+              className="text-[var(--as-muted)] hover:text-[var(--as-ink)]"
             >
               ✕
             </button>
           </div>
         )}
         {trafficOn && (zoomHint || trafficError) && (
-          <div className="pointer-events-none max-w-[14rem] rounded-xl bg-white/95 px-2.5 py-1.5 text-[11px] text-[#717171] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:max-w-[15rem] sm:px-3 sm:py-2 sm:text-[12px]">
+          <div className="pointer-events-none max-w-[14rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-2.5 py-1.5 text-[11px] text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:max-w-[15rem] sm:px-3 sm:py-2 sm:text-[12px]">
             {trafficError === "rate_limited"
-              ? "OpenSky rate-limited — paused ~10 min"
+              ? "OpenSky rate-limited — paused"
               : trafficError
                 ? "Traffic unavailable"
                 : zoomHint}
           </div>
         )}
       </div>
+      <div className="pointer-events-none absolute bottom-[calc(108px+0.75rem+env(safe-area-inset-bottom))] left-3 z-30 md:bottom-5 md:left-5">
+        <MapAddPinFab />
+      </div>
+      <MapAddPinSheet />
     </div>
   );
 }

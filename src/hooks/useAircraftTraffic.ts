@@ -4,11 +4,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Bbox } from "@canifly/middleware";
 import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
 
-/** Anonymous OpenSky is tiny — poll slowly and never auto-fetch tracks. */
-const POLL_MS = 45_000;
+/**
+ * Sparse OpenSky polling + local dead reckoning.
+ * ~1 upstream refresh / 2 min while icons keep moving between snaps.
+ */
+const POLL_MS = 120_000;
+/** Never hit the API more often than this, even on big pans. */
+const MIN_FETCH_GAP_MS = 35_000;
 const RATE_LIMIT_BACKOFF_MS = 10 * 60_000;
-const MIN_ZOOM = 7;
-const VIEWPORT_DEBOUNCE_MS = 600;
+const MIN_ZOOM = 8;
+const VIEWPORT_DEBOUNCE_MS = 1_200;
+const TICK_MS = 2_000;
+/** Cap how far we coast after the last ADS-B snap. */
+const MAX_COAST_S = 150;
 const FUTURE_HORIZON_S = 10 * 60;
 const EMPTY: GeoJSON.FeatureCollection = {
   type: "FeatureCollection",
@@ -79,6 +87,63 @@ function buildFutureCollection(
   return { type: "FeatureCollection", features };
 }
 
+/** Extrapolate airborne positions along heading × speed since snapshot. */
+function coastAircraft(
+  snapshot: GeoJSON.Feature[],
+  elapsedSec: number,
+): GeoJSON.Feature[] {
+  const dt = Math.min(Math.max(elapsedSec, 0), MAX_COAST_S);
+  if (dt < 0.5) return snapshot;
+
+  return snapshot.map((f) => {
+    if (f.geometry.type !== "Point") return f;
+    const p = f.properties ?? {};
+    if (p.onGround) return f;
+    const [lng, lat] = f.geometry.coordinates as LngLat;
+    const track =
+      typeof p.trackDeg === "number" && Number.isFinite(p.trackDeg)
+        ? p.trackDeg
+        : null;
+    const vel =
+      typeof p.velocityMs === "number" && Number.isFinite(p.velocityMs)
+        ? p.velocityMs
+        : 0;
+    if (track == null || vel < 5) return f;
+
+    const next = destination(lng, lat, track, vel * dt);
+    const alt =
+      typeof p.altitudeM === "number" &&
+      typeof p.verticalRateMs === "number" &&
+      Number.isFinite(p.verticalRateMs)
+        ? p.altitudeM + p.verticalRateMs * dt
+        : p.altitudeM;
+
+    return {
+      ...f,
+      geometry: { type: "Point", coordinates: next },
+      properties: { ...p, altitudeM: alt },
+    };
+  });
+}
+
+function viewportMovedEnough(prev: Bbox | null, next: Bbox): boolean {
+  if (!prev) return true;
+  const pw = prev.east - prev.west;
+  const ph = prev.north - prev.south;
+  const nw = next.east - next.west;
+  const nh = next.north - next.south;
+  const cxP = (prev.west + prev.east) / 2;
+  const cyP = (prev.south + prev.north) / 2;
+  const cxN = (next.west + next.east) / 2;
+  const cyN = (next.south + next.north) / 2;
+  return (
+    Math.abs(cxP - cxN) > pw * 0.4 ||
+    Math.abs(cyP - cyN) > ph * 0.4 ||
+    Math.abs(pw - nw) / Math.max(pw, 1e-6) > 0.45 ||
+    Math.abs(ph - nh) / Math.max(ph, 1e-6) > 0.45
+  );
+}
+
 /**
  * Live ADS-B positions + estimated future path.
  * Past tracks load only when the user clicks an aircraft (MapView → /api/traffic/track).
@@ -93,10 +158,16 @@ export function useAircraftTraffic(enabled: boolean) {
   const [error, setError] = useState<string | null>(null);
 
   const bboxRef = useRef<Bbox | null>(null);
+  const fetchedBboxRef = useRef<Bbox | null>(null);
   const zoomRef = useRef(0);
   const abortRef = useRef<AbortController | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const cooldownUntilRef = useRef(0);
+  const lastFetchAtRef = useRef(0);
+  const snapshotRef = useRef<GeoJSON.Feature[]>([]);
+  const snapshotAtRef = useRef(0);
+  const hasDataRef = useRef(false);
 
   const clearTimer = () => {
     if (timerRef.current) {
@@ -104,6 +175,15 @@ export function useAircraftTraffic(enabled: boolean) {
       timerRef.current = null;
     }
   };
+
+  const publishCoast = useCallback(() => {
+    if (!snapshotRef.current.length || !snapshotAtRef.current) return;
+    const elapsed = (Date.now() - snapshotAtRef.current) / 1000;
+    const features = coastAircraft(snapshotRef.current, elapsed);
+    setCollection({ type: "FeatureCollection", features });
+    setFuturePaths(buildFutureCollection(features));
+    setCount(features.length);
+  }, []);
 
   const scheduleNext = useCallback(
     (delayMs: number) => {
@@ -120,9 +200,14 @@ export function useAircraftTraffic(enabled: boolean) {
 
   const fetchTraffic = useCallback(async () => {
     if (!enabled) return;
+    if (typeof document !== "undefined" && document.visibilityState === "hidden") {
+      scheduleNext(POLL_MS);
+      return;
+    }
+
     const bbox = bboxRef.current;
     if (!bbox) {
-      scheduleNext(2_000);
+      scheduleNext(5_000);
       return;
     }
 
@@ -133,11 +218,20 @@ export function useAircraftTraffic(enabled: boolean) {
     }
 
     if (zoomRef.current < MIN_ZOOM) {
+      snapshotRef.current = [];
+      snapshotAtRef.current = 0;
+      hasDataRef.current = false;
       setCollection(EMPTY);
       setFuturePaths(EMPTY);
       setCount(0);
       setError(null);
       scheduleNext(POLL_MS);
+      return;
+    }
+
+    const sinceLast = Date.now() - lastFetchAtRef.current;
+    if (lastFetchAtRef.current > 0 && sinceLast < MIN_FETCH_GAP_MS) {
+      scheduleNext(MIN_FETCH_GAP_MS - sinceLast);
       return;
     }
 
@@ -160,6 +254,9 @@ export function useAircraftTraffic(enabled: boolean) {
         meta?: { count?: number; error?: string; retryAfterMs?: number };
       };
 
+      lastFetchAtRef.current = Date.now();
+      fetchedBboxRef.current = bbox;
+
       if (data.meta?.error === "rate_limited") {
         const wait = Math.max(
           data.meta.retryAfterMs ?? RATE_LIMIT_BACKOFF_MS,
@@ -172,6 +269,9 @@ export function useAircraftTraffic(enabled: boolean) {
       }
 
       const features = data.features ?? [];
+      snapshotRef.current = features;
+      snapshotAtRef.current = Date.now();
+      hasDataRef.current = features.length > 0;
       setCollection({ type: "FeatureCollection", features });
       setCount(data.meta?.count ?? features.length);
       setUpdatedAt(Date.now());
@@ -191,13 +291,21 @@ export function useAircraftTraffic(enabled: boolean) {
     (bbox: Bbox, zoom: number) => {
       bboxRef.current = bbox;
       zoomRef.current = zoom;
-      // Don't hammer OpenSky on every pan — wait for debounce + next poll.
-      // Only fetch immediately if we have no data yet.
-      if (count === 0 && !error) {
+
+      if (!enabled) return;
+      if (zoom < MIN_ZOOM) return;
+
+      const empty = !hasDataRef.current;
+      const moved = viewportMovedEnough(fetchedBboxRef.current, bbox);
+      const stale =
+        !lastFetchAtRef.current ||
+        Date.now() - lastFetchAtRef.current > POLL_MS * 0.75;
+
+      if (empty || (moved && (stale || Date.now() - lastFetchAtRef.current > MIN_FETCH_GAP_MS))) {
         void fetchTraffic();
       }
     },
-    [count, error, fetchTraffic],
+    [enabled, fetchTraffic],
   );
 
   const setViewport = useDebouncedCallback(
@@ -209,20 +317,46 @@ export function useAircraftTraffic(enabled: boolean) {
 
   useEffect(() => {
     if (!enabled) {
+      snapshotRef.current = [];
+      snapshotAtRef.current = 0;
+      hasDataRef.current = false;
       setCollection(EMPTY);
       setFuturePaths(EMPTY);
       setCount(0);
       setError(null);
       clearTimer();
+      if (tickRef.current) {
+        clearInterval(tickRef.current);
+        tickRef.current = null;
+      }
       return;
     }
 
     void fetchTraffic();
+    tickRef.current = setInterval(publishCoast, TICK_MS);
+
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") {
+        const age = Date.now() - lastFetchAtRef.current;
+        if (!lastFetchAtRef.current || age > MIN_FETCH_GAP_MS) {
+          void fetchTraffic();
+        } else {
+          publishCoast();
+        }
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       clearTimer();
       abortRef.current?.abort();
+      if (tickRef.current) {
+        clearInterval(tickRef.current);
+        tickRef.current = null;
+      }
+      document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [enabled, fetchTraffic]);
+  }, [enabled, fetchTraffic, publishCoast]);
 
   return {
     collection,

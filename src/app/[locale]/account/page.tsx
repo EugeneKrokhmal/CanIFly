@@ -48,7 +48,7 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <div className="flex h-full items-center justify-center text-[14px] text-[#717171]">
+      <div className="flex h-full items-center justify-center text-[14px] text-[var(--as-ink-soft)]">
         {t("loading")}
       </div>
     );
@@ -57,11 +57,11 @@ export default function AccountPage() {
   if (!user) {
     return (
       <div className="mx-auto max-w-lg px-4 py-10 text-center">
-        <p className="text-[15px] text-[#717171]">{t("loginPrompt")}</p>
+        <p className="text-[15px] text-[var(--as-ink-soft)]">{t("loginPrompt")}</p>
         <button
           type="button"
           onClick={() => setAuthModalOpen(true, "login")}
-          className="as-press mt-4 rounded-xl bg-[#222222] px-4 py-2.5 text-[14px] font-semibold text-white"
+          className="as-press mt-4 rounded-xl bg-[var(--as-ink)] px-4 py-2.5 text-[14px] font-semibold text-[var(--as-ink-invert)]"
         >
           {t("logIn")}
         </button>
@@ -165,15 +165,15 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="h-full overflow-y-auto bg-[#f7f7f7] text-[#222222]">
+    <div className="h-full overflow-y-auto bg-[var(--as-surface-muted)] text-[var(--as-ink)]">
       <div className="mx-auto max-w-lg px-4 py-8 sm:px-8 sm:py-10">
-        <p className="text-[12px] font-semibold text-[#717171]">
+        <p className="text-[12px] font-semibold text-[var(--as-ink-soft)]">
           {t("eyebrow")}
         </p>
         <h1 className="mt-1 font-[family-name:var(--font-display)] text-[28px] font-bold tracking-tight sm:text-[32px]">
           {t("title")}
         </h1>
-        <p className="mt-2 text-[14px] text-[#717171]">
+        <p className="mt-2 text-[14px] text-[var(--as-ink-soft)]">
           {user.email} ·{" "}
           <Link
             href={`/pilots/${user.id}`}
@@ -185,14 +185,14 @@ export default function AccountPage() {
 
         <form
           onSubmit={onSave}
-          className="as-rise-soft mt-8 space-y-4 rounded-2xl border border-[#ebebeb] bg-white p-5 shadow-[var(--as-shadow)]"
+          className="as-rise-soft mt-8 space-y-4 rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-5 shadow-[var(--as-shadow)]"
         >
           <div>
             <span className="mb-2 block text-[12px] font-semibold">
               {t("profilePhoto")}
             </span>
             <div className="flex items-center gap-4">
-              <div className="grid h-20 w-20 place-items-center overflow-hidden rounded-full border border-[#dddddd] bg-[#f7f7f7] text-[22px] font-bold text-[#717171]">
+              <div className="grid h-20 w-20 place-items-center overflow-hidden rounded-full border border-[var(--as-line)] bg-[var(--as-surface-muted)] text-[22px] font-bold text-[var(--as-ink-soft)]">
                 {avatarPreview && !removeAvatar ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -205,7 +205,7 @@ export default function AccountPage() {
                 )}
               </div>
               <div className="flex flex-col gap-2">
-                <label className="as-press cursor-pointer rounded-full border border-[#dddddd] px-3 py-1.5 text-center text-[12px] font-semibold hover:bg-[#f7f7f7]">
+                <label className="as-press cursor-pointer rounded-full border border-[var(--as-line)] px-3 py-1.5 text-center text-[12px] font-semibold hover:bg-[var(--as-surface-muted)]">
                   {t("upload")}
                   <input
                     type="file"
@@ -245,14 +245,14 @@ export default function AccountPage() {
               maxLength={80}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border border-[#dddddd] px-3 py-2.5 text-[14px] outline-none focus:border-[#222222]"
+              className="w-full rounded-xl border border-[var(--as-line)] px-3 py-2.5 text-[14px] outline-none focus:border-[var(--as-ink)]"
             />
           </label>
 
           <label className="block">
             <span className="mb-1.5 block text-[12px] font-semibold">
               {t("bio")}{" "}
-              <span className="font-normal text-[#717171]">{t("optional")}</span>
+              <span className="font-normal text-[var(--as-ink-soft)]">{t("optional")}</span>
             </span>
             <textarea
               rows={3}
@@ -260,14 +260,14 @@ export default function AccountPage() {
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder={t("bioPlaceholder")}
-              className="w-full resize-none rounded-xl border border-[#dddddd] px-3 py-2.5 text-[14px] outline-none focus:border-[#222222]"
+              className="w-full resize-none rounded-xl border border-[var(--as-line)] px-3 py-2.5 text-[14px] outline-none focus:border-[var(--as-ink)]"
             />
           </label>
 
           <label className="block">
             <span className="mb-1.5 block text-[12px] font-semibold">
               {t("operatorNumber")}{" "}
-              <span className="font-normal text-[#717171]">{t("optional")}</span>
+              <span className="font-normal text-[var(--as-ink-soft)]">{t("optional")}</span>
             </span>
             <input
               type="text"
@@ -275,17 +275,17 @@ export default function AccountPage() {
               value={operatorNumber}
               onChange={(e) => setOperatorNumber(e.target.value)}
               placeholder={t("operatorPlaceholder")}
-              className="w-full rounded-xl border border-[#dddddd] px-3 py-2.5 text-[14px] outline-none focus:border-[#222222]"
+              className="w-full rounded-xl border border-[var(--as-line)] px-3 py-2.5 text-[14px] outline-none focus:border-[var(--as-ink)]"
             />
           </label>
 
           {error && (
-            <p className="rounded-xl bg-[#fff8f6] px-3 py-2 text-[13px] text-[#c13515]">
+            <p className="rounded-xl bg-[var(--as-hover-warm)] px-3 py-2 text-[13px] text-[var(--as-prohibited)]">
               {error}
             </p>
           )}
           {message && (
-            <p className="rounded-xl bg-[#f0faf0] px-3 py-2 text-[13px] text-[#008a05]">
+            <p className="rounded-xl bg-[var(--as-hover-green)] px-3 py-2 text-[13px] text-[var(--as-clear)]">
               {message}
             </p>
           )}
@@ -293,24 +293,24 @@ export default function AccountPage() {
           <button
             type="submit"
             disabled={saving}
-            className="as-press w-full rounded-xl bg-[#222222] px-4 py-2.5 text-[14px] font-semibold text-white disabled:opacity-60"
+            className="as-press w-full rounded-xl bg-[var(--as-ink)] px-4 py-2.5 text-[14px] font-semibold text-[var(--as-ink-invert)] disabled:opacity-60"
           >
             {saving ? t("saving") : t("saveChanges")}
           </button>
         </form>
 
-        <section className="mt-8 rounded-2xl border border-[#ffd7d7] bg-white p-5">
+        <section className="mt-8 rounded-2xl border border-[#ffd7d7] bg-[var(--as-surface)] p-5">
           <h2 className="text-[14px] font-semibold text-[#c13515]">
             {t("dangerZone")}
           </h2>
-          <p className="mt-1 text-[13px] leading-relaxed text-[#717171]">
+          <p className="mt-1 text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
             {t("dangerBlurb")}
           </p>
           <button
             type="button"
             disabled={deleting}
             onClick={() => void onDelete()}
-            className="as-press mt-4 rounded-xl border border-[#c13515] px-4 py-2.5 text-[14px] font-semibold text-[#c13515] hover:bg-[#fff8f6] disabled:opacity-60"
+            className="as-press mt-4 rounded-xl border border-[#c13515] px-4 py-2.5 text-[14px] font-semibold text-[#c13515] hover:bg-[var(--as-hover-warm)] disabled:opacity-60"
           >
             {deleting ? t("deleting") : t("deleteAccount")}
           </button>

@@ -14,7 +14,7 @@ type WeatherPayload = {
 };
 
 function WeatherIcon({ kind }: { kind: WeatherKind }) {
-  const stroke = "#222222";
+  const stroke = "currentColor";
   const common = {
     width: 16,
     height: 16,
@@ -115,7 +115,7 @@ export function WeatherWidget() {
   if (error) {
     return (
       <div
-        className="inline-flex h-8 items-center rounded-full border border-[#dddddd] bg-white px-2.5 text-[12px] text-[#b0b0b0] sm:px-3"
+        className="inline-flex h-8 items-center rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-2.5 text-[12px] text-[var(--as-muted)] sm:px-3"
         title="Weather unavailable"
       >
         —
@@ -125,7 +125,7 @@ export function WeatherWidget() {
 
   if (!weather) {
     return (
-      <div className="h-8 w-10 animate-pulse rounded-full bg-[#f7f7f7] sm:w-[7.5rem]" />
+      <div className="h-8 w-10 animate-pulse rounded-full bg-[var(--as-surface-muted)] sm:w-[7.5rem]" />
     );
   }
 
@@ -135,19 +135,19 @@ export function WeatherWidget() {
 
   return (
     <div
-      className="inline-flex h-8 items-center gap-1.5 rounded-full border border-[#dddddd] bg-white px-2.5 shadow-[var(--as-shadow)] sm:gap-2 sm:px-3"
+      className="inline-flex h-8 items-center gap-1.5 rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-2.5 shadow-[var(--as-shadow)] sm:gap-2 sm:px-3"
       title={title}
       aria-label={title}
     >
       <WeatherIcon kind={weatherKind(weather.weatherCode)} />
-      <span className="text-[12px] font-semibold text-[#222222]">
+      <span className="text-[12px] font-semibold text-[var(--as-ink)]">
         {weather.temperatureC}°
       </span>
-      <span className="hidden text-[12px] text-[#717171] md:inline">
+      <span className="hidden text-[12px] text-[var(--as-ink-soft)] md:inline">
         {weather.label}
       </span>
       {weather.windKmh != null && (
-        <span className="hidden border-l border-[#ebebeb] pl-2 text-[12px] text-[#717171] lg:inline">
+        <span className="hidden border-l border-[var(--as-line-soft)] pl-2 text-[12px] text-[var(--as-ink-soft)] lg:inline">
           {weather.windKmh} km/h
         </span>
       )}

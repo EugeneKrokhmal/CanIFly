@@ -110,18 +110,18 @@ export function DronePicker() {
 
   return (
     <div ref={rootRef} className="relative mt-1">
-      <label className="mb-1.5 block text-[12px] font-semibold text-[#222222]">
+      <label className="mb-1.5 block text-[12px] font-semibold text-[var(--as-ink)]">
         Your drone
       </label>
 
       {selectedDrone ? (
-        <div className="rounded-xl border border-[#222222] bg-[#f7f7f7] px-3 py-2.5">
+        <div className="rounded-xl border border-[var(--as-ink)] bg-[var(--as-surface-muted)] px-3 py-2.5">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <div className="truncate text-[14px] font-semibold text-[#222222]">
+              <div className="truncate text-[14px] font-semibold text-[var(--as-ink)]">
                 {selectedDrone.label}
               </div>
-              <div className="mt-1 text-[12px] text-[#717171]">
+              <div className="mt-1 text-[12px] text-[var(--as-ink-soft)]">
                 {selectedDrone.uasClass
                   ? `EASA ${selectedDrone.uasClass}`
                   : "No class mark"}
@@ -137,7 +137,7 @@ export function DronePicker() {
             <button
               type="button"
               onClick={clear}
-              className="shrink-0 text-[13px] font-semibold text-[#717171] hover:text-[#222222]"
+              className="shrink-0 text-[13px] font-semibold text-[var(--as-ink-soft)] hover:text-[var(--as-ink)]"
             >
               Clear
             </button>
@@ -154,14 +154,14 @@ export function DronePicker() {
           onFocus={() => setOpen(true)}
           placeholder={loading ? "Loading catalog…" : "Search Mini 4 Pro, Air 3…"}
           disabled={loading}
-          className="w-full rounded-xl border border-[#dddddd] bg-white px-3 py-2.5 text-[14px] text-[#222222] outline-none placeholder:text-[#b0b0b0] focus:border-[#222222]"
+          className="w-full rounded-xl border border-[var(--as-line)] bg-[var(--as-surface)] px-3 py-2.5 text-[14px] text-[var(--as-ink)] outline-none placeholder:text-[var(--as-muted)] focus:border-[var(--as-ink)]"
         />
       )}
 
       {open && !selectedDrone && (
-        <ul className="absolute z-20 mt-1.5 max-h-56 w-full overflow-y-auto rounded-xl border border-[#ebebeb] bg-white shadow-[0_6px_20px_rgba(0,0,0,0.12)]">
+        <ul className="absolute z-20 mt-1.5 max-h-56 w-full overflow-y-auto rounded-xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] shadow-[0_6px_20px_rgba(0,0,0,0.12)]">
           {filtered.length === 0 && (
-            <li className="px-3 py-3 text-[13px] text-[#717171]">
+            <li className="px-3 py-3 text-[13px] text-[var(--as-ink-soft)]">
               {loading ? "Loading…" : error ? "Catalog unavailable" : "No matches"}
             </li>
           )}
@@ -170,13 +170,13 @@ export function DronePicker() {
               <button
                 type="button"
                 onClick={() => pick(d)}
-                className="flex w-full items-start justify-between gap-2 px-3 py-2.5 text-left hover:bg-[#f7f7f7]"
+                className="flex w-full items-start justify-between gap-2 px-3 py-2.5 text-left hover:bg-[var(--as-surface-muted)]"
               >
                 <span className="min-w-0">
-                  <span className="block truncate text-[13px] font-medium text-[#222222]">
+                  <span className="block truncate text-[13px] font-medium text-[var(--as-ink)]">
                     {d.label}
                   </span>
-                  <span className="mt-0.5 block text-[11px] text-[#717171]">
+                  <span className="mt-0.5 block text-[11px] text-[var(--as-ink-soft)]">
                     {d.uasClass ? `EASA ${d.uasClass}` : "unlabeled"}
                     {d.maxTakeoffG != null
                       ? ` · ${Math.round(d.maxTakeoffG)}g`
@@ -193,7 +193,7 @@ export function DronePicker() {
       )}
 
       {!selectedDrone && (
-        <p className="mt-1.5 text-[12px] text-[#717171]">
+        <p className="mt-1.5 text-[12px] text-[var(--as-ink-soft)]">
           Or pick class manually
           {weightClass ? ` (now ${weightClass.toUpperCase()})` : ""}.
         </p>

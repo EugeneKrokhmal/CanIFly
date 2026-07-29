@@ -3,10 +3,11 @@
 import {
   OBSTACLE_TYPE_LABELS,
   type ObstacleType,
+  type PinKind,
 } from "@canifly/middleware";
 import { create } from "zustand";
 
-export type { ObstacleType };
+export type { ObstacleType, PinKind };
 export { OBSTACLE_TYPE_LABELS };
 
 type ObstacleDraft = {
@@ -19,6 +20,7 @@ type PendingPoint = { lat: number; lng: number } | null;
 
 type ObstaclesState = {
   placementMode: boolean;
+  kind: PinKind;
   draft: ObstacleDraft;
   photoFile: File | null;
   photoPreview: string | null;
@@ -28,7 +30,7 @@ type ObstaclesState = {
   refreshToken: number;
   setDraft: (patch: Partial<ObstacleDraft>) => void;
   setPhoto: (file: File | null) => void;
-  startPlacement: () => void;
+  startPlacement: (kind?: PinKind) => void;
   cancelPlacement: () => void;
   setPendingPoint: (point: PendingPoint) => void;
   bumpRefresh: () => void;
@@ -50,11 +52,12 @@ type ObstaclesState = {
   >;
 };
 
-const DEFAULT_DRAFT: ObstacleDraft = {
-  type: "construction",
-  heightM: 30,
-  message: "",
-};
+function defaultDraft(kind: PinKind): ObstacleDraft {
+  if (kind === "fly_spot") {
+    return { type: "park", heightM: 120, message: "" };
+  }
+  return { type: "construction", heightM: 30, message: "" };
+}
 
 function clearPreview(url: string | null) {
   if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
@@ -62,7 +65,8 @@ function clearPreview(url: string | null) {
 
 export const useObstaclesStore = create<ObstaclesState>((set, get) => ({
   placementMode: false,
-  draft: { ...DEFAULT_DRAFT },
+  kind: "obstacle",
+  draft: defaultDraft("obstacle"),
   photoFile: null,
   photoPreview: null,
   pendingPoint: null,
@@ -87,14 +91,15 @@ export const useObstaclesStore = create<ObstaclesState>((set, get) => ({
     });
   },
 
-  startPlacement: () => {
+  startPlacement: (kind = "obstacle") => {
     clearPreview(get().photoPreview);
     set({
       placementMode: true,
+      kind,
       pendingPoint: null,
       photoFile: null,
       photoPreview: null,
-      draft: { ...DEFAULT_DRAFT },
+      draft: defaultDraft(kind),
       error: null,
     });
   },
@@ -116,12 +121,17 @@ export const useObstaclesStore = create<ObstaclesState>((set, get) => ({
   bumpRefresh: () => set((s) => ({ refreshToken: s.refreshToken + 1 })),
 
   submitObstacle: async () => {
-    const { draft, pendingPoint, photoFile } = get();
-    if (!pendingPoint) return "Tap the map to place the obstacle first.";
+    const { draft, pendingPoint, photoFile, kind } = get();
+    if (!pendingPoint) {
+      return kind === "fly_spot"
+        ? "Tap the map to place the fly spot first."
+        : "Tap the map to place the obstacle first.";
+    }
 
     set({ submitting: true, error: null });
     try {
       const form = new FormData();
+      form.set("kind", kind);
       form.set("type", draft.type);
       form.set("lat", String(pendingPoint.lat));
       form.set("lng", String(pendingPoint.lng));
@@ -147,7 +157,8 @@ export const useObstaclesStore = create<ObstaclesState>((set, get) => ({
         submitting: false,
         placementMode: false,
         pendingPoint: null,
-        draft: { ...DEFAULT_DRAFT },
+        kind: "obstacle",
+        draft: defaultDraft("obstacle"),
         photoFile: null,
         photoPreview: null,
         refreshToken: get().refreshToken + 1,

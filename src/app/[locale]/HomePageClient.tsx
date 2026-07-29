@@ -12,7 +12,7 @@ import { useDroneProfileStore } from "@/stores/drone-profile";
 function MapLoading() {
   const t = useTranslations("map");
   return (
-    <div className="flex h-full items-center justify-center bg-[#ebebeb] text-sm text-[#717171]">
+    <div className="flex h-full items-center justify-center bg-[var(--as-map-bg)] text-sm text-[var(--as-ink-soft)]">
       {t("loading")}
     </div>
   );
@@ -51,12 +51,13 @@ function MapDeepLink() {
         lng >= -180 &&
         lng <= 180
       ) {
+        // Pin deep-link: do not call geolocate (it would steal the camera).
         locateAndFocus({ lat, lng }, 15);
         return;
       }
     }
 
-    // Show the MapLibre user-location dot + center the map.
+    // No coordinates in the URL — show the MapLibre user-location dot.
     requestGeolocate();
   }, [searchParams, locateAndFocus, requestGeolocate]);
 
@@ -69,12 +70,13 @@ export default function HomePageClient() {
       <AirspaceStatusBinder />
       <MapDeepLink />
 
-      <div className="hidden h-full w-80 shrink-0 flex-col overflow-hidden border-r border-[#dddddd] bg-white shadow-[2px_0_12px_rgba(0,0,0,0.04)] md:flex">
+      <div className="hidden h-full w-80 shrink-0 flex-col overflow-hidden border-r border-[var(--as-line)] bg-[var(--as-surface)] shadow-[2px_0_12px_rgba(0,0,0,0.04)] md:flex">
         <SidebarPanel />
       </div>
 
-      <div className="relative h-full min-w-0 flex-1 bg-[#ebebeb]">
-        <div className="h-full w-full md:pb-0">
+      <div className="relative h-full min-w-0 flex-1 overflow-hidden bg-[var(--as-map-bg)]">
+        {/* Absolute fill so overlays (sheet/popups) cannot collapse map height. */}
+        <div className="absolute inset-0">
           <MapView className="h-full w-full" />
         </div>
         <MobileFlightSheet />

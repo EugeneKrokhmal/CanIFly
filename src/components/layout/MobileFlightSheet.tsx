@@ -11,6 +11,7 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import { statusLabel, type AirspaceStatus } from "@canifly/middleware";
 import { useDroneProfileStore } from "@/stores/drone-profile";
+import { useObstaclesStore } from "@/stores/obstacles";
 import { SidebarPanel } from "@/components/sidebar/SidebarPanel";
 
 const PEEK_PX = 108;
@@ -39,15 +40,24 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
   const summary = useDroneProfileStore((s) => s.summary);
   const loading = useDroneProfileStore((s) => s.statusLoading);
   const selectedPoint = useDroneProfileStore((s) => s.selectedPoint);
-  const requestGeolocate = useDroneProfileStore((s) => s.requestGeolocate);
+  const placementMode = useObstaclesStore((s) => s.placementMode);
 
+  /** Don't mount on desktop — `md:hidden` alone still leaves a tall absolute sheet in the tree. */
+  const [isMobile, setIsMobile] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [panelReady, setPanelReady] = useState(false);
   const [maxH, setMaxH] = useState(SHEET_FALLBACK_H);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   const sheetRef = useRef<HTMLDivElement | null>(null);
-  const locateRef = useRef<HTMLButtonElement | null>(null);
   const backdropRef = useRef<HTMLButtonElement | null>(null);
   const visibleRef = useRef(PEEK_PX);
   const dragRef = useRef<{
@@ -68,13 +78,6 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
           ? "transform 320ms var(--as-ease-out)"
           : "none";
         el.style.transform = `translate3d(0, ${y}px, 0)`;
-      }
-      const locate = locateRef.current;
-      if (locate) {
-        locate.style.transition = withTransition
-          ? "bottom 320ms var(--as-ease-out)"
-          : "none";
-        locate.style.bottom = `calc(${Math.min(clamped, PEEK_PX + 24)}px + 0.75rem + env(safe-area-inset-bottom))`;
       }
       const backdrop = backdropRef.current;
       if (backdrop) {
@@ -150,29 +153,14 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
     snapTo(visibleRef.current);
   };
 
-  const locate = () => {
-    requestGeolocate();
-  };
+  if (!isMobile || placementMode) return null;
 
   return (
     <>
       <button
-        ref={locateRef}
-        type="button"
-        onClick={locate}
-        className="as-press as-gpu absolute right-3 z-20 grid h-11 w-11 place-items-center rounded-full border border-[#dddddd] bg-white text-[#222222] shadow-[0_2px_12px_rgba(0,0,0,0.12)] md:hidden"
-        style={{
-          bottom: `calc(${PEEK_PX}px + 0.75rem + env(safe-area-inset-bottom))`,
-        }}
-        aria-label={t("locateMe")}
-      >
-        <LocateIcon />
-      </button>
-
-      <button
         ref={backdropRef}
         type="button"
-        className="as-gpu fixed inset-0 z-40 bg-black/30 md:hidden"
+        className="fixed inset-0 z-40 bg-black/30"
         style={{
           opacity: 0,
           pointerEvents: "none",
@@ -184,7 +172,7 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
 
       <div
         ref={sheetRef}
-        className="as-gpu absolute inset-x-0 bottom-0 z-50 flex max-w-none flex-col overflow-hidden rounded-t-3xl border border-b-0 border-[#ebebeb] bg-white shadow-[0_-8px_30px_rgba(0,0,0,0.14)] will-change-transform md:hidden"
+        className="absolute inset-x-0 bottom-0 z-50 flex max-w-none flex-col overflow-hidden rounded-t-3xl border border-b-0 border-[var(--as-line-soft)] bg-[var(--as-surface)] shadow-[0_-8px_30px_rgba(0,0,0,0.14)] will-change-transform"
         style={{
           height: `${maxH}px`,
           paddingBottom: "env(safe-area-inset-bottom)",
@@ -201,7 +189,7 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
         >
-          <span className="mt-2 mb-2 h-1 w-10 rounded-full bg-[#dddddd]" />
+          <span className="mt-2 mb-2 h-1 w-10 rounded-full bg-[var(--as-line)]" />
           <div
             className="w-full px-4 pb-3"
             style={{
@@ -217,7 +205,7 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
                 {loading ? (
-                  <p className="text-[14px] font-semibold text-[#717171]">
+                  <p className="text-[14px] font-semibold text-[var(--as-ink-soft)]">
                     {t("checkingAirspace")}
                   </p>
                 ) : status ? (
@@ -231,23 +219,23 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
                     >
                       {statusLabel(status, locale)}
                     </span>
-                    <p className="mt-1.5 line-clamp-2 text-[13px] leading-snug text-[#717171]">
+                    <p className="mt-1.5 line-clamp-2 text-[13px] leading-snug text-[var(--as-ink-soft)]">
                       {summary}
                     </p>
                   </>
                 ) : (
                   <>
-                    <p className="text-[15px] font-semibold text-[#222222]">
+                    <p className="text-[15px] font-semibold text-[var(--as-ink)]">
                       {t("tapToCheck")}
                     </p>
-                    <p className="mt-0.5 text-[13px] text-[#717171]">
+                    <p className="mt-0.5 text-[13px] text-[var(--as-ink-soft)]">
                       {t("swipeUpControls")}
                       {selectedPoint ? "" : t("locateHint")}
                     </p>
                   </>
                 )}
               </div>
-              <span className="shrink-0 text-[12px] font-semibold text-[#b0b0b0]">
+              <span className="shrink-0 text-[12px] font-semibold text-[var(--as-muted)]">
                 {t("swipeUp")}
               </span>
             </div>
@@ -270,25 +258,3 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
     </>
   );
 });
-
-function LocateIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
-      <path
-        d="M12 2v3M12 19v3M2 12h3M19 12h3"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <circle
-        cx="12"
-        cy="12"
-        r="8"
-        stroke="currentColor"
-        strokeWidth="2"
-        opacity="0.35"
-      />
-    </svg>
-  );
-}
