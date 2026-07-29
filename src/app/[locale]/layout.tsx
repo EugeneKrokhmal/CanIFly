@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { AppShell } from "@/components/layout/AppShell";
-import { routing } from "@/i18n/routing";
+import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
+import { routing, type AppLocale } from "@/i18n/routing";
+import { buildPageMetadata } from "@/lib/seo";
+import { THEME_BOOT_SCRIPT } from "@/lib/theme-boot";
 import "../globals.css";
 
 const display = Plus_Jakarta_Sans({
@@ -30,10 +33,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Omit<Props, "children">) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
-  return {
+  return buildPageMetadata({
+    locale,
     title: t("title"),
     description: t("description"),
-  };
+    path: "/",
+  });
 }
 
 export const viewport = {
@@ -41,7 +46,10 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover" as const,
-  themeColor: "#ffffff",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#121212" },
+  ],
 };
 
 export default async function LocaleLayout({ children, params }: Props) {
@@ -52,10 +60,17 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const appLocale = locale as AppLocale;
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }}
+        />
+      </head>
       <body className={`${display.variable} ${ui.variable} antialiased`}>
+        <SiteJsonLd locale={appLocale} />
         <NextIntlClientProvider messages={messages}>
           <AppShell>{children}</AppShell>
         </NextIntlClientProvider>

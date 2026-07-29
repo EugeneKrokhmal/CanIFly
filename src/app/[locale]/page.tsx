@@ -14,7 +14,7 @@ export default async function Page({ params }: Props) {
   return (
     <Suspense
       fallback={
-        <div className="flex h-full items-center justify-center bg-[#ebebeb] text-sm text-[#717171]">
+        <div className="flex h-full items-center justify-center bg-[var(--as-map-bg)] text-sm text-[var(--as-ink-soft)]">
           {t("loading")}
         </div>
       }
