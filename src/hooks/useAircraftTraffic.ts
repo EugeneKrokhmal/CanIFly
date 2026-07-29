@@ -170,6 +170,7 @@ export function useAircraftTraffic(enabled: boolean) {
   const snapshotRef = useRef<GeoJSON.Feature[]>([]);
   const snapshotAtRef = useRef(0);
   const hasDataRef = useRef(false);
+  const forceFetchRef = useRef(false);
 
   const clearTimer = () => {
     if (timerRef.current) {
@@ -232,7 +233,9 @@ export function useAircraftTraffic(enabled: boolean) {
     }
 
     const sinceLast = Date.now() - lastFetchAtRef.current;
-    if (lastFetchAtRef.current > 0 && sinceLast < MIN_FETCH_GAP_MS) {
+    const force = forceFetchRef.current;
+    forceFetchRef.current = false;
+    if (!force && lastFetchAtRef.current > 0 && sinceLast < MIN_FETCH_GAP_MS) {
       scheduleNext(MIN_FETCH_GAP_MS - sinceLast);
       return;
     }
@@ -303,7 +306,17 @@ export function useAircraftTraffic(enabled: boolean) {
         !lastFetchAtRef.current ||
         Date.now() - lastFetchAtRef.current > POLL_MS * 0.75;
 
-      if (empty || (moved && (stale || Date.now() - lastFetchAtRef.current > MIN_FETCH_GAP_MS))) {
+      if (empty || moved || stale) {
+        if (moved) {
+          // Drop off-screen leftovers immediately; refill for the new view.
+          forceFetchRef.current = true;
+          snapshotRef.current = [];
+          snapshotAtRef.current = 0;
+          hasDataRef.current = false;
+          setCollection(EMPTY);
+          setFuturePaths(EMPTY);
+          setCount(0);
+        }
         void fetchTraffic();
       }
     },

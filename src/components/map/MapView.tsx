@@ -47,8 +47,8 @@ const WAKE_LINE = "aircraft-wake-line";
 const FUTURE_SOURCE = "aircraft-future";
 const FUTURE_LINE = "aircraft-future-line";
 
-const PLANE_ICON_AIR = "plane-air";
-const PLANE_ICON_GND = "plane-gnd";
+const PLANE_ICON_AIR = "plane-air-v2";
+const PLANE_ICON_GND = "plane-gnd-v2";
 
 function createPendingPinEl(kind: PinKind = "obstacle"): HTMLDivElement {
   const el = document.createElement("div");
@@ -128,7 +128,7 @@ function addPlaneImages(map: maplibregl.Map) {
   if (!map.hasImage(PLANE_ICON_AIR)) {
     map.addImage(
       PLANE_ICON_AIR,
-      createPlaneIconImageData("#222222", "#ffffff"),
+      createPlaneIconImageData("#ff385c", "#ffffff"),
       { pixelRatio: 2 },
     );
   }
@@ -557,9 +557,10 @@ export function MapView({ className }: MapViewProps) {
         type: "symbol",
         source: AC_SOURCE,
         layout: {
+          // Stringify boolean — MapLibre can coerce GeoJSON props oddly.
           "icon-image": [
             "case",
-            ["==", ["get", "onGround"], true],
+            ["==", ["to-string", ["get", "onGround"]], "true"],
             PLANE_ICON_GND,
             PLANE_ICON_AIR,
           ],
@@ -568,17 +569,20 @@ export function MapView({ className }: MapViewProps) {
             ["linear"],
             ["zoom"],
             6,
-            0.32,
+            0.85,
             10,
-            0.48,
+            1.15,
             14,
-            0.62,
+            1.45,
           ],
           "icon-rotate": ["coalesce", ["get", "trackDeg"], 0],
           "icon-rotation-alignment": "map",
           "icon-pitch-alignment": "map",
           "icon-allow-overlap": true,
           "icon-ignore-placement": true,
+        },
+        paint: {
+          "icon-opacity": 1,
         },
       });
       map.addLayer({
@@ -587,18 +591,19 @@ export function MapView({ className }: MapViewProps) {
         source: AC_SOURCE,
         layout: {
           "text-field": ["get", "callsign"],
-          "text-size": 10,
-          "text-offset": [0, 1.6],
+          "text-size": 11,
+          "text-offset": [0, 1.55],
           "text-anchor": "top",
           "text-optional": true,
-          "text-allow-overlap": false,
+          "text-allow-overlap": true,
+          "text-ignore-placement": true,
         },
         paint: {
           "text-color": "#222222",
           "text-halo-color": "#ffffff",
-          "text-halo-width": 1.4,
+          "text-halo-width": 1.6,
         },
-        minzoom: 6,
+        minzoom: 8,
       });
 
       map.addLayer({
@@ -621,6 +626,11 @@ export function MapView({ className }: MapViewProps) {
           "line-opacity": 0.95,
         },
       });
+
+      // Keep traffic above zone fills / basemap labels.
+      for (const id of [WAKE_LINE, FUTURE_LINE, AC_ICON, AC_LABEL, TRACK_GLOW, TRACK_LINE]) {
+        if (map.getLayer(id)) map.moveLayer(id);
+      }
 
       const pushViewport = () => {
         const bounds = map.getBounds();
