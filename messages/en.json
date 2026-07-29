@@ -359,6 +359,7 @@
     "intro": "Language and appearance for this device.",
     "languageTitle": "Language",
     "languageHint": "Switch between Spanish and English. The URL updates to match.",
+    "languageHintSaved": "When signed in, we save your language and restore it on your next login.",
     "langEs": "Español",
     "langEn": "English",
     "themeTitle": "Theme",

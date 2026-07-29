@@ -9,7 +9,7 @@ export const OBSTACLE_ICON_IDS: Record<ObstacleType, string> = {
   rooftop: "spot-rooftop-v1",
   field: "spot-field-v1",
   beach: "spot-beach-v1",
-  other: "obstacle-other-v3",
+  other: "obstacle-other-v4",
 };
 
 /** Prefer fly-spot “other” icon when kind is fly_spot (same type key). */
@@ -244,18 +244,41 @@ function createObstacleIconImageData(
     }
     case "other":
     default: {
-      withHalo(ctx, color, () => {
+      if (colorOverride) {
+        // Fly-spot “other”: map pin with +
+        withHalo(ctx, color, () => {
+          ctx.beginPath();
+          ctx.arc(0, -4, 16, Math.PI * 0.85, Math.PI * 0.15, true);
+          ctx.lineTo(0, 22);
+          ctx.closePath();
+          ctx.fill();
+        });
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 22px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("+", 0, -5);
+        break;
+      }
+      // Obstacle “other”: warning triangle with !
+      withHalo(ctx, color, (mode) => {
         ctx.beginPath();
-        ctx.arc(0, -4, 16, Math.PI * 0.85, Math.PI * 0.15, true);
-        ctx.lineTo(0, 22);
+        ctx.moveTo(0, -22);
+        ctx.lineTo(20, 18);
+        ctx.lineTo(-20, 18);
         ctx.closePath();
-        ctx.fill();
+        if (mode === "halo") {
+          ctx.fill();
+          ctx.stroke();
+        } else {
+          ctx.fill();
+        }
       });
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 22px system-ui, sans-serif";
+      ctx.font = "bold 26px system-ui, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(colorOverride ? "+" : "?", 0, -5);
+      ctx.fillText("!", 0, 2);
       break;
     }
   }

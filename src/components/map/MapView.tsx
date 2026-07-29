@@ -1187,7 +1187,7 @@ export function MapView({ className }: MapViewProps) {
         {trafficOn && (zoomHint || trafficError) && (
           <div className="pointer-events-none max-w-[14rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-2.5 py-1.5 text-[11px] text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:max-w-[15rem] sm:px-3 sm:py-2 sm:text-[12px]">
             {trafficError === "rate_limited"
-              ? "OpenSky rate-limited — paused"
+              ? "Traffic source busy — retrying"
               : trafficError
                 ? "Traffic unavailable"
                 : zoomHint}

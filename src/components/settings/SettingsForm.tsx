@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { useAuthStore, type AppLocale } from "@/stores/auth";
 import { useThemeStore } from "@/stores/theme";
 import type { ThemePreference } from "@/lib/theme-boot";
 
@@ -9,16 +11,19 @@ function SegmentedOption({
   active,
   onClick,
   children,
+  disabled,
 }: {
   active: boolean;
   onClick: () => void;
   children: React.ReactNode;
+  disabled?: boolean;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="as-press flex-1 rounded-full px-3 py-2.5 text-[13px] font-semibold"
+      disabled={disabled}
+      className="as-press flex-1 rounded-full px-3 py-2.5 text-[13px] font-semibold disabled:opacity-60"
       style={{
         color: active ? "var(--as-ink)" : "var(--as-ink-soft)",
         background: active ? "var(--as-hover)" : "transparent",
@@ -34,14 +39,28 @@ function SegmentedOption({
 export function SettingsForm() {
   const t = useTranslations("settings");
   const tNav = useTranslations("nav");
-  const locale = useLocale();
+  const locale = useLocale() as AppLocale;
   const pathname = usePathname();
   const router = useRouter();
+  const user = useAuthStore((s) => s.user);
+  const updateLocale = useAuthStore((s) => s.updateLocale);
   const preference = useThemeStore((s) => s.preference);
   const setPreference = useThemeStore((s) => s.setPreference);
+  const [savingLocale, setSavingLocale] = useState(false);
+  const [localeError, setLocaleError] = useState<string | null>(null);
 
-  const switchLocale = (next: "es" | "en") => {
-    if (next === locale) return;
+  const switchLocale = async (next: AppLocale) => {
+    if (next === locale || savingLocale) return;
+    setLocaleError(null);
+    if (user) {
+      setSavingLocale(true);
+      const err = await updateLocale(next);
+      setSavingLocale(false);
+      if (err) {
+        setLocaleError(err);
+        return;
+      }
+    }
     router.replace(pathname, { locale: next });
   };
 
@@ -58,7 +77,7 @@ export function SettingsForm() {
           {t("languageTitle")}
         </h2>
         <p className="mt-1 text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
-          {t("languageHint")}
+          {user ? t("languageHintSaved") : t("languageHint")}
         </p>
         <div
           className="mt-4 flex items-center gap-1 rounded-full border border-[var(--as-line)] p-0.5"
@@ -67,17 +86,24 @@ export function SettingsForm() {
         >
           <SegmentedOption
             active={locale === "es"}
-            onClick={() => switchLocale("es")}
+            disabled={savingLocale}
+            onClick={() => void switchLocale("es")}
           >
             {t("langEs")}
           </SegmentedOption>
           <SegmentedOption
             active={locale === "en"}
-            onClick={() => switchLocale("en")}
+            disabled={savingLocale}
+            onClick={() => void switchLocale("en")}
           >
             {t("langEn")}
           </SegmentedOption>
         </div>
+        {localeError ? (
+          <p className="mt-3 text-[13px] text-[var(--as-danger,#c13515)]">
+            {localeError}
+          </p>
+        ) : null}
       </section>
 
       <section className="rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">

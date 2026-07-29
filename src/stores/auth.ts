@@ -2,6 +2,8 @@
 
 import { create } from "zustand";
 
+export type AppLocale = "es" | "en";
+
 export type AuthUser = {
   id: string;
   email: string;
@@ -9,6 +11,7 @@ export type AuthUser = {
   operatorNumber: string | null;
   bio: string | null;
   avatarUrl: string | null;
+  locale: AppLocale;
 };
 
 type AuthState = {
@@ -29,10 +32,20 @@ type AuthState = {
     password: string;
     name: string;
     operatorNumber?: string;
+    locale?: AppLocale;
   }) => Promise<{ error: string | null; needsVerification?: boolean }>;
+  updateLocale: (locale: AppLocale) => Promise<string | null>;
   resendVerification: (email: string) => Promise<string | null>;
   logout: () => Promise<void>;
 };
+
+function normalizeLocale(value: unknown): AppLocale {
+  return value === "en" ? "en" : "es";
+}
+
+function normalizeUser(user: AuthUser): AuthUser {
+  return { ...user, locale: normalizeLocale(user.locale) };
+}
 
 async function parseError(res: Response): Promise<string> {
   try {
@@ -57,7 +70,16 @@ export const useAuthStore = create<AuthState>((set) => ({
       ...(open ? {} : { pendingVerifyEmail: null }),
     })),
 
-  setUser: (user) => set({ user, pendingVerifyEmail: null }),
+  setUser: (user) =>
+    set((s) => ({
+      user: user
+        ? normalizeUser({
+            ...user,
+            locale: user.locale ?? s.user?.locale ?? "es",
+          })
+        : null,
+      pendingVerifyEmail: null,
+    })),
 
   fetchMe: async () => {
     set({ loading: true });
@@ -68,7 +90,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         return;
       }
       const data = (await res.json()) as { user: AuthUser };
-      set({ user: data.user, loading: false });
+      set({ user: normalizeUser(data.user), loading: false });
     } catch {
       set({ user: null, loading: false });
     }
@@ -97,7 +119,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
     if (!res.ok) return { error: await parseError(res) };
     const data = (await res.json()) as { user: AuthUser };
-    set({ user: data.user, authModalOpen: false, pendingVerifyEmail: null });
+    set({
+      user: normalizeUser(data.user),
+      authModalOpen: false,
+      pendingVerifyEmail: null,
+    });
     return { error: null };
   },
 
@@ -111,6 +137,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         password: input.password,
         name: input.name,
         operatorNumber: input.operatorNumber || null,
+        locale: normalizeLocale(input.locale),
       }),
     });
     if (!res.ok) return { error: await parseError(res) };
@@ -127,9 +154,26 @@ export const useAuthStore = create<AuthState>((set) => ({
       return { error: null, needsVerification: true };
     }
     if (data.user) {
-      set({ user: data.user, authModalOpen: false, pendingVerifyEmail: null });
+      set({
+        user: normalizeUser(data.user),
+        authModalOpen: false,
+        pendingVerifyEmail: null,
+      });
     }
     return { error: null };
+  },
+
+  updateLocale: async (locale) => {
+    const res = await fetch("/api/auth/locale", {
+      method: "PATCH",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ locale }),
+    });
+    if (!res.ok) return parseError(res);
+    const data = (await res.json()) as { user: AuthUser };
+    set({ user: normalizeUser(data.user) });
+    return null;
   },
 
   resendVerification: async (email) => {

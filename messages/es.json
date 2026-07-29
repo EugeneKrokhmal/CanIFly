@@ -359,6 +359,7 @@
     "intro": "Idioma y apariencia en este dispositivo.",
     "languageTitle": "Idioma",
     "languageHint": "Cambia entre español e inglés. La URL se actualiza al instante.",
+    "languageHintSaved": "Si inicias sesión, guardamos tu idioma y lo restauramos la próxima vez.",
     "langEs": "Español",
     "langEn": "English",
     "themeTitle": "Tema",

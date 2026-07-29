@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
-import { useAuthStore } from "@/stores/auth";
+import { useLocale, useTranslations } from "next-intl";
+import { useAuthStore, type AppLocale } from "@/stores/auth";
 
 export function AuthModal() {
   const t = useTranslations("auth");
+  const locale = useLocale() as AppLocale;
   const open = useAuthStore((s) => s.authModalOpen);
   const mode = useAuthStore((s) => s.authModalMode);
   const setAuthModalOpen = useAuthStore((s) => s.setAuthModalOpen);
@@ -62,6 +63,7 @@ export function AuthModal() {
             password,
             name,
             operatorNumber: operatorNumber.trim() || undefined,
+            locale,
           })
         : await login(email, password);
     setSubmitting(false);
