@@ -1,13 +1,27 @@
 {
   "meta": {
-    "title": "CanIFly — UAS Airspace Status",
-    "description": "One-tap airspace status for drone pilots in Spain. Clear, Restricted, or Prohibited — filtered by your drone class."
+    "title": "CanIFly — Can I fly my drone in Spain? UAS map",
+    "description": "Check in one tap whether you can fly your drone in Spain. UAS airspace map (ENAIRE): Clear, Limited, Restricted or Prohibited by class C0–C2 and AGL ceiling.",
+    "faqTitle": "Spain drone FAQ — UAS airspace | CanIFly",
+    "faqDescription": "Clear answers on Clear/Limited/Restricted/Prohibited, ENAIRE authorization, AESA, OpenSky tracks and official sources for drone pilots in Spain.",
+    "guideTitle": "Drone flying guide for Spain 2026 — UAS airspace | CanIFly",
+    "guideDescription": "How to know if you can fly a drone in Madrid, Barcelona, Valencia and across Spain: ENAIRE UAS zones, open category, AGL ceiling and the CanIFly map.",
+    "privacyTitle": "Privacy & cookies | CanIFly",
+    "privacyDescription": "How CanIFly handles data, cookies and local storage for the Spain UAS airspace map.",
+    "contactsTitle": "Official Spain drone contacts — ENAIRE, AESA | CanIFly",
+    "contactsDescription": "Official links for drone flight authorization in Spain: ENAIRE Planea, drones.enaire.es, AESA and AIP.",
+    "accountTitle": "My account | CanIFly",
+    "accountDescription": "Manage your CanIFly pilot profile.",
+    "settingsTitle": "Settings — language & theme | CanIFly",
+    "settingsDescription": "Choose language (ES/EN) and light, dark, or system theme for CanIFly."
   },
   "nav": {
     "map": "Map",
     "faq": "FAQ",
+    "guide": "Guide",
     "contacts": "Contacts",
     "privacy": "Privacy",
+    "settings": "Settings",
     "account": "Account",
     "publicProfile": "Public profile",
     "logIn": "Log in",
@@ -17,7 +31,12 @@
     "search": "Search location",
     "language": "Language",
     "langEs": "ES",
-    "langEn": "EN"
+    "langEn": "EN",
+    "theme": "Theme",
+    "themeToggle": "Theme · {mode}",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark"
   },
   "search": {
     "title": "Search location",
@@ -33,8 +52,8 @@
     "createAccount": "Create account",
     "logIn": "Log in",
     "close": "Close",
-    "registerBlurb": "Instant signup — no email confirmation needed.",
-    "loginBlurb": "Sign in to report obstacles on the map.",
+    "registerBlurb": "We’ll email you a link to verify your account before you can log in.",
+    "loginBlurb": "Sign in to report obstacles and fly spots on the map.",
     "name": "Name",
     "namePlaceholder": "How others see you",
     "operatorNumber": "Operator number",
@@ -47,7 +66,20 @@
     "register": "Register",
     "haveAccount": "Already have an account?",
     "newHere": "New here?",
-    "networkError": "Network error"
+    "networkError": "Network error",
+    "checkEmail": "Check {email} for a verification link. You can log in after confirming.",
+    "resent": "Verification email sent again to {email}.",
+    "resendVerification": "Resend verification email"
+  },
+  "verifyEmail": {
+    "eyebrow": "Account",
+    "title": "Email verification",
+    "checking": "Confirming your email…",
+    "success": "Email verified. You’re signed in.",
+    "failed": "This verification link is invalid or expired.",
+    "missingToken": "Missing verification token.",
+    "goAccount": "Go to my account",
+    "backToMap": "Back to map"
   },
   "account": {
     "loading": "Loading account…",
@@ -82,7 +114,7 @@
     "checkingAirspace": "Checking airspace…",
     "tapToCheck": "Tap the map to check",
     "swipeUpControls": "Swipe up for controls",
-    "locateHint": " · Locate on the right",
+    "locateHint": " · Use the locate control on the map",
     "swipeUp": "Swipe up",
     "locateMe": "Locate me",
     "collapsePanel": "Collapse panel",
@@ -152,13 +184,45 @@
     "air_sports": "Air sports nearby",
     "other": "Other"
   },
+  "pin": {
+    "add": "Add",
+    "closeMenu": "Close",
+    "addAria": "Add obstacle or fly spot",
+    "addMenuHint": "What are you adding?",
+    "addObstacle": "Obstacle",
+    "addObstacleHint": "Crane, works, lines…",
+    "addFlySpot": "Fly spot",
+    "addFlySpotHint": "Good place to fly",
+    "sheetTitleObstacle": "Report obstacle",
+    "sheetTitleFlySpot": "Share fly spot",
+    "type": "Type",
+    "approxHeight": "Approx. height",
+    "suggestedCeiling": "Suggested ceiling",
+    "message": "Message",
+    "optional": "(optional)",
+    "messagePlaceholderObstacle": "e.g. Active crane until Friday",
+    "messagePlaceholderFlySpot": "e.g. Quiet park, good for training",
+    "photo": "Photo",
+    "remove": "Remove",
+    "addPhoto": "Add photo",
+    "photoFormats": "JPEG, PNG or WebP · compressed on upload",
+    "photoTooLarge": "Photo must be under 12 MB",
+    "pinnedAt": "Pinned at {lat}, {lng}",
+    "tapToPlace": "Tap the map to place the pin.",
+    "cancel": "Cancel",
+    "saving": "Saving…",
+    "save": "Save"
+  },
   "pilot": {
     "eyebrow": "Pilot",
     "operator": "Operator · {number}",
-    "communityReporter": "Community obstacle reporter",
-    "reportedHeading": "Reported obstacles · {count}",
-    "noneYet": "No obstacles reported yet.",
+    "communityReporter": "Community reporter",
+    "reportedHeading": "Reported pins · {count}",
+    "noneYet": "No obstacles or fly spots yet.",
     "viewOnMap": "View on map",
+    "openPhoto": "View full size",
+    "closePhoto": "Close photo",
+    "photoFullscreen": "Photo full screen",
     "backToMap": "← Back to map",
     "unavailable": "Profile unavailable.",
     "loading": "Loading profile…"
@@ -173,9 +237,10 @@
   },
   "faq": {
     "eyebrow": "Help",
-    "title": "FAQ",
-    "intro": "Quick answers about status labels, registration, and data sources.",
+    "title": "Spain drone FAQ",
+    "intro": "Quick answers about status labels, AESA registration, ENAIRE and data sources for flying a drone in Spain.",
     "backToMap": "← Back to map",
+    "ctaGuide": "Read the full Spain flying guide",
     "items": {
       "status": {
         "q": "What does Clear / Limited / Restricted / Prohibited mean?",
@@ -196,8 +261,54 @@
       "official": {
         "q": "Is CanIFly official advice?",
         "a": "No. Always verify with ENAIRE Drones / AESA before flying. Rules and zone texts change; this app is a planning aid, not legal clearance."
+      },
+      "openCategory": {
+        "q": "What are open category C0, C1 and C2?",
+        "a": "The EU open category classifies light drones. C0 (<250 g), C1 and C2 have different height and distance limits. CanIFly filters zones by the class and AGL ceiling you pick to approximate whether a point is Clear, Limited, Restricted or Prohibited."
+      },
+      "madrid": {
+        "q": "Can I fly a drone in Madrid or near Barajas?",
+        "a": "Much of the metro area is affected by CTR/TMA and UAS zones. Use the CanIFly map, tap your takeoff point and check the status. If it shows Restricted or Prohibited, check ENAIRE Planea / Drones before flying."
+      },
+      "where": {
+        "q": "Where can I legally fly a drone in Spain?",
+        "a": "It depends on place, height, drone class and active UAS geographical zones. There is no fixed list of “safe spots”: check each point on official ENAIRE maps and CanIFly, and follow AESA rules (VLOS, distance to people, etc.)."
       }
     }
+  },
+  "guide": {
+    "eyebrow": "Spain guide",
+    "title": "How to know if you can fly your drone in Spain",
+    "intro": "CanIFly summarises UAS airspace status on a map: tap a point, pick class and ceiling, and see Clear, Limited, Restricted or Prohibited. This guide explains the context for recreational and professional open-category pilots.",
+    "sections": {
+      "how": {
+        "title": "1. Check the point on the map",
+        "body": "Open CanIFly, centre the map on your location (or search a city) and tap the takeoff point. Status combines ENAIRE servAIS UAS geographical zones with your class (C0–C2) and AGL ceiling. If the result is not Clear, do not assume you can launch: read zone details and official sources."
+      },
+      "enaire": {
+        "title": "2. ENAIRE and UAS zones",
+        "body": "ENAIRE publishes UAS geographical zones (CTR, airports, infrastructure, temporary, etc.). CanIFly consumes those geometries to draw the map, but the operational source of truth remains ENAIRE Drones / Planea. Zones change: check again on the day of flight."
+      },
+      "aesa": {
+        "title": "3. AESA: registration and open category",
+        "body": "Besides airspace, Spain usually requires AESA UAS operator registration and training for your operation. The open category has subcategories and limits (height, distance to people, VLOS). CanIFly does not replace that legal framework."
+      },
+      "cities": {
+        "title": "4. Cities: Madrid, Barcelona, Valencia, Seville, Bilbao",
+        "body": "In large cities airspace is often more restricted due to airports, heliports and urban cores. Search the city in CanIFly, tap several points (park, rooftop, outskirts) and compare statuses. An “empty” park on satellite imagery can still be Restricted under a UAS zone."
+      },
+      "community": {
+        "title": "5. Community obstacles and fly spots",
+        "body": "Pilots can mark obstacles (cranes, works, lines) and recommended fly spots. These are community tips with votes: useful for planning, not official. Always cross-check with ENAIRE/AESA."
+      },
+      "disclaimer": {
+        "title": "Important notice",
+        "body": "CanIFly is a planning tool. It is not ENAIRE or AESA. Before flying, confirm rules, notices and authorisations on official channels. You are responsible for the operation."
+      }
+    },
+    "ctaMap": "Open the CanIFly map",
+    "ctaFaq": "See FAQ",
+    "backToMap": "← Back to map"
   },
   "privacy": {
     "eyebrow": "Legal",
@@ -241,5 +352,17 @@
         "detail": "Published ED-318 / ZGUAS data packages"
       }
     }
+  },
+  "settings": {
+    "eyebrow": "Preferences",
+    "title": "Settings",
+    "intro": "Language and appearance for this device.",
+    "languageTitle": "Language",
+    "languageHint": "Switch between Spanish and English. The URL updates to match.",
+    "langEs": "Español",
+    "langEn": "English",
+    "themeTitle": "Theme",
+    "themeHint": "System follows your device setting. Light and dark lock the look.",
+    "backToMap": "← Back to map"
   }
 }

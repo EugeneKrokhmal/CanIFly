@@ -1,13 +1,27 @@
 {
   "meta": {
-    "title": "CanIFly — Estado del espacio aéreo UAS",
-    "description": "Estado del espacio aéreo en un toque para pilotos de drones en España. Libre, Restringido o Prohibido — según la clase de tu dron."
+    "title": "CanIFly — ¿Puedo volar mi dron en España? Mapa UAS",
+    "description": "Consulta en un toque si puedes volar tu dron en España. Mapa de espacio aéreo UAS (ENAIRE): Libre, Limitado, Restringido o Prohibido según clase C0–C2 y techo AGL.",
+    "faqTitle": "FAQ drones España — espacio aéreo UAS | CanIFly",
+    "faqDescription": "Respuestas claras sobre Libre/Limitado/Restringido/Prohibido, autorización ENAIRE, AESA, trazas OpenSky y fuentes oficiales para pilotos de drones en España.",
+    "guideTitle": "Guía para volar drones en España 2026 — espacio aéreo UAS | CanIFly",
+    "guideDescription": "Cómo saber si puedes volar un dron en Madrid, Barcelona, Valencia y el resto de España: zonas UAS ENAIRE, categoría abierta, techo AGL y mapa CanIFly.",
+    "privacyTitle": "Privacidad y cookies | CanIFly",
+    "privacyDescription": "Cómo CanIFly trata datos, cookies y almacenamiento local para el mapa de espacio aéreo UAS en España.",
+    "contactsTitle": "Contactos oficiales drones España — ENAIRE, AESA | CanIFly",
+    "contactsDescription": "Enlaces oficiales para autorización de vuelo de drones en España: ENAIRE Planea, drones.enaire.es, AESA y AIP.",
+    "accountTitle": "Mi cuenta | CanIFly",
+    "accountDescription": "Gestiona tu perfil de piloto CanIFly.",
+    "settingsTitle": "Ajustes — idioma y tema | CanIFly",
+    "settingsDescription": "Elige idioma (ES/EN) y tema claro, oscuro o del sistema en CanIFly."
   },
   "nav": {
     "map": "Mapa",
     "faq": "FAQ",
+    "guide": "Guía",
     "contacts": "Contactos",
     "privacy": "Privacidad",
+    "settings": "Ajustes",
     "account": "Cuenta",
     "publicProfile": "Perfil público",
     "logIn": "Entrar",
@@ -17,7 +31,12 @@
     "search": "Buscar ubicación",
     "language": "Idioma",
     "langEs": "ES",
-    "langEn": "EN"
+    "langEn": "EN",
+    "theme": "Tema",
+    "themeToggle": "Tema · {mode}",
+    "themeSystem": "Sistema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro"
   },
   "search": {
     "title": "Buscar ubicación",
@@ -33,8 +52,8 @@
     "createAccount": "Crear cuenta",
     "logIn": "Entrar",
     "close": "Cerrar",
-    "registerBlurb": "Registro al instante — sin confirmar email.",
-    "loginBlurb": "Entra para reportar obstáculos en el mapa.",
+    "registerBlurb": "Te enviaremos un enlace para verificar el email antes de poder entrar.",
+    "loginBlurb": "Entra para reportar obstáculos y zonas de vuelo en el mapa.",
     "name": "Nombre",
     "namePlaceholder": "Cómo te ven los demás",
     "operatorNumber": "Número de operador",
@@ -47,7 +66,20 @@
     "register": "Registrarse",
     "haveAccount": "¿Ya tienes cuenta?",
     "newHere": "¿Nuevo aquí?",
-    "networkError": "Error de red"
+    "networkError": "Error de red",
+    "checkEmail": "Revisa {email} — te hemos enviado un enlace de verificación. Podrás entrar cuando confirmes.",
+    "resent": "Hemos vuelto a enviar el email de verificación a {email}.",
+    "resendVerification": "Reenviar email de verificación"
+  },
+  "verifyEmail": {
+    "eyebrow": "Cuenta",
+    "title": "Verificación de email",
+    "checking": "Confirmando tu email…",
+    "success": "Email verificado. Ya estás conectado.",
+    "failed": "Este enlace de verificación no es válido o ha caducado.",
+    "missingToken": "Falta el token de verificación.",
+    "goAccount": "Ir a mi cuenta",
+    "backToMap": "Volver al mapa"
   },
   "account": {
     "loading": "Cargando cuenta…",
@@ -82,7 +114,7 @@
     "checkingAirspace": "Comprobando espacio aéreo…",
     "tapToCheck": "Toca el mapa para comprobar",
     "swipeUpControls": "Desliza hacia arriba para controles",
-    "locateHint": " · Localízate a la derecha",
+    "locateHint": " · Usa el botón de ubicación en el mapa",
     "swipeUp": "Desliza",
     "locateMe": "Localízame",
     "collapsePanel": "Cerrar panel",
@@ -152,13 +184,45 @@
     "air_sports": "Deportes aéreos cerca",
     "other": "Otro"
   },
+  "pin": {
+    "add": "Añadir",
+    "closeMenu": "Cerrar",
+    "addAria": "Añadir obstáculo o zona de vuelo",
+    "addMenuHint": "¿Qué quieres añadir?",
+    "addObstacle": "Obstáculo",
+    "addObstacleHint": "Grúa, obras, líneas…",
+    "addFlySpot": "Zona de vuelo",
+    "addFlySpotHint": "Buen sitio para volar",
+    "sheetTitleObstacle": "Reportar obstáculo",
+    "sheetTitleFlySpot": "Compartir zona de vuelo",
+    "type": "Tipo",
+    "approxHeight": "Altura aprox.",
+    "suggestedCeiling": "Techo sugerido",
+    "message": "Mensaje",
+    "optional": "(opcional)",
+    "messagePlaceholderObstacle": "p. ej. Grúa activa hasta el viernes",
+    "messagePlaceholderFlySpot": "p. ej. Parque tranquilo, bueno para entrenar",
+    "photo": "Foto",
+    "remove": "Quitar",
+    "addPhoto": "Añadir foto",
+    "photoFormats": "JPEG, PNG o WebP · se comprime al subir",
+    "photoTooLarge": "La foto debe pesar menos de 12 MB",
+    "pinnedAt": "Anclado en {lat}, {lng}",
+    "tapToPlace": "Toca el mapa para colocar el pin.",
+    "cancel": "Cancelar",
+    "saving": "Guardando…",
+    "save": "Guardar"
+  },
   "pilot": {
     "eyebrow": "Piloto",
     "operator": "Operador · {number}",
-    "communityReporter": "Reportero de obstáculos de la comunidad",
-    "reportedHeading": "Obstáculos reportados · {count}",
-    "noneYet": "Aún no ha reportado obstáculos.",
+    "communityReporter": "Reportero de la comunidad",
+    "reportedHeading": "Pins reportados · {count}",
+    "noneYet": "Aún no hay obstáculos ni zonas de vuelo.",
     "viewOnMap": "Ver en el mapa",
+    "openPhoto": "Ver a tamaño completo",
+    "closePhoto": "Cerrar foto",
+    "photoFullscreen": "Foto a pantalla completa",
     "backToMap": "← Volver al mapa",
     "unavailable": "Perfil no disponible.",
     "loading": "Cargando perfil…"
@@ -173,9 +237,10 @@
   },
   "faq": {
     "eyebrow": "Ayuda",
-    "title": "FAQ",
-    "intro": "Respuestas rápidas sobre etiquetas de estado, registro y fuentes de datos.",
+    "title": "Preguntas frecuentes sobre drones en España",
+    "intro": "Respuestas rápidas sobre etiquetas de estado, registro AESA, ENAIRE y fuentes de datos para volar un dron en España.",
     "backToMap": "← Volver al mapa",
+    "ctaGuide": "Lee la guía completa para volar en España",
     "items": {
       "status": {
         "q": "¿Qué significan Libre / Limitado / Restringido / Prohibido?",
@@ -196,8 +261,54 @@
       "official": {
         "q": "¿CanIFly es un consejo oficial?",
         "a": "No. Verifica siempre con ENAIRE Drones / AESA antes de volar. Las reglas y los textos de zona cambian; esta app es una ayuda de planificación, no una autorización legal."
+      },
+      "openCategory": {
+        "q": "¿Qué es la categoría abierta C0, C1 y C2?",
+        "a": "La categoría abierta de la UE clasifica drones ligeros. C0 (<250 g), C1 y C2 tienen límites de altura y distancia distintos. CanIFly filtra zonas según la clase y el techo AGL que elijas para aproximar si el punto es Libre, Limitado, Restringido o Prohibido."
+      },
+      "madrid": {
+        "q": "¿Puedo volar un dron en Madrid o cerca de Barajas?",
+        "a": "Gran parte del área metropolitana está afectada por CTR/TMA y zonas UAS. Usa el mapa CanIFly, toca tu punto de despegue y revisa el estado. Si aparece Restringido o Prohibido, consulta ENAIRE Planea / Drones antes de volar."
+      },
+      "where": {
+        "q": "¿Dónde puedo volar un dron legalmente en España?",
+        "a": "Depende del lugar, la altura, la clase del dron y si hay zonas geográficas UAS activas. No hay una lista fija de «sitios seguros»: comprueba cada punto en el mapa oficial ENAIRE y en CanIFly, y cumple la normativa AESA (VLOS, distancia a personas, etc.)."
       }
     }
+  },
+  "guide": {
+    "eyebrow": "Guía España",
+    "title": "Cómo saber si puedes volar tu dron en España",
+    "intro": "CanIFly resume el estado del espacio aéreo UAS en un mapa: toca un punto, elige clase y techo, y verás Libre, Limitado, Restringido o Prohibido. Esta guía explica el contexto para pilotos recreativos y profesionales en categoría abierta.",
+    "sections": {
+      "how": {
+        "title": "1. Comprueba el punto en el mapa",
+        "body": "Abre CanIFly, centra el mapa en tu ubicación (o busca una ciudad) y toca el punto de despegue. El estado combina las zonas geográficas UAS de ENAIRE servAIS con tu clase (C0–C2) y techo AGL. Si el resultado no es Libre, no asumas que puedes despegar: lee el detalle de zona y las fuentes oficiales."
+      },
+      "enaire": {
+        "title": "2. ENAIRE y las zonas UAS",
+        "body": "ENAIRE publica zonas geográficas UAS (CTR, aeropuertos, infraestructuras, temporales, etc.). CanIFly consume esas geometrías para pintar el mapa, pero la fuente de verdad operativa sigue siendo ENAIRE Drones / Planea. Las zonas cambian: vuelve a consultar el día del vuelo."
+      },
+      "aesa": {
+        "title": "3. AESA: registro y categoría abierta",
+        "body": "Además del espacio aéreo, en España normalmente necesitas registro de operador UAS en AESA y la formación correspondiente a tu operación. La categoría abierta tiene subcategorías y límites (altura, distancia a personas, VLOS). CanIFly no sustituye ese marco legal."
+      },
+      "cities": {
+        "title": "4. Ciudades: Madrid, Barcelona, Valencia, Sevilla, Bilbao",
+        "body": "En grandes ciudades el espacio suele estar más restringido por aeropuertos, helipuertos y núcleos urbanos. Busca la ciudad en CanIFly, toca varios puntos (parque, azotea, periferia) y compara estados. Un parque «vacío» en el mapa satélite puede seguir siendo Restringido por una zona UAS."
+      },
+      "community": {
+        "title": "5. Obstáculos y zonas de vuelo de la comunidad",
+        "body": "Los pilotos pueden marcar obstáculos (grúas, obras, líneas) y zonas de vuelo recomendadas. Son avisos de comunidad con votos: útiles para planificar, no oficiales. Contrasta siempre con ENAIRE/AESA."
+      },
+      "disclaimer": {
+        "title": "Aviso importante",
+        "body": "CanIFly es una herramienta de planificación. No es ENAIRE ni AESA. Antes de volar, confirma reglas, NOTAM/avisos y autorizaciones en canales oficiales. Tú eres responsable de la operación."
+      }
+    },
+    "ctaMap": "Abrir el mapa CanIFly",
+    "ctaFaq": "Ver FAQ",
+    "backToMap": "← Volver al mapa"
   },
   "privacy": {
     "eyebrow": "Legal",
@@ -241,5 +352,17 @@
         "detail": "Paquetes de datos ED-318 / ZGUAS publicados"
       }
     }
+  },
+  "settings": {
+    "eyebrow": "Preferencias",
+    "title": "Ajustes",
+    "intro": "Idioma y apariencia en este dispositivo.",
+    "languageTitle": "Idioma",
+    "languageHint": "Cambia entre español e inglés. La URL se actualiza al instante.",
+    "langEs": "Español",
+    "langEn": "English",
+    "themeTitle": "Tema",
+    "themeHint": "Sistema sigue el ajuste del dispositivo. Claro y oscuro fijan el aspecto.",
+    "backToMap": "← Volver al mapa"
   }
 }

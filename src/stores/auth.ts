@@ -16,16 +16,21 @@ type AuthState = {
   loading: boolean;
   authModalOpen: boolean;
   authModalMode: "login" | "register";
+  pendingVerifyEmail: string | null;
   setAuthModalOpen: (open: boolean, mode?: "login" | "register") => void;
   setUser: (user: AuthUser | null) => void;
   fetchMe: () => Promise<void>;
-  login: (email: string, password: string) => Promise<string | null>;
+  login: (
+    email: string,
+    password: string,
+  ) => Promise<{ error: string | null; needsVerification?: boolean }>;
   register: (input: {
     email: string;
     password: string;
     name: string;
     operatorNumber?: string;
-  }) => Promise<string | null>;
+  }) => Promise<{ error: string | null; needsVerification?: boolean }>;
+  resendVerification: (email: string) => Promise<string | null>;
   logout: () => Promise<void>;
 };
 
@@ -43,14 +48,16 @@ export const useAuthStore = create<AuthState>((set) => ({
   loading: true,
   authModalOpen: false,
   authModalMode: "login",
+  pendingVerifyEmail: null,
 
   setAuthModalOpen: (open, mode) =>
     set((s) => ({
       authModalOpen: open,
       authModalMode: mode ?? s.authModalMode,
+      ...(open ? {} : { pendingVerifyEmail: null }),
     })),
 
-  setUser: (user) => set({ user }),
+  setUser: (user) => set({ user, pendingVerifyEmail: null }),
 
   fetchMe: async () => {
     set({ loading: true });
@@ -74,10 +81,24 @@ export const useAuthStore = create<AuthState>((set) => ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-    if (!res.ok) return parseError(res);
+    if (res.status === 403) {
+      const data = (await res.json().catch(() => ({}))) as {
+        code?: string;
+        email?: string;
+        error?: string;
+      };
+      if (data.code === "EMAIL_NOT_VERIFIED") {
+        set({ pendingVerifyEmail: data.email ?? email.toLowerCase() });
+        return {
+          error: data.error ?? "Email not verified",
+          needsVerification: true,
+        };
+      }
+    }
+    if (!res.ok) return { error: await parseError(res) };
     const data = (await res.json()) as { user: AuthUser };
-    set({ user: data.user, authModalOpen: false });
-    return null;
+    set({ user: data.user, authModalOpen: false, pendingVerifyEmail: null });
+    return { error: null };
   },
 
   register: async (input) => {
@@ -92,9 +113,33 @@ export const useAuthStore = create<AuthState>((set) => ({
         operatorNumber: input.operatorNumber || null,
       }),
     });
+    if (!res.ok) return { error: await parseError(res) };
+    const data = (await res.json()) as {
+      user?: AuthUser;
+      needsVerification?: boolean;
+      email?: string;
+    };
+    if (data.needsVerification) {
+      set({
+        pendingVerifyEmail: data.email ?? input.email.toLowerCase(),
+        user: null,
+      });
+      return { error: null, needsVerification: true };
+    }
+    if (data.user) {
+      set({ user: data.user, authModalOpen: false, pendingVerifyEmail: null });
+    }
+    return { error: null };
+  },
+
+  resendVerification: async (email) => {
+    const res = await fetch("/api/auth/resend-verification", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
     if (!res.ok) return parseError(res);
-    const data = (await res.json()) as { user: AuthUser };
-    set({ user: data.user, authModalOpen: false });
     return null;
   },
 
