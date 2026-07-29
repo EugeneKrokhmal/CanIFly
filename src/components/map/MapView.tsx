@@ -598,7 +598,7 @@ export function MapView({ className }: MapViewProps) {
           "text-halo-color": "#ffffff",
           "text-halo-width": 1.4,
         },
-        minzoom: 8,
+        minzoom: 6,
       });
 
       map.addLayer({
@@ -1008,10 +1008,10 @@ export function MapView({ className }: MapViewProps) {
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    if (!mapReady || !map) return;
     const source = map.getSource(AC_SOURCE) as maplibregl.GeoJSONSource | undefined;
     if (source) source.setData(aircraft);
-  }, [aircraft]);
+  }, [aircraft, mapReady]);
 
   useEffect(() => {
     const map = mapRef.current;

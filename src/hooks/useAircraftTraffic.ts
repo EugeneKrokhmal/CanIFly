@@ -5,15 +5,17 @@ import type { Bbox } from "@canifly/middleware";
 import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
 
 /**
- * Sparse OpenSky polling + local dead reckoning.
- * ~1 upstream refresh / 2 min while icons keep moving between snaps.
+ * Live ADS-B positions + estimated future path.
+ * Uses community feeds (adsb.lol / airplanes.live / adsb.fi) via the API.
+ * Past tracks load only when the user clicks an aircraft (MapView → /api/traffic/track).
  */
-const POLL_MS = 120_000;
+const POLL_MS = 45_000;
 /** Never hit the API more often than this, even on big pans. */
-const MIN_FETCH_GAP_MS = 35_000;
+const MIN_FETCH_GAP_MS = 18_000;
 const RATE_LIMIT_BACKOFF_MS = 10 * 60_000;
-const MIN_ZOOM = 8;
-const VIEWPORT_DEBOUNCE_MS = 1_200;
+/** Match default map zoom so traffic shows on first paint (Spain overview). */
+const MIN_ZOOM = 6;
+const VIEWPORT_DEBOUNCE_MS = 800;
 const TICK_MS = 2_000;
 /** Cap how far we coast after the last ADS-B snap. */
 const MAX_COAST_S = 150;
