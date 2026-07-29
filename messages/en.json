@@ -119,7 +119,10 @@
     "locateMe": "Locate me",
     "collapsePanel": "Collapse panel",
     "flightControls": "Flight controls",
-    "obstacleFallback": "Obstacle"
+    "obstacleFallback": "Obstacle",
+    "webglUnavailable": "Map could not start on this device",
+    "webglUnavailableHint": "Graphics acceleration is unavailable or was blocked. Close other tabs, turn Low Power Mode off, then try again.",
+    "webglRetry": "Try again"
   },
   "sidebar": {
     "flightProfile": "Flight profile",

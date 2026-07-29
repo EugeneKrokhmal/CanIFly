@@ -230,6 +230,9 @@ export function MapView({ className }: MapViewProps) {
   const [mapZoom, setMapZoom] = useState(DEFAULT_ZOOM);
   const [trackLabel, setTrackLabel] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
+  /** Set when MapLibre cannot create a WebGL context (common on constrained mobile GPUs). */
+  const [mapError, setMapError] = useState<string | null>(null);
+  const [mapRetryKey, setMapRetryKey] = useState(0);
 
   const setSelectedPoint = useDroneProfileStore((s) => s.setSelectedPoint);
   const selectedPoint = useDroneProfileStore((s) => s.selectedPoint);
@@ -365,16 +368,31 @@ export function MapView({ className }: MapViewProps) {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
+    // Clear any leftover canvas from a previous failed / torn-down MapLibre instance.
+    containerRef.current.replaceChildren();
+
     const styleUrl =
       process.env.NEXT_PUBLIC_MAP_STYLE ??
       "https://tiles.openfreemap.org/styles/bright";
 
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: styleUrl,
-      center: SPAIN_CENTER,
-      zoom: DEFAULT_ZOOM,
-    });
+    let map: maplibregl.Map;
+    try {
+      map = new maplibregl.Map({
+        container: containerRef.current,
+        style: styleUrl,
+        center: SPAIN_CENTER,
+        zoom: DEFAULT_ZOOM,
+      });
+    } catch (err) {
+      // MapLibre throws synchronously when WebGL is unavailable. Without this,
+      // Next.js surfaces a blank "Application error" page on affected devices.
+      console.error("[MapView] WebGL init failed", err);
+      setMapError("webgl");
+      setMapReady(false);
+      return;
+    }
+
+    setMapError(null);
 
     map.addControl(
       new maplibregl.NavigationControl({ showCompass: false }),
@@ -889,9 +907,18 @@ export function MapView({ className }: MapViewProps) {
 
     mapRef.current = map;
 
+    const onContextLost = (ev: Event) => {
+      ev.preventDefault();
+      console.error("[MapView] WebGL context lost");
+      setMapError("webgl");
+      setMapReady(false);
+    };
+    map.getCanvas().addEventListener("webglcontextlost", onContextLost);
+
     return () => {
       window.removeEventListener("resize", onResize);
       ro?.disconnect();
+      map.getCanvas().removeEventListener("webglcontextlost", onContextLost);
       trackAbortRef.current?.abort();
       popupRef.current?.remove();
       selectionMarkerRef.current?.remove();
@@ -903,8 +930,8 @@ export function MapView({ className }: MapViewProps) {
       geolocateControlRef.current = null;
       setMapReady(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- init once
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- init once (retry via mapRetryKey)
+  }, [mapRetryKey]);
 
   useEffect(() => {
     if (!trafficOn) clearTrack();
@@ -1183,47 +1210,85 @@ export function MapView({ className }: MapViewProps) {
         ref={containerRef}
         className={className ?? "h-full w-full"}
         data-testid="map-view"
+        style={mapError ? { visibility: "hidden" } : undefined}
       />
-      <div className="pointer-events-none absolute left-2 top-2 z-10 flex max-w-[calc(100%-5rem)] flex-col gap-1.5 sm:left-3 sm:top-3 sm:gap-2">
-        <button
-          type="button"
-          onClick={() => setTrafficOn((v) => !v)}
-          className="pointer-events-auto rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-3 py-1.5 text-[12px] font-semibold text-[var(--as-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:px-4 sm:py-2 sm:text-[13px]"
+      {mapError ? (
+        <div
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-[var(--as-bg)] px-6 text-center"
+          data-testid="map-webgl-error"
+          role="alert"
         >
-          Traffic {trafficOn ? "on" : "off"}
-          {trafficOn ? ` · ${aircraftCount}` : ""}
-        </button>
-        {trafficOn && mapZoom >= minZoom && (
-          <div className="pointer-events-none hidden max-w-[15rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-3 py-2 text-[12px] leading-snug text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:block">
-            Solid = flown path · dashed ≈ 10 min ahead (estimate)
-          </div>
-        )}
-        {trafficOn && trackLabel && (
-          <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-3 py-1.5 text-[12px] font-semibold text-[var(--as-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:py-2 sm:text-[13px]">
-            <span className="max-w-[10rem] truncate sm:max-w-[12rem]">{trackLabel}</span>
+          <p className="max-w-sm text-[15px] font-semibold text-[var(--as-ink)]">
+            {tMap("webglUnavailable")}
+          </p>
+          <p className="max-w-sm text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
+            {tMap("webglUnavailableHint")}
+          </p>
+          <button
+            type="button"
+            className="mt-1 rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-4 py-2 text-[13px] font-semibold text-[var(--as-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08)]"
+            onClick={() => {
+              try {
+                mapRef.current?.remove();
+              } catch {
+                /* already dead */
+              }
+              mapRef.current = null;
+              geolocateControlRef.current = null;
+              setMapReady(false);
+              setMapError(null);
+              setMapRetryKey((k) => k + 1);
+            }}
+          >
+            {tMap("webglRetry")}
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="pointer-events-none absolute left-2 top-2 z-10 flex max-w-[calc(100%-5rem)] flex-col gap-1.5 sm:left-3 sm:top-3 sm:gap-2">
             <button
               type="button"
-              onClick={clearTrack}
-              className="text-[var(--as-muted)] hover:text-[var(--as-ink)]"
+              onClick={() => setTrafficOn((v) => !v)}
+              className="pointer-events-auto rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-3 py-1.5 text-[12px] font-semibold text-[var(--as-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:px-4 sm:py-2 sm:text-[13px]"
             >
-              ✕
+              Traffic {trafficOn ? "on" : "off"}
+              {trafficOn ? ` · ${aircraftCount}` : ""}
             </button>
+            {trafficOn && mapZoom >= minZoom && (
+              <div className="pointer-events-none hidden max-w-[15rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-3 py-2 text-[12px] leading-snug text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:block">
+                Solid = flown path · dashed ≈ 10 min ahead (estimate)
+              </div>
+            )}
+            {trafficOn && trackLabel && (
+              <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-3 py-1.5 text-[12px] font-semibold text-[var(--as-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:py-2 sm:text-[13px]">
+                <span className="max-w-[10rem] truncate sm:max-w-[12rem]">
+                  {trackLabel}
+                </span>
+                <button
+                  type="button"
+                  onClick={clearTrack}
+                  className="text-[var(--as-muted)] hover:text-[var(--as-ink)]"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+            {trafficOn && (zoomHint || trafficError) && (
+              <div className="pointer-events-none max-w-[14rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-2.5 py-1.5 text-[11px] text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:max-w-[15rem] sm:px-3 sm:py-2 sm:text-[12px]">
+                {trafficError === "rate_limited"
+                  ? "Traffic source busy — retrying"
+                  : trafficError
+                    ? "Traffic unavailable"
+                    : zoomHint}
+              </div>
+            )}
           </div>
-        )}
-        {trafficOn && (zoomHint || trafficError) && (
-          <div className="pointer-events-none max-w-[14rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-2.5 py-1.5 text-[11px] text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:max-w-[15rem] sm:px-3 sm:py-2 sm:text-[12px]">
-            {trafficError === "rate_limited"
-              ? "Traffic source busy — retrying"
-              : trafficError
-                ? "Traffic unavailable"
-                : zoomHint}
+          <div className="pointer-events-none absolute bottom-[calc(108px+0.75rem+env(safe-area-inset-bottom))] left-3 z-30 md:bottom-5 md:left-5">
+            <MapAddPinFab />
           </div>
-        )}
-      </div>
-      <div className="pointer-events-none absolute bottom-[calc(108px+0.75rem+env(safe-area-inset-bottom))] left-3 z-30 md:bottom-5 md:left-5">
-        <MapAddPinFab />
-      </div>
-      <MapAddPinSheet />
+          <MapAddPinSheet />
+        </>
+      )}
     </div>
   );
 }
