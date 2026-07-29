@@ -6,13 +6,14 @@
     "dev": "next dev",
     "dev:lan": "next dev --hostname 0.0.0.0 --port 3000",
     "build": "next build",
+    "postinstall": "npm run build --prefix node_modules/@canifly/middleware",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@canifly/middleware": "file:../CanIFly-middleware",
+    "@canifly/middleware": "github:EugeneKrokhmal/CanIFly-middleware#main",
     "@turf/boolean-point-in-polygon": "^7.3.5",
     "@turf/helpers": "^7.3.5",
     "maplibre-gl": "4.7.1",
