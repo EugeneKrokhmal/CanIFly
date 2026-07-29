@@ -83,7 +83,7 @@ function lerp(a: number, b: number, t: number): number {
 }
 
 function lerpAngle(a: number, b: number, t: number): number {
-  let d = ((b - a + 540) % 360) - 180;
+  const d = ((b - a + 540) % 360) - 180;
   return (a + d * t + 360) % 360;
 }
 
