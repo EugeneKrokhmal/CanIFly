@@ -44,7 +44,7 @@ export function obstaclePopupHtml(input: {
   canVote?: boolean;
 }): string {
   const msg = input.message?.trim();
-  const photo = input.photoUrl?.startsWith("/uploads/obstacles/")
+  const photo = input.photoUrl
     ? `<img src="${escapeHtml(input.photoUrl)}" alt="" style="display:block;width:100%;max-height:140px;object-fit:cover;border-radius:8px;margin:8px 0" />`
     : "";
 

@@ -189,7 +189,7 @@ export default function PilotProfilePage({
                     key={o.id}
                     className="overflow-hidden rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] shadow-[var(--as-shadow)]"
                   >
-                    {o.photoUrl?.startsWith("/uploads/obstacles/") ? (
+                    {o.photoUrl ? (
                       <button
                         type="button"
                         onClick={() => setLightboxSrc(o.photoUrl)}
