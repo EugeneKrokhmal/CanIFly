@@ -119,7 +119,10 @@
     "locateMe": "Localízame",
     "collapsePanel": "Cerrar panel",
     "flightControls": "Controles de vuelo",
-    "obstacleFallback": "Obstáculo"
+    "obstacleFallback": "Obstáculo",
+    "webglUnavailable": "El mapa no pudo iniciarse en este dispositivo",
+    "webglUnavailableHint": "La aceleración gráfica no está disponible o está bloqueada. Cierra otras pestañas, desactiva el modo de bajo consumo e inténtalo de nuevo.",
+    "webglRetry": "Reintentar"
   },
   "sidebar": {
     "flightProfile": "Perfil de vuelo",
