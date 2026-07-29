@@ -4,6 +4,8 @@
 @source "../**/*.{js,ts,jsx,tsx}";
 @source "../../**/*.{js,ts,jsx,tsx}";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   /* Airbnb-inspired light system */
   --as-rausch: #ff385c;
@@ -11,10 +13,17 @@
   --as-rausch-soft: rgba(255, 56, 92, 0.12);
   --as-ink: #222222;
   --as-ink-soft: #717171;
+  --as-ink-invert: #ffffff;
   --as-surface: #ffffff;
   --as-surface-muted: #f7f7f7;
+  --as-surface-elevated: #ffffff;
   --as-line: #dddddd;
+  --as-line-soft: #ebebeb;
   --as-line-strong: #b0b0b0;
+  --as-hover: #f7f7f7;
+  --as-hover-warm: #fff8f6;
+  --as-hover-green: #f3faf6;
+  --as-overlay: rgba(0, 0, 0, 0.45);
   --as-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
   --as-shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.12);
 
@@ -46,6 +55,44 @@
   --as-dur: 220ms;
   --as-dur-med: 320ms;
   --as-dur-slow: 420ms;
+  color-scheme: light;
+}
+
+.dark {
+  --as-rausch: #ff5a7a;
+  --as-rausch-hover: #ff7a94;
+  --as-rausch-soft: rgba(255, 90, 122, 0.18);
+  --as-ink: #f2f2f2;
+  --as-ink-soft: #a3a3a3;
+  --as-ink-invert: #121212;
+  --as-surface: #1a1a1a;
+  --as-surface-muted: #121212;
+  --as-surface-elevated: #242424;
+  --as-line: #333333;
+  --as-line-soft: #2a2a2a;
+  --as-line-strong: #6b6b6b;
+  --as-hover: #2a2a2a;
+  --as-hover-warm: #2a1f20;
+  --as-hover-green: #1c2621;
+  --as-overlay: rgba(0, 0, 0, 0.65);
+  --as-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 16px rgba(0, 0, 0, 0.28);
+  --as-shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.45);
+
+  --as-navy: #1a1a1a;
+  --as-navy-deep: #121212;
+  --as-panel: #1a1a1a;
+  --as-cream: #f2f2f2;
+  --as-cream-dim: #a3a3a3;
+  --as-amber: #ff5a7a;
+  --as-amber-soft: rgba(255, 90, 122, 0.16);
+  --as-clear: #3dd68c;
+  --as-restricted: #f0a24a;
+  --as-prohibited: #f07167;
+  --as-muted: #6b6b6b;
+  --as-map-bg: #0e0e0e;
+  --background: #121212;
+  --foreground: #f2f2f2;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -107,14 +154,12 @@ body {
   }
 }
 
-@keyframes as-pop {
+@keyframes as-popup-in {
   from {
     opacity: 0;
-    transform: translate3d(0, -4px, 0) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
@@ -138,6 +183,33 @@ body {
   }
 }
 
+@keyframes as-sheet-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.as-sheet-in {
+  animation: as-sheet-in 320ms var(--as-ease-out) both;
+  will-change: transform, opacity;
+}
+
+.as-scroll-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.as-scroll-hidden::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 .as-rise {
   animation: as-rise var(--as-dur-med) var(--as-ease-out) both;
 }
@@ -153,6 +225,17 @@ body {
 .as-pop {
   animation: as-pop var(--as-dur) var(--as-ease-spring) both;
   transform-origin: top right;
+}
+
+@keyframes as-pop {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -4px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 .as-status-flash {
@@ -218,9 +301,9 @@ body {
 .as-skeleton {
   background: linear-gradient(
     90deg,
-    #f0f0f0 0%,
-    #f7f7f7 40%,
-    #f0f0f0 80%
+    var(--as-line-soft) 0%,
+    var(--as-hover) 40%,
+    var(--as-line-soft) 80%
   );
   background-size: 200% 100%;
   animation: as-shimmer 1.1s linear infinite;
@@ -238,10 +321,25 @@ body {
 
 .maplibregl-map {
   font: inherit;
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Keep MapLibre chrome inside the map box (never stretch the page). */
+.maplibregl-canvas-container {
+  position: absolute;
+  inset: 0;
+}
+
+.maplibregl-popup {
+  position: absolute !important;
+  z-index: 3;
 }
 
 .maplibregl-ctrl-group {
-  background: #fff !important;
+  background: var(--as-surface) !important;
   border: 1px solid var(--as-line) !important;
   border-radius: 8px !important;
   box-shadow: var(--as-shadow) !important;
@@ -251,21 +349,35 @@ body {
 .maplibregl-ctrl-group button {
   width: 34px !important;
   height: 34px !important;
+  filter: var(--as-ctrl-icon-filter, none);
   transition: background-color var(--as-dur-fast) var(--as-ease-out) !important;
+}
+
+.dark {
+  --as-ctrl-icon-filter: invert(1) brightness(1.15);
 }
 
 .maplibregl-ctrl-group button + button {
   border-top: 1px solid var(--as-line) !important;
 }
 
+.maplibregl-ctrl-group button:not(:disabled):hover {
+  background-color: var(--as-hover) !important;
+}
+
 .maplibregl-ctrl-attrib {
   background: transparent !important;
-  color: #717171 !important;
+  color: var(--as-ink-soft) !important;
   font-size: 10px !important;
 }
 
 .maplibregl-ctrl-attrib a {
-  color: #222222 !important;
+  color: var(--as-ink) !important;
+}
+
+.dark .maplibregl-ctrl-attrib.maplibregl-compact {
+  background-color: var(--as-surface) !important;
+  color: var(--as-ink) !important;
 }
 
 .as-pin {
@@ -274,19 +386,19 @@ body {
   width: 28px;
   height: 28px;
   border-radius: 999px;
-  background: #222222;
-  color: #fff;
+  background: var(--as-ink);
+  color: var(--as-ink-invert);
   font-family: var(--font-ui), sans-serif;
   font-size: 11px;
   font-weight: 600;
   box-shadow: var(--as-shadow);
-  border: 2px solid #fff;
+  border: 2px solid var(--as-surface);
   transition: transform var(--as-dur-fast) var(--as-ease-spring);
 }
 
 .as-scroll {
   scrollbar-width: thin;
-  scrollbar-color: #dddddd transparent;
+  scrollbar-color: var(--as-line) transparent;
 }
 
 .as-scroll::-webkit-scrollbar {
@@ -294,20 +406,41 @@ body {
 }
 
 .as-scroll::-webkit-scrollbar-thumb {
-  background: #dddddd;
+  background: var(--as-line);
   border-radius: 3px;
 }
 
 .as-ac-popup .maplibregl-popup-content {
-  padding: 14px 36px 14px 14px;
+  padding: 14px 14px 14px 14px;
   border-radius: 12px;
   font-family: var(--font-ui), sans-serif;
   font-size: 13px;
   line-height: 1.45;
-  color: #222222;
+  color: var(--as-ink);
+  background: var(--as-surface) !important;
   box-shadow: var(--as-shadow-lg);
   border: 1px solid var(--as-line);
-  animation: as-pop var(--as-dur) var(--as-ease-out) both;
+  /* Opacity-only: transform here fights MapLibre popup positioning. */
+  animation: as-popup-in var(--as-dur) var(--as-ease-out) both;
+}
+
+.as-ac-popup .maplibregl-popup-tip {
+  border-top-color: var(--as-surface);
+  border-bottom-color: var(--as-surface);
+}
+
+.as-ac-popup.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.as-ac-popup.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.as-ac-popup.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
+  border-top-color: var(--as-surface);
+  border-bottom-color: transparent;
+}
+
+.as-ac-popup.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.as-ac-popup.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.as-ac-popup.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+  border-bottom-color: var(--as-surface);
+  border-top-color: transparent;
 }
 
 .as-ac-popup .maplibregl-popup-close-button {
@@ -319,12 +452,12 @@ body {
   border-radius: 6px;
   font-size: 18px;
   line-height: 22px;
-  color: #717171;
+  color: var(--as-ink-soft);
 }
 
 .as-ac-popup .maplibregl-popup-close-button:hover {
-  background: #f7f7f7;
-  color: #222222;
+  background: var(--as-hover);
+  color: var(--as-ink);
 }
 
 .as-ac-popup-inner strong {
@@ -338,7 +471,7 @@ body {
 
 .as-ac-popup-hint {
   margin-top: 8px;
-  color: #717171;
+  color: var(--as-ink-soft);
   font-size: 12px;
   letter-spacing: 0;
   text-transform: none;
@@ -347,7 +480,7 @@ body {
 .as-chip {
   border: 1px solid var(--as-line);
   border-radius: var(--as-radius-pill);
-  background: #fff;
+  background: var(--as-surface);
   box-shadow: var(--as-shadow);
 }
 
