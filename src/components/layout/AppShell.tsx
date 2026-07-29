@@ -19,17 +19,19 @@ function AuthBootstrap() {
 
 /** Restore preferred language from the account after login / session restore. */
 function LocaleSync() {
-  const user = useAuthStore((s) => s.user);
+  const serverLocale = useAuthStore((s) => s.serverLocale);
   const loading = useAuthStore((s) => s.loading);
   const locale = useLocale() as AppLocale;
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    if (loading || !user?.locale) return;
-    if (user.locale === locale) return;
-    router.replace(pathname, { locale: user.locale });
-  }, [loading, user?.locale, locale, pathname, router]);
+    // Only when the API explicitly returned/saved a locale — never force a
+    // client default of "es" (old API builds omit the field).
+    if (loading || !serverLocale) return;
+    if (serverLocale === locale) return;
+    router.replace(pathname, { locale: serverLocale });
+  }, [loading, serverLocale, locale, pathname, router]);
 
   return null;
 }

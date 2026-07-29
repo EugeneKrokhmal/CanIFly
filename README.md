@@ -1,8 +1,20 @@
 # CanIFly
 
-**One-tap UAS airspace status for Spain** — tap the map and get **Clear / Limited / Restricted / Prohibited**, filtered by your drone class and planned altitude (Open category).
+**[canifly.org](https://canifly.org)** — one-tap UAS airspace status for Spain. Tap the map and get **Clear / Limited / Restricted / Prohibited**, filtered by your drone class and planned altitude (Open category).
 
-CanIFly is **not** an official ENAIRE or AESA product. Always cross-check with official sources before flying.
+Spanish is the default language; English is at [`/en`](https://canifly.org/en). CanIFly is **not** an official ENAIRE or AESA product — always cross-check official sources before flying.
+
+---
+
+## Live links
+
+| | URL |
+|--|-----|
+| **Website** | [https://canifly.org](https://canifly.org) |
+| **English** | [https://canifly.org/en](https://canifly.org/en) |
+| **API health** | [https://canifly-api.onrender.com/health](https://canifly-api.onrender.com/health) |
+| **Guide** | [https://canifly.org/guide](https://canifly.org/guide) |
+| **FAQ** | [https://canifly.org/faq](https://canifly.org/faq) |
 
 ---
 
@@ -11,48 +23,94 @@ CanIFly is **not** an official ENAIRE or AESA product. Always cross-check with o
 | Capability | Description |
 |------------|-------------|
 | **Airspace status** | Click any point in Spain; API evaluates overlapping UAS zones against your profile and returns a single status + matched zones |
-| **Zone map layers** | Pink ZGUAS-style fills from aero / urbano / infra (and related) sources, filtered for map readability by altitude/profile |
-| **Drone profile** | Weight class (e.g. C0–C4) and AGL altitude drive Open-category ceilings and which zones apply |
-| **Community obstacles** | Report construction, cranes, power lines, air sports, other; photo upload; ▲/▼ votes; inactive when dislikes dominate |
-| **Live traffic** | Optional OpenSky aircraft overlay + track |
-| **Weather** | Point weather widget for the selected location |
-| **Accounts** | Register / login (JWT cookie), profile (avatar, bio, operator number), public pilot pages |
-| **i18n** | Spanish default + English (`next-intl`) |
+| **Zone map layers** | Pink ZGUAS-style fills from aero / urbano / infra (and related) sources, filtered by altitude/profile |
+| **Drone profile** | Weight class (e.g. C0–C2) and AGL altitude drive Open-category ceilings and which zones apply |
+| **Community obstacles & fly spots** | Report obstacles or places to fly; photo upload; ▲/▼ votes; inactive when dislikes dominate |
+| **Live traffic** | Aircraft overlay (OpenSky when reachable; community ADS-B fallback when cloud hosts are blocked) |
+| **Weather** | Point weather for the selected location |
+| **Accounts** | Register → email verification → login; profile (avatar, bio, operator number); public pilot pages |
+| **Settings** | Language (ES/EN, saved on the account when signed in) and theme (light / dark / system) |
+| **i18n & SEO** | Spanish default + English; sitemap, OG image, JSON-LD |
 
 ---
 
-## Repository layout (three siblings)
+## Production infrastructure
 
-CanIFly was split from a monolith into three repos that live side-by-side under the same parent folder:
+Cheap go-live stack — typically **€0–12/yr** (domain) plus free tiers elsewhere. Render free tier **sleeps** after idle (cold starts on the API).
+
+| Piece | Provider | Role | Live / notes |
+|-------|----------|------|----------------|
+| **Web** | [Vercel](https://vercel.com) (Hobby) | Next.js UI, i18n, map | [canifly.org](https://canifly.org) — auto-deploys from `main` |
+| **API** | [Render](https://render.com) (Docker) | Hono + auth, zones, obstacles, traffic proxy | [canifly-api.onrender.com](https://canifly-api.onrender.com) |
+| **Shared package** | GitHub | Zod schemas, geo, EN/ES labels | [`CanIFly-middleware`](https://github.com/EugeneKrokhmal/CanIFly-middleware) (`dist/` on `main`) |
+| **Database** | [Supabase](https://supabase.com) | Postgres + PostGIS | EU pooler; schema bootstrap on API boot |
+| **Photos** | Supabase Storage | Obstacle & avatar uploads | Bucket `canifly-uploads` (durable across Render redeploys) |
+| **Email** | [Resend](https://resend.com) | Verification mail (ES/EN) | Links use `APP_URL=https://canifly.org` |
+| **Domain / DNS** | [Cloudflare](https://www.cloudflare.com) | Registrar + DNS → Vercel | `canifly.org` |
+| **Map tiles** | [OpenFreeMap](https://openfreemap.org) | Basemap style for MapLibre | `NEXT_PUBLIC_MAP_STYLE` |
+| **Airspace data** | ENAIRE / servAIS | UAS zone geometry ingest | Via API |
+| **Aircraft** | OpenSky + adsb.lol / airplanes.live | Live traffic | OpenSky optional OAuth; community ADS-B fallback |
+| **Weather** | Open-Meteo | Point forecasts | Via API |
+| **Drone catalog** | OpenDroneList | Model / class picker | Via API |
+
+### Request path
+
+```
+Browser  →  https://canifly.org                 (Vercel / Next.js)
+                 │
+                 ├── pages, MapLibre UI, i18n, SEO
+                 └── /api/*  and  /uploads/*   rewritten to API_URL
+                            │
+                            ▼
+               https://canifly-api.onrender.com  (Render / Docker)
+                            │
+          ┌─────────────────┼─────────────────┬──────────────┐
+          ▼                 ▼                 ▼              ▼
+     Supabase PostGIS   Supabase Storage   Resend      Traffic feeds
+     (zones, users,     (photos)           (verify)    (OpenSky / ADS-B)
+      obstacles)
+          │
+          └── ENAIRE / servAIS (zone ingest)
+```
+
+Auth cookies are set on **canifly.org** because the browser only talks to the site origin; Vercel proxies `/api` to Render.
+
+Full deploy checklist, env vars, and DNS: **[DEPLOY.md](./DEPLOY.md)**.
+
+---
+
+## Repositories
+
+Three siblings under the same parent folder:
 
 ```
 Sites/GitHub/
-├── CanIFly/                 ← this repo — Next.js web UI (:3000)
-├── CanIFly-api/             ← Hono + PostGIS API (:4000)
+├── CanIFly/                 ← this repo — Next.js web (:3000 / Vercel)
+├── CanIFly-api/             ← Hono + PostGIS API (:4000 / Render)
 └── CanIFly-middleware/      ← shared Zod schemas, geo, EN/ES labels
 ```
 
-| Package | Role |
-|---------|------|
-| [`CanIFly`](https://github.com/EugeneKrokhmal/CanIFly) | Browser app: MapLibre map, shell, i18n, client state |
-| [`CanIFly-api`](https://github.com/EugeneKrokhmal/CanIFly-api) | Auth, DB, ENAIRE/servAIS ingest & queries, obstacles, traffic proxy |
-| [`@canifly/middleware`](https://github.com/EugeneKrokhmal/CanIFly-middleware) | Single source of truth for status classification, request schemas, constants |
+| Package | Repo | Role |
+|---------|------|------|
+| **CanIFly** | [github.com/EugeneKrokhmal/CanIFly](https://github.com/EugeneKrokhmal/CanIFly) | MapLibre UI, shell, i18n, client state |
+| **CanIFly-api** | [github.com/EugeneKrokhmal/CanIFly-api](https://github.com/EugeneKrokhmal/CanIFly-api) | Auth, DB, ingest, obstacles, traffic, weather |
+| **@canifly/middleware** | [github.com/EugeneKrokhmal/CanIFly-middleware](https://github.com/EugeneKrokhmal/CanIFly-middleware) | Status classification, request schemas, constants |
 
-Local linking (until published to npm):
+**Production:** web installs middleware from GitHub (`github:EugeneKrokhmal/CanIFly-middleware#main` with committed `dist/`).
 
-```json
-"@canifly/middleware": "file:../CanIFly-middleware"
-```
+**Local monorepo:** use `"@canifly/middleware": "file:../CanIFly-middleware"`.
 
 ```mermaid
 flowchart LR
-  Browser -->|"/:locale pages"| Web[CanIFly Next.js :3000]
-  Web -->|"rewrite /api /uploads"| API[CanIFly-api :4000]
+  Browser -->|"canifly.org"| Web[CanIFly / Vercel]
+  Web -->|"rewrite /api /uploads"| API[CanIFly-api / Render]
   Web --> MW["@canifly/middleware"]
   API --> MW
-  API --> PG[(PostGIS)]
+  API --> PG[(Supabase PostGIS)]
+  API --> Storage[Supabase Storage]
+  API --> Resend[Resend]
   API --> ENAIRE[ENAIRE / servAIS]
-  API --> OpenSky[OpenSky]
+  API --> Traffic[OpenSky / ADS-B]
 ```
 
 ---
@@ -61,30 +119,24 @@ flowchart LR
 
 ### Why three packages?
 
-- **Shared geo rules must not drift** — status classification (`classifyStatus`), profile filters, and Zod query schemas live once in middleware and are imported by both API and (where useful) the web.
-- **Next.js stays a BFF-less UI** — the App Router does not own business logic or secrets; it rewrites `/api` and `/uploads` to the Hono server.
-- **API can scale / deploy independently** — PostGIS, JWT, file uploads, and upstream rate limits stay off the Next process.
+- **Shared geo rules must not drift** — status classification, profile filters, and Zod schemas live once in middleware.
+- **Next.js stays a thin UI** — App Router does not own business logic or secrets; it rewrites `/api` and `/uploads` to Hono.
+- **API deploys independently** — PostGIS, JWT, uploads, and upstream rate limits stay off the Next process.
 
 ### Frontend choices
 
 | Choice | Why |
 |--------|-----|
-| **Next.js 15 App Router** | Routing, SSR shell, easy locale segments, rewrites |
-| **MapLibre GL 4.x** | Open basemap (OpenFreeMap), full control over layers/markers/popups |
-| **Zustand** | Light client stores for auth, drone profile, obstacles UI |
+| **Next.js App Router** | Routing, SSR shell, locale segments, rewrites |
+| **MapLibre GL** | Open basemap (OpenFreeMap), full control over layers/markers/popups |
+| **Zustand** | Light client stores for auth, drone profile, obstacles, theme |
 | **next-intl** | `es` default with `localePrefix: "as-needed"`; `en` under `/en` |
-| **Proxy rewrites** | Browser always talks same-origin `/api/*`; cookies and CORS stay simple in local/prod |
+| **Same-origin proxy** | Browser always uses `/api/*`; cookies stay simple in local and prod |
 
 ### Coordinates & coverage
 
-- All coordinates are **WGS84 (EPSG:4326)**.
+- Coordinates are **WGS84 (EPSG:4326)**.
 - Coverage is Spain (peninsula + islands) via `SPAIN_BOUNDS` in middleware.
-- Map style URL: `NEXT_PUBLIC_MAP_STYLE` (default OpenFreeMap bright).
-
-### Status UX
-
-- Clicking the map sets the selected point and opens a **status popup** (no main “takeoff pin” marker).
-- Zone list pins (numbered) and pending obstacle-placement markers remain for those flows.
 
 ---
 
@@ -92,35 +144,37 @@ flowchart LR
 
 ```
 CanIFly/
+├── DEPLOY.md                 # production deploy guide
 ├── messages/                 # es.json, en.json UI strings
-├── public/                   # static assets
+├── public/
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx        # root HTML shell
+│   │   ├── opengraph-image.tsx
+│   │   ├── sitemap.ts / robots.ts
 │   │   └── [locale]/         # locale-aware pages
 │   │       ├── page.tsx      # map home
-│   │       ├── account/      # profile
-│   │       ├── pilots/[id]/  # public pilot
-│   │       ├── faq|privacy|contacts/
+│   │       ├── account/ | settings/ | verify-email/
+│   │       ├── pilots/[id]/ | guide/ | faq/ | privacy/ | contacts/
 │   │       └── HomePageClient.tsx
 │   ├── components/
-│   │   ├── map/MapView.tsx   # MapLibre map, layers, popups
-│   │   ├── layout/           # header, shell, auth modal, mobile sheet
-│   │   └── sidebar/          # drone picker, report obstacle, panel
-│   ├── hooks/                # airspace status, zones, obstacles, traffic
-│   ├── stores/               # zustand: auth, drone-profile, obstacles
-│   ├── i18n/                 # routing, request, navigation helpers
-│   ├── lib/map|drones|weather/
-│   └── middleware.ts         # next-intl middleware
+│   │   ├── map/              # MapLibre map, layers, popups
+│   │   ├── layout/           # header, shell, auth modal
+│   │   ├── settings/         # language + theme
+│   │   └── sidebar/
+│   ├── hooks/                # airspace, zones, obstacles, traffic
+│   ├── stores/               # auth, drone-profile, obstacles, theme
+│   ├── i18n/
+│   ├── lib/                  # seo, map icons, drones, weather
+│   └── middleware.ts         # next-intl
 ├── next.config.ts            # API_URL rewrites + transpilePackages
 └── package.json
 ```
 
 ---
 
-## Quick start
+## Quick start (local)
 
-Prerequisites: **Node 20+**, sibling folders `CanIFly-api` and `CanIFly-middleware`, Docker for PostGIS (API).
+Prerequisites: **Node 20+**, sibling `CanIFly-api` and `CanIFly-middleware`, Docker for PostGIS (or a local Supabase URL).
 
 ```bash
 # 1) Shared package
@@ -130,23 +184,24 @@ cd ../CanIFly-middleware && npm install && npm run build
 cd ../CanIFly-api
 cp .env.example .env
 npm install
-npm run db:up
+npm run db:up          # or point DATABASE_URL at Supabase
 npm run db:migrate
-npm run dev          # http://localhost:4000
+npm run dev            # http://localhost:4000
 
 # 3) Web
 cd ../CanIFly
 cp .env.example .env
 npm install
-npm run dev          # http://localhost:3000
+npm run dev            # http://localhost:3000
 ```
 
-### Environment
+### Environment (web)
 
-| Variable | Default | Purpose |
+| Variable | Example | Purpose |
 |----------|---------|---------|
-| `API_URL` | `http://localhost:4000` | Backend base for Next rewrites |
-| `NEXT_PUBLIC_MAP_STYLE` | OpenFreeMap bright | MapLibre style URL |
+| `API_URL` | `http://localhost:4000` | Backend for Next rewrites (prod: Render URL) |
+| `NEXT_PUBLIC_SITE_URL` | `https://canifly.org` | Canonical origin (sitemap, OG, JSON-LD) |
+| `NEXT_PUBLIC_MAP_STYLE` | OpenFreeMap bright URL | MapLibre style |
 
 Rewrites in `next.config.ts`:
 
@@ -160,7 +215,7 @@ Rewrites in `next.config.ts`:
 | `/`, `/faq`, … | Spanish (`es`, default, no prefix) |
 | `/en`, `/en/faq`, … | English |
 
-Toggle **ES \| EN** in the header.
+Language lives under **Settings**; when signed in it is stored on the account and restored on next login.
 
 ### Scripts
 
@@ -176,8 +231,9 @@ npm test         # vitest
 
 ## Related docs
 
-- API setup, routes, PostGIS: [`CanIFly-api/README.md`](../CanIFly-api/README.md)
-- Schemas, classification, labels: [`CanIFly-middleware/README.md`](../CanIFly-middleware/README.md)
+- Production deploy: **[DEPLOY.md](./DEPLOY.md)**
+- API setup & routes: [`CanIFly-api` README](https://github.com/EugeneKrokhmal/CanIFly-api)
+- Schemas & classification: [`CanIFly-middleware` README](https://github.com/EugeneKrokhmal/CanIFly-middleware)
 
 ## Disclaimer
 

@@ -360,6 +360,7 @@
     "languageTitle": "Language",
     "languageHint": "Switch between Spanish and English. The URL updates to match.",
     "languageHintSaved": "When signed in, we save your language and restore it on your next login.",
+    "languageSaveFailed": "Language updated here. Couldn’t save to your account yet — try again later.",
     "langEs": "Español",
     "langEn": "English",
     "themeTitle": "Theme",

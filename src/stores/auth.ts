@@ -16,6 +16,8 @@ export type AuthUser = {
 
 type AuthState = {
   user: AuthUser | null;
+  /** Locale explicitly returned/saved by the API; drives restore-on-login. */
+  serverLocale: AppLocale | null;
   loading: boolean;
   authModalOpen: boolean;
   authModalMode: "login" | "register";
@@ -39,12 +41,19 @@ type AuthState = {
   logout: () => Promise<void>;
 };
 
-function normalizeLocale(value: unknown): AppLocale {
-  return value === "en" ? "en" : "es";
+function parseServerLocale(value: unknown): AppLocale | null {
+  return value === "en" || value === "es" ? value : null;
 }
 
-function normalizeUser(user: AuthUser): AuthUser {
-  return { ...user, locale: normalizeLocale(user.locale) };
+function normalizeLocale(value: unknown, fallback: AppLocale = "es"): AppLocale {
+  return parseServerLocale(value) ?? fallback;
+}
+
+function normalizeUser(
+  user: AuthUser,
+  fallbackLocale: AppLocale = "es",
+): AuthUser {
+  return { ...user, locale: normalizeLocale(user.locale, fallbackLocale) };
 }
 
 async function parseError(res: Response): Promise<string> {
@@ -58,6 +67,7 @@ async function parseError(res: Response): Promise<string> {
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
+  serverLocale: null,
   loading: true,
   authModalOpen: false,
   authModalMode: "login",
@@ -73,10 +83,13 @@ export const useAuthStore = create<AuthState>((set) => ({
   setUser: (user) =>
     set((s) => ({
       user: user
-        ? normalizeUser({
-            ...user,
-            locale: user.locale ?? s.user?.locale ?? "es",
-          })
+        ? normalizeUser(
+            {
+              ...user,
+              locale: user.locale ?? s.user?.locale ?? "es",
+            },
+            s.user?.locale ?? "es",
+          )
         : null,
       pendingVerifyEmail: null,
     })),
@@ -86,13 +99,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const res = await fetch("/api/auth/me", { credentials: "include" });
       if (!res.ok) {
-        set({ user: null, loading: false });
+        set({ user: null, serverLocale: null, loading: false });
         return;
       }
       const data = (await res.json()) as { user: AuthUser };
-      set({ user: normalizeUser(data.user), loading: false });
+      const serverLocale = parseServerLocale(data.user.locale);
+      set((s) => ({
+        user: normalizeUser(
+          data.user,
+          serverLocale ?? s.user?.locale ?? "es",
+        ),
+        serverLocale,
+        loading: false,
+      }));
     } catch {
-      set({ user: null, loading: false });
+      set({ user: null, serverLocale: null, loading: false });
     }
   },
 
@@ -119,8 +140,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
     if (!res.ok) return { error: await parseError(res) };
     const data = (await res.json()) as { user: AuthUser };
+    const serverLocale = parseServerLocale(data.user.locale);
     set({
-      user: normalizeUser(data.user),
+      user: normalizeUser(data.user, serverLocale ?? "es"),
+      serverLocale,
       authModalOpen: false,
       pendingVerifyEmail: null,
     });
@@ -154,8 +177,10 @@ export const useAuthStore = create<AuthState>((set) => ({
       return { error: null, needsVerification: true };
     }
     if (data.user) {
+      const serverLocale = parseServerLocale(data.user.locale);
       set({
-        user: normalizeUser(data.user),
+        user: normalizeUser(data.user, serverLocale ?? "es"),
+        serverLocale,
         authModalOpen: false,
         pendingVerifyEmail: null,
       });
@@ -172,7 +197,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     });
     if (!res.ok) return parseError(res);
     const data = (await res.json()) as { user: AuthUser };
-    set({ user: normalizeUser(data.user) });
+    const serverLocale = parseServerLocale(data.user.locale) ?? locale;
+    set({
+      user: normalizeUser(data.user, serverLocale),
+      serverLocale,
+    });
     return null;
   },
 
@@ -192,6 +221,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       method: "POST",
       credentials: "include",
     });
-    set({ user: null });
+    set({ user: null, serverLocale: null });
   },
 }));

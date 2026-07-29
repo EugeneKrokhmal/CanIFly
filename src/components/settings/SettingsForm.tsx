@@ -43,6 +43,7 @@ export function SettingsForm() {
   const pathname = usePathname();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
+  const setUser = useAuthStore((s) => s.setUser);
   const updateLocale = useAuthStore((s) => s.updateLocale);
   const preference = useThemeStore((s) => s.preference);
   const setPreference = useThemeStore((s) => s.setPreference);
@@ -52,16 +53,23 @@ export function SettingsForm() {
   const switchLocale = async (next: AppLocale) => {
     if (next === locale || savingLocale) return;
     setLocaleError(null);
+
+    // Switch UI immediately. Persist in the background when signed in so a
+    // slow/missing API never blocks language selection.
     if (user) {
-      setSavingLocale(true);
-      const err = await updateLocale(next);
-      setSavingLocale(false);
-      if (err) {
-        setLocaleError(err);
-        return;
-      }
+      setUser({ ...user, locale: next });
     }
     router.replace(pathname, { locale: next });
+
+    if (!user) return;
+
+    setSavingLocale(true);
+    const err = await updateLocale(next);
+    setSavingLocale(false);
+    if (err) {
+      // Keep the chosen UI language; warn that it may not stick after re-login.
+      setLocaleError(t("languageSaveFailed"));
+    }
   };
 
   const themes: { id: ThemePreference; label: string }[] = [
