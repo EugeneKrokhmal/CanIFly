@@ -1,8 +1,9 @@
 "use client";
 
 import { create } from "zustand";
+import type { AppLocale } from "@/i18n/routing";
 
-export type AppLocale = "es" | "en";
+export type { AppLocale };
 
 export type AuthUser = {
   id: string;
@@ -42,7 +43,7 @@ type AuthState = {
 };
 
 function parseServerLocale(value: unknown): AppLocale | null {
-  return value === "en" || value === "es" ? value : null;
+  return value === "en" || value === "es" || value === "pl" ? value : null;
 }
 
 function normalizeLocale(value: unknown, fallback: AppLocale = "es"): AppLocale {
