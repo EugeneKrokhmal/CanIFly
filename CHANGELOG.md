@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2] — 2026-07-30
+
+### Fixed
+- Clear previous tap status immediately so Clear/Restricted cannot flash the wrong verdict
+- Ignore out-of-order airspace status responses when taps race
+- Default basemap style OpenFreeMap **liberty** (fixes Open Sans glyph 404s on bright)
+
 ## [0.2.1] — 2026-07-30
 
 ### Added

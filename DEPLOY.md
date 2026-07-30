@@ -21,6 +21,7 @@ All three packages share the same semver for a coordinated release (`package.jso
 
 | Version | Tag | Coverage | Notes |
 |---------|-----|----------|--------|
+| `0.2.2` | `v0.2.2` | Spain + Poland | Status tap race fix; liberty basemap; PANSA health flag |
 | `0.2.1` | `v0.2.1` | Spain + Poland | Top pilots stack; Poland contacts; local DB SSL fix |
 | `0.2.0` | `v0.2.0` | Spain + **Poland** | PANSA live API; set `PANSA_API_KEY` on Render |
 | `0.1.0` | — | Spain | Initial prod |
@@ -215,7 +216,7 @@ Free tier notes:
 ```
 API_URL=https://canifly-api.onrender.com
 NEXT_PUBLIC_SITE_URL=https://canifly.org
-NEXT_PUBLIC_MAP_STYLE=https://tiles.openfreemap.org/styles/bright
+NEXT_PUBLIC_MAP_STYLE=https://tiles.openfreemap.org/styles/liberty
 ```
 
 `next.config.ts` rewrites:
@@ -347,7 +348,7 @@ Web `.env.local`:
 ```
 API_URL=http://localhost:4000
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
-NEXT_PUBLIC_MAP_STYLE=https://tiles.openfreemap.org/styles/bright
+NEXT_PUBLIC_MAP_STYLE=https://tiles.openfreemap.org/styles/liberty
 ```
 
 API `.env` mirrors `.env.example` (`CORS_ORIGIN` / `APP_URL` = `http://localhost:3000`).

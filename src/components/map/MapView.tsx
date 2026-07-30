@@ -367,7 +367,7 @@ export function MapView({ className }: MapViewProps) {
 
     const styleUrl =
       process.env.NEXT_PUBLIC_MAP_STYLE ??
-      "https://tiles.openfreemap.org/styles/bright";
+      "https://tiles.openfreemap.org/styles/liberty";
 
     const map = new maplibregl.Map({
       container: containerRef.current,

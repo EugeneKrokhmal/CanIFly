@@ -43,7 +43,7 @@ interface DroneProfileState {
   statusError: string | null;
   queryMs: number | null;
   dataVersion: string | null;
-  backend: "servais" | "postgis" | "memory" | null;
+  backend: "servais" | "postgis" | "memory" | "pansa" | "multi" | null;
   highlightedZoneId: string | null;
   setWeightClass: (v: WeightClass) => void;
   setMaxAltitudeAgl: (v: number) => void;
@@ -62,7 +62,7 @@ interface DroneProfileState {
     zones: MatchedZone[];
     queryMs: number | null;
     dataVersion: string | null;
-    backend: "servais" | "postgis" | "memory" | null;
+    backend: "servais" | "postgis" | "memory" | "pansa" | "multi" | null;
   }) => void;
   setStatusLoading: (v: boolean) => void;
   setStatusError: (v: string | null) => void;
@@ -104,11 +104,29 @@ export const useDroneProfileStore = create<DroneProfileState>()(
           selectedDrone,
           ...(selectedDrone ? { weightClass: selectedDrone.weightClass } : {}),
         }),
-      setSelectedPoint: (selectedPoint) => set({ selectedPoint }),
+      setSelectedPoint: (selectedPoint) =>
+        set({
+          selectedPoint,
+          // Drop previous tap's verdict immediately so UI cannot flash the wrong status.
+          status: null,
+          summary: null,
+          zones: [],
+          statusError: null,
+          statusLoading: selectedPoint != null,
+          queryMs: null,
+          highlightedZoneId: null,
+        }),
       locateAndFocus: (p, zoom = 14) =>
         set((s) => ({
           selectedPoint: p,
           suppressGeolocate: true,
+          status: null,
+          summary: null,
+          zones: [],
+          statusError: null,
+          statusLoading: true,
+          queryMs: null,
+          highlightedZoneId: null,
           mapCameraRequest: {
             lat: p.lat,
             lng: p.lng,

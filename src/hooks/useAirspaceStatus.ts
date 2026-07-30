@@ -12,7 +12,7 @@ interface StatusApiResponse {
   meta?: {
     queryMs?: number;
     dataVersion?: string | null;
-    backend?: "servais" | "postgis" | "memory";
+    backend?: "servais" | "postgis" | "memory" | "pansa" | "multi";
   };
 }
 
@@ -31,12 +31,15 @@ export function useAirspaceStatus() {
 
   const abortRef = useRef<AbortController | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** Ignore out-of-order responses when taps race. */
+  const requestIdRef = useRef(0);
 
   const fetchStatus = useCallback(
     async (lat: number, lng: number) => {
       abortRef.current?.abort();
       const controller = new AbortController();
       abortRef.current = controller;
+      const requestId = ++requestIdRef.current;
       setStatusLoading(true);
 
       try {
@@ -51,6 +54,9 @@ export function useAirspaceStatus() {
           signal: controller.signal,
         });
         const data = (await res.json()) as StatusApiResponse;
+        if (requestId !== requestIdRef.current || controller.signal.aborted) {
+          return;
+        }
         if (!res.ok && !data.status) {
           throw new Error(data.error ?? `HTTP ${res.status}`);
         }
@@ -64,6 +70,7 @@ export function useAirspaceStatus() {
         });
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return;
+        if (requestId !== requestIdRef.current) return;
         setStatusError(
           err instanceof Error ? err.message : "Failed to evaluate airspace",
         );
@@ -92,6 +99,7 @@ export function useAirspaceStatus() {
 
   useEffect(() => {
     return () => {
+      requestIdRef.current += 1;
       abortRef.current?.abort();
     };
   }, []);

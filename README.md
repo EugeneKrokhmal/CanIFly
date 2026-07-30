@@ -201,7 +201,7 @@ npm run dev            # http://localhost:3000
 |----------|---------|---------|
 | `API_URL` | `http://localhost:4000` | Backend for Next rewrites (prod: Render URL) |
 | `NEXT_PUBLIC_SITE_URL` | `https://canifly.org` | Canonical origin (sitemap, OG, JSON-LD) |
-| `NEXT_PUBLIC_MAP_STYLE` | OpenFreeMap bright URL | MapLibre style |
+| `NEXT_PUBLIC_MAP_STYLE` | OpenFreeMap liberty URL | MapLibre style |
 
 Rewrites in `next.config.ts`:
 
