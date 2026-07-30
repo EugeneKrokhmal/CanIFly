@@ -35,6 +35,50 @@ export function languageAlternates(path = "/"): Metadata["alternates"] {
   };
 }
 
+const OG_LOCALE: Record<AppLocale, string> = {
+  es: "es_ES",
+  en: "en_GB",
+  pl: "pl_PL",
+};
+
+const KEYWORDS: Record<AppLocale, string[]> = {
+  es: [
+    "dron España",
+    "espacio aéreo UAS",
+    "ENAIRE drones",
+    "AESA UAS",
+    "puedo volar dron",
+    "zonas UAS",
+    "CanIFly",
+    "mapa drones España",
+    "dron Polonia",
+    "categoría abierta C0 C1 C2",
+  ],
+  en: [
+    "drone Spain",
+    "drone Poland",
+    "UAS airspace",
+    "ENAIRE drones",
+    "PANSA DroneMap",
+    "AESA UAS",
+    "can I fly drone",
+    "UAS geographical zones",
+    "CanIFly",
+    "open category C0 C1 C2",
+  ],
+  pl: [
+    "dron Polska",
+    "przestrzeń powietrzna UAS",
+    "PANSA DroneMap",
+    "ULC drony",
+    "czy mogę latać dronem",
+    "strefy UAS",
+    "CanIFly",
+    "mapa dronów Polska",
+    "kategoria otwarta C0 C1 C2",
+  ],
+};
+
 export function buildPageMetadata(input: {
   locale: string;
   title: string;
@@ -52,6 +96,9 @@ export function buildPageMetadata(input: {
   const url = absoluteUrl(locale, path);
   // OG image lives at app root (`/opengraph-image`), not under a locale prefix.
   const ogImage = `${getSiteUrl()}${input.ogImagePath ?? "/opengraph-image"}`;
+  const alternateLocale = routing.locales
+    .filter((l) => l !== locale)
+    .map((l) => OG_LOCALE[l]);
 
   return {
     metadataBase: new URL(getSiteUrl()),
@@ -62,38 +109,15 @@ export function buildPageMetadata(input: {
     creator: "CanIFly",
     publisher: "CanIFly",
     category: "aviation",
-    keywords:
-      locale === "es"
-        ? [
-            "dron España",
-            "espacio aéreo UAS",
-            "ENAIRE drones",
-            "AESA UAS",
-            "puedo volar dron",
-            "zonas UAS",
-            "CanIFly",
-            "mapa drones España",
-            "categoría abierta C0 C1 C2",
-          ]
-        : [
-            "drone Spain",
-            "UAS airspace",
-            "ENAIRE drones",
-            "AESA UAS",
-            "can I fly drone Spain",
-            "UAS geographical zones",
-            "CanIFly",
-            "Spain drone map",
-            "open category C0 C1 C2",
-          ],
+    keywords: KEYWORDS[locale],
     alternates: {
       canonical: url,
       languages: languageAlternates(path)?.languages,
     },
     openGraph: {
       type: "website",
-      locale: locale === "es" ? "es_ES" : "en_GB",
-      alternateLocale: locale === "es" ? ["en_GB"] : ["es_ES"],
+      locale: OG_LOCALE[locale],
+      alternateLocale,
       url,
       siteName: "CanIFly",
       title: input.title,
@@ -103,7 +127,7 @@ export function buildPageMetadata(input: {
           url: ogImage,
           width: 1200,
           height: 630,
-          alt: "CanIFly — UAS airspace map for Spain",
+          alt: "CanIFly — UAS airspace map for Spain and Poland",
         },
       ],
     },

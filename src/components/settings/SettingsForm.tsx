@@ -106,6 +106,13 @@ export function SettingsForm() {
           >
             {t("langEn")}
           </SegmentedOption>
+          <SegmentedOption
+            active={locale === "pl"}
+            disabled={savingLocale}
+            onClick={() => void switchLocale("pl")}
+          >
+            {t("langPl")}
+          </SegmentedOption>
         </div>
         {localeError ? (
           <p className="mt-3 text-[13px] text-[var(--as-danger,#c13515)]">

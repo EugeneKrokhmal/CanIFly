@@ -35,7 +35,8 @@ export default async function GuidePage({ params }: Props) {
     "@type": "Article",
     headline: t("byCountry.ES.title"),
     description: t("byCountry.ES.intro"),
-    inLanguage: appLocale === "es" ? "es-ES" : "en",
+    inLanguage:
+      appLocale === "es" ? "es-ES" : appLocale === "pl" ? "pl-PL" : "en",
     author: { "@type": "Organization", name: "CanIFly", url: getSiteUrl() },
     publisher: {
       "@type": "Organization",
@@ -49,7 +50,9 @@ export default async function GuidePage({ params }: Props) {
       name:
         appLocale === "es"
           ? "Espacio aéreo UAS en la UE (España y Polonia)"
-          : "UAS airspace in the EU (Spain and Poland)",
+          : appLocale === "pl"
+            ? "Przestrzeń powietrzna UAS w UE (Hiszpania i Polska)"
+            : "UAS airspace in the EU (Spain and Poland)",
     },
   };
 

@@ -9,6 +9,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import type { AppLocale } from "@/i18n/routing";
 import { statusLabel, type AirspaceStatus } from "@canifly/middleware";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 import { useObstaclesStore } from "@/stores/obstacles";
@@ -35,7 +36,7 @@ function maxSheetHeight(): number {
  */
 export const MobileFlightSheet = memo(function MobileFlightSheet() {
   const t = useTranslations("map");
-  const locale = useLocale() as "es" | "en";
+  const locale = useLocale() as AppLocale;
   const status = useDroneProfileStore((s) => s.status);
   const summary = useDroneProfileStore((s) => s.summary);
   const loading = useDroneProfileStore((s) => s.statusLoading);

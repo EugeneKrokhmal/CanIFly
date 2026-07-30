@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import type { AppLocale } from "@/i18n/routing";
 import {
   obstacleLabel,
   pinKindLabel,
@@ -39,7 +40,7 @@ export default function PilotProfilePage({
   params: Promise<{ id: string; locale: string }>;
 }) {
   const t = useTranslations("pilot");
-  const locale = useLocale() as "es" | "en";
+  const locale = useLocale() as AppLocale;
   const [id, setId] = useState<string | null>(null);
   const [pilot, setPilot] = useState<Pilot | null>(null);
   const [obstacles, setObstacles] = useState<ObstacleRow[]>([]);

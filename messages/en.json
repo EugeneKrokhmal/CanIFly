@@ -13,7 +13,7 @@
     "accountTitle": "My account | CanIFly",
     "accountDescription": "Manage your CanIFly pilot profile.",
     "settingsTitle": "Settings — language & theme | CanIFly",
-    "settingsDescription": "Choose language (ES/EN) and light, dark, or system theme for CanIFly."
+    "settingsDescription": "Choose language (ES/EN/PL) and light, dark, or system theme for CanIFly."
   },
   "nav": {
     "map": "Map",
@@ -32,6 +32,7 @@
     "language": "Language",
     "langEs": "ES",
     "langEn": "EN",
+    "langPl": "PL",
     "theme": "Theme",
     "themeToggle": "Theme · {mode}",
     "themeSystem": "System",
@@ -70,6 +71,11 @@
     "checkEmail": "Check {email} for a verification link. You can log in after confirming.",
     "resent": "Verification email sent again to {email}.",
     "resendVerification": "Resend verification email"
+  },
+  "usageBanner": {
+    "message": "You've checked {count} locations. Create a free account to save your spots and report on the map.",
+    "createAccount": "Create account",
+    "remindLater": "Remind me later"
   },
   "verifyEmail": {
     "eyebrow": "Account",
@@ -482,11 +488,12 @@
     "title": "Settings",
     "intro": "Language and appearance for this device.",
     "languageTitle": "Language",
-    "languageHint": "Switch between Spanish and English. The URL updates to match.",
+    "languageHint": "Switch between Spanish, English, and Polish. The URL updates to match.",
     "languageHintSaved": "When signed in, we save your language and restore it on your next login.",
     "languageSaveFailed": "Language updated here. Couldn’t save to your account yet — try again later.",
     "langEs": "Español",
     "langEn": "English",
+    "langPl": "Polski",
     "themeTitle": "Theme",
     "themeHint": "System follows your device setting. Light and dark lock the look.",
     "backToMap": "← Back to map"
