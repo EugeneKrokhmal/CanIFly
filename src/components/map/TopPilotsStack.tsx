@@ -12,9 +12,7 @@ type TopPilot = {
   rank: number;
 };
 
-const FETCH_LIMIT = 20;
-/** ~5 stacked rows visible before scroll. */
-const STACK_MAX_H = "min(42vh, 17.5rem)";
+const DISPLAY_LIMIT = 5;
 
 export function TopPilotsStack() {
   const t = useTranslations("leaderboard");
@@ -25,7 +23,7 @@ export function TopPilotsStack() {
     let cancelled = false;
     void (async () => {
       try {
-        const res = await fetch(`/api/pilots/top?limit=${FETCH_LIMIT}`, {
+        const res = await fetch(`/api/pilots/top?limit=${DISPLAY_LIMIT}`, {
           credentials: "include",
         });
         if (!res.ok) return;
@@ -52,11 +50,8 @@ export function TopPilotsStack() {
       <p className="pointer-events-none mb-1.5 px-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--as-ink-soft)]">
         {t("title")}
       </p>
-      <div
-        className="pointer-events-auto flex flex-col overflow-y-auto overscroll-contain pr-0.5 [scrollbar-width:thin]"
-        style={{ maxHeight: STACK_MAX_H }}
-      >
-        {pilots.map((pilot, i) => (
+      <div className="pointer-events-auto flex flex-col">
+        {pilots.slice(0, DISPLAY_LIMIT).map((pilot, i) => (
           <Link
             key={pilot.id}
             href={`/pilots/${pilot.id}`}

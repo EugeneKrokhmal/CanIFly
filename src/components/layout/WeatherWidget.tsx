@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { SPAIN_CENTER } from "@canifly/middleware";
 import { weatherKind, type WeatherKind } from "@/lib/weather/codes";
+import {
+  WEATHER_SEVERITY_STYLE,
+  weatherSeverity,
+  weatherWarningDetail,
+} from "@/lib/weather/severity";
 import { useDroneProfileStore } from "@/stores/drone-profile";
+import { useWeatherStore } from "@/stores/weather";
 
 type WeatherPayload = {
   temperatureC: number;
@@ -75,9 +81,11 @@ function WeatherIcon({ kind }: { kind: WeatherKind }) {
 
 export function WeatherWidget() {
   const selectedPoint = useDroneProfileStore((s) => s.selectedPoint);
+  const setWeatherStore = useWeatherStore((s) => s.setWeather);
   const [weather, setWeather] = useState<WeatherPayload | null>(null);
   const [error, setError] = useState(false);
 
+  const atPin = Boolean(selectedPoint);
   const lat = selectedPoint?.lat ?? SPAIN_CENTER[1];
   const lng = selectedPoint?.lng ?? SPAIN_CENTER[0];
 
@@ -97,11 +105,24 @@ export function WeatherWidget() {
         });
         if (!res.ok) throw new Error("weather");
         const data = (await res.json()) as WeatherPayload;
-        if (!cancelled) setWeather(data);
+        if (cancelled) return;
+        setWeather(data);
+        const severity = weatherSeverity(data.weatherCode, data.windKmh);
+        setWeatherStore({
+          ...data,
+          severity,
+          warningDetail: weatherWarningDetail(
+            data.weatherCode,
+            data.windKmh,
+            data.label,
+          ),
+          atPin,
+        });
       } catch {
         if (!cancelled && !controller.signal.aborted) {
           setError(true);
           setWeather(null);
+          setWeatherStore(null);
         }
       }
     })();
@@ -110,7 +131,7 @@ export function WeatherWidget() {
       cancelled = true;
       controller.abort();
     };
-  }, [lat, lng]);
+  }, [lat, lng, atPin, setWeatherStore]);
 
   if (error) {
     return (
@@ -129,25 +150,41 @@ export function WeatherWidget() {
     );
   }
 
-  const title = selectedPoint
+  const severity = weatherSeverity(weather.weatherCode, weather.windKmh);
+  const style = WEATHER_SEVERITY_STYLE[severity];
+  const title = atPin
     ? `Weather at pin · ${weather.label}`
-    : `Weather near Spain center · ${weather.label}`;
+    : `Weather near map centre · ${weather.label}`;
 
   return (
     <div
-      className="inline-flex h-8 items-center gap-1.5 rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-2.5 shadow-[var(--as-shadow)] sm:gap-2 sm:px-3"
+      className="inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 shadow-[var(--as-shadow)] sm:gap-2 sm:px-3"
+      style={{
+        background: style.bg,
+        borderColor: style.border,
+        color: style.text,
+      }}
       title={title}
       aria-label={title}
     >
       <WeatherIcon kind={weatherKind(weather.weatherCode)} />
-      <span className="text-[12px] font-semibold text-[var(--as-ink)]">
+      <span className="text-[12px] font-semibold" style={{ color: style.text }}>
         {weather.temperatureC}°
       </span>
-      <span className="hidden text-[12px] text-[var(--as-ink-soft)] md:inline">
+      <span
+        className="hidden text-[12px] md:inline"
+        style={{ color: style.soft }}
+      >
         {weather.label}
       </span>
       {weather.windKmh != null && (
-        <span className="hidden border-l border-[var(--as-line-soft)] pl-2 text-[12px] text-[var(--as-ink-soft)] lg:inline">
+        <span
+          className="hidden border-l pl-2 text-[12px] lg:inline"
+          style={{
+            borderColor: style.border,
+            color: style.soft,
+          }}
+        >
           {weather.windKmh} km/h
         </span>
       )}

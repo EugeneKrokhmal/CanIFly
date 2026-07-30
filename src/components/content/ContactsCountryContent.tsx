@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CountrySelect, type ContentCountryId } from "./CountrySelect";
+import { ulcDronesLabel, ulcDronesUrl } from "@/lib/official-links";
 
 type ContactLink = {
   key: string;
@@ -11,7 +12,8 @@ type ContactLink = {
   label: string;
 };
 
-const CONTACT_LINKS: Record<ContentCountryId, readonly ContactLink[]> = {
+function contactLinksFor(locale: string): Record<ContentCountryId, readonly ContactLink[]> {
+  return {
   ES: [
     {
       key: "planea",
@@ -47,13 +49,35 @@ const CONTACT_LINKS: Record<ContentCountryId, readonly ContactLink[]> = {
     },
     {
       key: "ulc",
-      href: "https://ulc.gov.pl/pl/drony",
-      label: "ulc.gov.pl",
+      href: ulcDronesUrl(locale),
+      label: ulcDronesLabel(locale),
     },
     {
       key: "pansa",
       href: "https://www.pansa.pl/kontakt/",
       label: "pansa.pl",
+    },
+  ],
+  DE: [
+    {
+      key: "dipul",
+      href: "https://uas-operations.bund.de/",
+      label: "uas-operations.bund.de",
+    },
+    {
+      key: "wms",
+      href: "https://uas-betrieb.de/geoservices/dipul/wms?service=WMS&version=1.3.0&request=GetCapabilities",
+      label: "uas-betrieb.de (WMS)",
+    },
+    {
+      key: "bmdv",
+      href: "https://www.bmv.de/",
+      label: "bmv.de",
+    },
+    {
+      key: "lba",
+      href: "https://www.lba.de/DE/Drohnen/Drohnen_node.html",
+      label: "lba.de",
     },
   ],
   CZ: [
@@ -78,12 +102,14 @@ const CONTACT_LINKS: Record<ContentCountryId, readonly ContactLink[]> = {
       label: "rlp.cz",
     },
   ],
-};
+  };
+}
 
 export function ContactsCountryContent() {
   const t = useTranslations("contacts");
+  const locale = useLocale();
   const [country, setCountry] = useState<ContentCountryId>("ES");
-  const links = CONTACT_LINKS[country];
+  const links = contactLinksFor(locale)[country];
 
   return (
     <>
@@ -103,6 +129,7 @@ export function ContactsCountryContent() {
         label={t("countryLabel")}
         names={{
           ES: t("countryNames.ES"),
+          DE: t("countryNames.DE"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

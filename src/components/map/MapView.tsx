@@ -27,7 +27,11 @@ import { useZoneLayers } from "@/hooks/useZoneLayers";
 import { useObstacles } from "@/hooks/useObstacles";
 import { useAircraftTraffic } from "@/hooks/useAircraftTraffic";
 import { zoneFeatureSignature } from "@/lib/map/viewport";
-import { zoneOutlineColorExpression } from "@/lib/map/zone-style";
+import {
+  zoneFillColorExpression,
+  zoneFillOpacityExpression,
+  zoneOutlineColorExpression,
+} from "@/lib/map/zone-style";
 
 const SOURCE_ID = "uas-zones";
 const FILL_LAYER = "uas-zones-fill";
@@ -422,8 +426,8 @@ export function MapView({ className }: MapViewProps) {
         type: "fill",
         source: SOURCE_ID,
         paint: {
-          "fill-color": ENAIRE_ZONE_STYLE.fill,
-          "fill-opacity": ENAIRE_ZONE_STYLE.fillOpacity,
+          "fill-color": zoneFillColorExpression(),
+          "fill-opacity": zoneFillOpacityExpression(),
         },
       });
       map.addLayer({

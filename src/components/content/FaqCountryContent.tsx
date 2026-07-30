@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CountrySelect, type ContentCountryId } from "./CountrySelect";
+import { ulcDronesLabel, ulcDronesUrl } from "@/lib/official-links";
 
 const FAQ_KEYS: Record<ContentCountryId, readonly string[]> = {
   ES: [
@@ -12,6 +13,16 @@ const FAQ_KEYS: Record<ContentCountryId, readonly string[]> = {
     "openCategory",
     "where",
     "madrid",
+    "data",
+    "track",
+    "official",
+  ],
+  DE: [
+    "status",
+    "auth",
+    "openCategory",
+    "where",
+    "berlin",
     "data",
     "track",
     "official",
@@ -40,8 +51,11 @@ const FAQ_KEYS: Record<ContentCountryId, readonly string[]> = {
 
 export function FaqCountryContent() {
   const t = useTranslations("faq");
+  const locale = useLocale();
   const [country, setCountry] = useState<ContentCountryId>("ES");
   const keys = FAQ_KEYS[country];
+  const ulcHref = ulcDronesUrl(locale);
+  const ulcLabel = ulcDronesLabel(locale);
 
   return (
     <>
@@ -61,6 +75,7 @@ export function FaqCountryContent() {
         label={t("countryLabel")}
         names={{
           ES: t("countryNames.ES"),
+          DE: t("countryNames.DE"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}
@@ -78,6 +93,16 @@ export function FaqCountryContent() {
             <p className="mt-2 text-[14px] leading-relaxed text-[var(--as-ink-soft)]">
               {t(`byCountry.${country}.items.${key}.a`)}
             </p>
+            {country === "PL" && key === "official" ? (
+              <a
+                href={ulcHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-block text-[14px] font-semibold text-[#ff385c] hover:underline"
+              >
+                {ulcLabel} ↗
+              </a>
+            ) : null}
           </li>
         ))}
       </ul>

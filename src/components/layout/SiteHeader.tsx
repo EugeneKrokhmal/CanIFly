@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LocationSearchPopup } from "@/components/layout/LocationSearchPopup";
+import { WeatherAlertTicker } from "@/components/layout/WeatherAlertTicker";
 import { WeatherWidget } from "@/components/layout/WeatherWidget";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useAuthStore } from "@/stores/auth";
@@ -42,10 +43,11 @@ export function SiteHeader() {
   }, [menuOpen]);
 
   return (
-    <header
-      className="relative z-40 flex h-12 shrink-0 items-center justify-between gap-2 border-b border-[var(--as-line)] bg-[var(--as-surface)] px-3 sm:h-16 sm:gap-3 sm:px-8"
-      style={{ paddingTop: "env(safe-area-inset-top)" }}
-    >
+    <div className="relative z-40 shrink-0">
+      <header
+        className="flex h-12 items-center justify-between gap-2 border-b border-[var(--as-line)] bg-[var(--as-surface)] px-3 sm:h-16 sm:gap-3 sm:px-8"
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+      >
       <Link href="/" className="flex shrink-0 items-center">
         <BrandLogo className="h-4 w-auto text-[var(--as-ink)] sm:h-5" />
         <span className="font-[family-name:var(--font-display)] text-[18px] font-bold tracking-tight text-[var(--as-ink)] sm:text-[22px]">
@@ -236,7 +238,9 @@ export function SiteHeader() {
         open={searchOpen}
         onClose={() => setSearchOpen(false)}
       />
-    </header>
+      </header>
+      <WeatherAlertTicker />
+    </div>
   );
 }
 

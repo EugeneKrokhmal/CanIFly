@@ -1,18 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CountrySelect, type ContentCountryId } from "./CountrySelect";
+import { ulcDronesLabel, ulcDronesUrl } from "@/lib/official-links";
 
 const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
   ES: ["how", "enaire", "aesa", "cities", "community", "disclaimer"],
+  DE: ["how", "dipul", "dfs", "cities", "community", "disclaimer"],
   CZ: ["how", "anscr", "caa", "cities", "community", "disclaimer"],
   PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
 };
 
+type SectionLink = { href: string; label: string };
+
+function sectionLink(
+  country: ContentCountryId,
+  key: string,
+  locale: string,
+): SectionLink | null {
+  if (country === "PL" && key === "ulc") {
+    return { href: ulcDronesUrl(locale), label: ulcDronesLabel(locale) };
+  }
+  if (country === "PL" && key === "pansa") {
+    return { href: "https://dronemap.pansa.pl/", label: "dronemap.pansa.pl" };
+  }
+  return null;
+}
+
 export function GuideCountryContent() {
   const t = useTranslations("guide");
+  const locale = useLocale();
   const [country, setCountry] = useState<ContentCountryId>("ES");
   const keys = SECTION_KEYS[country];
 
@@ -34,25 +53,39 @@ export function GuideCountryContent() {
         label={t("countryLabel")}
         names={{
           ES: t("countryNames.ES"),
+          DE: t("countryNames.DE"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}
       />
 
       <div className="mt-8 space-y-5">
-        {keys.map((key) => (
-          <section
-            key={`${country}-${key}`}
-            className="rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
-          >
-            <h2 className="text-[16px] font-semibold leading-snug text-[var(--as-ink)]">
-              {t(`byCountry.${country}.sections.${key}.title`)}
-            </h2>
-            <p className="mt-2 text-[14px] leading-relaxed text-[var(--as-ink-soft)]">
-              {t(`byCountry.${country}.sections.${key}.body`)}
-            </p>
-          </section>
-        ))}
+        {keys.map((key) => {
+          const ext = sectionLink(country, key, locale);
+          return (
+            <section
+              key={`${country}-${key}`}
+              className="rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+            >
+              <h2 className="text-[16px] font-semibold leading-snug text-[var(--as-ink)]">
+                {t(`byCountry.${country}.sections.${key}.title`)}
+              </h2>
+              <p className="mt-2 text-[14px] leading-relaxed text-[var(--as-ink-soft)]">
+                {t(`byCountry.${country}.sections.${key}.body`)}
+              </p>
+              {ext ? (
+                <a
+                  href={ext.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block text-[14px] font-semibold text-[#ff385c] hover:underline"
+                >
+                  {ext.label} ↗
+                </a>
+              ) : null}
+            </section>
+          );
+        })}
       </div>
 
       <div className="mt-8 flex flex-wrap gap-3">

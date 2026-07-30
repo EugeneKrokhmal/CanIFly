@@ -92,6 +92,7 @@ export function SiteJsonLd({
       },
       areaServed: [
         { "@type": "Country", name: "Spain" },
+        { "@type": "Country", name: "Germany" },
         { "@type": "Country", name: "Czechia" },
         { "@type": "Country", name: "Poland" },
       ],
@@ -103,7 +104,7 @@ export function SiteJsonLd({
       name: "CanIFly",
       url: base,
       logo: `${base}/icon.svg`,
-      areaServed: ["ES", "CZ", "PL"],
+      areaServed: ["ES", "DE", "CZ", "PL"],
     },
   ];
 

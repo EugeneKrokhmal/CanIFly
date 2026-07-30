@@ -238,6 +238,32 @@ body {
   }
 }
 
+@keyframes as-weather-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.as-weather-marquee {
+  width: max-content;
+  animation: as-weather-marquee 28s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .as-weather-marquee {
+    animation: none;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .as-weather-marquee .as-weather-marquee-track:last-child {
+    display: none;
+  }
+}
+
 .as-status-flash {
   animation: as-status-flash var(--as-dur-med) var(--as-ease-out) both;
 }

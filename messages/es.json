@@ -38,7 +38,14 @@
     "themeSystem": "Sistema",
     "themeLight": "Claro",
     "themeDark": "Oscuro",
-    "langCs": "CS"
+    "langCs": "CS",
+    "weatherCaution": "Precaución",
+    "weatherDanger": "Malas condiciones para volar",
+    "weatherFlyHint": "revisa viento y precipitación antes de despegar",
+    "weatherGood": "Buen tiempo para volar",
+    "weatherAtPin": "en tu pin",
+    "weatherArea": "cerca del centro del mapa",
+    "weatherLoading": "Obteniendo el tiempo…"
   },
   "search": {
     "title": "Buscar ubicación",
@@ -276,7 +283,8 @@
     "countryNames": {
       "ES": "España",
       "PL": "Polonia",
-      "CZ": "Chequia"
+      "CZ": "Chequia",
+      "DE": "Alemania"
     },
     "backToMap": "← Volver al mapa",
     "byCountry": {
@@ -354,7 +362,7 @@
           },
           "official": {
             "q": "¿CanIFly es un consejo oficial?",
-            "a": "No. Verifica siempre con PANSA DroneMap / ULC (y DroneTower cuando proceda) antes de volar. Las reglas y la actividad de las zonas cambian; esta app es una ayuda de planificación, no una autorización legal."
+            "a": "No. Verifica siempre con PANSA DroneMap / ULC (y DroneTower cuando proceda) antes de volar. Para registro y reglas de categoría abierta usa la página de información general de ULC. Las reglas y la actividad de las zonas cambian; esta app es una ayuda de planificación, no una autorización legal."
           }
         }
       },
@@ -396,6 +404,46 @@
             "a": "No. Verifica siempre con DroneMap de ANS CR / CAA antes de volar. Las normas cambian; esta app es una ayuda de planificación, no una autorización legal. Las zonas se consultan en vivo desde ANS CR — los límites vinculantes y avisos se publican en AIM / DroneMap."
           }
         }
+      },
+      "DE": {
+        "title": "FAQ — Alemania",
+        "intro": "Live queries to the dipul WFS at uas-betrieb.de (DFS / BMDV). We do not replace the official dipul map tool.",
+        "ctaGuide": "Lee la guía completa de vuelo en Chequia",
+        "ctaContacts": "Contacts",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Germany?",
+            "a": "CanIFly summarises dipul geographical zones for your drone class and ceiling. Restricted usually means coordination or conditions apply under LuftVO § 21h; always confirm on the official dipul map before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation to fly?",
+            "a": "Open-category flights may still need authorisation or special conditions inside dipul zones (airports, hospitals, nature areas, residential parcels, and more). Use dipul or DFS guidance for the legal requirement."
+          },
+          "openCategory": {
+            "q": "Does CanIFly cover the open category?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter German zones that intersect that envelope. Specific / certified operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Germany?",
+            "a": "Mainland Germany via the official dipul WFS geoservice (same family of zones shown on uas-operations.bund.de)."
+          },
+          "berlin": {
+            "q": "What about Berlin / major cities?",
+            "a": "Cities often sit under CTRs, residential rules, and infrastructure buffers. Tap the map for a live status; treat it as planning aid, not a clearance."
+          },
+          "data": {
+            "q": "Where does the German zone data come from?",
+            "a": "Live queries to the dipul WFS at uas-betrieb.de (DFS / BMDV). We do not replace the official dipul map tool."
+          },
+          "track": {
+            "q": "Is CanIFly an official tracker?",
+            "a": "No. It is a planning aid. For official German UAS geographical zones use dipul."
+          },
+          "official": {
+            "q": "Which official sites should I use?",
+            "a": "uas-operations.bund.de (dipul), plus DFS / LBA guidance for your operation type."
+          }
+        }
       }
     }
   },
@@ -404,7 +452,8 @@
     "countryNames": {
       "ES": "España",
       "PL": "Polonia",
-      "CZ": "Chequia"
+      "CZ": "Chequia",
+      "DE": "Alemania"
     },
     "ctaMap": "Abrir el mapa CanIFly",
     "ctaFaq": "Ver FAQ",
@@ -456,7 +505,7 @@
           },
           "ulc": {
             "title": "3. ULC: registro y categoría abierta",
-            "body": "Además del espacio aéreo, en Polonia normalmente necesitas registro de operador UAS y la competencia correspondiente. La categoría abierta de la UE tiene subcategorías y límites (altura, distancia a personas, VLOS). CanIFly no sustituye ese marco legal."
+            "body": "Además del espacio aéreo, en Polonia normalmente necesitas registro de operador UAS y la competencia correspondiente. La categoría abierta de la UE tiene subcategorías y límites (altura, distancia a personas, VLOS). Empieza por la página de información general de ULC para registro, formación y categorías — CanIFly no sustituye ese marco legal."
           },
           "cities": {
             "title": "4. Ciudades: Varsovia, Cracovia, Gdańsk, Wrocław, Poznań",
@@ -502,6 +551,37 @@
             "body": "CanIFly es una herramienta de planificación. No es ANS CR ni la CAA. Antes de volar, confirma normas y autorizaciones en canales oficiales. Tú eres responsable de la operación."
           }
         }
+      },
+      "DE": {
+        "eyebrow": "Germany",
+        "title": "Flying drones in Germany",
+        "intro": "CanIFly reads live dipul geographical zones so you can see Clear / Limited / Restricted / Prohibited for open-category flights. Always cross-check dipul before you fly.",
+        "sections": {
+          "how": {
+            "title": "How CanIFly helps",
+            "body": "Pick your class and ceiling, tap the map, and we query dipul layers for that point — airports, CTRs, hospitals, nature areas, roads, and more."
+          },
+          "dipul": {
+            "title": "dipul (official map)",
+            "body": "The Digital Platform for Unmanned Aviation (dipul) is Germany’s official geographical-zone map under LuftVO. CanIFly uses its public WFS; dipul remains the reference."
+          },
+          "dfs": {
+            "title": "DFS / BMDV",
+            "body": "Zone data is published for geo-awareness. Commercial or complex operations may need further DFS / LBA steps beyond the open category."
+          },
+          "cities": {
+            "title": "Cities and CTRs",
+            "body": "Berlin, Munich, Hamburg and other cities often have dense overlapping zones. Zoom in on CanIFly, then confirm on dipul."
+          },
+          "community": {
+            "title": "Community pins",
+            "body": "Obstacles and fly spots are community-reported. They do not replace official geographical zones."
+          },
+          "disclaimer": {
+            "title": "Disclaimer",
+            "body": "CanIFly is a planning aid, not an authorisation. You remain responsible for complying with LuftVO and local rules."
+          }
+        }
       }
     }
   },
@@ -530,7 +610,8 @@
     "countryNames": {
       "ES": "España",
       "PL": "Polonia",
-      "CZ": "Chequia"
+      "CZ": "Chequia",
+      "DE": "Alemania"
     },
     "backToMap": "← Volver al mapa",
     "byCountry": {
@@ -569,8 +650,8 @@
             "detail": "Sistema nacional de información de drones: comprobar espacio aéreo y coordinar vuelos cuando sea necesario"
           },
           "ulc": {
-            "title": "ULC — drones",
-            "detail": "Registro de operador, competencia y reglas de categoría abierta/específica"
+            "title": "ULC — drones (información general)",
+            "detail": "Resumen oficial de la CAA: registro, categorías abierta/específica/certificada, formación y responsabilidades de geo-zonas"
           },
           "pansa": {
             "title": "Contacto PANSA (PansaUTM / drones)",
@@ -597,6 +678,28 @@
           "ans": {
             "title": "ANS CR",
             "detail": "Servicios de navegación aérea de Chequia — información aeronáutica y herramientas de mapa UAS."
+          }
+        }
+      },
+      "DE": {
+        "title": "Germany — official contacts",
+        "intro": "Use these official German sources for geographical zones and UAS rules.",
+        "links": {
+          "dipul": {
+            "title": "dipul map tool",
+            "blurb": "Official geographical zones map."
+          },
+          "wms": {
+            "title": "dipul WMS / WFS",
+            "blurb": "Machine-readable geoservices."
+          },
+          "bmdv": {
+            "title": "BMDV unmanned aviation",
+            "blurb": "Federal policy and dipul programme."
+          },
+          "lba": {
+            "title": "LBA — drones",
+            "blurb": "Civil aviation authority guidance."
           }
         }
       }

@@ -47,7 +47,7 @@ Changelog: each repo has `CHANGELOG.md`. Bump the three versions together when c
 | ES | ENAIRE servAIS / PostGIS fallback | **Live** |
 | PL | PANSA DroneMap API | **Live** (0.2.0) |
 | CZ | ANS CR aimgis (ArcGIS) | **Live** (0.3.0) |
-| DE | dipul / DFS WMS or open data | Investigate |
+| DE | dipul WFS (uas-betrieb.de) | **Live** (main) |
 | FR | DSAC / SIA ED-269 | Investigate |
 
 ---
