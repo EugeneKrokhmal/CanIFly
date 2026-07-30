@@ -124,7 +124,7 @@ export function SiteJsonLd({
       "@id": `${base}/#organization`,
       name: "CanIFly",
       url: base,
-      logo: `${base}/icon.svg`,
+      logo: `${base}/icon-512.png`,
       areaServed: ["ES", "DE", "FR", "CZ", "PL"],
     },
   ];

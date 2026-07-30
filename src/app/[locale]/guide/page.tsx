@@ -52,7 +52,7 @@ export default async function GuidePage({ params }: Props) {
       "@type": "Organization",
       name: "CanIFly",
       url: getSiteUrl(),
-      logo: { "@type": "ImageObject", url: `${getSiteUrl()}/icon.svg` },
+      logo: { "@type": "ImageObject", url: `${getSiteUrl()}/icon-512.png` },
     },
     mainEntityOfPage: url,
     about: {
