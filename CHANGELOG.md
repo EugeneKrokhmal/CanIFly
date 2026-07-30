@@ -12,6 +12,7 @@
 
 ### Changed
 - Zone map fill/outline driven by `mapStatus` severity (airports read as red)
+- Dark mode uses OpenFreeMap `dark` basemap (`liberty` remains light)
 
 ## [0.3.0] — 2026-07-30
 

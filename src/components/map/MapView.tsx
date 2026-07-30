@@ -23,6 +23,7 @@ import { MapAddPinFab, MapAddPinSheet } from "@/components/map/MapAddPinSheet";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 import { useAuthStore } from "@/stores/auth";
 import { useObstaclesStore } from "@/stores/obstacles";
+import { useIsDark } from "@/stores/theme";
 import { useZoneLayers } from "@/hooks/useZoneLayers";
 import { useObstacles } from "@/hooks/useObstacles";
 import { useAircraftTraffic } from "@/hooks/useAircraftTraffic";
@@ -33,6 +34,16 @@ import {
   zoneOutlineColorExpression,
 } from "@/lib/map/zone-style";
 
+const MAP_STYLE_LIGHT =
+  process.env.NEXT_PUBLIC_MAP_STYLE ??
+  "https://tiles.openfreemap.org/styles/liberty";
+const MAP_STYLE_DARK =
+  process.env.NEXT_PUBLIC_MAP_STYLE_DARK ??
+  "https://tiles.openfreemap.org/styles/dark";
+
+function basemapStyleUrl(dark: boolean): string {
+  return dark ? MAP_STYLE_DARK : MAP_STYLE_LIGHT;
+}
 const SOURCE_ID = "uas-zones";
 const FILL_LAYER = "uas-zones-fill";
 const LINE_LAYER = "uas-zones-outline";
@@ -217,6 +228,7 @@ interface MapViewProps {
 export function MapView({ className }: MapViewProps) {
   const locale = useLocale() as AppLocale;
   const tMap = useTranslations("map");
+  const isDark = useIsDark();
   const localeRef = useRef(locale);
   const obstacleFallbackRef = useRef(tMap("obstacleFallback"));
   localeRef.current = locale;
@@ -224,6 +236,10 @@ export function MapView({ className }: MapViewProps) {
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
+  const cameraRef = useRef<{ center: [number, number]; zoom: number }>({
+    center: SPAIN_CENTER,
+    zoom: DEFAULT_ZOOM,
+  });
   const selectionMarkerRef = useRef<maplibregl.Marker | null>(null);
   const pendingMarkerRef = useRef<maplibregl.Marker | null>(null);
   const zoneMarkersRef = useRef<maplibregl.Marker[]>([]);
@@ -372,17 +388,16 @@ export function MapView({ className }: MapViewProps) {
   loadTrackRef.current = loadTrack;
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    if (!containerRef.current) return;
 
-    const styleUrl =
-      process.env.NEXT_PUBLIC_MAP_STYLE ??
-      "https://tiles.openfreemap.org/styles/liberty";
+    const styleUrl = basemapStyleUrl(isDark);
+    const { center, zoom } = cameraRef.current;
 
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: styleUrl,
-      center: SPAIN_CENTER,
-      zoom: DEFAULT_ZOOM,
+      center,
+      zoom,
       minZoom: 5,
       maxZoom: 18,
       renderWorldCopies: false,
@@ -509,8 +524,8 @@ export function MapView({ className }: MapViewProps) {
           "text-optional": true,
         },
         paint: {
-          "text-color": "#222222",
-          "text-halo-color": "#ffffff",
+          "text-color": isDark ? "#f2f2f2" : "#222222",
+          "text-halo-color": isDark ? "#121212" : "#ffffff",
           "text-halo-width": 1.2,
           "text-opacity": [
             "case",
@@ -612,8 +627,8 @@ export function MapView({ className }: MapViewProps) {
           "text-ignore-placement": true,
         },
         paint: {
-          "text-color": "#222222",
-          "text-halo-color": "#ffffff",
+          "text-color": isDark ? "#f2f2f2" : "#222222",
+          "text-halo-color": isDark ? "#121212" : "#ffffff",
           "text-halo-width": 1.6,
         },
         minzoom: 8,
@@ -670,6 +685,8 @@ export function MapView({ className }: MapViewProps) {
     map.on("moveend", () => {
       const bounds = map.getBounds();
       const zoom = map.getZoom();
+      const c = map.getCenter();
+      cameraRef.current = { center: [c.lng, c.lat], zoom };
       const prevFloor = Math.floor(mapZoomRef.current);
       mapZoomRef.current = zoom;
       if (prevFloor !== Math.floor(zoom)) setMapZoom(zoom);
@@ -916,7 +933,9 @@ export function MapView({ className }: MapViewProps) {
         popup?.remove();
       }
       selectionMarkerRef.current?.remove();
+      selectionMarkerRef.current = null;
       pendingMarkerRef.current?.remove();
+      pendingMarkerRef.current = null;
       for (const m of zoneMarkersRef.current) m.remove();
       zoneMarkersRef.current = [];
       map.remove();
@@ -924,8 +943,7 @@ export function MapView({ className }: MapViewProps) {
       geolocateControlRef.current = null;
       setMapReady(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- init once
-  }, []);
+  }, [isDark]);
 
   useEffect(() => {
     if (!trafficOn) clearTrack();

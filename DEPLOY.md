@@ -219,6 +219,7 @@ Free tier notes:
 API_URL=https://canifly-api.onrender.com
 NEXT_PUBLIC_SITE_URL=https://canifly.org
 NEXT_PUBLIC_MAP_STYLE=https://tiles.openfreemap.org/styles/liberty
+NEXT_PUBLIC_MAP_STYLE_DARK=https://tiles.openfreemap.org/styles/dark
 ```
 
 `next.config.ts` rewrites:
@@ -351,6 +352,7 @@ Web `.env.local`:
 API_URL=http://localhost:4000
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_MAP_STYLE=https://tiles.openfreemap.org/styles/liberty
+NEXT_PUBLIC_MAP_STYLE_DARK=https://tiles.openfreemap.org/styles/dark
 ```
 
 API `.env` mirrors `.env.example` (`CORS_ORIGIN` / `APP_URL` = `http://localhost:3000`).

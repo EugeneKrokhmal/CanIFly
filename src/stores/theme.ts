@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { create } from "zustand";
 import {
   THEME_STORAGE_KEY,
   applyThemeClass,
+  resolveDark,
   type ThemePreference,
 } from "@/lib/theme-boot";
-
 export type { ThemePreference };
 
 type ThemeState = {
@@ -67,4 +67,24 @@ export function ThemeSync() {
   }, [preference, hydrated]);
 
   return null;
+}
+
+/** Resolved dark mode for UI that must follow theme (e.g. map basemap). */
+export function useIsDark(): boolean {
+  const preference = useThemeStore((s) => s.preference);
+  const hydrated = useThemeStore((s) => s.hydrated);
+  const [, setSystemTick] = useState(0);
+
+  useEffect(() => {
+    if (preference !== "system") return;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => setSystemTick((n) => n + 1);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [preference]);
+
+  if (!hydrated && typeof document !== "undefined") {
+    return document.documentElement.classList.contains("dark");
+  }
+  return resolveDark(preference);
 }
