@@ -13,6 +13,8 @@
 ### Changed
 - Zone map fill/outline driven by `mapStatus` severity (airports read as red)
 - Dark mode uses OpenFreeMap `dark` basemap (`liberty` remains light)
+- Map opens in 3D (pitch 65°, max 85°) so Liberty/Dark building extrusions are visible; compass control enabled
+- Zone fill/outline opacity reduced ~30% so the basemap stays more readable
 
 ## [0.3.0] — 2026-07-30
 

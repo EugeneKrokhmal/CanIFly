@@ -89,15 +89,19 @@ export function zoneFillColorExpression(): ExpressionSpecification {
 export function zoneFillOpacityExpression(): ExpressionSpecification {
   const { prohibited } = STATUS_COLORS;
   return [
-    "case",
-    ["==", ["get", "mapStatus"], "prohibited"],
-    prohibited.fillOpacity,
+    "*",
     [
-      "==",
-      ["upcase", ["to-string", ["coalesce", ["get", "restriction"], ""]]],
-      "PROHIBITED",
+      "case",
+      ["==", ["get", "mapStatus"], "prohibited"],
+      prohibited.fillOpacity,
+      [
+        "==",
+        ["upcase", ["to-string", ["coalesce", ["get", "restriction"], ""]]],
+        "PROHIBITED",
+      ],
+      prohibited.fillOpacity,
+      ENAIRE_ZONE_STYLE.fillOpacity,
     ],
-    prohibited.fillOpacity,
-    ENAIRE_ZONE_STYLE.fillOpacity,
+    0.7,
   ];
 }

@@ -41,6 +41,11 @@ const MAP_STYLE_DARK =
   process.env.NEXT_PUBLIC_MAP_STYLE_DARK ??
   "https://tiles.openfreemap.org/styles/dark";
 
+/** Initial 3D camera — Liberty/Dark include building extrusions that read with pitch. */
+const MAX_PITCH = 85;
+const DEFAULT_PITCH = 65;
+const DEFAULT_BEARING = -20;
+
 function basemapStyleUrl(dark: boolean): string {
   return dark ? MAP_STYLE_DARK : MAP_STYLE_LIGHT;
 }
@@ -236,9 +241,16 @@ export function MapView({ className }: MapViewProps) {
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const cameraRef = useRef<{ center: [number, number]; zoom: number }>({
+  const cameraRef = useRef<{
+    center: [number, number];
+    zoom: number;
+    pitch: number;
+    bearing: number;
+  }>({
     center: SPAIN_CENTER,
     zoom: DEFAULT_ZOOM,
+    pitch: DEFAULT_PITCH,
+    bearing: DEFAULT_BEARING,
   });
   const selectionMarkerRef = useRef<maplibregl.Marker | null>(null);
   const pendingMarkerRef = useRef<maplibregl.Marker | null>(null);
@@ -374,7 +386,13 @@ export function MapView({ className }: MapViewProps) {
         for (const c of geom.coordinates) {
           bounds.extend(c as [number, number]);
         }
-        map.fitBounds(bounds, { padding: 60, maxZoom: 11, duration: 600 });
+        map.fitBounds(bounds, {
+          padding: 60,
+          maxZoom: 11,
+          duration: 600,
+          pitch: map.getPitch(),
+          bearing: map.getBearing(),
+        });
       }
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
@@ -391,21 +409,28 @@ export function MapView({ className }: MapViewProps) {
     if (!containerRef.current) return;
 
     const styleUrl = basemapStyleUrl(isDark);
-    const { center, zoom } = cameraRef.current;
+    const { center, zoom, pitch, bearing } = cameraRef.current;
 
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: styleUrl,
       center,
       zoom,
+      pitch,
+      bearing,
       minZoom: 5,
       maxZoom: 18,
+      maxPitch: MAX_PITCH,
+      pitchWithRotate: true,
+      dragRotate: true,
+      touchPitch: true,
       renderWorldCopies: false,
       fadeDuration: 0,
+      canvasContextAttributes: { antialias: true },
     });
 
     map.addControl(
-      new maplibregl.NavigationControl({ showCompass: false }),
+      new maplibregl.NavigationControl({ showCompass: true, visualizePitch: true }),
       "top-right",
     );
     const geolocate = new maplibregl.GeolocateControl({
@@ -452,7 +477,7 @@ export function MapView({ className }: MapViewProps) {
         paint: {
           "line-color": zoneOutlineColorExpression(),
           "line-width": 1.15,
-          "line-opacity": 0.75,
+          "line-opacity": 0.525,
         },
       });
       map.addLayer({
@@ -462,7 +487,7 @@ export function MapView({ className }: MapViewProps) {
         filter: ["==", ["get", "identifier"], ""],
         paint: {
           "fill-color": ENAIRE_ZONE_STYLE.outline,
-          "fill-opacity": 0.12,
+          "fill-opacity": 0.084,
         },
       });
       map.addLayer({
@@ -686,7 +711,12 @@ export function MapView({ className }: MapViewProps) {
       const bounds = map.getBounds();
       const zoom = map.getZoom();
       const c = map.getCenter();
-      cameraRef.current = { center: [c.lng, c.lat], zoom };
+      cameraRef.current = {
+        center: [c.lng, c.lat],
+        zoom,
+        pitch: map.getPitch(),
+        bearing: map.getBearing(),
+      };
       const prevFloor = Math.floor(mapZoomRef.current);
       mapZoomRef.current = zoom;
       if (prevFloor !== Math.floor(zoom)) setMapZoom(zoom);
@@ -1152,6 +1182,8 @@ export function MapView({ className }: MapViewProps) {
     map.flyTo({
       center: [mapCameraRequest.lng, mapCameraRequest.lat],
       zoom: mapCameraRequest.zoom,
+      pitch: map.getPitch(),
+      bearing: map.getBearing(),
       essential: true,
       duration: 1200,
     });
@@ -1171,6 +1203,8 @@ export function MapView({ className }: MapViewProps) {
     map.jumpTo({
       center: [selectedPoint.lng, selectedPoint.lat],
       zoom: 14,
+      pitch: map.getPitch(),
+      bearing: map.getBearing(),
     });
   }, [mapReady]); // eslint-disable-line react-hooks/exhaustive-deps -- only on map ready
 
