@@ -1,12 +1,7 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
-import type { AppLocale } from "@/i18n/routing";
-import {
-  statusLabel,
-  type AirspaceStatus,
-  type MatchedZone,
-} from "@canifly/middleware";
+import { useTranslations } from "next-intl";
+import { type AirspaceStatus, type MatchedZone } from "@canifly/middleware";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 import { DronePicker } from "@/components/sidebar/DronePicker";
 
@@ -47,7 +42,6 @@ function sectionLabel(text: string) {
 export function SidebarPanel() {
   const t = useTranslations("sidebar");
   const tStatus = useTranslations("status");
-  const locale = useLocale() as AppLocale;
   const status = useDroneProfileStore((s) => s.status);
   const summary = useDroneProfileStore((s) => s.summary);
   const zones = useDroneProfileStore((s) => s.zones);
@@ -116,9 +110,8 @@ export function SidebarPanel() {
     requestGeolocate();
   };
 
-  const statusText = status
-    ? statusLabel(status, locale) || tStatus(status)
-    : null;
+  // Prefer next-intl messages (all UI locales). Middleware labels can lag a pin.
+  const statusText = status ? tStatus(status) : null;
 
   return (
     <aside className="flex h-full w-full flex-col overflow-hidden bg-[var(--as-surface)] text-[var(--as-ink)]">
@@ -221,7 +214,7 @@ export function SidebarPanel() {
               className="as-status-flash mt-4 rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface-muted)] p-4"
             >
               <div
-                className="inline-flex rounded-full px-3 py-1 text-[13px] font-bold"
+                className="inline-flex rounded-full py-1 text-[13px] font-bold"
                 style={{
                   color: statusColor(status),
                   background: `${statusColor(status)}18`,

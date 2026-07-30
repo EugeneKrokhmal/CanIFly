@@ -8,9 +8,8 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import type { AppLocale } from "@/i18n/routing";
-import { statusLabel, type AirspaceStatus } from "@canifly/middleware";
+import { useTranslations } from "next-intl";
+import { type AirspaceStatus } from "@canifly/middleware";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 import { useObstaclesStore } from "@/stores/obstacles";
 import { SidebarPanel } from "@/components/sidebar/SidebarPanel";
@@ -36,7 +35,7 @@ function maxSheetHeight(): number {
  */
 export const MobileFlightSheet = memo(function MobileFlightSheet() {
   const t = useTranslations("map");
-  const locale = useLocale() as AppLocale;
+  const tStatus = useTranslations("status");
   const status = useDroneProfileStore((s) => s.status);
   const summary = useDroneProfileStore((s) => s.summary);
   const loading = useDroneProfileStore((s) => s.statusLoading);
@@ -218,7 +217,7 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
                         background: `${statusColor(status)}18`,
                       }}
                     >
-                      {statusLabel(status, locale)}
+                      {tStatus(status)}
                     </span>
                     <p className="mt-1.5 line-clamp-2 text-[13px] leading-snug text-[var(--as-ink-soft)]">
                       {summary}
