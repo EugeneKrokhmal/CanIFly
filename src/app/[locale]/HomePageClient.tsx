@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { SidebarPanel } from "@/components/sidebar/SidebarPanel";
 import { MobileFlightSheet } from "@/components/layout/MobileFlightSheet";
+import { TopPilotsStack } from "@/components/map/TopPilotsStack";
 import { useAirspaceStatus } from "@/hooks/useAirspaceStatus";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 
@@ -79,6 +80,7 @@ export default function HomePageClient() {
         <div className="absolute inset-0">
           <MapView className="h-full w-full" />
         </div>
+        <TopPilotsStack />
         <MobileFlightSheet />
       </div>
     </div>

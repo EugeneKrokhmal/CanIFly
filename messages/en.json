@@ -8,8 +8,8 @@
     "guideDescription": "How to know if you can fly a drone in Spain and Poland: UAS zones, open category, AGL ceiling and the CanIFly map.",
     "privacyTitle": "Privacy & cookies | CanIFly",
     "privacyDescription": "How CanIFly handles data, cookies and local storage for the Spain UAS airspace map.",
-    "contactsTitle": "Official Spain drone contacts — ENAIRE, AESA | CanIFly",
-    "contactsDescription": "Official links for drone flight authorization in Spain: ENAIRE Planea, drones.enaire.es, AESA and AIP.",
+    "contactsTitle": "Official drone contacts — Spain & Poland | CanIFly",
+    "contactsDescription": "Official links for drone flight authorization: ENAIRE/AESA (Spain) and PANSA DroneMap, DroneTower, ULC (Poland).",
     "accountTitle": "My account | CanIFly",
     "accountDescription": "Manage your CanIFly pilot profile.",
     "settingsTitle": "Settings — language & theme | CanIFly",
@@ -227,6 +227,11 @@
     "unavailable": "Profile unavailable.",
     "loading": "Loading profile…"
   },
+  "leaderboard": {
+    "aria": "Top pilots by pins left",
+    "title": "Top pilots",
+    "pins": "{count, plural, one {# pin} other {# pins}}"
+  },
   "cookie": {
     "aria": "Cookie consent",
     "title": "Cookies & local storage",
@@ -419,25 +424,56 @@
   },
   "contacts": {
     "eyebrow": "Links",
-    "title": "Contacts",
-    "intro": "Official channels for coordination, registration, and zone data. Zone-specific emails also appear in the map sidebar when you tap a point.",
+    "countryLabel": "Country",
+    "countryNames": {
+      "ES": "Spain",
+      "PL": "Poland"
+    },
     "backToMap": "← Back to map",
-    "items": {
-      "planea": {
-        "title": "ENAIRE Planea",
-        "detail": "Authorization requests for controlled airspace / CTR operations"
+    "byCountry": {
+      "ES": {
+        "title": "Contacts — Spain",
+        "intro": "Official channels for coordination, registration, and zone data in Spain. Zone-specific emails also appear in the map sidebar when you tap a point.",
+        "items": {
+          "planea": {
+            "title": "ENAIRE Planea",
+            "detail": "Authorization requests for controlled airspace / CTR operations"
+          },
+          "drones": {
+            "title": "ENAIRE Drones",
+            "detail": "Official UAS geographical zones and alerts"
+          },
+          "aesa": {
+            "title": "AESA — drones",
+            "detail": "Operator registration, open category rules, geographical zones guide"
+          },
+          "aip": {
+            "title": "AIP UAS (ENAIRE)",
+            "detail": "Published ED-318 / ZGUAS data packages"
+          }
+        }
       },
-      "drones": {
-        "title": "ENAIRE Drones",
-        "detail": "Official UAS geographical zones and alerts"
-      },
-      "aesa": {
-        "title": "AESA — drones",
-        "detail": "Operator registration, open category rules, geographical zones guide"
-      },
-      "aip": {
-        "title": "AIP UAS (ENAIRE)",
-        "detail": "Published ED-318 / ZGUAS data packages"
+      "PL": {
+        "title": "Contacts — Poland",
+        "intro": "Official channels for coordination, registration, and UAS geographical zones in Poland. Zone-specific contacts may also appear in the map sidebar when you tap a point.",
+        "items": {
+          "dronemap": {
+            "title": "PANSA DroneMap",
+            "detail": "Official UAS geographical zones map (DRA / CTR / ATZ) and flight planning"
+          },
+          "dronyGov": {
+            "title": "drony.gov.pl — DroneTower",
+            "detail": "National drone information system: check airspace and coordinate flights where required"
+          },
+          "ulc": {
+            "title": "ULC — drones",
+            "detail": "Operator registration, competence, open/specific category rules"
+          },
+          "pansa": {
+            "title": "PANSA contact (PansaUTM / drones)",
+            "detail": "Flight coordination and PansaUTM enquiries — drony@pansa.pl"
+          }
+        }
       }
     }
   },

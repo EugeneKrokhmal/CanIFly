@@ -8,8 +8,8 @@
     "guideDescription": "Cómo saber si puedes volar un dron en España y Polonia: zonas UAS, categoría abierta, techo AGL y mapa CanIFly.",
     "privacyTitle": "Privacidad y cookies | CanIFly",
     "privacyDescription": "Cómo CanIFly trata datos, cookies y almacenamiento local para el mapa de espacio aéreo UAS en España.",
-    "contactsTitle": "Contactos oficiales drones España — ENAIRE, AESA | CanIFly",
-    "contactsDescription": "Enlaces oficiales para autorización de vuelo de drones en España: ENAIRE Planea, drones.enaire.es, AESA y AIP.",
+    "contactsTitle": "Contactos oficiales drones — España y Polonia | CanIFly",
+    "contactsDescription": "Enlaces oficiales para autorización de vuelo: ENAIRE/AESA (España) y PANSA DroneMap, DroneTower, ULC (Polonia).",
     "accountTitle": "Mi cuenta | CanIFly",
     "accountDescription": "Gestiona tu perfil de piloto CanIFly.",
     "settingsTitle": "Ajustes — idioma y tema | CanIFly",
@@ -227,6 +227,11 @@
     "unavailable": "Perfil no disponible.",
     "loading": "Cargando perfil…"
   },
+  "leaderboard": {
+    "aria": "Mejores pilotos por pines dejados",
+    "title": "Top pilotos",
+    "pins": "{count, plural, one {# pin} other {# pines}}"
+  },
   "cookie": {
     "aria": "Consentimiento de cookies",
     "title": "Cookies y almacenamiento local",
@@ -419,25 +424,56 @@
   },
   "contacts": {
     "eyebrow": "Enlaces",
-    "title": "Contactos",
-    "intro": "Canales oficiales para coordinación, registro y datos de zonas. Los emails específicos de zona también aparecen en la barra lateral del mapa al tocar un punto.",
+    "countryLabel": "País",
+    "countryNames": {
+      "ES": "España",
+      "PL": "Polonia"
+    },
     "backToMap": "← Volver al mapa",
-    "items": {
-      "planea": {
-        "title": "ENAIRE Planea",
-        "detail": "Solicitudes de autorización para espacio aéreo controlado / operaciones CTR"
+    "byCountry": {
+      "ES": {
+        "title": "Contactos — España",
+        "intro": "Canales oficiales para coordinación, registro y datos de zonas en España. Los emails específicos de zona también aparecen en la barra lateral del mapa al tocar un punto.",
+        "items": {
+          "planea": {
+            "title": "ENAIRE Planea",
+            "detail": "Solicitudes de autorización para espacio aéreo controlado / operaciones CTR"
+          },
+          "drones": {
+            "title": "ENAIRE Drones",
+            "detail": "Zonas geográficas UAS oficiales y alertas"
+          },
+          "aesa": {
+            "title": "AESA — drones",
+            "detail": "Registro de operador, reglas de categoría abierta, guía de zonas geográficas"
+          },
+          "aip": {
+            "title": "AIP UAS (ENAIRE)",
+            "detail": "Paquetes de datos ED-318 / ZGUAS publicados"
+          }
+        }
       },
-      "drones": {
-        "title": "ENAIRE Drones",
-        "detail": "Zonas geográficas UAS oficiales y alertas"
-      },
-      "aesa": {
-        "title": "AESA — drones",
-        "detail": "Registro de operador, reglas de categoría abierta, guía de zonas geográficas"
-      },
-      "aip": {
-        "title": "AIP UAS (ENAIRE)",
-        "detail": "Paquetes de datos ED-318 / ZGUAS publicados"
+      "PL": {
+        "title": "Contactos — Polonia",
+        "intro": "Canales oficiales para coordinación, registro y zonas geográficas UAS en Polonia. Los contactos específicos de zona también pueden aparecer en la barra lateral del mapa al tocar un punto.",
+        "items": {
+          "dronemap": {
+            "title": "PANSA DroneMap",
+            "detail": "Mapa oficial de zonas geográficas UAS (DRA / CTR / ATZ) y planificación de vuelo"
+          },
+          "dronyGov": {
+            "title": "drony.gov.pl — DroneTower",
+            "detail": "Sistema nacional de información de drones: comprobar espacio aéreo y coordinar vuelos cuando sea necesario"
+          },
+          "ulc": {
+            "title": "ULC — drones",
+            "detail": "Registro de operador, competencia y reglas de categoría abierta/específica"
+          },
+          "pansa": {
+            "title": "Contacto PANSA (PansaUTM / drones)",
+            "detail": "Coordinación de vuelos y consultas PansaUTM — drony@pansa.pl"
+          }
+        }
       }
     }
   },

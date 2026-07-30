@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.1] — 2026-07-30
+
+### Added
+- Desktop top-pilots stack (rank, photo, name, pin count) bottom-right on the map
+- Contacts page country selector with Poland official links (PANSA, DroneTower, ULC)
+
 ## [0.2.0] — 2026-07-30
 
 ### Added
