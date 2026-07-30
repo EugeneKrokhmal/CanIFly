@@ -44,6 +44,9 @@ interface DroneProfileState {
   queryMs: number | null;
   dataVersion: string | null;
   backend: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi" | null;
+  mapBackend: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi" | null;
+  mapDataVersion: string | null;
+  mapQueryMs: number | null;
   highlightedZoneId: string | null;
   setWeightClass: (v: WeightClass) => void;
   setMaxAltitudeAgl: (v: number) => void;
@@ -66,6 +69,11 @@ interface DroneProfileState {
   }) => void;
   setStatusLoading: (v: boolean) => void;
   setStatusError: (v: string | null) => void;
+  setMapZoneMeta: (payload: {
+    backend: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi" | null;
+    dataVersion: string | null;
+    queryMs: number | null;
+  }) => void;
   setHighlightedZoneId: (id: string | null) => void;
   clearStatus: () => void;
 }
@@ -89,6 +97,9 @@ export const useDroneProfileStore = create<DroneProfileState>()(
       queryMs: null,
       dataVersion: null,
       backend: null,
+      mapBackend: null,
+      mapDataVersion: null,
+      mapQueryMs: null,
       highlightedZoneId: null,
       setWeightClass: (weightClass) =>
         set((s) => ({
@@ -155,6 +166,12 @@ export const useDroneProfileStore = create<DroneProfileState>()(
       setStatusLoading: (statusLoading) => set({ statusLoading }),
       setStatusError: (statusError) =>
         set({ statusError, statusLoading: false }),
+      setMapZoneMeta: (payload) =>
+        set({
+          mapBackend: payload.backend,
+          mapDataVersion: payload.dataVersion,
+          mapQueryMs: payload.queryMs,
+        }),
       setHighlightedZoneId: (highlightedZoneId) => set({ highlightedZoneId }),
       clearStatus: () =>
         set({

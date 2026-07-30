@@ -15,7 +15,35 @@ import {
 import { viewportMovedEnough, zoneLimitForZoom } from "@/lib/map/viewport";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 
-const DEBOUNCE_MS = 350;
+const DEBOUNCE_MS = 200;
+
+type BboxZoneResponse = GeoJSON.FeatureCollection & {
+  meta?: {
+    backend?: string;
+    dataVersion?: string | null;
+    queryMs?: number;
+  };
+};
+
+const MAP_BACKENDS = new Set([
+  "servais",
+  "postgis",
+  "memory",
+  "pansa",
+  "aimgis",
+  "dipul",
+  "geopf",
+  "multi",
+]);
+
+function parseMapBackend(
+  value: string | undefined,
+): "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi" | null {
+  if (value && MAP_BACKENDS.has(value)) {
+    return value as "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi";
+  }
+  return null;
+}
 
 /**
  * Load zone polygons for the current map viewport, filtered by drone profile.
@@ -24,6 +52,7 @@ const DEBOUNCE_MS = 350;
 export function useZoneLayers() {
   const weightClass = useDroneProfileStore((s) => s.weightClass);
   const maxAltitudeAgl = useDroneProfileStore((s) => s.maxAltitudeAgl);
+  const setMapZoneMeta = useDroneProfileStore((s) => s.setMapZoneMeta);
 
   const [collection, setCollection] =
     useState<GeoJSON.FeatureCollection | null>(null);
@@ -78,7 +107,14 @@ export function useZoneLayers() {
           signal: controller.signal,
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = (await res.json()) as GeoJSON.FeatureCollection;
+        const data = (await res.json()) as BboxZoneResponse;
+        if (data.meta) {
+          setMapZoneMeta({
+            backend: parseMapBackend(data.meta.backend),
+            dataVersion: data.meta.dataVersion ?? null,
+            queryMs: data.meta.queryMs ?? null,
+          });
+        }
         const next = {
           type: "FeatureCollection" as const,
           features: data.features ?? [],
@@ -89,12 +125,13 @@ export function useZoneLayers() {
         lastShownRef.current = { bbox, zoom };
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return;
+        if (err instanceof TypeError && String(err.message).includes("fetch")) return;
         console.error("[useZoneLayers]", err);
       } finally {
         setLoading(false);
       }
     },
-    [maxAltitudeAgl, showViewport, weightClass],
+    [maxAltitudeAgl, setMapZoneMeta, showViewport, weightClass],
   );
 
   const fetchBboxDebounced = useDebouncedCallback(

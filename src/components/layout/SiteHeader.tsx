@@ -108,6 +108,8 @@ export function SiteHeader() {
                       <img
                         src={user.avatarUrl}
                         alt=""
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover"
                       />
                     ) : (

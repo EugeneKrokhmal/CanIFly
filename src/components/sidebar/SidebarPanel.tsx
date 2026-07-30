@@ -1,5 +1,6 @@
 "use client";
 
+import type { PointerEventHandler } from "react";
 import { useTranslations } from "next-intl";
 import { type AirspaceStatus, type MatchedZone } from "@canifly/middleware";
 import { useDroneProfileStore } from "@/stores/drone-profile";
@@ -16,6 +17,13 @@ const WEIGHT_OPTIONS = [
   { id: "c1" as const, label: "C1", hint: "250–900g" },
   { id: "c2" as const, label: "C2", hint: "≤4kg" },
 ];
+
+export type SheetDragProps = {
+  onPointerDown: PointerEventHandler<HTMLElement>;
+  onPointerMove: PointerEventHandler<HTMLElement>;
+  onPointerUp: PointerEventHandler<HTMLElement>;
+  onPointerCancel: PointerEventHandler<HTMLElement>;
+};
 
 function stripHtml(html: string): string {
   return html
@@ -39,7 +47,12 @@ function sectionLabel(text: string) {
   );
 }
 
-export function SidebarPanel() {
+export function SidebarPanel({
+  sheetDragProps,
+}: {
+  /** Mobile sheet: drag this header to collapse/expand. */
+  sheetDragProps?: SheetDragProps;
+} = {}) {
   const t = useTranslations("sidebar");
   const tStatus = useTranslations("status");
   const status = useDroneProfileStore((s) => s.status);
@@ -51,6 +64,9 @@ export function SidebarPanel() {
   const queryMs = useDroneProfileStore((s) => s.queryMs);
   const backend = useDroneProfileStore((s) => s.backend);
   const dataVersion = useDroneProfileStore((s) => s.dataVersion);
+  const mapBackend = useDroneProfileStore((s) => s.mapBackend);
+  const mapDataVersion = useDroneProfileStore((s) => s.mapDataVersion);
+  const mapQueryMs = useDroneProfileStore((s) => s.mapQueryMs);
   const requestGeolocate = useDroneProfileStore((s) => s.requestGeolocate);
   const weightClass = useDroneProfileStore((s) => s.weightClass);
   const setWeightClass = useDroneProfileStore((s) => s.setWeightClass);
@@ -115,7 +131,14 @@ export function SidebarPanel() {
 
   return (
     <aside className="flex h-full w-full flex-col overflow-hidden bg-[var(--as-surface)] text-[var(--as-ink)]">
-      <div className="border-b border-[var(--as-line-soft)] px-5 pb-4 pt-5">
+      <div
+        className={
+          sheetDragProps
+            ? "cursor-grab border-b border-[var(--as-line-soft)] px-5 pb-4 pt-5 active:cursor-grabbing touch-none"
+            : "border-b border-[var(--as-line-soft)] px-5 pb-4 pt-5"
+        }
+        {...(sheetDragProps ?? {})}
+      >
         <p className="text-[12px] font-semibold text-[var(--as-ink)]">
           {t("flightProfile")}
         </p>
@@ -364,11 +387,23 @@ export function SidebarPanel() {
         )}
       </div>
 
-      {(backend || dataVersion) && (
+      {(mapBackend || backend || dataVersion) && (
         <div className="border-t border-[var(--as-line-soft)] px-5 py-3 text-[11px] text-[var(--as-muted)]">
-          {backend ? backendLabel(backend) : t("offline")}
-          {dataVersion ? ` · ${dataVersion}` : ""}
-          {queryMs != null ? ` · ${queryMs}ms` : ""}
+          {mapBackend && (
+            <p>
+              {t("mapZones", { backend: backendLabel(mapBackend) })}
+              {mapBackend === "servais" ? ` · ${t("mapLive")}` : ""}
+              {mapDataVersion ? ` · ${mapDataVersion}` : ""}
+              {mapQueryMs != null ? ` · ${mapQueryMs}ms` : ""}
+            </p>
+          )}
+          {(backend || dataVersion) && (
+            <p className={mapBackend ? "mt-1" : undefined}>
+              {backend ? backendLabel(backend) : t("offline")}
+              {dataVersion ? ` · ${dataVersion}` : ""}
+              {queryMs != null ? ` · ${queryMs}ms` : ""}
+            </p>
+          )}
         </div>
       )}
     </aside>

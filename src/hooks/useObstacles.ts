@@ -6,7 +6,7 @@ import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
 import { useAuthStore } from "@/stores/auth";
 import { useObstaclesStore } from "@/stores/obstacles";
 
-const DEBOUNCE_MS = 350;
+const DEBOUNCE_MS = 200;
 
 export function useObstacles() {
   const refreshToken = useObstaclesStore((s) => s.refreshToken);
@@ -43,6 +43,7 @@ export function useObstacles() {
       });
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
+      if (err instanceof TypeError && String(err.message).includes("fetch")) return;
       console.error("[useObstacles]", err);
     } finally {
       setLoading(false);

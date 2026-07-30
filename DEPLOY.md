@@ -65,6 +65,21 @@ Changelog: each repo has `CHANGELOG.md`. Bump the three versions together when c
 
 **Austria in prod:** no ingest step — the API fetches the latest production ED-269 ZIP from [Austro Control](https://www.austrocontrol.at/luftfahrtbehoerde/lizenzen__bewilligungen/drohnen/geografische_zonen) and caches it in memory.
 
+**Spain map zones (PostGIS):** map polygons load from PostGIS first (synced servAIS). Tap status stays live servAIS. Sync daily:
+
+```bash
+# Local / one-off
+cd CanIFly-api && npm run sync:servais
+
+# Production cron (Render cron job or GitHub Action) — clears bbox cache on success
+curl -X POST "https://canifly-api.onrender.com/api/admin/ingest" \
+  -H "Content-Type: application/json" \
+  -H "x-ingest-secret: $ENAIRE_INGEST_SECRET" \
+  -d '{"sources":["servais"]}'
+```
+
+Verify: `GET /api/admin/ingest` (with the same secret) should show `count > 0` and `backend: "postgis"`.
+
 ---
 
 ## Architecture

@@ -198,6 +198,8 @@ export default function AccountPage() {
                   <img
                     src={avatarPreview}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover"
                   />
                 ) : (

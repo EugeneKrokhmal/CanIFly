@@ -226,6 +226,8 @@ export function MapAddPinSheet() {
                 <img
                   src={photoPreview}
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                   className="h-16 w-full object-cover"
                 />
                 <button

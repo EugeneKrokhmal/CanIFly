@@ -188,7 +188,9 @@
     "sourceServais": "servAIS",
     "sourcePansa": "PANSA",
     "sourceAnscr": "ANS CR",
-    "offline": "offline"
+    "offline": "offline",
+    "mapZones": "Mapa: {backend}",
+    "mapLive": "živě"
   },
   "status": {
     "clear": "Clear",

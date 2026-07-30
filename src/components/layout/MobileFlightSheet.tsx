@@ -252,7 +252,16 @@ export const MobileFlightSheet = memo(function MobileFlightSheet() {
             contentVisibility: expanded ? "visible" : "auto",
           }}
         >
-          {panelReady ? <SidebarPanel /> : null}
+          {panelReady ? (
+            <SidebarPanel
+              sheetDragProps={{
+                onPointerDown,
+                onPointerMove,
+                onPointerUp,
+                onPointerCancel: onPointerUp,
+              }}
+            />
+          ) : null}
         </div>
       </div>
     </>

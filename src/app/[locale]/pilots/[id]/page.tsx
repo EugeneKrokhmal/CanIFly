@@ -133,6 +133,8 @@ export default function PilotProfilePage({
               <img
                 src={pilot.avatarUrl}
                 alt=""
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover"
               />
             ) : (
@@ -201,6 +203,8 @@ export default function PilotProfilePage({
                         <img
                           src={o.photoUrl}
                           alt=""
+                          loading="lazy"
+                          decoding="async"
                           className="h-36 w-full object-cover transition duration-200 group-hover:scale-[1.02]"
                         />
                         <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/45 to-transparent px-3 pb-2.5 pt-8 text-left text-[12px] font-semibold text-white opacity-90 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
@@ -278,6 +282,8 @@ export default function PilotProfilePage({
           <img
             src={lightboxSrc}
             alt=""
+            loading="eager"
+            decoding="async"
             className="as-fade max-h-[min(92dvh,100%)] max-w-full rounded-lg object-contain shadow-[0_12px_48px_rgba(0,0,0,0.45)]"
             onClick={(e) => e.stopPropagation()}
           />

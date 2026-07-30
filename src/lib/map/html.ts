@@ -45,7 +45,7 @@ export function obstaclePopupHtml(input: {
 }): string {
   const msg = input.message?.trim();
   const photo = input.photoUrl
-    ? `<img src="${escapeHtml(input.photoUrl)}" alt="" style="display:block;width:100%;max-height:140px;object-fit:cover;border-radius:8px;margin:8px 0" />`
+    ? `<img src="${escapeHtml(input.photoUrl)}" alt="" loading="lazy" decoding="async" style="display:block;width:100%;max-height:140px;object-fit:cover;border-radius:8px;margin:8px 0" />`
     : "";
 
   let dateLabel = "";
