@@ -893,7 +893,11 @@ export function MapView({ className }: MapViewProps) {
       window.removeEventListener("resize", onResize);
       ro?.disconnect();
       trackAbortRef.current?.abort();
-      popupRef.current?.remove();
+      {
+        const popup = popupRef.current;
+        popupRef.current = null;
+        popup?.remove();
+      }
       selectionMarkerRef.current?.remove();
       pendingMarkerRef.current?.remove();
       for (const m of zoneMarkersRef.current) m.remove();
@@ -1073,7 +1077,8 @@ export function MapView({ className }: MapViewProps) {
     if (!statusPopupActiveRef.current) return;
 
     const html = airspacePopupHtml({
-      loading: statusLoading || (!status && !statusError),
+      // Once a verdict exists, keep showing it (status is cleared on each new tap).
+      loading: statusLoading && !status && !statusError,
       error: statusError,
       status,
       summary,
@@ -1089,7 +1094,12 @@ export function MapView({ className }: MapViewProps) {
       Math.abs(popup.getLngLat().lng - selectedPoint.lng) < 1e-8;
 
     if (!popup || !atPoint) {
-      popup?.remove();
+      const previous = popup;
+      // Clear ref before remove so the old popup's "close" handler does not
+      // clear statusPopupActiveRef and block subsequent status updates.
+      popupRef.current = null;
+      previous?.remove();
+
       popup = new maplibregl.Popup({
         offset: 18,
         className: "as-ac-popup",
@@ -1100,9 +1110,12 @@ export function MapView({ className }: MapViewProps) {
         .setHTML(html)
         .addTo(map);
       popup.on("close", () => {
+        if (popupRef.current !== popup) return;
         statusPopupActiveRef.current = false;
+        popupRef.current = null;
       });
       popupRef.current = popup;
+      statusPopupActiveRef.current = true;
     } else {
       popup.setHTML(html);
     }
@@ -1115,7 +1128,6 @@ export function MapView({ className }: MapViewProps) {
     statusError,
     zones,
   ]);
-
   useEffect(() => {
     const map = mapRef.current;
     if (!mapReady || !map || !mapCameraRequest) return;
