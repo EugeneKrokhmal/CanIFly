@@ -88,7 +88,7 @@ export function SettingsForm() {
           {user ? t("languageHintSaved") : t("languageHint")}
         </p>
         <div
-          className="mt-4 flex items-center gap-1 rounded-full border border-[var(--as-line)] p-0.5"
+          className="mt-4 flex flex-wrap items-center gap-1 rounded-full border border-[var(--as-line)] p-0.5"
           role="group"
           aria-label={t("languageTitle")}
         >
@@ -105,6 +105,13 @@ export function SettingsForm() {
             onClick={() => void switchLocale("en")}
           >
             {t("langEn")}
+          </SegmentedOption>
+          <SegmentedOption
+            active={locale === "de"}
+            disabled={savingLocale}
+            onClick={() => void switchLocale("de")}
+          >
+            {t("langDe")}
           </SegmentedOption>
           <SegmentedOption
             active={locale === "pl"}

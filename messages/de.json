@@ -1,0 +1,822 @@
+{
+  "meta": {
+    "title": "CanIFly — Darf ich mit meinem Drohnen fliegen? EU-UAS-Karte (Spanien, Tschechien & Polen)",
+    "description": "Prüfen Sie mit einem Tipp, ob Sie mit Ihrer Drohne fliegen dürfen. UAS-Luftraumkarte für Spanien (ENAIRE), Tschechien (ANS CR) und Polen (PANSA): Frei, Begrenzt, Eingeschränkt oder Verboten nach Klasse C0–C2 und AGL-Höhenlimit.",
+    "faqTitle": "Drohnen-FAQ — UAS-Luftraum Spanien, Tschechien & Polen | CanIFly",
+    "faqDescription": "Klare Antworten zu Frei/Begrenzt/Eingeschränkt/Verboten, ENAIRE/ANS CR/PANSA-Genehmigungen, AESA/CAA/ULC, ADS-B-Spuren und offiziellen Quellen für Drohnenpiloten in Spanien, Tschechien und Polen.",
+    "guideTitle": "Drohnen-Flugleitfaden 2026 — Spanien, Tschechien & Polen | CanIFly",
+    "guideDescription": "So prüfen Sie, ob Sie in Spanien, Tschechien und Polen mit einer Drohne fliegen dürfen: UAS-Zonen, offene Kategorie, AGL-Höhenlimit und die CanIFly-Karte.",
+    "privacyTitle": "Datenschutz & Cookies | CanIFly",
+    "privacyDescription": "Wie CanIFly Daten, Cookies und lokalen Speicher für die spanische UAS-Luftraumkarte verarbeitet.",
+    "contactsTitle": "Offizielle Drohnen-Kontakte — Spanien, Tschechien & Polen | CanIFly",
+    "contactsDescription": "Offizielle Links für Fluggenehmigungen: ENAIRE/AESA (Spanien), ANS CR/CAA (Tschechien) sowie PANSA DroneMap, ULC (Polen).",
+    "accountTitle": "Mein Konto | CanIFly",
+    "accountDescription": "Verwalten Sie Ihr CanIFly-Pilotenprofil.",
+    "settingsTitle": "Einstellungen — Sprache & Design | CanIFly",
+    "settingsDescription": "Wählen Sie Sprache (ES/EN/DE/PL/CS) und helles, dunkles oder System-Design für CanIFly."
+  },
+  "nav": {
+    "map": "Karte",
+    "faq": "FAQ",
+    "guide": "Leitfaden",
+    "contacts": "Kontakte",
+    "privacy": "Datenschutz",
+    "settings": "Einstellungen",
+    "account": "Konto",
+    "publicProfile": "Öffentliches Profil",
+    "logIn": "Anmelden",
+    "logOut": "Abmelden",
+    "myAccount": "Mein Konto",
+    "menu": "Menü",
+    "search": "Ort suchen",
+    "language": "Sprache",
+    "langEs": "ES",
+    "langEn": "EN",
+    "langPl": "PL",
+    "langDe": "DE",
+    "theme": "Design",
+    "themeToggle": "Design · {mode}",
+    "themeSystem": "System",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel",
+    "langCs": "CS",
+    "weatherCaution": "Vorsicht",
+    "weatherDanger": "Schlechte Flugbedingungen",
+    "weatherFlyHint": "Wind und Niederschlag vor dem Start prüfen",
+    "weatherGood": "Gute Flugbedingungen",
+    "weatherAtPin": "an Ihrem Pin",
+    "weatherArea": "in der Nähe der Kartenmitte",
+    "weatherLoading": "Wetter wird geladen…"
+  },
+  "search": {
+    "title": "Ort suchen",
+    "placeholder": "Stadt, Ort oder Postleitzahl…",
+    "hint": "Mindestens 2 Zeichen eingeben. Ergebnisse aus Spanien, Tschechien und Polen erscheinen zuerst.",
+    "searching": "Suche läuft…",
+    "empty": "Keine Orte gefunden",
+    "error": "Suche fehlgeschlagen. Bitte erneut versuchen.",
+    "close": "Schließen",
+    "attribution": "Orte über Open-Meteo Geocoding"
+  },
+  "auth": {
+    "createAccount": "Konto erstellen",
+    "logIn": "Anmelden",
+    "close": "Schließen",
+    "registerBlurb": "Wir senden Ihnen einen Link per E-Mail, um Ihr Konto zu bestätigen, bevor Sie sich anmelden können.",
+    "loginBlurb": "Melden Sie sich an, um Hindernisse und Flugspots auf der Karte zu melden.",
+    "name": "Name",
+    "namePlaceholder": "So sehen Sie andere",
+    "operatorNumber": "Betreibernummer",
+    "optional": "(optional)",
+    "operatorPlaceholder": "z. B. ESP-OP-XXXX",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordHint": "Mindestens 6 Zeichen",
+    "pleaseWait": "Bitte warten…",
+    "register": "Registrieren",
+    "haveAccount": "Bereits ein Konto?",
+    "newHere": "Neu hier?",
+    "networkError": "Netzwerkfehler",
+    "checkEmail": "Prüfen Sie {email} auf einen Bestätigungslink. Sie können sich nach der Bestätigung anmelden.",
+    "resent": "Bestätigungs-E-Mail erneut an {email} gesendet.",
+    "resendVerification": "Bestätigungs-E-Mail erneut senden",
+    "forgotPassword": "Passwort vergessen?",
+    "forgotBlurb": "Geben Sie Ihre E-Mail-Adresse ein — wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
+    "sendResetLink": "Link zum Zurücksetzen senden",
+    "resetEmailSent": "Falls ein Konto für {email} existiert, haben wir einen Link zum Zurücksetzen des Passworts gesendet. Prüfen Sie Ihren Posteingang.",
+    "backToLogin": "Zurück zur Anmeldung",
+    "rememberPassword": "Passwort wieder eingefallen?"
+  },
+  "usageBanner": {
+    "message": "Sie haben {count} Orte geprüft. Erstellen Sie ein kostenloses Konto, um Ihre Spots zu speichern und auf der Karte zu melden.",
+    "createAccount": "Konto erstellen",
+    "remindLater": "Später erinnern"
+  },
+  "verifyEmail": {
+    "eyebrow": "Konto",
+    "title": "E-Mail-Bestätigung",
+    "checking": "E-Mail wird bestätigt…",
+    "success": "E-Mail bestätigt. Sie sind angemeldet.",
+    "failed": "Dieser Bestätigungslink ist ungültig oder abgelaufen.",
+    "missingToken": "Bestätigungstoken fehlt.",
+    "goAccount": "Zu meinem Konto",
+    "backToMap": "Zurück zur Karte"
+  },
+  "resetPassword": {
+    "eyebrow": "Konto",
+    "title": "Passwort zurücksetzen",
+    "blurb": "Wählen Sie ein neues Passwort für Ihr Konto.",
+    "password": "Neues Passwort",
+    "passwordHint": "Mindestens 6 Zeichen",
+    "submit": "Passwort zurücksetzen",
+    "pleaseWait": "Bitte warten…",
+    "success": "Passwort aktualisiert. Sie sind angemeldet.",
+    "failed": "Dieser Link zum Zurücksetzen ist ungültig oder abgelaufen.",
+    "missingToken": "Token zum Zurücksetzen fehlt.",
+    "goAccount": "Zu meinem Konto",
+    "backToMap": "Zurück zur Karte"
+  },
+  "account": {
+    "loading": "Konto wird geladen…",
+    "loginPrompt": "Melden Sie sich an, um Ihr Konto zu verwalten.",
+    "logIn": "Anmelden",
+    "eyebrow": "Konto",
+    "title": "Mein Konto",
+    "publicProfile": "Öffentliches Profil",
+    "profilePhoto": "Profilfoto",
+    "upload": "Hochladen",
+    "remove": "Entfernen",
+    "name": "Name",
+    "bio": "Bio",
+    "optional": "(optional)",
+    "bioPlaceholder": "Kurze Vorstellung für andere Piloten",
+    "operatorNumber": "Betreibernummer",
+    "operatorPlaceholder": "z. B. ESP-OP-XXXX",
+    "saved": "Gespeichert",
+    "saving": "Wird gespeichert…",
+    "saveChanges": "Änderungen speichern",
+    "photoTooLarge": "Foto darf maximal 12 MB groß sein",
+    "networkError": "Netzwerkfehler",
+    "failed": "Fehlgeschlagen ({status})",
+    "dangerZone": "Gefahrenzone",
+    "dangerBlurb": "Ihr Konto und alle von Ihnen gemeldeten Hindernisse dauerhaft löschen.",
+    "deleteConfirm": "Konto dauerhaft löschen? Ihre Hindernisse werden entfernt.",
+    "deleting": "Wird gelöscht…",
+    "deleteAccount": "Konto löschen"
+  },
+  "map": {
+    "loading": "Karte wird geladen…",
+    "checkingAirspace": "Luftraum wird geprüft…",
+    "tapToCheck": "Tippen Sie auf die Karte zum Prüfen",
+    "swipeUpControls": "Nach oben wischen für Steuerung",
+    "locateHint": " · Standort-Steuerung auf der Karte nutzen",
+    "swipeUp": "Nach oben wischen",
+    "locateMe": "Meinen Standort finden",
+    "collapsePanel": "Panel einklappen",
+    "flightControls": "Flugsteuerung",
+    "obstacleFallback": "Hindernis"
+  },
+  "sidebar": {
+    "flightProfile": "Flugprofil",
+    "flightProfileHint": "Drohne wählen, Höhenlimit setzen, dann auf die Karte tippen.",
+    "aircraft": "Luftfahrzeug",
+    "locateMe": "Meinen Standort finden",
+    "ceilingAgl": "Höhenlimit AGL",
+    "flightCheck": "Flugprüfung",
+    "tapTakeoff": "Tippen Sie einen Startpunkt auf der Karte an, um überlappende UAS-Zonen zu sehen.",
+    "lat": "Breite",
+    "lng": "Länge",
+    "ceiling": "Höhenlimit",
+    "class": "Klasse",
+    "zones": "Zonen",
+    "source": "Quelle",
+    "zonesHeading": "Zonen · {count}",
+    "reason": "Grund: {reasons}",
+    "contact": "Kontakt: {contact}",
+    "freeBand": "Freier Bereich bis ca. {meters} m",
+    "vlosHint": "VLOS bis ca. {meters} m oft außerhalb von Flugplatz-Zonen erlaubt",
+    "noCoordHint": "Unter ca. {meters} m meist keine Flugplatz-Koordination nötig",
+    "noFlightHint": "Kein Drohnenflug ohne Koordination",
+    "restrictionProhibited": "Verboten",
+    "restrictionAuth": "Genehmigung erforderlich",
+    "restrictionConditional": "Bedingt",
+    "restrictionNone": "Keine Einschränkung",
+    "sourceAero": "Aero",
+    "sourceUrbano": "Urban",
+    "sourceInfra": "Infra",
+    "sourceServais": "servAIS",
+    "sourcePansa": "PANSA",
+    "sourceAnscr": "ANS CR",
+    "offline": "offline"
+  },
+  "status": {
+    "clear": "Frei",
+    "limited": "Begrenzt",
+    "restricted": "Eingeschränkt",
+    "prohibited": "Verboten"
+  },
+  "obstacle": {
+    "reportTitle": "Hindernis melden",
+    "reportHint": "Markieren Sie Baustellen, Kräne, Stromleitungen, Luftsport oder anderes für andere Piloten.",
+    "addOnMap": "Auf Karte hinzufügen",
+    "logInToReport": "Zum Melden anmelden",
+    "type": "Typ",
+    "approxHeight": "Ca. Höhe",
+    "message": "Nachricht",
+    "optional": "(optional)",
+    "messagePlaceholder": "z. B. Aktiver Kran bis Freitag",
+    "photo": "Foto",
+    "photoPreviewAlt": "Hindernis-Vorschau",
+    "remove": "Entfernen",
+    "addPhoto": "Foto hinzufügen",
+    "photoFormats": "JPEG, PNG oder WebP · beim Upload komprimiert",
+    "photoTooLarge": "Foto darf maximal 12 MB groß sein",
+    "pinnedAt": "Gesetzt bei {lat}, {lng}",
+    "tapToPlace": "Tippen Sie auf die Karte, um das Hindernis zu platzieren.",
+    "cancel": "Abbrechen",
+    "saving": "Wird gespeichert…",
+    "save": "Speichern",
+    "construction": "Baustelle / Gebäude",
+    "crane": "Kran",
+    "electric_line": "Stromleitungen",
+    "air_sports": "Luftsport in der Nähe",
+    "other": "Sonstiges"
+  },
+  "pin": {
+    "add": "Hinzufügen",
+    "closeMenu": "Schließen",
+    "addAria": "Hindernis oder Flugspot hinzufügen",
+    "addMenuHint": "Was möchten Sie hinzufügen?",
+    "addObstacle": "Hindernis",
+    "addObstacleHint": "Kran, Baustelle, Leitungen…",
+    "addFlySpot": "Flugspot",
+    "addFlySpotHint": "Guter Ort zum Fliegen",
+    "sheetTitleObstacle": "Hindernis melden",
+    "sheetTitleFlySpot": "Flugspot teilen",
+    "type": "Typ",
+    "approxHeight": "Ca. Höhe",
+    "suggestedCeiling": "Empfohlenes Höhenlimit",
+    "message": "Nachricht",
+    "optional": "(optional)",
+    "messagePlaceholderObstacle": "z. B. Aktiver Kran bis Freitag",
+    "messagePlaceholderFlySpot": "z. B. Ruhiger Park, gut zum Üben",
+    "photo": "Foto",
+    "remove": "Entfernen",
+    "addPhoto": "Foto hinzufügen",
+    "photoFormats": "JPEG, PNG oder WebP · beim Upload komprimiert",
+    "photoTooLarge": "Foto darf maximal 12 MB groß sein",
+    "pinnedAt": "Gesetzt bei {lat}, {lng}",
+    "tapToPlace": "Tippen Sie auf die Karte, um den Pin zu setzen.",
+    "cancel": "Abbrechen",
+    "saving": "Wird gespeichert…",
+    "save": "Speichern"
+  },
+  "pilot": {
+    "eyebrow": "Pilot",
+    "operator": "Betreiber · {number}",
+    "communityReporter": "Community-Melder",
+    "reportedHeading": "Gemeldete Pins · {count}",
+    "noneYet": "Noch keine Hindernisse oder Flugspots.",
+    "viewOnMap": "Auf Karte anzeigen",
+    "openPhoto": "Vollbild anzeigen",
+    "closePhoto": "Foto schließen",
+    "photoFullscreen": "Foto im Vollbild",
+    "backToMap": "← Zurück zur Karte",
+    "unavailable": "Profil nicht verfügbar.",
+    "loading": "Profil wird geladen…"
+  },
+  "leaderboard": {
+    "aria": "Top-Piloten nach gesetzten Pins",
+    "title": "Top-Piloten",
+    "pins": "{count, plural, one {# Pin} other {# Pins}}"
+  },
+  "cookie": {
+    "aria": "Cookie-Einwilligung",
+    "title": "Cookies & lokaler Speicher",
+    "body": "Wir nutzen essenziellen Speicher, um Ihr Drohnenprofil und Ihre Einwilligung zu merken. Optionale Analyse-Cookies sind deaktiviert, bis Sie zustimmen. Siehe unsere",
+    "privacyLink": "Datenschutz & Cookies",
+    "reject": "Nicht essenzielle ablehnen",
+    "accept": "Alle akzeptieren"
+  },
+  "faq": {
+    "eyebrow": "Hilfe",
+    "countryLabel": "Land",
+    "countryNames": {
+      "ES": "Spanien",
+      "PL": "Polen",
+      "CZ": "Tschechien",
+      "DE": "Deutschland",
+      "FR": "Frankreich"
+    },
+    "backToMap": "← Zurück zur Karte",
+    "byCountry": {
+      "ES": {
+        "title": "Drohnen-FAQ Spanien",
+        "intro": "Kurze Antworten zu Statusbezeichnungen, AESA-Registrierung, ENAIRE und Datenquellen für Drohnenflüge in Spanien.",
+        "ctaGuide": "Vollständigen Spanien-Flugleitfaden lesen",
+        "items": {
+          "status": {
+            "q": "Was bedeuten Frei / Begrenzt / Eingeschränkt / Verboten?",
+            "a": "Frei bedeutet keine harte UAS-Geozonen-Einschränkung auf Ihrer Flughöhe. Begrenzt bedeutet, dass Sie meist ohne vorherige Zonenkoordination bis zu einer angegebenen Höhe fliegen können (z. B. ca. 45 m). Eingeschränkt bedeutet, dass eine Genehmigung oder Koordination erforderlich sein kann. Verboten bedeutet kein Flug ohne ausdrückliche Koordination (z. B. Flughafen-Oberflächenzonen)."
+          },
+          "auth": {
+            "q": "Bedeutet REQ_AUTHORISATION, dass ich eine Pilotennummer brauche?",
+            "a": "Nein. Es bedeutet, dass für diese Zone möglicherweise eine vorherige Genehmigung oder Koordination mit der Zonenbehörde erforderlich ist (z. B. ENAIRE Planea, Aena). Unabhängig davon verlangt Spanien für die meisten Flüge in der Regel AESA-UAS-Betreiberregistrierung und Schulung in der offenen Kategorie."
+          },
+          "data": {
+            "q": "Woher stammen die Luftraumdaten?",
+            "a": "Live-UAS-Geozonen stammen von ENAIRE servAIS. Flugverkehr und Spuren kommen vom OpenSky Network (ADS-B). Drohnenmodelle stammen aus dem offenen OpenDroneList-Katalog."
+          },
+          "track": {
+            "q": "Ist die gestrichelte Flugzeuglinie ein echter Flugplan?",
+            "a": "Nein. Durchgezogene Linien sind geflogene Spuren von OpenSky. Gestrichelte Linien sind eine kurze gerade Schätzung aus aktuellem Kurs und Geschwindigkeit — kein eingereichter Streckenverlauf."
+          },
+          "official": {
+            "q": "Ist CanIFly eine offizielle Auskunft?",
+            "a": "Nein. Prüfen Sie vor dem Flug immer bei ENAIRE Drones / AESA. Regeln und Zonentexte ändern sich; diese App ist eine Planungshilfe, keine rechtliche Freigabe."
+          },
+          "openCategory": {
+            "q": "Was sind offene Kategorie C0, C1 und C2?",
+            "a": "Die EU-offene Kategorie klassifiziert leichte Drohnen. C0 (<250 g), C1 und C2 haben unterschiedliche Höhen- und Abstandsgrenzen. CanIFly filtert Zonen nach der von Ihnen gewählten Klasse und AGL-Höhe, um annähernd Frei, Begrenzt, Eingeschränkt oder Verboten zu bestimmen."
+          },
+          "madrid": {
+            "q": "Darf ich in Madrid oder in der Nähe von Barajas fliegen?",
+            "a": "Ein Großteil des Ballungsraums ist von CTR/TMA und UAS-Zonen betroffen. Nutzen Sie die CanIFly-Karte, tippen Sie Ihren Startpunkt an und prüfen Sie den Status. Bei Eingeschränkt oder Verboten ENAIRE Planea / Drones vor dem Flug konsultieren."
+          },
+          "where": {
+            "q": "Wo darf ich in Spanien legal mit der Drohne fliegen?",
+            "a": "Das hängt von Ort, Höhe, Drohnenklasse und aktiven UAS-Geozonen ab. Es gibt keine feste Liste „sicherer Spots“: Prüfen Sie jeden Punkt auf offiziellen ENAIRE-Karten und in CanIFly und befolgen Sie AESA-Regeln (VLOS, Abstand zu Personen usw.)."
+          }
+        }
+      },
+      "PL": {
+        "title": "Drohnen-FAQ Polen",
+        "intro": "Kurze Antworten zu Statusbezeichnungen, ULC-Registrierung, PANSA DroneMap und Datenquellen für Drohnenflüge in Polen.",
+        "ctaGuide": "Vollständigen Polen-Flugleitfaden lesen",
+        "items": {
+          "status": {
+            "q": "Was bedeuten Frei / Begrenzt / Eingeschränkt / Verboten?",
+            "a": "Frei bedeutet keine harte UAS-Geozonen-Einschränkung auf Ihrer Flughöhe. Begrenzt bedeutet, dass Sie meist ohne vorherige Zonenkoordination bis zu einer angegebenen Höhe fliegen können (z. B. ca. 45 m). Eingeschränkt bedeutet, dass eine Genehmigung oder Koordination erforderlich sein kann. Verboten bedeutet kein Flug ohne ausdrückliche Koordination (z. B. Flughafen-Oberflächenzonen)."
+          },
+          "auth": {
+            "q": "Bedeutet REQ_AUTHORISATION, dass ich eine Pilotennummer brauche?",
+            "a": "Nein. Es bedeutet, dass für diese Zone möglicherweise eine vorherige Genehmigung oder Koordination mit dem Zonenmanager erforderlich ist (z. B. PANSA / Flugplatz). Unabhängig davon verlangt Polen für die meisten Flüge in der Regel UAS-Betreiberregistrierung und Kompetenz in der offenen Kategorie — ULC-Regeln prüfen."
+          },
+          "openCategory": {
+            "q": "Was sind offene Kategorie C0, C1 und C2?",
+            "a": "Die EU-offene Kategorie klassifiziert leichte Drohnen. C0 (<250 g), C1 und C2 haben unterschiedliche Höhen- und Abstandsgrenzen. CanIFly filtert Zonen nach der von Ihnen gewählten Klasse und AGL-Höhe, um annähernd Frei, Begrenzt, Eingeschränkt oder Verboten zu bestimmen."
+          },
+          "where": {
+            "q": "Wo darf ich in Polen legal mit der Drohne fliegen?",
+            "a": "Das hängt von Ort, Höhe, Drohnenklasse und aktiven UAS-Geozonen (DRA-P / DRA-R / DRA-I und CTR/ATZ) ab. Prüfen Sie jeden Punkt auf PANSA DroneMap und in CanIFly und befolgen Sie ULC- / offene-Kategorie-Regeln (VLOS, Abstand zu Personen usw.)."
+          },
+          "warsaw": {
+            "q": "Darf ich in Warschau oder in der Nähe des Flughafens Chopin fliegen?",
+            "a": "Ein Großteil des Ballungsraums ist von CTR/ATZ und DRA-Zonen betroffen. Nutzen Sie die CanIFly-Karte, tippen Sie Ihren Startpunkt an und prüfen Sie den Status. Bei Eingeschränkt oder Verboten PANSA DroneMap / DroneTower vor dem Flug konsultieren."
+          },
+          "data": {
+            "q": "Woher stammen die Luftraumdaten?",
+            "a": "In Polen stammen Live-UAS-Geozonen von PANSA DroneMap. In Spanien von ENAIRE servAIS. Flugverkehr kommt von Community-ADS-B / OpenSky. Drohnenmodelle stammen aus dem offenen OpenDroneList-Katalog."
+          },
+          "track": {
+            "q": "Ist die gestrichelte Flugzeuglinie ein echter Flugplan?",
+            "a": "Nein. Durchgezogene Linien sind geflogene Spuren von OpenSky. Gestrichelte Linien sind eine kurze gerade Schätzung aus aktuellem Kurs und Geschwindigkeit — kein eingereichter Streckenverlauf."
+          },
+          "official": {
+            "q": "Ist CanIFly eine offizielle Auskunft?",
+            "a": "Nein. Prüfen Sie vor dem Flug immer bei PANSA DroneMap / ULC (und DroneTower, wo erforderlich). Für Registrierung und offene-Kategorie-Regeln die ULC-Drohnen-Informationsseite nutzen. Regeln und Zonenaktivität ändern sich; diese App ist eine Planungshilfe, keine rechtliche Freigabe."
+          }
+        }
+      },
+      "CZ": {
+        "title": "Drohnen-FAQ Tschechien",
+        "intro": "Kurze Antworten zu Statusbezeichnungen, CAA-Registrierung, ANS CR DroneMap und Datenquellen für Drohnenflüge in Tschechien.",
+        "ctaGuide": "Vollständigen Tschechien-Flugleitfaden lesen",
+        "items": {
+          "status": {
+            "q": "Was bedeuten Frei, Begrenzt, Eingeschränkt und Verboten?",
+            "a": "Frei: Keine passende UAS-Geozone blockiert Ihr Profil auf dieser Höhe. Begrenzt: Es gelten einige Bedingungen oder weichere Einschränkungen. Eingeschränkt: Vorherige Koordination oder Genehmigung ist typischerweise erforderlich. Verboten: Flug ist unter dem angezeigten offenen-Kategorie-Profil nicht erlaubt."
+          },
+          "auth": {
+            "q": "Bedeutet Eingeschränkt, dass ich bei der CAA registriert bin?",
+            "a": "Nein. Es bedeutet, dass für diese Zone möglicherweise eine vorherige Genehmigung oder Koordination mit dem Zonenmanager erforderlich ist. Unabhängig davon verlangt Tschechien für die meisten Flüge in der Regel UAS-Betreiberregistrierung und Kompetenz in der offenen Kategorie — CAA-Regeln prüfen."
+          },
+          "openCategory": {
+            "q": "Deckt CanIFly nur die offene Kategorie ab?",
+            "a": "Ja für den Kartenstatus. Profile sind C0–C2 mit AGL-Höhenlimit (Standard 120 m). Spezifische Kategorie, BVLOS und U-space-Verfahren liegen außerhalb des Umfangs."
+          },
+          "where": {
+            "q": "Wo darf ich in Tschechien legal mit der Drohne fliegen?",
+            "a": "Das hängt von Ort, Höhe, Drohnenklasse und aktiven UAS-Geozonen (LKR-Maßnahmen / OOP) ab. Prüfen Sie jeden Punkt auf ANS CR DroneMap und in CanIFly und befolgen Sie CAA- / offene-Kategorie-Regeln (VLOS, Abstand zu Personen usw.)."
+          },
+          "prague": {
+            "q": "Darf ich in Prag fliegen?",
+            "a": "Ein Großteil des Ballungsraums ist von CTR/ATZ-Puffern, dicht besiedelten Gebieten und anderen LKR-Zonen betroffen. Nutzen Sie die CanIFly-Karte, tippen Sie Ihren Startpunkt an und prüfen Sie den Status. Bei Eingeschränkt oder Verboten DroneMap / CAA vor dem Flug konsultieren."
+          },
+          "data": {
+            "q": "Woher stammen die Luftraumdaten?",
+            "a": "In Tschechien stammen UAS-Geozonen von ANS CR aimgis (Live-ArcGIS, dieselbe Familie wie DroneMap). In Spanien von ENAIRE servAIS; in Polen von PANSA DroneMap. Flugverkehr kommt von Community-ADS-B / OpenSky. Drohnenmodelle stammen aus dem offenen OpenDroneList-Katalog."
+          },
+          "track": {
+            "q": "Was sind die Flugzeugspuren auf der Karte?",
+            "a": "ADS-B-Verkehr aus Community-Feeds / OpenSky. Nützlich zur Lageerfassung, kein Ersatz für See-and-Avoid oder offizielle Verkehrsdienste."
+          },
+          "official": {
+            "q": "Ist CanIFly ein offizielles ANS CR- oder CAA-Produkt?",
+            "a": "Nein. Prüfen Sie vor dem Flug immer bei ANS CR DroneMap / CAA. Regeln und Zonentexte ändern sich; diese App ist eine Planungshilfe, keine rechtliche Freigabe. Kartenzonen werden live von ANS CR abgefragt — verbindliche Grenzen und NOTAMs werden auf AIM / DroneMap veröffentlicht."
+          }
+        }
+      },
+      "DE": {
+        "title": "FAQ — Deutschland",
+        "intro": "Antworten zum Fliegen in Deutschland mit CanIFly und dipul-Geozonen.",
+        "ctaGuide": "Vollständigen Deutschland-Flugleitfaden lesen",
+        "ctaContacts": "Kontakte",
+        "items": {
+          "status": {
+            "q": "Was bedeuten Frei / Begrenzt / Eingeschränkt / Verboten in Deutschland?",
+            "a": "CanIFly fasst dipul-Geozonen für Ihre Drohnenklasse und Flughöhe zusammen. Eingeschränkt bedeutet meist, dass unter LuftVO § 21h Koordination oder Bedingungen gelten; vor dem Flug immer auf der offiziellen dipul-Karte bestätigen."
+          },
+          "auth": {
+            "q": "Brauche ich eine Genehmigung zum Fliegen?",
+            "a": "Flüge in der offenen Kategorie können in dipul-Zonen (Flughäfen, Krankenhäuser, Naturschutzgebiete, Wohngrundstücke und mehr) dennoch eine Genehmigung oder besondere Bedingungen erfordern. Für die rechtliche Anforderung dipul oder DFS-Leitfäden nutzen."
+          },
+          "openCategory": {
+            "q": "Deckt CanIFly die offene Kategorie ab?",
+            "a": "Ja. C0–C2 und Ihr AGL-Höhenlimit setzen; wir filtern deutsche Zonen, die dieses Profil schneiden. Spezifische / zertifizierte Operationen erfordern zusätzliche Prüfungen außerhalb von CanIFly."
+          },
+          "where": {
+            "q": "Wo deckt CanIFly in Deutschland ab?",
+            "a": "Festlanddeutschland über den offiziellen dipul-WFS-Geodienst (dieselbe Zonenfamilie wie auf uas-operations.bund.de)."
+          },
+          "berlin": {
+            "q": "Was ist mit Berlin / Großstädten?",
+            "a": "Städte liegen oft unter CTRs, Wohngebietsregeln und Infrastruktur-Puffern. Auf der Karte tippen für Live-Status; als Planungshilfe behandeln, nicht als Freigabe."
+          },
+          "data": {
+            "q": "Woher stammen die deutschen Zonendaten?",
+            "a": "Live-Abfragen am dipul-WFS unter uas-betrieb.de (DFS / BMDV). Wir ersetzen nicht das offizielle dipul-Kartentool."
+          },
+          "track": {
+            "q": "Ist CanIFly ein offizieller Tracker?",
+            "a": "Nein. Es ist eine Planungshilfe. Für offizielle deutsche UAS-Geozonen dipul nutzen."
+          },
+          "official": {
+            "q": "Welche offiziellen Seiten soll ich nutzen?",
+            "a": "uas-operations.bund.de (dipul) sowie DFS- / LBA-Leitfäden für Ihre Betriebsart."
+          }
+        }
+      },
+      "FR": {
+        "title": "FAQ — Frankreich",
+        "intro": "Antworten zum Fliegen in Frankreich mit CanIFly und Géoportail-Freizeitdrohnen-Einschränkungen.",
+        "ctaGuide": "Frankreich-Flugleitfaden lesen",
+        "ctaContacts": "Kontakte",
+        "items": {
+          "status": {
+            "q": "Was bedeuten Frei / Begrenzt / Eingeschränkt / Verboten in Frankreich?",
+            "a": "CanIFly fasst Géoportail-Einschränkungspolygone für Ihre Drohnenklasse und Flughöhe zusammen. Vol interdit entspricht Verboten; Höhenbegrenzungen (30/50/100 m) entsprechen Bedingt. Vor dem Flug immer auf Géoportail / AlphaTango bestätigen."
+          },
+          "auth": {
+            "q": "Brauche ich eine Genehmigung zum Fliegen?",
+            "a": "Flüge in der offenen Kategorie sind über viele Ballungsräume und in Flughafennähe (Vol interdit) weiterhin verboten. Höhenbegrenzte Zonen erlauben Flug nur bis zur veröffentlichten Obergrenze. Für Registrierung und Szenarien AlphaTango- / DGAC-Leitfäden nutzen."
+          },
+          "openCategory": {
+            "q": "Deckt CanIFly die offene Kategorie ab?",
+            "a": "Ja. C0–C2 und Ihr AGL-Höhenlimit setzen; wir filtern französische Einschränkungspolygone, die dieses Profil schneiden. Spezifische / professionelle Operationen erfordern zusätzliche Prüfungen außerhalb von CanIFly."
+          },
+          "where": {
+            "q": "Wo deckt CanIFly in Frankreich ab?",
+            "a": "Metropolitanfrankreich (einschließlich Korsika) über den Géoportail-WFS-Layer carte_restriction_drones_lf. Überseegebiete können ebenfalls in diesem Layer erscheinen; vor Ort immer verifizieren."
+          },
+          "paris": {
+            "q": "Was ist mit Paris / Großstädten?",
+            "a": "Stadtkerne sind im öffentlichen Raum oft Vol interdit nach dem Arrêté Espace. Auf der Karte tippen für Live-Status; als Planungshilfe behandeln, nicht als Freigabe."
+          },
+          "data": {
+            "q": "Woher stammen die französischen Zonendaten?",
+            "a": "Live-WFS-Abfragen an data.geopf.fr (IGN / Géoportail). Offizielle ED-269-Pakete werden von der SIA in AIRAC-Zyklen veröffentlicht — CanIFly lädt diese ZIPs nicht zur Laufzeit herunter."
+          },
+          "track": {
+            "q": "Ist CanIFly ein offizieller Tracker?",
+            "a": "Nein. Es ist eine Planungshilfe. Für offizielle französische UAS-Einschränkungen Géoportail und SIA- / DGAC-Quellen nutzen."
+          },
+          "official": {
+            "q": "Welche offiziellen Seiten soll ich nutzen?",
+            "a": "Géoportail-Freizeitdrohnen-Einschränkungen, SIA-UAS-Geozonendaten, AlphaTango und DGAC- / Ministère de la Transition écologique-Seiten."
+          }
+        }
+      }
+    }
+  },
+  "guide": {
+    "countryLabel": "Land",
+    "countryNames": {
+      "ES": "Spanien",
+      "PL": "Polen",
+      "CZ": "Tschechien",
+      "DE": "Deutschland",
+      "FR": "Frankreich"
+    },
+    "ctaMap": "CanIFly-Karte öffnen",
+    "ctaFaq": "FAQ ansehen",
+    "backToMap": "← Zurück zur Karte",
+    "byCountry": {
+      "ES": {
+        "eyebrow": "Spanien-Leitfaden",
+        "title": "So prüfen Sie, ob Sie in Spanien mit Ihrer Drohne fliegen dürfen",
+        "intro": "CanIFly fasst den UAS-Luftraumstatus auf einer Karte zusammen: Punkt antippen, Klasse und Höhenlimit wählen, Frei, Begrenzt, Eingeschränkt oder Verboten sehen. Dieser Leitfaden erklärt den Kontext für Freizeit- und professionelle Piloten in der offenen Kategorie.",
+        "sections": {
+          "how": {
+            "title": "1. Punkt auf der Karte prüfen",
+            "body": "CanIFly öffnen, Karte auf Ihren Standort zentrieren (oder Stadt suchen) und Startpunkt antippen. Der Status kombiniert ENAIRE servAIS-UAS-Geozonen mit Ihrer Klasse (C0–C2) und AGL-Höhe. Ist das Ergebnis nicht Frei, nicht vom Start ausgehen: Zonendetails und offizielle Quellen lesen."
+          },
+          "enaire": {
+            "title": "2. ENAIRE und UAS-Zonen",
+            "body": "ENAIRE veröffentlicht UAS-Geozonen (CTR, Flughäfen, Infrastruktur, temporär usw.). CanIFly nutzt diese Geometrien für die Karte, maßgeblich bleiben ENAIRE Drones / Planea. Zonen ändern sich: am Flugtag erneut prüfen."
+          },
+          "aesa": {
+            "title": "3. AESA: Registrierung und offene Kategorie",
+            "body": "Neben dem Luftraum verlangt Spanien für die meisten Operationen AESA-UAS-Betreiberregistrierung und Schulung. Die offene Kategorie hat Unterkategorien und Grenzen (Höhe, Abstand zu Personen, VLOS). CanIFly ersetzt diesen Rechtsrahmen nicht."
+          },
+          "cities": {
+            "title": "4. Städte: Madrid, Barcelona, Valencia, Sevilla, Bilbao",
+            "body": "In Großstädten ist der Luftraum oft stärker eingeschränkt wegen Flughäfen, Hubschrauberlandeplätzen und Stadtkernen. Stadt in CanIFly suchen, mehrere Punkte antippen (Park, Dach, Stadtrand) und Status vergleichen. Ein „leerer“ Park auf Satellitenbildern kann unter einer UAS-Zone dennoch Eingeschränkt sein."
+          },
+          "community": {
+            "title": "5. Community-Hindernisse und Flugspots",
+            "body": "Piloten können Hindernisse (Kräne, Baustellen, Leitungen) und empfohlene Flugspots markieren. Das sind Community-Tipps mit Bewertungen: nützlich zur Planung, nicht offiziell. Immer mit ENAIRE/AESA abgleichen."
+          },
+          "disclaimer": {
+            "title": "Wichtiger Hinweis",
+            "body": "CanIFly ist ein Planungstool. Es ist nicht ENAIRE oder AESA. Vor dem Flug Regeln, NOTAMs und Genehmigungen auf offiziellen Kanälen bestätigen. Sie tragen die Verantwortung für den Betrieb."
+          }
+        }
+      },
+      "PL": {
+        "eyebrow": "Polen-Leitfaden",
+        "title": "So prüfen Sie, ob Sie in Polen mit Ihrer Drohne fliegen dürfen",
+        "intro": "CanIFly fasst den UAS-Luftraumstatus auf einer Karte zusammen: Punkt antippen, Klasse und Höhenlimit wählen, Frei, Begrenzt, Eingeschränkt oder Verboten sehen. Dieser Leitfaden erklärt den Kontext für Piloten in der offenen Kategorie in Polen.",
+        "sections": {
+          "how": {
+            "title": "1. Punkt auf der Karte prüfen",
+            "body": "CanIFly öffnen, Karte auf Ihren Standort zentrieren (oder Stadt suchen) und Startpunkt antippen. Der Status kombiniert PANSA DroneMap-UAS-Geozonen mit Ihrer Klasse (C0–C2) und AGL-Höhe. Ist das Ergebnis nicht Frei, nicht vom Start ausgehen: Zonendetails und offizielle Quellen lesen."
+          },
+          "pansa": {
+            "title": "2. PANSA DroneMap und DRA-Zonen",
+            "body": "PANSA veröffentlicht UAS-Geozonen (DRA-P verboten wenn aktiv, DRA-R eingeschränkt, DRA-I informativ, plus CTR/ATZ-Puffer). CanIFly nutzt diese Geometrien für die Karte, maßgeblich bleiben DroneMap / DroneTower. Zonenaktivität ändert sich: am Flugtag erneut prüfen."
+          },
+          "ulc": {
+            "title": "3. ULC: Registrierung und offene Kategorie",
+            "body": "Neben dem Luftraum verlangt Polen für die meisten Operationen UAS-Betreiberregistrierung und Kompetenznachweis. Die EU-offene Kategorie hat Unterkategorien und Grenzen (Höhe, Abstand zu Personen, VLOS). Mit der ULC-Informationsseite zu Registrierung, Schulung und Kategorieregeln beginnen — CanIFly ersetzt diesen Rechtsrahmen nicht."
+          },
+          "cities": {
+            "title": "4. Städte: Warschau, Krakau, Danzig, Breslau, Posen",
+            "body": "In Großstädten ist der Luftraum oft stärker eingeschränkt wegen Flughäfen, Hubschrauberlandeplätzen und Stadtkernen. Stadt in CanIFly suchen, mehrere Punkte antippen (Park, Dach, Stadtrand) und Status vergleichen. Ein „leerer“ Park auf Satellitenbildern kann unter einer DRA- oder CTR-Zone dennoch Eingeschränkt sein."
+          },
+          "community": {
+            "title": "5. Community-Hindernisse und Flugspots",
+            "body": "Piloten können Hindernisse (Kräne, Baustellen, Leitungen) und empfohlene Flugspots markieren. Das sind Community-Tipps mit Bewertungen: nützlich zur Planung, nicht offiziell. Immer mit PANSA / ULC abgleichen."
+          },
+          "disclaimer": {
+            "title": "Wichtiger Hinweis",
+            "body": "CanIFly ist ein Planungstool. Es ist nicht PANSA oder ULC. Vor dem Flug Regeln, NOTAMs und Genehmigungen auf offiziellen Kanälen bestätigen (einschließlich DroneTower, wo erforderlich). Sie tragen die Verantwortung für den Betrieb."
+          }
+        }
+      },
+      "CZ": {
+        "eyebrow": "Tschechien-Leitfaden",
+        "title": "So prüfen Sie, ob Sie in Tschechien mit Ihrer Drohne fliegen dürfen",
+        "intro": "CanIFly fasst den UAS-Luftraumstatus auf einer Karte zusammen: Punkt antippen, Klasse und Höhenlimit wählen, Frei, Begrenzt, Eingeschränkt oder Verboten sehen. Dieser Leitfaden erklärt den Kontext für Piloten in der offenen Kategorie in Tschechien.",
+        "sections": {
+          "how": {
+            "title": "1. Auf die Karte tippen",
+            "body": "CanIFly öffnen, Karte auf Ihren Standort zentrieren (oder Stadt suchen) und Startpunkt antippen. Der Status kombiniert ANS CR-UAS-Geozonen mit Ihrer Klasse (C0–C2) und AGL-Höhe. Ist das Ergebnis nicht Frei, nicht vom Start ausgehen: Zonendetails und offizielle Quellen lesen."
+          },
+          "anscr": {
+            "title": "2. ANS CR und UAS-Geozonen",
+            "body": "ANS CR veröffentlicht UAS-Geozonen unter Maßnahmen allgemeiner Art (LKR / OOP). CanIFly fragt sie live von ANS CR aimgis für die Planung in der offenen Kategorie ab, maßgeblich bleiben DroneMap / CAA. Daten aktualisieren sich in AIRAC-Zyklen: am Flugtag erneut prüfen."
+          },
+          "caa": {
+            "title": "3. CAA-Registrierung und offene Kategorie",
+            "body": "Neben dem Luftraum verlangt Tschechien für die meisten Operationen UAS-Betreiberregistrierung und Kompetenznachweis. Die EU-offene Kategorie hat Unterkategorien und Grenzen (Höhe, Abstand zu Personen, VLOS). CanIFly ersetzt diesen Rechtsrahmen nicht."
+          },
+          "cities": {
+            "title": "4. Städte und Flughäfen",
+            "body": "Prag, Brünn, Ostrava und andere Städte liegen oft unter CTR/ATZ-Puffern, dicht besiedelten Schichten und Infrastrukturzonen. Ländliche Spots können dennoch Bahnen, Straßen, Naturschutz oder Verteidigungsobjekte treffen. Immer den exakten Startpunkt antippen."
+          },
+          "community": {
+            "title": "5. Community-Pins",
+            "body": "Piloten können Hindernisse (Kräne, Baustellen, Leitungen) und empfohlene Flugspots markieren. Das sind Community-Tipps mit Bewertungen: nützlich zur Planung, nicht offiziell. Immer mit ANS CR / CAA abgleichen."
+          },
+          "disclaimer": {
+            "title": "6. Haftungsausschluss",
+            "body": "CanIFly ist ein Planungstool. Es ist nicht ANS CR oder die CAA. Vor dem Flug Regeln, NOTAMs und Genehmigungen auf offiziellen Kanälen bestätigen. Sie tragen die Verantwortung für den Betrieb."
+          }
+        }
+      },
+      "DE": {
+        "eyebrow": "Deutschland",
+        "title": "Drohnenflug in Deutschland",
+        "intro": "CanIFly liest live dipul-Geozonen, damit Sie Frei / Begrenzt / Eingeschränkt / Verboten für Flüge in der offenen Kategorie sehen. Vor dem Flug immer mit dipul abgleichen.",
+        "sections": {
+          "how": {
+            "title": "Wie CanIFly hilft",
+            "body": "Klasse und Höhenlimit wählen, auf die Karte tippen — wir fragen dipul-Layer für diesen Punkt ab: Flughäfen, CTRs, Krankenhäuser, Naturschutzgebiete, Straßen und mehr."
+          },
+          "dipul": {
+            "title": "dipul (offizielle Karte)",
+            "body": "Die Digitale Plattform Unbemannter Luftfahrt (dipul) ist Deutschlands offizielle Geozonenkarte nach LuftVO. CanIFly nutzt deren öffentlichen WFS; dipul bleibt die Referenz."
+          },
+          "dfs": {
+            "title": "DFS / BMDV",
+            "body": "Zonendaten werden für Geo-Awareness veröffentlicht. Gewerbliche oder komplexe Operationen können über die offene Kategorie hinaus weitere DFS- / LBA-Schritte erfordern."
+          },
+          "cities": {
+            "title": "Städte und CTRs",
+            "body": "Berlin, München, Hamburg und andere Städte haben oft dichte überlappende Zonen. In CanIFly heranzoomen, dann auf dipul bestätigen."
+          },
+          "community": {
+            "title": "Community-Pins",
+            "body": "Hindernisse und Flugspots werden von der Community gemeldet. Sie ersetzen keine offiziellen Geozonen."
+          },
+          "disclaimer": {
+            "title": "Haftungsausschluss",
+            "body": "CanIFly ist eine Planungshilfe, keine Genehmigung. Sie bleiben verantwortlich für die Einhaltung der LuftVO und lokaler Regeln."
+          }
+        }
+      },
+      "FR": {
+        "eyebrow": "Frankreich",
+        "title": "Drohnenflug in Frankreich",
+        "intro": "CanIFly liest live Géoportail-Einschränkungspolygone, damit Sie Frei / Begrenzt / Eingeschränkt / Verboten für Flüge in der offenen Kategorie sehen. Vor dem Flug immer mit Géoportail abgleichen.",
+        "sections": {
+          "how": {
+            "title": "Wie CanIFly hilft",
+            "body": "Klasse und Höhenlimit wählen, auf die Karte tippen — wir fragen den offiziellen Freizeitdrohnen-Einschränkungslayer für diesen Punkt ab: Flugverbote und Höhenbegrenzungen."
+          },
+          "geoportail": {
+            "title": "Géoportail (offizielle Karte)",
+            "body": "IGN Géoportail veröffentlicht Restrictions pour drones de loisir. CanIFly nutzt deren öffentlichen WFS; Géoportail bleibt die visuelle Referenz."
+          },
+          "dgac": {
+            "title": "DGAC / SIA / AlphaTango",
+            "body": "Registrierung und Szenarien laufen über AlphaTango. SIA veröffentlicht ED-269-UAS-Geozonenpakete in jedem AIRAC-Zyklus. CanIFly ersetzt diese Verfahren nicht."
+          },
+          "cities": {
+            "title": "Städte und Flughäfen",
+            "body": "Paris, Lyon, Marseille und andere Städte zeigen oft Vol interdit über öffentlichen Ballungsraum plus Flughafenpuffer. In CanIFly heranzoomen, dann auf Géoportail bestätigen."
+          },
+          "community": {
+            "title": "Community-Pins",
+            "body": "Hindernisse und Flugspots werden von der Community gemeldet. Sie ersetzen keine offiziellen Einschränkungspolygone."
+          },
+          "disclaimer": {
+            "title": "Haftungsausschluss",
+            "body": "CanIFly ist eine Planungshilfe, keine Genehmigung. Sie bleiben verantwortlich für die Einhaltung der französischen UAS-Regeln und lokaler Arrêtés."
+          }
+        }
+      }
+    }
+  },
+  "privacy": {
+    "eyebrow": "Rechtliches",
+    "title": "Datenschutz & Cookies",
+    "intro": "Kurzer Hinweis für Besucher in der EU / im EWR nach GDPR und ePrivacy-Regeln. CanIFly ist eine Planungshilfe, keine offizielle Behördenwebsite.",
+    "storeTitle": "Was wir speichern",
+    "storeEssentialLabel": "Essenziell:",
+    "storeEssential": "Ihre Cookie-Einwilligung und (auf diesem Gerät) Ihre gewählte Drohnenklasse / Flughöhe, damit die Karte zwischen Besuchen funktioniert.",
+    "storeOptionalLabel": "Optional:",
+    "storeOptional": "Wir laden keine Werbe- oder Marketing-Cookies Dritter. Falls wir später anonyme Produktanalysen hinzufügen, laufen diese nur nach Tipp auf „Alle akzeptieren“.",
+    "thirdTitle": "Anfragen an Dritte",
+    "thirdBody": "Die App ruft ENAIRE servAIS (Spanien), PANSA DroneMap (Polen), ANS CR aimgis (Tschechien), Géoportail / data.geopf.fr (Frankreich), OpenSky / Community-ADS-B (Flugverkehr), Open-Meteo (Wetter) und OpenDroneList (Drohnenkatalog) auf. Diese Dienste erhalten die für die Anfrage nötigen technischen Daten (z. B. Kartenkoordinaten). Details in deren Datenschutzrichtlinien.",
+    "choicesTitle": "Ihre Wahlmöglichkeiten",
+    "choicesBodyBefore": "Mit ",
+    "choicesReject": "Nicht essenzielle ablehnen",
+    "choicesBodyMid": " nur essenziellen Speicher behalten, oder ",
+    "choicesAccept": "Alle akzeptieren",
+    "choicesBodyAfter": ", falls optionale Analysen eingeführt werden. Browser-Sitedaten löschen, um das Banner zurückzusetzen.",
+    "backToMap": "← Zurück zur Karte"
+  },
+  "contacts": {
+    "eyebrow": "Links",
+    "countryLabel": "Land",
+    "countryNames": {
+      "ES": "Spanien",
+      "PL": "Polen",
+      "CZ": "Tschechien",
+      "DE": "Deutschland",
+      "FR": "Frankreich"
+    },
+    "backToMap": "← Zurück zur Karte",
+    "byCountry": {
+      "ES": {
+        "title": "Kontakte — Spanien",
+        "intro": "Offizielle Kanäle für Koordination, Registrierung und Zonendaten in Spanien. Zonenspezifische E-Mails erscheinen auch in der Karten-Seitenleiste, wenn Sie einen Punkt antippen.",
+        "items": {
+          "planea": {
+            "title": "ENAIRE Planea",
+            "detail": "Genehmigungsanträge für kontrollierten Luftraum / CTR-Betrieb"
+          },
+          "drones": {
+            "title": "ENAIRE Drones",
+            "detail": "Offizielle UAS-Geozonen und Warnungen"
+          },
+          "aesa": {
+            "title": "AESA — Drohnen",
+            "detail": "Betreiberregistrierung, offene-Kategorie-Regeln, Geozonen-Leitfaden"
+          },
+          "aip": {
+            "title": "AIP UAS (ENAIRE)",
+            "detail": "Veröffentlichte ED-318- / ZGUAS-Datenpakete"
+          }
+        }
+      },
+      "PL": {
+        "title": "Kontakte — Polen",
+        "intro": "Offizielle Kanäle für Koordination, Registrierung und UAS-Geozonen in Polen. Zonenspezifische Kontakte erscheinen ggf. auch in der Karten-Seitenleiste, wenn Sie einen Punkt antippen.",
+        "items": {
+          "dronemap": {
+            "title": "PANSA DroneMap",
+            "detail": "Offizielle UAS-Geozonenkarte (DRA / CTR / ATZ) und Flugplanung"
+          },
+          "dronyGov": {
+            "title": "drony.gov.pl — DroneTower",
+            "detail": "Nationales Drohneninformationssystem: Luftraum prüfen und Flüge koordinieren, wo erforderlich"
+          },
+          "ulc": {
+            "title": "ULC — Drohnen (Allgemeine Informationen)",
+            "detail": "Offizielle CAA-Übersicht: Registrierung, offene/spezifische/zertifizierte Kategorien, Schulung und Geozonen-Verantwortlichkeiten"
+          },
+          "pansa": {
+            "title": "PANSA-Kontakt (PansaUTM / Drohnen)",
+            "detail": "Flugkoordination und PansaUTM-Anfragen — drony@pansa.pl"
+          }
+        }
+      },
+      "CZ": {
+        "title": "Kontakte — Tschechien",
+        "intro": "Offizielle Kanäle für Koordination, Registrierung und UAS-Geozonen in Tschechien. Zonenspezifische Kontakte erscheinen ggf. auch in der Karten-Seitenleiste, wenn Sie einen Punkt antippen.",
+        "items": {
+          "dronemap": {
+            "title": "DroneMap (ANS CR)",
+            "detail": "Offizielle digitale Karte für UAS-Geozonen und Vorflugplanung in Tschechien."
+          },
+          "aim": {
+            "title": "AIM — UAS-Geozonen-Downloads",
+            "detail": "Live-UAS-Zonenabfragen über ANS CR aimgis (ArcGIS)"
+          },
+          "caa": {
+            "title": "CAA — unbemannte Luftfahrzeuge",
+            "detail": "Seiten der Luftfahrtbehörde zu Registrierung, offener Kategorie und Geozonen (OOP / LKR)."
+          },
+          "ans": {
+            "title": "ANS CR",
+            "detail": "Air Navigation Services of the Czech Republic — aeronautische Informationen und UAS-Kartentools."
+          }
+        }
+      },
+      "DE": {
+        "title": "Deutschland — offizielle Kontakte",
+        "intro": "Diese offiziellen deutschen Quellen für Geozonen und UAS-Regeln nutzen.",
+        "items": {
+          "dipul": {
+            "title": "dipul-Kartentool",
+            "detail": "Offizielle Geozonenkarte"
+          },
+          "wms": {
+            "title": "dipul WMS / WFS",
+            "detail": "Maschinenlesbare Geodienste"
+          },
+          "bmdv": {
+            "title": "BMDV unbemannte Luftfahrt",
+            "detail": "Bundespolitik und dipul-Programm"
+          },
+          "lba": {
+            "title": "LBA — Drohnen",
+            "detail": "Leitfäden der Luftfahrtbehörde"
+          }
+        }
+      },
+      "FR": {
+        "title": "Frankreich — offizielle Kontakte",
+        "intro": "Diese offiziellen französischen Quellen für Freizeitdrohnen-Einschränkungen, Registrierung und ED-269-Daten nutzen.",
+        "items": {
+          "geoportail": {
+            "title": "Géoportail — Drohnen-Einschränkungen",
+            "detail": "Offizielle Freizeitdrohnen-Einschränkungskarte (Vol interdit / Höhenbegrenzungen)"
+          },
+          "sia": {
+            "title": "SIA — UAS-Geozonen",
+            "detail": "ED-269-Datensätze in jedem AIRAC-Zyklus veröffentlicht"
+          },
+          "dgac": {
+            "title": "DGAC / Ministerium — Drohnen",
+            "detail": "Politik und Regeln für professionelle und Freizeit-UAS"
+          },
+          "alphatango": {
+            "title": "AlphaTango",
+            "detail": "Betreiberregistrierung und Flugszenarien"
+          }
+        }
+      }
+    }
+  },
+  "settings": {
+    "eyebrow": "Einstellungen",
+    "title": "Einstellungen",
+    "intro": "Sprache und Darstellung für dieses Gerät.",
+    "languageTitle": "Sprache",
+    "languageHint": "Wechseln zwischen Spanisch, Englisch, Deutsch, Polnisch und Tschechisch. Die URL passt sich an.",
+    "languageHintSaved": "Wenn Sie angemeldet sind, speichern wir Ihre Sprache und stellen sie beim nächsten Login wieder her.",
+    "languageSaveFailed": "Sprache hier aktualisiert. Speichern im Konto noch nicht möglich — später erneut versuchen.",
+    "langEs": "Español",
+    "langEn": "English",
+    "langPl": "Polski",
+    "langDe": "Deutsch",
+    "themeTitle": "Design",
+    "themeHint": "System folgt der Geräteeinstellung. Hell und Dunkel fixieren das Erscheinungsbild.",
+    "backToMap": "← Zurück zur Karte",
+    "langCs": "Čeština"
+  }
+}

@@ -38,6 +38,7 @@ export function languageAlternates(path = "/"): Metadata["alternates"] {
 const OG_LOCALE: Record<AppLocale, string> = {
   es: "es_ES",
   en: "en_GB",
+  de: "de_DE",
   pl: "pl_PL",
   cs: "cs_CZ",
 };
@@ -54,6 +55,8 @@ const KEYWORDS: Record<AppLocale, string[]> = {
     "mapa drones España",
     "dron Polonia",
     "dron Chequia",
+    "dron Alemania",
+    "dron Francia",
     "ANS CR",
     "categoría abierta C0 C1 C2",
   ],
@@ -74,6 +77,21 @@ const KEYWORDS: Record<AppLocale, string[]> = {
     "UAS geographical zones",
     "CanIFly",
     "open category C0 C1 C2",
+  ],
+  de: [
+    "Drohne Deutschland",
+    "UAS Luftraum",
+    "dipul",
+    "DFS Drohnen",
+    "LBA Drohnen",
+    "darf ich fliegen",
+    "UAS geografische Gebiete",
+    "CanIFly",
+    "offene Kategorie C0 C1 C2",
+    "Drohne Spanien",
+    "Drohne Frankreich",
+    "Drohne Polen",
+    "Drohne Tschechien",
   ],
   pl: [
     "dron Polska",

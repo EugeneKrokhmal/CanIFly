@@ -38,11 +38,13 @@ export default async function GuidePage({ params }: Props) {
     inLanguage:
       appLocale === "es"
         ? "es-ES"
-        : appLocale === "pl"
-          ? "pl-PL"
-          : appLocale === "cs"
-            ? "cs-CZ"
-            : "en",
+        : appLocale === "de"
+          ? "de-DE"
+          : appLocale === "pl"
+            ? "pl-PL"
+            : appLocale === "cs"
+              ? "cs-CZ"
+              : "en",
     author: { "@type": "Organization", name: "CanIFly", url: getSiteUrl() },
     publisher: {
       "@type": "Organization",
@@ -55,12 +57,14 @@ export default async function GuidePage({ params }: Props) {
       "@type": "Thing",
       name:
         appLocale === "es"
-          ? "Espacio aéreo UAS en la UE (España, Chequia y Polonia)"
-          : appLocale === "pl"
-            ? "Przestrzeń powietrzna UAS w UE (Hiszpania, Czechy i Polska)"
-            : appLocale === "cs"
-              ? "Vzdušný prostor UAS v EU (Španělsko, Česko a Polsko)"
-              : "UAS airspace in the EU (Spain, Germany, France, Czechia and Poland)",
+          ? "Espacio aéreo UAS en la UE (España, Alemania, Francia, Chequia y Polonia)"
+          : appLocale === "de"
+            ? "UAS-Luftraum in der EU (Spanien, Deutschland, Frankreich, Tschechien und Polen)"
+            : appLocale === "pl"
+              ? "Przestrzeń powietrzna UAS w UE (Hiszpania, Niemcy, Francja, Czechy i Polska)"
+              : appLocale === "cs"
+                ? "Vzdušný prostor UAS v EU (Španělsko, Německo, Francie, Česko a Polsko)"
+                : "UAS airspace in the EU (Spain, Germany, France, Czechia and Poland)",
     },
   };
 
