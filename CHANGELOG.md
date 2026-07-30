@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- Switzerland in coverage: FAQ / Guide / Contacts, geocode preference (FOCA / geo.admin.ch)
 - Denmark in coverage: FAQ / Guide / Contacts, geocode preference (Trafikstyrelsen Dronezoner)
 - France in coverage: FAQ / Guide / Contacts, geocode preference, SEO (Géoportail / geopf)
 - German UI language (`de`) in Settings alongside ES / EN / PL / CS

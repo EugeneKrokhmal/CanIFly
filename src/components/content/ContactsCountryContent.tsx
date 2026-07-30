@@ -124,6 +124,28 @@ function contactLinksFor(locale: string): Record<ContentCountryId, readonly Cont
       label: "trafikstyrelsen.dk/droner",
     },
   ],
+  CH: [
+    {
+      key: "map",
+      href: "https://map.geo.admin.ch/?topic=ech&layers=ch.bazl.einschraenkungen-drohnen",
+      label: "map.geo.admin.ch",
+    },
+    {
+      key: "opendata",
+      href: "https://data.geo.admin.ch/ch.bazl.einschraenkungen-drohnen/",
+      label: "data.geo.admin.ch",
+    },
+    {
+      key: "bazl",
+      href: "https://www.bazl.admin.ch/bazl/en/home/drones.html",
+      label: "bazl.admin.ch",
+    },
+    {
+      key: "uas",
+      href: "https://www.bazl.admin.ch/bazl/en/home/drones/drones---registration.html",
+      label: "bazl.admin.ch — registration",
+    },
+  ],
   CZ: [
     {
       key: "dronemap",
@@ -176,6 +198,7 @@ export function ContactsCountryContent() {
           DE: t("countryNames.DE"),
           FR: t("countryNames.FR"),
           DK: t("countryNames.DK"),
+          CH: t("countryNames.CH"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

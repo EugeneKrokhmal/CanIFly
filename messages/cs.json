@@ -288,7 +288,8 @@
       "CZ": "Česko",
       "DE": "Německo",
       "FR": "Francie",
-      "DK": "Dánsko"
+      "DK": "Dánsko",
+      "CH": "Švýcarsko"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -528,6 +529,46 @@
             "a": "dronezoner.dk / dronezoner.eu, plus Trafikstyrelsen drone pages for registration and rules."
           }
         }
+      },
+      "CH": {
+        "title": "FAQ — Switzerland",
+        "intro": "Answers for flying in Switzerland with CanIFly and FOCA UAS geographical zones (geo.admin.ch).",
+        "ctaGuide": "Read the Switzerland flying guide",
+        "ctaContacts": "Contacts",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Switzerland?",
+            "a": "CanIFly summarises FOCA SwissUASGeozones for your drone class and ceiling. Airport / CTR (AIR_TRAFFIC) zones map to Prohibited; nature and sensitive zones map to Restricted (authorisation / exemption). Always confirm on the official geo.admin.ch map before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation to fly?",
+            "a": "Many Swiss zones require an exemption permit from the competent cantonal or federal office even when marked REQ_AUTHORISATION in the data. Use FOCA / BAZL guidance for the legal requirement."
+          },
+          "openCategory": {
+            "q": "Does CanIFly cover the open category?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter Swiss zones that intersect that envelope. Specific operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Switzerland?",
+            "a": "Switzerland and Liechtenstein as published in the FOCA SwissUASGeozones open dataset on geo.admin.ch."
+          },
+          "zurich": {
+            "q": "What about Zürich / Geneva / major cities?",
+            "a": "Cities often sit under airport CTR, perimeter, and sensitive zones. Tap the map for a live status; treat it as a planning aid, not a clearance."
+          },
+          "data": {
+            "q": "Where does the Swiss zone data come from?",
+            "a": "Official FOCA / BAZL layer ch.bazl.einschraenkungen-drohnen on data.geo.admin.ch (ED-269 style JSON). We cache the national file and query it locally — we do not replace the official map."
+          },
+          "track": {
+            "q": "Is CanIFly an official tracker?",
+            "a": "No. It is a planning aid. For official Swiss UAS geographical zones use map.geo.admin.ch / BAZL."
+          },
+          "official": {
+            "q": "Which official sites should I use?",
+            "a": "map.geo.admin.ch (drone restrictions layer), data.geo.admin.ch, and bazl.admin.ch for registration and rules."
+          }
+        }
       }
     }
   },
@@ -539,7 +580,8 @@
       "CZ": "Česko",
       "DE": "Německo",
       "FR": "Francie",
-      "DK": "Dánsko"
+      "DK": "Dánsko",
+      "CH": "Švýcarsko"
     },
     "ctaMap": "Open the CanIFly map",
     "ctaFaq": "See FAQ",
@@ -730,6 +772,37 @@
             "body": "CanIFly is not Trafikstyrelsen, Dronezoner, or an official authorisation. Laws and zones change — verify before every flight."
           }
         }
+      },
+      "CH": {
+        "eyebrow": "Switzerland",
+        "title": "Flying drones in Switzerland",
+        "intro": "CanIFly summarises FOCA SwissUASGeozones on a map: tap a point, pick class and ceiling, and see Clear, Limited, Restricted or Prohibited. This guide explains the context for open-category pilots in Switzerland.",
+        "sections": {
+          "how": {
+            "title": "How CanIFly helps",
+            "body": "Tap the map, set C0–C2 and your AGL ceiling, and read the status from overlapping FOCA zones. Always cross-check the official geo.admin.ch map before launch."
+          },
+          "foca": {
+            "title": "FOCA geographical zones",
+            "body": "The Federal Office of Civil Aviation publishes UAS geographical zones as open data. CanIFly uses the WGS84 JSON download; FOCA / geo.admin.ch remains the reference."
+          },
+          "bazl": {
+            "title": "BAZL / FOCA",
+            "body": "BAZL (FOCA) publishes drone rules, registration, and the restriction dataset. Follow their guidance for operator registration and competence."
+          },
+          "cities": {
+            "title": "Cities and airports",
+            "body": "Zürich, Geneva, Basel and other hubs sit under CTR and airport-perimeter zones. Treat CanIFly as a planning aid only."
+          },
+          "community": {
+            "title": "Community pins",
+            "body": "Pilots can share obstacles and fly spots on the map. Votes help the community; they are not official clearances."
+          },
+          "disclaimer": {
+            "title": "Disclaimer",
+            "body": "CanIFly is not FOCA, BAZL, or an official authorisation. Laws and zones change — verify before every flight."
+          }
+        }
       }
     }
   },
@@ -761,7 +834,8 @@
       "CZ": "Česko",
       "DE": "Německo",
       "FR": "Francie",
-      "DK": "Dánsko"
+      "DK": "Dánsko",
+      "CH": "Švýcarsko"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -880,20 +954,42 @@
         "intro": "Official channels for coordination, registration, and UAS geographical zones in Denmark. Zone-specific contacts may also appear in the map sidebar when you tap a point.",
         "items": {
           "dronezoner": {
-            "name": "Dronezoner map",
-            "note": "Official Danish UAS geographical zones"
+            "title": "Dronezoner map",
+            "detail": "Official Danish UAS geographical zones"
           },
           "api": {
-            "name": "Dronezoner Data API",
-            "note": "Open GeoJSON / KML downloads from Trafikstyrelsen"
+            "title": "Dronezoner Data API",
+            "detail": "Open GeoJSON / KML downloads from Trafikstyrelsen"
           },
           "trafikstyrelsen": {
-            "name": "Trafikstyrelsen",
-            "note": "National transport / aviation authority"
+            "title": "Trafikstyrelsen",
+            "detail": "National transport / aviation authority"
           },
           "register": {
-            "name": "Drone registration",
-            "note": "Operator and remote pilot registration"
+            "title": "Drone registration",
+            "detail": "Operator and remote pilot registration"
+          }
+        }
+      },
+      "CH": {
+        "title": "Switzerland — official contacts",
+        "intro": "Official channels for coordination, registration, and UAS geographical zones in Switzerland. Zone-specific contacts may also appear in the map sidebar when you tap a point.",
+        "items": {
+          "map": {
+            "title": "geo.admin.ch — drone restrictions",
+            "detail": "Official FOCA UAS geographical zones map layer"
+          },
+          "opendata": {
+            "title": "FOCA open data",
+            "detail": "Downloadable SwissUASGeozones JSON (ED-269 style)"
+          },
+          "bazl": {
+            "title": "BAZL / FOCA — drones",
+            "detail": "National aviation authority drone pages"
+          },
+          "uas": {
+            "title": "Registration",
+            "detail": "Operator / remote pilot registration guidance"
           }
         }
       }

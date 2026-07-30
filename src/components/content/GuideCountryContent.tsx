@@ -11,6 +11,7 @@ const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
   DE: ["how", "dipul", "dfs", "cities", "community", "disclaimer"],
   FR: ["how", "geoportail", "dgac", "cities", "community", "disclaimer"],
   DK: ["how", "dronezoner", "trafikstyrelsen", "cities", "community", "disclaimer"],
+  CH: ["how", "foca", "bazl", "cities", "community", "disclaimer"],
   CZ: ["how", "anscr", "caa", "cities", "community", "disclaimer"],
   PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
 };
@@ -36,6 +37,12 @@ function sectionLink(
   }
   if (country === "DK" && key === "dronezoner") {
     return { href: "https://dronezoner.dk/", label: "dronezoner.dk" };
+  }
+  if (country === "CH" && key === "foca") {
+    return {
+      href: "https://map.geo.admin.ch/?topic=ech&layers=ch.bazl.einschraenkungen-drohnen",
+      label: "map.geo.admin.ch",
+    };
   }
   return null;
 }
@@ -67,6 +74,7 @@ export function GuideCountryContent() {
           DE: t("countryNames.DE"),
           FR: t("countryNames.FR"),
           DK: t("countryNames.DK"),
+          CH: t("countryNames.CH"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

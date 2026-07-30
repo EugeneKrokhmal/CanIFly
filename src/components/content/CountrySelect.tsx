@@ -1,8 +1,8 @@
 "use client";
 
-export type ContentCountryId = "ES" | "DE" | "FR" | "DK" | "CZ" | "PL";
+export type ContentCountryId = "ES" | "DE" | "FR" | "DK" | "CH" | "CZ" | "PL";
 
-const OPTIONS: ContentCountryId[] = ["ES", "DE", "FR", "DK", "CZ", "PL"];
+const OPTIONS: ContentCountryId[] = ["ES", "DE", "FR", "DK", "CH", "CZ", "PL"];
 
 type Props = {
   value: ContentCountryId;
