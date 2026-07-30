@@ -43,11 +43,12 @@ export function SiteHeader() {
   }, [menuOpen]);
 
   return (
-    <div className="relative z-40 shrink-0">
-      <header
-        className="flex h-12 items-center justify-between gap-2 border-b border-[var(--as-line)] bg-[var(--as-surface)] px-3 sm:h-16 sm:gap-3 sm:px-8"
-        style={{ paddingTop: "env(safe-area-inset-top)" }}
-      >
+    <div
+      className="relative z-40 shrink-0 bg-[var(--as-surface)]"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+    >
+      {/* z-50 keeps the menu dropdown above the weather ticker */}
+      <header className="relative z-50 flex h-12 items-center justify-between gap-2 border-b border-[var(--as-line)] bg-[var(--as-surface)] px-3 sm:h-16 sm:gap-3 sm:px-8">
       <Link href="/" className="flex shrink-0 items-center">
         <BrandLogo className="h-4 w-auto text-[var(--as-ink)] sm:h-5" />
         <span className="font-[family-name:var(--font-display)] text-[18px] font-bold tracking-tight text-[var(--as-ink)] sm:text-[22px]">
@@ -148,7 +149,7 @@ export function SiteHeader() {
             <MenuIcon open={menuOpen} />
           </button>
           {menuOpen && (
-            <div className="as-pop absolute right-0 top-[calc(100%+6px)] w-48 overflow-hidden rounded-xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] py-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
+            <div className="as-pop absolute right-0 top-[calc(100%+6px)] z-50 w-48 overflow-hidden rounded-xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] py-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
               <div className="md:hidden">
                 {NAV.map((item) => {
                   const active =

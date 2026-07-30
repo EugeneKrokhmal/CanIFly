@@ -30,7 +30,7 @@ export function WeatherAlertTicker() {
 
   return (
     <div
-      className="relative z-40 overflow-hidden border-b"
+      className="relative z-0 overflow-hidden border-b"
       style={{
         background: style.bg,
         borderColor: style.border,
