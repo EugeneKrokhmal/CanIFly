@@ -13,6 +13,7 @@ export function AuthModal() {
   const login = useAuthStore((s) => s.login);
   const register = useAuthStore((s) => s.register);
   const resendVerification = useAuthStore((s) => s.resendVerification);
+  const requestPasswordReset = useAuthStore((s) => s.requestPasswordReset);
   const pendingVerifyEmail = useAuthStore((s) => s.pendingVerifyEmail);
 
   const [email, setEmail] = useState("");
@@ -56,6 +57,16 @@ export function AuthModal() {
     setError(null);
     setInfo(null);
     setSubmitting(true);
+    if (mode === "forgot") {
+      const err = await requestPasswordReset(email);
+      setSubmitting(false);
+      if (err) {
+        setError(err);
+        return;
+      }
+      setInfo(t("resetEmailSent", { email: email.toLowerCase() }));
+      return;
+    }
     const result =
       mode === "register"
         ? await register({
@@ -86,7 +97,21 @@ export function AuthModal() {
   };
 
   const close = () => setAuthModalOpen(false);
-  const showVerifyPrompt = Boolean(pendingVerifyEmail) || Boolean(info);
+  const showVerifyPrompt =
+    mode !== "forgot" && (Boolean(pendingVerifyEmail) || Boolean(info));
+  const showForgotSuccess = mode === "forgot" && Boolean(info);
+  const modalTitle =
+    mode === "register"
+      ? t("createAccount")
+      : mode === "forgot"
+        ? t("forgotPassword")
+        : t("logIn");
+  const modalBlurb =
+    mode === "register"
+      ? t("registerBlurb")
+      : mode === "forgot"
+        ? t("forgotBlurb")
+        : t("loginBlurb");
 
   return (
     <div
@@ -121,7 +146,7 @@ export function AuthModal() {
             id="auth-modal-title"
             className="font-[family-name:var(--font-display)] text-[18px] font-bold text-[var(--as-ink)]"
           >
-            {mode === "register" ? t("createAccount") : t("logIn")}
+            {modalTitle}
           </h2>
           <button
             type="button"
@@ -134,8 +159,23 @@ export function AuthModal() {
         </div>
 
         <p className="mb-4 text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
-          {mode === "register" ? t("registerBlurb") : t("loginBlurb")}
+          {modalBlurb}
         </p>
+
+        {showForgotSuccess ? (
+          <div className="mb-4 space-y-3 rounded-xl border border-[var(--as-line-soft)] bg-[var(--as-surface-muted)] p-3">
+            <p className="text-[13px] leading-relaxed text-[var(--as-ink)]">
+              {info}
+            </p>
+            <button
+              type="button"
+              onClick={() => setAuthModalOpen(true, "login")}
+              className="as-press w-full rounded-xl border border-[var(--as-line)] px-4 py-2.5 text-[13px] font-semibold text-[var(--as-ink)]"
+            >
+              {t("backToLogin")}
+            </button>
+          </div>
+        ) : null}
 
         {showVerifyPrompt ? (
           <div className="mb-4 space-y-3 rounded-xl border border-[var(--as-line-soft)] bg-[var(--as-surface-muted)] p-3">
@@ -156,6 +196,7 @@ export function AuthModal() {
           </div>
         ) : null}
 
+        {!showForgotSuccess ? (
         <form onSubmit={onSubmit} className="space-y-3">
           {mode === "register" && (
             <>
@@ -207,6 +248,7 @@ export function AuthModal() {
               className="w-full rounded-xl border border-[var(--as-line)] px-3 py-2.5 text-[14px] outline-none transition-[border-color,box-shadow] duration-150 focus:border-[var(--as-ink)] focus:shadow-[0_0_0_3px_rgba(34,34,34,0.08)]"
             />
           </label>
+          {mode !== "forgot" ? (
           <label className="block">
             <span className="mb-1.5 block text-[12px] font-semibold text-[var(--as-ink)]">
               {t("password")}{" "}
@@ -227,6 +269,19 @@ export function AuthModal() {
               {t("passwordHint")}
             </span>
           </label>
+          ) : null}
+
+          {mode === "login" ? (
+            <p className="text-right">
+              <button
+                type="button"
+                className="text-[12px] font-semibold text-[#ff385c] hover:underline"
+                onClick={() => setAuthModalOpen(true, "forgot")}
+              >
+                {t("forgotPassword")}
+              </button>
+            </p>
+          ) : null}
 
           {error && (
             <p className="as-rise-soft rounded-xl bg-[var(--as-hover-warm)] px-3 py-2 text-[13px] text-[var(--as-prohibited)]">
@@ -243,12 +298,27 @@ export function AuthModal() {
               ? t("pleaseWait")
               : mode === "register"
                 ? t("register")
-                : t("logIn")}
+                : mode === "forgot"
+                  ? t("sendResetLink")
+                  : t("logIn")}
           </button>
         </form>
+        ) : null}
 
+        {!showForgotSuccess ? (
         <p className="mt-4 text-center text-[13px] text-[var(--as-ink-soft)]">
-          {mode === "register" ? (
+          {mode === "forgot" ? (
+            <>
+              {t("rememberPassword")}{" "}
+              <button
+                type="button"
+                className="font-semibold text-[#ff385c] hover:underline"
+                onClick={() => setAuthModalOpen(true, "login")}
+              >
+                {t("logIn")}
+              </button>
+            </>
+          ) : mode === "register" ? (
             <>
               {t("haveAccount")}{" "}
               <button
@@ -272,6 +342,7 @@ export function AuthModal() {
             </>
           )}
         </p>
+        ) : null}
       </div>
     </div>
   );

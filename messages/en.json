@@ -70,7 +70,13 @@
     "networkError": "Network error",
     "checkEmail": "Check {email} for a verification link. You can log in after confirming.",
     "resent": "Verification email sent again to {email}.",
-    "resendVerification": "Resend verification email"
+    "resendVerification": "Resend verification email",
+    "forgotPassword": "Forgot password?",
+    "forgotBlurb": "Enter your email and we’ll send you a link to reset your password.",
+    "sendResetLink": "Send reset link",
+    "resetEmailSent": "If an account exists for {email}, we sent a password reset link. Check your inbox.",
+    "backToLogin": "Back to log in",
+    "rememberPassword": "Remember your password?"
   },
   "usageBanner": {
     "message": "You've checked {count} locations. Create a free account to save your spots and report on the map.",
@@ -84,6 +90,20 @@
     "success": "Email verified. You’re signed in.",
     "failed": "This verification link is invalid or expired.",
     "missingToken": "Missing verification token.",
+    "goAccount": "Go to my account",
+    "backToMap": "Back to map"
+  },
+  "resetPassword": {
+    "eyebrow": "Account",
+    "title": "Reset password",
+    "blurb": "Choose a new password for your account.",
+    "password": "New password",
+    "passwordHint": "At least 6 characters",
+    "submit": "Reset password",
+    "pleaseWait": "Please wait…",
+    "success": "Password updated. You’re signed in.",
+    "failed": "This reset link is invalid or expired.",
+    "missingToken": "Missing reset token.",
     "goAccount": "Go to my account",
     "backToMap": "Back to map"
   },

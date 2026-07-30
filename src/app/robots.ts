@@ -4,7 +4,7 @@ import { routing } from "@/i18n/routing";
 
 export default function robots(): MetadataRoute.Robots {
   const base = getSiteUrl();
-  const privatePaths = ["/account", "/verify-email", "/settings"];
+  const privatePaths = ["/account", "/verify-email", "/reset-password", "/settings"];
   const disallow = [
     ...privatePaths.flatMap((p) => [
       p,

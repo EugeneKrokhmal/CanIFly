@@ -70,7 +70,13 @@
     "networkError": "Błąd sieci",
     "checkEmail": "Sprawdź {email} — link weryfikacyjny. Po potwierdzeniu możesz się zalogować.",
     "resent": "Ponownie wysłano e-mail weryfikacyjny na {email}.",
-    "resendVerification": "Wyślij ponownie e-mail weryfikacyjny"
+    "resendVerification": "Wyślij ponownie e-mail weryfikacyjny",
+    "forgotPassword": "Zapomniałeś hasła?",
+    "forgotBlurb": "Podaj e-mail — wyślemy link do resetu hasła.",
+    "sendResetLink": "Wyślij link resetujący",
+    "resetEmailSent": "Jeśli konto dla {email} istnieje, wysłaliśmy link do resetu hasła. Sprawdź skrzynkę.",
+    "backToLogin": "Wróć do logowania",
+    "rememberPassword": "Pamiętasz hasło?"
   },
   "usageBanner": {
     "message": "Sprawdziłeś {count} miejsc. Utwórz darmowe konto, aby zapisywać miejsca i zgłaszać na mapie.",
@@ -84,6 +90,20 @@
     "success": "E-mail zweryfikowany. Jesteś zalogowany.",
     "failed": "Ten link weryfikacyjny jest nieprawidłowy lub wygasł.",
     "missingToken": "Brak tokenu weryfikacyjnego.",
+    "goAccount": "Przejdź do konta",
+    "backToMap": "Wróć do mapy"
+  },
+  "resetPassword": {
+    "eyebrow": "Konto",
+    "title": "Reset hasła",
+    "blurb": "Wybierz nowe hasło do konta.",
+    "password": "Nowe hasło",
+    "passwordHint": "Co najmniej 6 znaków",
+    "submit": "Resetuj hasło",
+    "pleaseWait": "Proszę czekać…",
+    "success": "Hasło zaktualizowane. Jesteś zalogowany.",
+    "failed": "Ten link resetujący jest nieprawidłowy lub wygasł.",
+    "missingToken": "Brak tokenu resetu.",
     "goAccount": "Przejdź do konta",
     "backToMap": "Wróć do mapy"
   },

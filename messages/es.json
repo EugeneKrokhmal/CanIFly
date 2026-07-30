@@ -70,7 +70,13 @@
     "networkError": "Error de red",
     "checkEmail": "Revisa {email} — te hemos enviado un enlace de verificación. Podrás entrar cuando confirmes.",
     "resent": "Hemos vuelto a enviar el email de verificación a {email}.",
-    "resendVerification": "Reenviar email de verificación"
+    "resendVerification": "Reenviar email de verificación",
+    "forgotPassword": "¿Olvidaste la contraseña?",
+    "forgotBlurb": "Introduce tu email y te enviaremos un enlace para restablecer la contraseña.",
+    "sendResetLink": "Enviar enlace",
+    "resetEmailSent": "Si existe una cuenta para {email}, hemos enviado un enlace para restablecer la contraseña. Revisa tu bandeja de entrada.",
+    "backToLogin": "Volver a entrar",
+    "rememberPassword": "¿Recuerdas la contraseña?"
   },
   "usageBanner": {
     "message": "Has consultado {count} lugares. Crea una cuenta gratis para guardar sitios y reportar en el mapa.",
@@ -84,6 +90,20 @@
     "success": "Email verificado. Ya estás conectado.",
     "failed": "Este enlace de verificación no es válido o ha caducado.",
     "missingToken": "Falta el token de verificación.",
+    "goAccount": "Ir a mi cuenta",
+    "backToMap": "Volver al mapa"
+  },
+  "resetPassword": {
+    "eyebrow": "Cuenta",
+    "title": "Restablecer contraseña",
+    "blurb": "Elige una nueva contraseña para tu cuenta.",
+    "password": "Nueva contraseña",
+    "passwordHint": "Al menos 6 caracteres",
+    "submit": "Restablecer contraseña",
+    "pleaseWait": "Espera…",
+    "success": "Contraseña actualizada. Ya has entrado.",
+    "failed": "Este enlace de restablecimiento no es válido o ha caducado.",
+    "missingToken": "Falta el token de restablecimiento.",
     "goAccount": "Ir a mi cuenta",
     "backToMap": "Volver al mapa"
   },

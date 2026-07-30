@@ -21,9 +21,12 @@ type AuthState = {
   serverLocale: AppLocale | null;
   loading: boolean;
   authModalOpen: boolean;
-  authModalMode: "login" | "register";
+  authModalMode: "login" | "register" | "forgot";
   pendingVerifyEmail: string | null;
-  setAuthModalOpen: (open: boolean, mode?: "login" | "register") => void;
+  setAuthModalOpen: (
+    open: boolean,
+    mode?: "login" | "register" | "forgot",
+  ) => void;
   setUser: (user: AuthUser | null) => void;
   fetchMe: () => Promise<void>;
   login: (
@@ -39,6 +42,7 @@ type AuthState = {
   }) => Promise<{ error: string | null; needsVerification?: boolean }>;
   updateLocale: (locale: AppLocale) => Promise<string | null>;
   resendVerification: (email: string) => Promise<string | null>;
+  requestPasswordReset: (email: string) => Promise<string | null>;
   logout: () => Promise<void>;
 };
 
@@ -208,6 +212,17 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   resendVerification: async (email) => {
     const res = await fetch("/api/auth/resend-verification", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    if (!res.ok) return parseError(res);
+    return null;
+  },
+
+  requestPasswordReset: async (email) => {
+    const res = await fetch("/api/auth/forgot-password", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
