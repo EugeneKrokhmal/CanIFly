@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { SidebarPanel } from "@/components/sidebar/SidebarPanel";
+import { BannerStack } from "@/components/layout/BannerStack";
 import { MobileFlightSheet } from "@/components/layout/MobileFlightSheet";
 import { TopPilotsStack } from "@/components/map/TopPilotsStack";
 import { useAirspaceStatus } from "@/hooks/useAirspaceStatus";
@@ -81,6 +82,7 @@ export default function HomePageClient() {
           <MapView className="h-full w-full" />
         </div>
         <TopPilotsStack />
+        <BannerStack variant="map" />
         <MobileFlightSheet />
       </div>
     </div>

@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import { recordLocationCheck } from "@/lib/auth/usage-gate";
+import { useAuthStore } from "@/stores/auth";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 import type { AirspaceStatus, MatchedZone } from "@canifly/middleware";
 
@@ -21,6 +23,10 @@ interface StatusApiResponse {
  * Re-runs when the drone profile changes while a point is selected.
  */
 export function useAirspaceStatus() {
+  const user = useAuthStore((s) => s.user);
+  const userRef = useRef(user);
+  userRef.current = user;
+
   const selectedPoint = useDroneProfileStore((s) => s.selectedPoint);
   const weightClass = useDroneProfileStore((s) => s.weightClass);
   const operationCategory = "open" as const;
@@ -68,6 +74,11 @@ export function useAirspaceStatus() {
           dataVersion: data.meta?.dataVersion ?? null,
           backend: data.meta?.backend ?? null,
         });
+        // Read auth via ref so login/usage-gate updates do not re-create
+        // fetchStatus and re-trigger a loading cycle for the same point.
+        if (!userRef.current) {
+          recordLocationCheck(lat, lng);
+        }
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return;
         if (requestId !== requestIdRef.current) return;

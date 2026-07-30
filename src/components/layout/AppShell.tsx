@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useLocale } from "next-intl";
 import { SiteHeader } from "@/components/layout/SiteHeader";
-import { CookieBanner } from "@/components/layout/CookieBanner";
+import { BannerStack } from "@/components/layout/BannerStack";
 import { AuthModal } from "@/components/layout/AuthModal";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { useAuthStore, type AppLocale } from "@/stores/auth";
@@ -48,7 +48,7 @@ export function AppShell({
       <LocaleSync />
       <SiteHeader />
       <div className="min-h-0 min-w-0 flex-1 overflow-hidden">{children}</div>
-      <CookieBanner />
+      <BannerStack variant="page" />
       <AuthModal />
     </div>
   );
