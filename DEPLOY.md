@@ -24,6 +24,8 @@ All three packages share the same semver for a coordinated release (`package.jso
 | `0.3.0` | `v0.3.0` | Spain + Poland + **Czechia** | ANS CR live aimgis ArcGIS (like PL PANSA / ES servAIS) |
 | — | — | + **Denmark** | Trafikstyrelsen Dronezoner GeoJSON (`dronezoner.eu`); no ingest step |
 | — | — | + **Switzerland** | FOCA SwissUASGeozones on geo.admin.ch; no ingest step |
+| — | — | + **Portugal** | ANAC ED-269 JSON (`dnt.anac.pt/json/`); no ingest step |
+| — | — | + **Austria** | Austro Control ED-269 ZIP; no ingest step |
 | `0.2.2` | `v0.2.2` | Spain + Poland | Status tap race fix; liberty basemap; PANSA health flag |
 | `0.2.1` | `v0.2.1` | Spain + Poland | Top pilots stack; Poland contacts; local DB SSL fix |
 | `0.2.0` | `v0.2.0` | Spain + **Poland** | PANSA live API; set `PANSA_API_KEY` on Render |
@@ -58,6 +60,10 @@ Changelog: each repo has `CHANGELOG.md`. Bump the three versions together when c
 **Denmark in prod:** no ingest step — the API caches Trafikstyrelsen Dronezoner GeoJSON from the [open API](https://dronezoner.eu/API/) and filters point/bbox queries in memory.
 
 **Switzerland in prod:** no ingest step — the API caches FOCA SwissUASGeozones JSON from [geo.admin.ch](https://data.geo.admin.ch/ch.bazl.einschraenkungen-drohnen/) and filters point/bbox queries in memory.
+
+**Portugal in prod:** no ingest step — the API picks the latest ED-269 JSON from [dnt.anac.pt/json/](https://dnt.anac.pt/json/) and caches it in memory.
+
+**Austria in prod:** no ingest step — the API fetches the latest production ED-269 ZIP from [Austro Control](https://www.austrocontrol.at/luftfahrtbehoerde/lizenzen__bewilligungen/drohnen/geografische_zonen) and caches it in memory.
 
 ---
 

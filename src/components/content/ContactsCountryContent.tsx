@@ -146,6 +146,50 @@ function contactLinksFor(locale: string): Record<ContentCountryId, readonly Cont
       label: "bazl.admin.ch — registration",
     },
   ],
+  PT: [
+    {
+      key: "map",
+      href: "https://dnt.anac.pt/mapa.html",
+      label: "dnt.anac.pt",
+    },
+    {
+      key: "json",
+      href: "https://dnt.anac.pt/json/",
+      label: "dnt.anac.pt/json",
+    },
+    {
+      key: "anac",
+      href: "https://www.anac.pt/vPT/Generico/drones/Paginas/AeronavesCivisPilotadasRemotamente.aspx",
+      label: "anac.pt",
+    },
+    {
+      key: "registry",
+      href: "https://uas.anac.pt/",
+      label: "uas.anac.pt",
+    },
+  ],
+  AT: [
+    {
+      key: "dronespace",
+      href: "https://dronespace.at/",
+      label: "dronespace.at",
+    },
+    {
+      key: "zones",
+      href: "https://www.austrocontrol.at/luftfahrtbehoerde/lizenzen__bewilligungen/drohnen/geografische_zonen",
+      label: "austrocontrol.at — geo zones",
+    },
+    {
+      key: "austro",
+      href: "https://www.austrocontrol.at/",
+      label: "austrocontrol.at",
+    },
+    {
+      key: "bmk",
+      href: "https://www.bmk.gv.at/",
+      label: "bmk.gv.at",
+    },
+  ],
   CZ: [
     {
       key: "dronemap",
@@ -199,6 +243,8 @@ export function ContactsCountryContent() {
           FR: t("countryNames.FR"),
           DK: t("countryNames.DK"),
           CH: t("countryNames.CH"),
+          PT: t("countryNames.PT"),
+          AT: t("countryNames.AT"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

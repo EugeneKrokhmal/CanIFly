@@ -12,6 +12,8 @@ const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
   FR: ["how", "geoportail", "dgac", "cities", "community", "disclaimer"],
   DK: ["how", "dronezoner", "trafikstyrelsen", "cities", "community", "disclaimer"],
   CH: ["how", "foca", "bazl", "cities", "community", "disclaimer"],
+  PT: ["how", "anac", "dnt", "cities", "community", "disclaimer"],
+  AT: ["how", "dronespace", "austro", "cities", "community", "disclaimer"],
   CZ: ["how", "anscr", "caa", "cities", "community", "disclaimer"],
   PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
 };
@@ -44,6 +46,12 @@ function sectionLink(
       label: "map.geo.admin.ch",
     };
   }
+  if (country === "PT" && key === "anac") {
+    return { href: "https://dnt.anac.pt/mapa.html", label: "dnt.anac.pt" };
+  }
+  if (country === "AT" && key === "dronespace") {
+    return { href: "https://dronespace.at/", label: "dronespace.at" };
+  }
   return null;
 }
 
@@ -75,6 +83,8 @@ export function GuideCountryContent() {
           FR: t("countryNames.FR"),
           DK: t("countryNames.DK"),
           CH: t("countryNames.CH"),
+          PT: t("countryNames.PT"),
+          AT: t("countryNames.AT"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

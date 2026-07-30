@@ -289,7 +289,9 @@
       "DE": "Deutschland",
       "FR": "Frankreich",
       "DK": "Dänemark",
-      "CH": "Schweiz"
+      "CH": "Schweiz",
+      "PT": "Portugal",
+      "AT": "Österreich"
     },
     "backToMap": "← Zurück zur Karte",
     "byCountry": {
@@ -569,6 +571,86 @@
             "a": "map.geo.admin.ch (drone restrictions layer), data.geo.admin.ch, and bazl.admin.ch for registration and rules."
           }
         }
+      },
+      "PT": {
+        "title": "FAQ — Portugal",
+        "intro": "Answers for flying in Portugal with CanIFly and ANAC UAS geographical zones.",
+        "ctaGuide": "Read the Portugal flying guide",
+        "ctaContacts": "Contacts",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Portugal?",
+            "a": "CanIFly summarises ANAC ED-269 zones for your drone class and ceiling. Official PROHIBITED maps to Prohibited; REQ_AUTHORISATION / CONDITIONAL map to Restricted. Always confirm on dnt.anac.pt before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation to fly?",
+            "a": "Many Portuguese zones ban open-category flights or require coordination with ANAC / the zone authority. Use ANAC guidance for the legal requirement."
+          },
+          "openCategory": {
+            "q": "Does CanIFly cover the open category?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter Portuguese zones that intersect that envelope. Specific operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Portugal?",
+            "a": "Mainland Portugal, Madeira and the Azores as published in the ANAC ED-269 JSON on dnt.anac.pt."
+          },
+          "lisbon": {
+            "q": "What about Lisbon / Porto / major cities?",
+            "a": "Cities often sit under airport, heliport and sensitive zones. Tap the map for a live status; treat it as a planning aid, not a clearance."
+          },
+          "data": {
+            "q": "Where does the Portuguese zone data come from?",
+            "a": "Official ANAC ED-269 JSON published at dnt.anac.pt/json/. We cache the national file and query it locally — we do not replace the official map."
+          },
+          "track": {
+            "q": "Is CanIFly an official tracker?",
+            "a": "No. It is a planning aid. For official Portuguese UAS geographical zones use dnt.anac.pt / ANAC."
+          },
+          "official": {
+            "q": "Which official sites should I use?",
+            "a": "dnt.anac.pt (map + JSON), anac.pt drone pages, and uas.anac.pt for registration."
+          }
+        }
+      },
+      "AT": {
+        "title": "FAQ — Austria",
+        "intro": "Answers for flying in Austria with CanIFly and Austro Control Dronespace geographical zones.",
+        "ctaGuide": "Read the Austria flying guide",
+        "ctaContacts": "Contacts",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Austria?",
+            "a": "CanIFly summarises Austro Control ED-269 zones for your drone class and ceiling. AIR_TRAFFIC aerodrome zones map to Prohibited; other authorisation zones map to Restricted. Always confirm on dronespace.at before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation to fly?",
+            "a": "Many Austrian zones require an operational authorisation via Austro Control Dronespace during airfield hours. Use Austro Control guidance for the legal requirement."
+          },
+          "openCategory": {
+            "q": "Does CanIFly cover the open category?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter Austrian zones that intersect that envelope. Specific operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Austria?",
+            "a": "Austria as published in the Austro Control geographical UAS zones ED-269 dataset."
+          },
+          "vienna": {
+            "q": "What about Vienna / Innsbruck / major cities?",
+            "a": "Cities often sit under CTR, airfield and temporary restriction zones. Tap the map for a live status; treat it as a planning aid, not a clearance."
+          },
+          "data": {
+            "q": "Where does the Austrian zone data come from?",
+            "a": "Official Austro Control ED-269 ZIP/JSON packages. We fetch the latest production package, cache it, and query locally — we do not replace Dronespace."
+          },
+          "track": {
+            "q": "Is CanIFly an official tracker?",
+            "a": "No. It is a planning aid. For official Austrian UAS geographical zones use dronespace.at / Austro Control."
+          },
+          "official": {
+            "q": "Which official sites should I use?",
+            "a": "dronespace.at, Austro Control geographical-zones downloads, and BMK aviation pages."
+          }
+        }
       }
     }
   },
@@ -581,7 +663,9 @@
       "DE": "Deutschland",
       "FR": "Frankreich",
       "DK": "Dänemark",
-      "CH": "Schweiz"
+      "CH": "Schweiz",
+      "PT": "Portugal",
+      "AT": "Österreich"
     },
     "ctaMap": "CanIFly-Karte öffnen",
     "ctaFaq": "FAQ ansehen",
@@ -803,6 +887,68 @@
             "body": "CanIFly is not FOCA, BAZL, or an official authorisation. Laws and zones change — verify before every flight."
           }
         }
+      },
+      "PT": {
+        "eyebrow": "Portugal",
+        "title": "Flying drones in Portugal",
+        "intro": "CanIFly summarises ANAC UAS geographical zones on a map: tap a point, pick class and ceiling, and see Clear, Limited, Restricted or Prohibited. This guide explains the context for open-category pilots in Portugal.",
+        "sections": {
+          "how": {
+            "title": "How CanIFly helps",
+            "body": "Tap the map, set C0–C2 and your AGL ceiling, and read the status from overlapping ANAC zones. Always cross-check dnt.anac.pt before launch."
+          },
+          "anac": {
+            "title": "ANAC geographical zones",
+            "body": "ANAC publishes UAS geographical zones in the common ED-269 digital format. CanIFly uses the open JSON download; ANAC remains the reference."
+          },
+          "dnt": {
+            "title": "dnt.anac.pt",
+            "body": "The DNT map and JSON directory are the public planning sources for Portuguese geo-zones. Follow ANAC for operator registration and competence."
+          },
+          "cities": {
+            "title": "Cities and airports",
+            "body": "Lisbon, Porto and other hubs sit under airport and hospital-helipad restrictions. Treat CanIFly as a planning aid only."
+          },
+          "community": {
+            "title": "Community pins",
+            "body": "Pilots can share obstacles and fly spots on the map. Votes help the community; they are not official clearances."
+          },
+          "disclaimer": {
+            "title": "Disclaimer",
+            "body": "CanIFly is not ANAC or an official authorisation. Laws and zones change — verify before every flight."
+          }
+        }
+      },
+      "AT": {
+        "eyebrow": "Austria",
+        "title": "Flying drones in Austria",
+        "intro": "CanIFly summarises Austro Control Dronespace zones on a map: tap a point, pick class and ceiling, and see Clear, Limited, Restricted or Prohibited. This guide explains the context for open-category pilots in Austria.",
+        "sections": {
+          "how": {
+            "title": "How CanIFly helps",
+            "body": "Tap the map, set C0–C2 and your AGL ceiling, and read the status from overlapping Austro Control zones. Always cross-check dronespace.at before launch."
+          },
+          "dronespace": {
+            "title": "Dronespace",
+            "body": "Austro Control Dronespace is the official Austrian drone portal for geo-zones, registration and clearances. CanIFly uses the published ED-269 packages; Dronespace remains the reference."
+          },
+          "austro": {
+            "title": "Austro Control",
+            "body": "Austro Control publishes versioned geographical UAS zone datasets and the Dronespace app. Follow their guidance for operator registration and competence."
+          },
+          "cities": {
+            "title": "Cities and airports",
+            "body": "Vienna, Innsbruck, Salzburg and other hubs sit under airfield and CTR restrictions. Treat CanIFly as a planning aid only."
+          },
+          "community": {
+            "title": "Community pins",
+            "body": "Pilots can share obstacles and fly spots on the map. Votes help the community; they are not official clearances."
+          },
+          "disclaimer": {
+            "title": "Disclaimer",
+            "body": "CanIFly is not Austro Control or an official authorisation. Laws and zones change — verify before every flight."
+          }
+        }
       }
     }
   },
@@ -835,7 +981,9 @@
       "DE": "Deutschland",
       "FR": "Frankreich",
       "DK": "Dänemark",
-      "CH": "Schweiz"
+      "CH": "Schweiz",
+      "PT": "Portugal",
+      "AT": "Österreich"
     },
     "backToMap": "← Zurück zur Karte",
     "byCountry": {
@@ -990,6 +1138,50 @@
           "uas": {
             "title": "Registration",
             "detail": "Operator / remote pilot registration guidance"
+          }
+        }
+      },
+      "PT": {
+        "title": "Portugal — official contacts",
+        "intro": "Official channels for coordination, registration, and UAS geographical zones in Portugal. Zone-specific contacts may also appear in the map sidebar when you tap a point.",
+        "items": {
+          "map": {
+            "title": "ANAC DNT map",
+            "detail": "Official Portuguese UAS geographical zones map"
+          },
+          "json": {
+            "title": "ANAC ED-269 JSON",
+            "detail": "Versioned national zone downloads"
+          },
+          "anac": {
+            "title": "ANAC — drones",
+            "detail": "National civil aviation authority drone pages"
+          },
+          "registry": {
+            "title": "UAS operator registry",
+            "detail": "Operator registration portal"
+          }
+        }
+      },
+      "AT": {
+        "title": "Austria — official contacts",
+        "intro": "Official channels for coordination, registration, and UAS geographical zones in Austria. Zone-specific contacts may also appear in the map sidebar when you tap a point.",
+        "items": {
+          "dronespace": {
+            "title": "Dronespace",
+            "detail": "Official Austro Control drone portal and map"
+          },
+          "zones": {
+            "title": "Geographical UAS zones",
+            "detail": "ED-269 ZIP/JSON downloads"
+          },
+          "austro": {
+            "title": "Austro Control",
+            "detail": "National air navigation / aviation authority"
+          },
+          "bmk": {
+            "title": "BMK",
+            "detail": "Federal ministry transport / aviation policy"
           }
         }
       }

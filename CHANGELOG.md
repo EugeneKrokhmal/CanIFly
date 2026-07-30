@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- Portugal and Austria in coverage: FAQ / Guide / Contacts, geocode preference (ANAC / Austro Control)
 - Switzerland in coverage: FAQ / Guide / Contacts, geocode preference (FOCA / geo.admin.ch)
 - Denmark in coverage: FAQ / Guide / Contacts, geocode preference (Trafikstyrelsen Dronezoner)
 - France in coverage: FAQ / Guide / Contacts, geocode preference, SEO (Géoportail / geopf)
