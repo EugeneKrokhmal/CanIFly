@@ -4,12 +4,21 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Bbox } from "@canifly/middleware";
 import { profileQueryParams } from "@canifly/middleware";
 import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
+import {
+  clearZoneFeatureStore,
+  getZoneBboxClientCached,
+  mergeZoneFeatures,
+  setZoneBboxClientCached,
+  zoneBboxClientCacheKey,
+  zonesForViewport,
+} from "@/hooks/zoneBboxCache";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 
 const DEBOUNCE_MS = 350;
 
 /**
  * Load zone polygons for the current map viewport, filtered by drone profile.
+ * Features accumulate in a session store so returning to a region shows zones immediately.
  */
 export function useZoneLayers() {
   const weightClass = useDroneProfileStore((s) => s.weightClass);
@@ -20,10 +29,30 @@ export function useZoneLayers() {
   const [loading, setLoading] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const lastBbox = useRef<Bbox | null>(null);
+  const profileKey = `${weightClass}:${maxAltitudeAgl}`;
+  const lastProfileKey = useRef(profileKey);
+
+  const showViewport = useCallback((bbox: Bbox) => {
+    setCollection(zonesForViewport(bbox));
+  }, []);
 
   const fetchBbox = useCallback(
     async (bbox: Bbox) => {
       lastBbox.current = bbox;
+
+      const cacheKey = zoneBboxClientCacheKey(
+        bbox,
+        weightClass,
+        maxAltitudeAgl,
+      );
+      const cached = getZoneBboxClientCached(cacheKey);
+      if (cached) {
+        mergeZoneFeatures(cached.features);
+        showViewport(bbox);
+        setLoading(false);
+        return;
+      }
+
       abortRef.current?.abort();
       const controller = new AbortController();
       abortRef.current = controller;
@@ -44,10 +73,13 @@ export function useZoneLayers() {
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = (await res.json()) as GeoJSON.FeatureCollection;
-        setCollection({
-          type: "FeatureCollection",
+        const next = {
+          type: "FeatureCollection" as const,
           features: data.features ?? [],
-        });
+        };
+        mergeZoneFeatures(next.features);
+        setZoneBboxClientCached(cacheKey, next);
+        showViewport(bbox);
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return;
         console.error("[useZoneLayers]", err);
@@ -55,21 +87,36 @@ export function useZoneLayers() {
         setLoading(false);
       }
     },
-    [maxAltitudeAgl, weightClass],
+    [maxAltitudeAgl, showViewport, weightClass],
   );
 
-  const loadBbox = useDebouncedCallback((bbox: Bbox) => {
+  const fetchBboxDebounced = useDebouncedCallback((bbox: Bbox) => {
     void fetchBbox(bbox);
   }, DEBOUNCE_MS);
 
-  // Stable immediate loader for profile-change refresh
+  const loadBbox = useCallback(
+    (bbox: Bbox) => {
+      lastBbox.current = bbox;
+      showViewport(bbox);
+      fetchBboxDebounced(bbox);
+    },
+    [fetchBboxDebounced, showViewport],
+  );
+
   const loadBboxNow = useMemo(() => fetchBbox, [fetchBbox]);
 
   useEffect(() => {
+    if (lastProfileKey.current !== profileKey) {
+      lastProfileKey.current = profileKey;
+      clearZoneFeatureStore();
+      if (lastBbox.current) {
+        setCollection({ type: "FeatureCollection", features: [] });
+      }
+    }
     if (lastBbox.current) {
       void loadBboxNow(lastBbox.current);
     }
-  }, [loadBboxNow]);
+  }, [loadBboxNow, profileKey]);
 
   return { collection, loading, loadBbox };
 }
