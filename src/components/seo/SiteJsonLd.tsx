@@ -22,16 +22,16 @@ export function SiteJsonLd({
 
   const description =
     locale === "es"
-      ? "Mapa de estado del espacio aéreo UAS para pilotos de drones en España, Alemania, Francia, Chequia y Polonia."
+      ? "Mapa de estado del espacio aéreo UAS para pilotos de drones en Europa."
       : locale === "de"
-        ? "UAS-Luftraumstatuskarte für Drohnenpiloten in Spanien, Deutschland, Frankreich, Tschechien und Polen."
+        ? "UAS-Luftraumstatuskarte für Drohnenpiloten in Europa."
         : locale === "fr"
-          ? "Carte d’état de l’espace aérien UAS pour les pilotes de drones en Espagne, Allemagne, France, Tchéquie et Pologne."
+          ? "Carte d’état de l’espace aérien UAS pour les pilotes de drones en Europe."
           : locale === "pl"
-            ? "Mapa statusu przestrzeni powietrznej UAS dla pilotów dronów w Hiszpanii, Niemczech, Francji, Czechach i Polsce."
+            ? "Mapa statusu przestrzeni powietrznej UAS dla pilotów dronów w Europie."
             : locale === "cs"
-              ? "Mapa stavu vzdušného prostoru UAS pro piloty dronů ve Španělsku, Německu, Francii, Česku a Polsku."
-              : "UAS airspace status map for drone pilots in Spain, Germany, France, Czechia and Poland.";
+              ? "Mapa stavu vzdušného prostoru UAS pro piloty dronů v Evropě."
+              : "UAS airspace status map for drone pilots in Europe.";
 
   const featureList =
     locale === "es"
@@ -82,12 +82,7 @@ export function SiteJsonLd({
       "@id": `${base}/#website`,
       url: base,
       name: "CanIFly",
-      alternateName: [
-        "Can I Fly",
-        "CanIFly España",
-        "CanIFly Česko",
-        "CanIFly Polska",
-      ],
+      alternateName: ["Can I Fly", "CanIFly Europe"],
       inLanguage: ["es-ES", "en", "de-DE", "fr-FR", "cs-CZ", "pl-PL"],
       description,
       potentialAction: {
@@ -110,13 +105,10 @@ export function SiteJsonLd({
         price: "0",
         priceCurrency: "EUR",
       },
-      areaServed: [
-        { "@type": "Country", name: "Spain" },
-        { "@type": "Country", name: "Germany" },
-        { "@type": "Country", name: "France" },
-        { "@type": "Country", name: "Czechia" },
-        { "@type": "Country", name: "Poland" },
-      ],
+      areaServed: {
+        "@type": "Continent",
+        name: "Europe",
+      },
       featureList,
     },
     {
@@ -125,7 +117,10 @@ export function SiteJsonLd({
       name: "CanIFly",
       url: base,
       logo: `${base}/icon-512.png`,
-      areaServed: ["ES", "DE", "FR", "CZ", "PL"],
+      areaServed: {
+        "@type": "Continent",
+        name: "Europe",
+      },
     },
   ];
 

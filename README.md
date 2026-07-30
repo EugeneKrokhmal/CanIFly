@@ -1,8 +1,8 @@
 # CanIFly
 
-**[canifly.org](https://canifly.org)** — one-tap UAS airspace status for **Spain, Czechia and Poland**. Tap the map and get **Clear / Limited / Restricted / Prohibited**, filtered by your drone class and planned altitude (Open category).
+**[canifly.org](https://canifly.org)** — one-tap UAS airspace status for **Europe**. Tap the map and get **Clear / Limited / Restricted / Prohibited**, filtered by your drone class and planned altitude (Open category).
 
-Spanish is the default language; English, Polish and Czech are available under `/en`, `/pl`, and `/cs`. CanIFly is **not** an official ENAIRE, ANS CR, PANSA or national CAA product — always cross-check official sources before flying.
+Spanish is the default language; English, German, French, Polish and Czech are available under `/en`, `/de`, `/fr`, `/pl`, and `/cs`. CanIFly is **not** an official ANSP or national CAA product — always cross-check official sources before flying.
 
 ---
 
@@ -22,7 +22,7 @@ Spanish is the default language; English, Polish and Czech are available under `
 
 | Capability | Description |
 |------------|-------------|
-| **Airspace status** | Click any point in ES / CZ / PL; API evaluates overlapping UAS zones against your profile |
+| **Airspace status** | Click any point in coverage; API evaluates overlapping UAS zones against your profile |
 | **Zone map layers** | Pink ZGUAS-style fills with severity-colored outlines, filtered by altitude/profile |
 | **Drone profile** | Weight class (C0–C2) and AGL altitude drive Open-category ceilings |
 | **Community obstacles & fly spots** | Report obstacles or places to fly; photo upload; votes |
@@ -72,7 +72,7 @@ Sites/GitHub/
 ## Coordinates & coverage
 
 - Coordinates are **WGS84 (EPSG:4326)**.
-- Coverage: **Spain**, **Czechia**, **Poland** via `resolveCountry` / `countriesForBbox` in middleware.
+- Coverage: **Europe** (live country providers via `resolveCountry` / `countriesForBbox` in middleware).
 
 ---
 

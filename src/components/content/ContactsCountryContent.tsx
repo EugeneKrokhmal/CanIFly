@@ -102,6 +102,28 @@ function contactLinksFor(locale: string): Record<ContentCountryId, readonly Cont
       label: "alphatango.aviation-civile.gouv.fr",
     },
   ],
+  DK: [
+    {
+      key: "dronezoner",
+      href: "https://dronezoner.dk/",
+      label: "dronezoner.dk",
+    },
+    {
+      key: "api",
+      href: "https://dronezoner.eu/API/",
+      label: "dronezoner.eu/API",
+    },
+    {
+      key: "trafikstyrelsen",
+      href: "https://www.trafikstyrelsen.dk/",
+      label: "trafikstyrelsen.dk",
+    },
+    {
+      key: "register",
+      href: "https://www.trafikstyrelsen.dk/civil-luftfart/droner",
+      label: "trafikstyrelsen.dk/droner",
+    },
+  ],
   CZ: [
     {
       key: "dronemap",
@@ -153,6 +175,7 @@ export function ContactsCountryContent() {
           ES: t("countryNames.ES"),
           DE: t("countryNames.DE"),
           FR: t("countryNames.FR"),
+          DK: t("countryNames.DK"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

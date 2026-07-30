@@ -208,6 +208,7 @@ export function LocationSearchPopup({
                       {(hit.countryCode === "ES" ||
                         hit.countryCode === "DE" ||
                         hit.countryCode === "FR" ||
+                        hit.countryCode === "DK" ||
                         hit.countryCode === "CZ" ||
                         hit.countryCode === "PL") && (
                         <span className="ml-1.5 text-[11px] font-semibold text-[#ff385c]">

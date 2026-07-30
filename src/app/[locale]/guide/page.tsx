@@ -59,16 +59,16 @@ export default async function GuidePage({ params }: Props) {
       "@type": "Thing",
       name:
         appLocale === "es"
-          ? "Espacio aéreo UAS en la UE (España, Alemania, Francia, Chequia y Polonia)"
+          ? "Espacio aéreo UAS en Europa"
           : appLocale === "de"
-            ? "UAS-Luftraum in der EU (Spanien, Deutschland, Frankreich, Tschechien und Polen)"
+            ? "UAS-Luftraum in Europa"
             : appLocale === "fr"
-              ? "Espace aérien UAS dans l’UE (Espagne, Allemagne, France, Tchéquie et Pologne)"
+              ? "Espace aérien UAS en Europe"
               : appLocale === "pl"
-                ? "Przestrzeń powietrzna UAS w UE (Hiszpania, Niemcy, Francja, Czechy i Polska)"
+                ? "Przestrzeń powietrzna UAS w Europie"
                 : appLocale === "cs"
-                  ? "Vzdušný prostor UAS v EU (Španělsko, Německo, Francie, Česko a Polsko)"
-                  : "UAS airspace in the EU (Spain, Germany, France, Czechia and Poland)",
+                  ? "Vzdušný prostor UAS v Evropě"
+                  : "UAS airspace in Europe",
     },
   };
 

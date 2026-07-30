@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "CanIFly — UAS airspace status for drone pilots in Spain";
+export const alt = "CanIFly — UAS airspace status for drone pilots in Europe";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -46,12 +46,12 @@ export default function OpenGraphImage() {
             ¿Puedo volar mi dron aquí?
           </div>
           <div style={{ fontSize: 28, color: "#717171", maxWidth: 820, lineHeight: 1.35 }}>
-            Mapa de espacio aéreo UAS en España — Libre, Limitado, Restringido o
+            Mapa de espacio aéreo UAS en Europa — Libre, Limitado, Restringido o
             Prohibido según tu clase y techo.
           </div>
         </div>
         <div style={{ display: "flex", gap: 12 }}>
-          {["ENAIRE / servAIS", "AESA", "España"].map((label) => (
+          {["UAS Europe", "Open category", "C0–C2"].map((label) => (
             <div
               key={label}
               style={{

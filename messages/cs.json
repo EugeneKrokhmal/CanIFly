@@ -1,15 +1,15 @@
 {
   "meta": {
-    "title": "CanIFly — Mohu letět s dronem? Mapa UAS EU (Španělsko, Česko a Polsko)",
-    "description": "Jedním klepnutím zjistěte, zda můžete letět s dronem. Mapa UAS prostoru pro Španělsko (ENAIRE), Česko (ANS CR) a Polsko (PANSA): Clear, Limited, Restricted nebo Prohibited podle třídy C0–C2 a stropu AGL.",
-    "faqTitle": "FAQ drony — UAS prostor Španělsko, Česko a Polsko | CanIFly",
-    "faqDescription": "Jasné odpovědi k Clear/Limited/Restricted/Prohibited, autorizaci ENAIRE/ANS CR/PANSA, AESA/ÚCL/ULC, ADS-B stopám a oficiálním zdrojům pro piloty ve Španělsku, Česku a Polsku.",
-    "guideTitle": "Průvodce letem s dronem 2026 — Španělsko, Česko a Polsko | CanIFly",
-    "guideDescription": "Jak zjistit, zda můžete letět s dronem ve Španělsku, Česku a Polsku: zóny UAS, otevřená kategorie, strop AGL a mapa CanIFly.",
+    "title": "CanIFly — Mohu letět s dronem? Mapa UAS pro Evropu",
+    "description": "Jedním klepnutím zjistěte, zda můžete letět s dronem. Mapa UAS prostoru pro Evropu: Clear, Limited, Restricted nebo Prohibited podle třídy C0–C2 a stropu AGL.",
+    "faqTitle": "FAQ drony — UAS prostor v Evropě | CanIFly",
+    "faqDescription": "Jasné odpovědi k Clear/Limited/Restricted/Prohibited, autorizaci letů, ADS-B stopám a oficiálním zdrojům pro piloty v Evropě.",
+    "guideTitle": "Průvodce letem s dronem 2026 — Evropa | CanIFly",
+    "guideDescription": "Jak zjistit, zda můžete letět s dronem v Evropě: zóny UAS, otevřená kategorie, strop AGL a mapa CanIFly.",
     "privacyTitle": "Soukromí a cookies | CanIFly",
-    "privacyDescription": "Jak CanIFly zpracovává data, cookies a místní úložiště pro mapu UAS prostoru.",
-    "contactsTitle": "Oficiální kontakty pro drony — Španělsko, Česko a Polsko | CanIFly",
-    "contactsDescription": "Oficiální odkazy pro autorizaci letů: ENAIRE/AESA (Španělsko), ANS CR/ÚCL (Česko) a PANSA DroneMap, ULC (Polsko).",
+    "privacyDescription": "Jak CanIFly zpracovává data, cookies a místní úložiště pro mapu UAS prostoru v Evropě.",
+    "contactsTitle": "Oficiální kontakty pro drony — Evropa | CanIFly",
+    "contactsDescription": "Oficiální odkazy pro autorizaci letů v pokrytých evropských zemích.",
     "accountTitle": "Můj účet | CanIFly",
     "accountDescription": "Správa profilu pilota CanIFly.",
     "settingsTitle": "Nastavení — jazyk a motiv | CanIFly",
@@ -52,7 +52,7 @@
   "search": {
     "title": "Hledat místo",
     "placeholder": "Město, obec nebo PSČ…",
-    "hint": "Zadejte alespoň 2 znaky. Výsledky ze Španělska, Česka a Polska mají přednost.",
+    "hint": "Zadejte alespoň 2 znaky. Výsledky z Evropy mají přednost.",
     "searching": "Hledám…",
     "empty": "Nic nenalezeno",
     "error": "Hledání selhalo. Zkuste znovu.",
@@ -287,7 +287,8 @@
       "PL": "Poland",
       "CZ": "Česko",
       "DE": "Německo",
-      "FR": "Francie"
+      "FR": "Francie",
+      "DK": "Dánsko"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -487,6 +488,46 @@
             "a": "Géoportail leisure-drone restrictions, SIA UAS geographical-zone data, AlphaTango, and DGAC / Ministère de la Transition écologique pages."
           }
         }
+      },
+      "DK": {
+        "title": "FAQ — Denmark",
+        "intro": "Answers for flying in Denmark with CanIFly and Trafikstyrelsen Dronezoner geographical zones.",
+        "ctaGuide": "Read the Denmark flying guide",
+        "ctaContacts": "Contacts",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Denmark?",
+            "a": "CanIFly summarises Dronezoner colours for your drone class and ceiling: red (Rød) maps to Prohibited, blue (Blå) to Restricted, orange to Conditional/Limited. Always confirm on the official Dronezoner map before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation to fly?",
+            "a": "Open-category flights may still be banned or need permission inside red and blue zones (airports, police, military, prisons, embassies). Use Trafikstyrelsen / Dronezoner guidance for the legal requirement."
+          },
+          "openCategory": {
+            "q": "Does CanIFly cover the open category?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter Danish zones that intersect that envelope. Specific operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Denmark?",
+            "a": "Mainland Denmark and nearby islands covered by the official Trafikstyrelsen Dronezoner GeoJSON dataset."
+          },
+          "copenhagen": {
+            "q": "What about Copenhagen / major cities?",
+            "a": "Cities often sit under airport buffers, security zones, and local restrictions. Tap the map for a live status; treat it as a planning aid, not a clearance."
+          },
+          "data": {
+            "q": "Where does the Danish zone data come from?",
+            "a": "Official Dronezoner open data published by Trafikstyrelsen (dronezoner.eu API / ArcGIS item). We cache the national file and query it locally — we do not replace the official Dronezoner map."
+          },
+          "track": {
+            "q": "Is CanIFly an official tracker?",
+            "a": "No. It is a planning aid. For official Danish UAS geographical zones use Dronezoner."
+          },
+          "official": {
+            "q": "Which official sites should I use?",
+            "a": "dronezoner.dk / dronezoner.eu, plus Trafikstyrelsen drone pages for registration and rules."
+          }
+        }
       }
     }
   },
@@ -497,7 +538,8 @@
       "PL": "Poland",
       "CZ": "Česko",
       "DE": "Německo",
-      "FR": "Francie"
+      "FR": "Francie",
+      "DK": "Dánsko"
     },
     "ctaMap": "Open the CanIFly map",
     "ctaFaq": "See FAQ",
@@ -657,6 +699,37 @@
             "body": "CanIFly is a planning aid, not an authorisation. You remain responsible for complying with French UAS rules and local arrêtés."
           }
         }
+      },
+      "DK": {
+        "eyebrow": "Denmark",
+        "title": "Flying drones in Denmark",
+        "intro": "CanIFly summarises Trafikstyrelsen Dronezoner status on a map: tap a point, pick class and ceiling, and see Clear, Limited, Restricted or Prohibited. This guide explains the context for open-category pilots in Denmark.",
+        "sections": {
+          "how": {
+            "title": "How CanIFly helps",
+            "body": "Tap the map, set C0–C2 and your AGL ceiling, and read the status from overlapping Dronezoner zones. Always cross-check the official map before launch."
+          },
+          "dronezoner": {
+            "title": "Dronezoner",
+            "body": "Dronezoner is Denmark’s official geographical-zone map from Trafikstyrelsen. CanIFly uses its published GeoJSON; Dronezoner remains the reference."
+          },
+          "trafikstyrelsen": {
+            "title": "Trafikstyrelsen",
+            "body": "The Danish Civil Aviation / Transport Authority publishes drone rules, registration, and the Dronezoner dataset. Follow their guidance for operator registration and competence."
+          },
+          "cities": {
+            "title": "Cities and airports",
+            "body": "Copenhagen and other hubs sit under airport red zones and security buffers. Treat CanIFly as a planning aid only."
+          },
+          "community": {
+            "title": "Community pins",
+            "body": "Pilots can share obstacles and fly spots on the map. Votes help the community; they are not official clearances."
+          },
+          "disclaimer": {
+            "title": "Disclaimer",
+            "body": "CanIFly is not Trafikstyrelsen, Dronezoner, or an official authorisation. Laws and zones change — verify before every flight."
+          }
+        }
       }
     }
   },
@@ -670,7 +743,7 @@
     "storeOptionalLabel": "Optional:",
     "storeOptional": "we do not load advertising or third-party marketing cookies. If we add anonymous product analytics later, they only run after you tap \"Accept all\".",
     "thirdTitle": "Third-party requests",
-    "thirdBody": "Aplikace volá ENAIRE servAIS (Španělsko), PANSA DroneMap (Polsko), ANS CR aimgis (Česko), OpenSky / komunitní ADS-B (provoz), Open-Meteo (počasí) a OpenDroneList (katalog dronů). Tyto služby dostávají technická data potřebná pro požadavek (např. souřadnice). Podrobnosti najdete v jejich zásadách ochrany soukromí.",
+    "thirdBody": "Aplikace volá evropské poskytovatele zón UAS (ENAIRE, PANSA, ANS CR, dipul, Géoportail), OpenSky / komunitní ADS-B (provoz), Open-Meteo (počasí) a OpenDroneList (katalog dronů). Tyto služby dostávají technická data potřebná pro požadavek (např. souřadnice). Podrobnosti najdete v jejich zásadách ochrany soukromí.",
     "choicesTitle": "Your choices",
     "choicesBodyBefore": "Use ",
     "choicesReject": "Reject non-essential",
@@ -687,7 +760,8 @@
       "PL": "Poland",
       "CZ": "Česko",
       "DE": "Německo",
-      "FR": "Francie"
+      "FR": "Francie",
+      "DK": "Dánsko"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -798,6 +872,28 @@
           "alphatango": {
             "title": "AlphaTango",
             "detail": "Operator registration and flight scenarios"
+          }
+        }
+      },
+      "DK": {
+        "title": "Denmark — official contacts",
+        "intro": "Official channels for coordination, registration, and UAS geographical zones in Denmark. Zone-specific contacts may also appear in the map sidebar when you tap a point.",
+        "items": {
+          "dronezoner": {
+            "name": "Dronezoner map",
+            "note": "Official Danish UAS geographical zones"
+          },
+          "api": {
+            "name": "Dronezoner Data API",
+            "note": "Open GeoJSON / KML downloads from Trafikstyrelsen"
+          },
+          "trafikstyrelsen": {
+            "name": "Trafikstyrelsen",
+            "note": "National transport / aviation authority"
+          },
+          "register": {
+            "name": "Drone registration",
+            "note": "Operator and remote pilot registration"
           }
         }
       }

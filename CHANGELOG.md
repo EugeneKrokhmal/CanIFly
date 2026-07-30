@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- Denmark in coverage: FAQ / Guide / Contacts, geocode preference (Trafikstyrelsen Dronezoner)
 - France in coverage: FAQ / Guide / Contacts, geocode preference, SEO (Géoportail / geopf)
 - German UI language (`de`) in Settings alongside ES / EN / PL / CS
 - French UI language (`fr`) in Settings (ES / EN / DE / FR / PL / CS)
@@ -15,7 +16,8 @@
 - Dark mode uses OpenFreeMap `dark` basemap (`liberty` remains light)
 - Map opens in 3D (pitch 65°, max 85°) so Liberty/Dark building extrusions are visible; compass control enabled
 - Zone fill/outline opacity reduced ~30% so the basemap stays more readable
-- Favicon set replaced with brand mark at proper sizes (16/32/48 ICO, 180 apple, 192/512 PNG)
+- Meta / SEO / OG copy say Europe instead of stale country lists
+
 
 ## [0.3.0] — 2026-07-30
 

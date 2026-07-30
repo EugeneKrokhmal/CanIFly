@@ -37,7 +37,7 @@ function formatLabel(r: OpenMeteoResult): string {
 
 /**
  * Free Open-Meteo geocoding (no API key).
- * Spain and Poland hits are sorted first for CanIFly.
+ * European coverage hits are sorted first for CanIFly.
  */
 export async function searchLocations(
   query: string,
@@ -80,6 +80,7 @@ export async function searchLocations(
     code === "ES" ||
     code === "DE" ||
     code === "FR" ||
+    code === "DK" ||
     code === "CZ" ||
     code === "PL"
       ? 0

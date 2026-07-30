@@ -185,7 +185,7 @@ export function buildPageMetadata(input: {
           url: ogImage,
           width: 1200,
           height: 630,
-          alt: "CanIFly — UAS airspace map for Spain and Poland",
+          alt: "CanIFly — UAS airspace map for Europe",
         },
       ],
     },
