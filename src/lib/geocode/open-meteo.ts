@@ -37,7 +37,7 @@ function formatLabel(r: OpenMeteoResult): string {
 
 /**
  * Free Open-Meteo geocoding (no API key).
- * Spain hits are sorted first for CanIFly.
+ * Spain and Poland hits are sorted first for CanIFly.
  */
 export async function searchLocations(
   query: string,
@@ -76,9 +76,8 @@ export async function searchLocations(
     label: formatLabel(r),
   }));
 
-  return hits.sort((a, b) => {
-    const aEs = a.countryCode === "ES" ? 0 : 1;
-    const bEs = b.countryCode === "ES" ? 0 : 1;
-    return aEs - bEs;
-  });
+  const rank = (code: string | null) =>
+    code === "ES" || code === "PL" ? 0 : 1;
+
+  return hits.sort((a, b) => rank(a.countryCode) - rank(b.countryCode));
 }

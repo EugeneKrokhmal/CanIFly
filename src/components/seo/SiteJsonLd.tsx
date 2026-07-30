@@ -21,8 +21,8 @@ export function SiteJsonLd({
       inLanguage: ["es-ES", "en"],
       description:
         locale === "es"
-          ? "Mapa de estado del espacio aéreo UAS para pilotos de drones en España."
-          : "UAS airspace status map for drone pilots in Spain.",
+          ? "Mapa de estado del espacio aéreo UAS para pilotos de drones en España y Polonia."
+          : "UAS airspace status map for drone pilots in Spain and Poland.",
       potentialAction: {
         "@type": "SearchAction",
         target: `${home}?q={search_term_string}`,

@@ -1,0 +1,81 @@
+"use client";
+
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { CountrySelect, type ContentCountryId } from "./CountrySelect";
+
+const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
+  ES: ["how", "enaire", "aesa", "cities", "community", "disclaimer"],
+  PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
+};
+
+export function GuideCountryContent() {
+  const t = useTranslations("guide");
+  const [country, setCountry] = useState<ContentCountryId>("ES");
+  const keys = SECTION_KEYS[country];
+
+  return (
+    <>
+      <p className="text-[12px] font-semibold text-[var(--as-ink-soft)]">
+        {t(`byCountry.${country}.eyebrow`)}
+      </p>
+      <h1 className="mt-1 font-[family-name:var(--font-display)] text-[28px] font-bold tracking-tight text-[var(--as-ink)] sm:text-[32px]">
+        {t(`byCountry.${country}.title`)}
+      </h1>
+      <p className="mt-3 text-[15px] leading-relaxed text-[var(--as-ink-soft)]">
+        {t(`byCountry.${country}.intro`)}
+      </p>
+
+      <CountrySelect
+        value={country}
+        onChange={setCountry}
+        label={t("countryLabel")}
+        names={{
+          ES: t("countryNames.ES"),
+          PL: t("countryNames.PL"),
+        }}
+      />
+
+      <div className="mt-8 space-y-5">
+        {keys.map((key) => (
+          <section
+            key={`${country}-${key}`}
+            className="rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+          >
+            <h2 className="text-[16px] font-semibold leading-snug text-[var(--as-ink)]">
+              {t(`byCountry.${country}.sections.${key}.title`)}
+            </h2>
+            <p className="mt-2 text-[14px] leading-relaxed text-[var(--as-ink-soft)]">
+              {t(`byCountry.${country}.sections.${key}.body`)}
+            </p>
+          </section>
+        ))}
+      </div>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link
+          href="/"
+          className="rounded-full bg-[#ff385c] px-5 py-2.5 text-[14px] font-semibold text-white"
+        >
+          {t("ctaMap")}
+        </Link>
+        <Link
+          href="/faq"
+          className="rounded-full border border-[var(--as-line-soft)] bg-[var(--as-surface)] px-5 py-2.5 text-[14px] font-semibold text-[var(--as-ink)]"
+        >
+          {t("ctaFaq")}
+        </Link>
+      </div>
+
+      <p className="mt-4">
+        <Link
+          href="/"
+          className="text-[14px] font-medium text-[var(--as-ink-soft)] hover:underline"
+        >
+          {t("backToMap")}
+        </Link>
+      </p>
+    </>
+  );
+}

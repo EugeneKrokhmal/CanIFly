@@ -15,6 +15,41 @@ Rough cost: **€0–12/yr** for the domain + free tiers elsewhere. Render free 
 
 ---
 
+## Releases & versioning
+
+All three packages share the same semver for a coordinated release (`package.json` + git tag `vX.Y.Z`).
+
+| Version | Tag | Coverage | Notes |
+|---------|-----|----------|--------|
+| `0.2.0` | `v0.2.0` | Spain + **Poland** | PANSA live API; set `PANSA_API_KEY` on Render |
+| `0.1.0` | — | Spain | Initial prod |
+
+**Ship order:** middleware (`dist/` committed) → API → web. Tag each repo after push:
+
+```bash
+git tag -a v0.2.0 -m "v0.2.0"
+git push origin v0.2.0
+```
+
+Changelog: each repo has `CHANGELOG.md`. Bump the three versions together when cutting a release.
+
+**Before Poland works in prod:** add `PANSA_API_KEY` on the Render API service and redeploy.
+
+### Coverage roadmap (investigation only — not in this release)
+
+| Country | Source candidate | Status |
+|---------|------------------|--------|
+| ES | ENAIRE servAIS / PostGIS | **Live** |
+| PL | PANSA DroneMap API | **Live** (0.2.0) |
+| NL | PDOK LVNL drone no-fly WMS/WFS | **Retired** (out of production 2026-07-01); look at GoDrone / rijksoverheid |
+| DE | dipul / DFS WMS or open data | Investigate |
+| CZ | ED-318 style / ANS CR | Investigate |
+| FR | DSAC / Géoportail drone | Investigate |
+
+Next country ships only after a durable public (or licensed) feed + accuracy audit — same bar as Poland.
+
+---
+
 ## Architecture
 
 ```
@@ -142,6 +177,12 @@ Optional traffic:
 ```
 OPENSKY_CLIENT_ID=...
 OPENSKY_CLIENT_SECRET=...
+```
+
+Poland UAS zones (PANSA DroneMap) — required for `/api/airspace/status` and `/api/zones/bbox` over Poland:
+
+```
+PANSA_API_KEY=...
 ```
 
 Generate secrets locally:

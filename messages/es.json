@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "CanIFly — ¿Puedo volar mi dron en España? Mapa UAS",
-    "description": "Consulta en un toque si puedes volar tu dron en España. Mapa de espacio aéreo UAS (ENAIRE): Libre, Limitado, Restringido o Prohibido según clase C0–C2 y techo AGL.",
-    "faqTitle": "FAQ drones España — espacio aéreo UAS | CanIFly",
-    "faqDescription": "Respuestas claras sobre Libre/Limitado/Restringido/Prohibido, autorización ENAIRE, AESA, trazas OpenSky y fuentes oficiales para pilotos de drones en España.",
-    "guideTitle": "Guía para volar drones en España 2026 — espacio aéreo UAS | CanIFly",
-    "guideDescription": "Cómo saber si puedes volar un dron en Madrid, Barcelona, Valencia y el resto de España: zonas UAS ENAIRE, categoría abierta, techo AGL y mapa CanIFly.",
+    "title": "CanIFly — ¿Puedo volar mi dron? Mapa UAS UE (España y Polonia)",
+    "description": "Consulta en un toque si puedes volar tu dron. Mapa de espacio aéreo UAS para España (ENAIRE) y Polonia (PANSA): Libre, Limitado, Restringido o Prohibido según clase C0–C2 y techo AGL.",
+    "faqTitle": "FAQ drones — espacio aéreo UAS España y Polonia | CanIFly",
+    "faqDescription": "Respuestas claras sobre Libre/Limitado/Restringido/Prohibido, autorización ENAIRE/PANSA, AESA/ULC, trazas ADS-B y fuentes oficiales para pilotos en España y Polonia.",
+    "guideTitle": "Guía para volar drones 2026 — España y Polonia | CanIFly",
+    "guideDescription": "Cómo saber si puedes volar un dron en España y Polonia: zonas UAS, categoría abierta, techo AGL y mapa CanIFly.",
     "privacyTitle": "Privacidad y cookies | CanIFly",
     "privacyDescription": "Cómo CanIFly trata datos, cookies y almacenamiento local para el mapa de espacio aéreo UAS en España.",
     "contactsTitle": "Contactos oficiales drones España — ENAIRE, AESA | CanIFly",
@@ -41,7 +41,7 @@
   "search": {
     "title": "Buscar ubicación",
     "placeholder": "Ciudad, pueblo o código postal…",
-    "hint": "Escribe al menos 2 caracteres. Primero aparecen resultados de España.",
+    "hint": "Escribe al menos 2 caracteres. Primero aparecen resultados de España y Polonia.",
     "searching": "Buscando…",
     "empty": "No se encontraron lugares",
     "error": "La búsqueda falló. Inténtalo de nuevo.",
@@ -237,78 +237,166 @@
   },
   "faq": {
     "eyebrow": "Ayuda",
-    "title": "Preguntas frecuentes sobre drones en España",
-    "intro": "Respuestas rápidas sobre etiquetas de estado, registro AESA, ENAIRE y fuentes de datos para volar un dron en España.",
+    "countryLabel": "País",
+    "countryNames": {
+      "ES": "España",
+      "PL": "Polonia"
+    },
     "backToMap": "← Volver al mapa",
-    "ctaGuide": "Lee la guía completa para volar en España",
-    "items": {
-      "status": {
-        "q": "¿Qué significan Libre / Limitado / Restringido / Prohibido?",
-        "a": "Libre significa que no hay una restricción geográfica UAS dura a tu techo. Limitado suele permitir volar sin coordinación previa hasta una altura indicada (p. ej. ~45 m). Restringido puede exigir autorización o coordinación. Prohibido implica que no se puede volar sin coordinación explícita (p. ej. zonas de superficie de aeropuerto)."
+    "byCountry": {
+      "ES": {
+        "title": "Preguntas frecuentes sobre drones en España",
+        "intro": "Respuestas rápidas sobre etiquetas de estado, registro AESA, ENAIRE y fuentes de datos para volar un dron en España.",
+        "ctaGuide": "Lee la guía completa para volar en España",
+        "items": {
+          "status": {
+            "q": "¿Qué significan Libre / Limitado / Restringido / Prohibido?",
+            "a": "Libre significa que no hay una restricción geográfica UAS dura a tu techo. Limitado suele permitir volar sin coordinación previa hasta una altura indicada (p. ej. ~45 m). Restringido puede exigir autorización o coordinación. Prohibido implica que no se puede volar sin coordinación explícita (p. ej. zonas de superficie de aeropuerto)."
+          },
+          "auth": {
+            "q": "¿REQ_AUTHORISATION significa que necesito un número de piloto?",
+            "a": "No. Significa que esa zona puede requerir autorización o coordinación previa con la autoridad de la zona (p. ej. ENAIRE Planea, Aena). Por separado, en España suele ser necesario el registro de operador UAS en AESA y formación de categoría abierta para la mayoría de vuelos."
+          },
+          "data": {
+            "q": "¿De dónde salen los datos del espacio aéreo?",
+            "a": "Las zonas geográficas UAS en vivo vienen de ENAIRE servAIS. El tráfico y las trazas de aeronaves, de OpenSky Network (ADS-B). Los modelos de drones, del catálogo abierto OpenDroneList."
+          },
+          "track": {
+            "q": "¿La línea discontinua del avión es un plan de vuelo real?",
+            "a": "No. Las líneas sólidas son trazas voladas de OpenSky. Las discontinuas son una estimación corta en línea recta a partir del rumbo y la velocidad actuales — no una ruta presentada."
+          },
+          "official": {
+            "q": "¿CanIFly es un consejo oficial?",
+            "a": "No. Verifica siempre con ENAIRE Drones / AESA antes de volar. Las reglas y los textos de zona cambian; esta app es una ayuda de planificación, no una autorización legal."
+          },
+          "openCategory": {
+            "q": "¿Qué es la categoría abierta C0, C1 y C2?",
+            "a": "La categoría abierta de la UE clasifica drones ligeros. C0 (<250 g), C1 y C2 tienen límites de altura y distancia distintos. CanIFly filtra zonas según la clase y el techo AGL que elijas para aproximar si el punto es Libre, Limitado, Restringido o Prohibido."
+          },
+          "madrid": {
+            "q": "¿Puedo volar un dron en Madrid o cerca de Barajas?",
+            "a": "Gran parte del área metropolitana está afectada por CTR/TMA y zonas UAS. Usa el mapa CanIFly, toca tu punto de despegue y revisa el estado. Si aparece Restringido o Prohibido, consulta ENAIRE Planea / Drones antes de volar."
+          },
+          "where": {
+            "q": "¿Dónde puedo volar un dron legalmente en España?",
+            "a": "Depende del lugar, la altura, la clase del dron y si hay zonas geográficas UAS activas. No hay una lista fija de «sitios seguros»: comprueba cada punto en el mapa oficial ENAIRE y en CanIFly, y cumple la normativa AESA (VLOS, distancia a personas, etc.)."
+          }
+        }
       },
-      "auth": {
-        "q": "¿REQ_AUTHORISATION significa que necesito un número de piloto?",
-        "a": "No. Significa que esa zona puede requerir autorización o coordinación previa con la autoridad de la zona (p. ej. ENAIRE Planea, Aena). Por separado, en España suele ser necesario el registro de operador UAS en AESA y formación de categoría abierta para la mayoría de vuelos."
-      },
-      "data": {
-        "q": "¿De dónde salen los datos del espacio aéreo?",
-        "a": "Las zonas geográficas UAS en vivo vienen de ENAIRE servAIS. El tráfico y las trazas de aeronaves, de OpenSky Network (ADS-B). Los modelos de drones, del catálogo abierto OpenDroneList."
-      },
-      "track": {
-        "q": "¿La línea discontinua del avión es un plan de vuelo real?",
-        "a": "No. Las líneas sólidas son trazas voladas de OpenSky. Las discontinuas son una estimación corta en línea recta a partir del rumbo y la velocidad actuales — no una ruta presentada."
-      },
-      "official": {
-        "q": "¿CanIFly es un consejo oficial?",
-        "a": "No. Verifica siempre con ENAIRE Drones / AESA antes de volar. Las reglas y los textos de zona cambian; esta app es una ayuda de planificación, no una autorización legal."
-      },
-      "openCategory": {
-        "q": "¿Qué es la categoría abierta C0, C1 y C2?",
-        "a": "La categoría abierta de la UE clasifica drones ligeros. C0 (<250 g), C1 y C2 tienen límites de altura y distancia distintos. CanIFly filtra zonas según la clase y el techo AGL que elijas para aproximar si el punto es Libre, Limitado, Restringido o Prohibido."
-      },
-      "madrid": {
-        "q": "¿Puedo volar un dron en Madrid o cerca de Barajas?",
-        "a": "Gran parte del área metropolitana está afectada por CTR/TMA y zonas UAS. Usa el mapa CanIFly, toca tu punto de despegue y revisa el estado. Si aparece Restringido o Prohibido, consulta ENAIRE Planea / Drones antes de volar."
-      },
-      "where": {
-        "q": "¿Dónde puedo volar un dron legalmente en España?",
-        "a": "Depende del lugar, la altura, la clase del dron y si hay zonas geográficas UAS activas. No hay una lista fija de «sitios seguros»: comprueba cada punto en el mapa oficial ENAIRE y en CanIFly, y cumple la normativa AESA (VLOS, distancia a personas, etc.)."
+      "PL": {
+        "title": "Preguntas frecuentes sobre drones en Polonia",
+        "intro": "Respuestas rápidas sobre etiquetas de estado, registro ULC, PANSA DroneMap y fuentes de datos para volar un dron en Polonia.",
+        "ctaGuide": "Lee la guía completa para volar en Polonia",
+        "items": {
+          "status": {
+            "q": "¿Qué significan Libre / Limitado / Restringido / Prohibido?",
+            "a": "Libre significa que no hay una restricción geográfica UAS dura a tu techo. Limitado suele permitir volar sin coordinación previa hasta una altura indicada (p. ej. ~45 m). Restringido puede exigir autorización o coordinación. Prohibido implica que no se puede volar sin coordinación explícita (p. ej. zonas de superficie de aeropuerto)."
+          },
+          "auth": {
+            "q": "¿REQ_AUTHORISATION significa que necesito un número de piloto?",
+            "a": "No. Significa que esa zona puede requerir autorización o coordinación previa con el gestor de la zona (p. ej. PANSA / aeródromo). Por separado, en Polonia suele ser necesario el registro de operador UAS y la competencia de categoría abierta — consulta las normas de la ULC."
+          },
+          "openCategory": {
+            "q": "¿Qué es la categoría abierta C0, C1 y C2?",
+            "a": "La categoría abierta de la UE clasifica drones ligeros. C0 (<250 g), C1 y C2 tienen límites de altura y distancia distintos. CanIFly filtra zonas según la clase y el techo AGL que elijas para aproximar si el punto es Libre, Limitado, Restringido o Prohibido."
+          },
+          "where": {
+            "q": "¿Dónde puedo volar un dron legalmente en Polonia?",
+            "a": "Depende del lugar, la altura, la clase del dron y si hay zonas geográficas UAS activas (DRA-P / DRA-R / DRA-I y CTR/ATZ). Comprueba cada punto en PANSA DroneMap y CanIFly, y cumple la normativa ULC / categoría abierta (VLOS, distancia a personas, etc.)."
+          },
+          "warsaw": {
+            "q": "¿Puedo volar un dron en Varsovia o cerca del aeropuerto Chopin?",
+            "a": "Gran parte del área metropolitana está afectada por CTR/ATZ y zonas DRA. Usa el mapa CanIFly, toca tu punto de despegue y revisa el estado. Si aparece Restringido o Prohibido, consulta PANSA DroneMap / DroneTower antes de volar."
+          },
+          "data": {
+            "q": "¿De dónde salen los datos del espacio aéreo?",
+            "a": "En Polonia, las zonas geográficas UAS en vivo vienen de PANSA DroneMap. En España, de ENAIRE servAIS. El tráfico de aeronaves, de ADS-B comunitario / OpenSky. Los modelos de drones, del catálogo abierto OpenDroneList."
+          },
+          "track": {
+            "q": "¿La línea discontinua del avión es un plan de vuelo real?",
+            "a": "No. Las líneas sólidas son trazas voladas de OpenSky. Las discontinuas son una estimación corta en línea recta a partir del rumbo y la velocidad actuales — no una ruta presentada."
+          },
+          "official": {
+            "q": "¿CanIFly es un consejo oficial?",
+            "a": "No. Verifica siempre con PANSA DroneMap / ULC (y DroneTower cuando proceda) antes de volar. Las reglas y la actividad de las zonas cambian; esta app es una ayuda de planificación, no una autorización legal."
+          }
+        }
       }
     }
   },
   "guide": {
-    "eyebrow": "Guía España",
-    "title": "Cómo saber si puedes volar tu dron en España",
-    "intro": "CanIFly resume el estado del espacio aéreo UAS en un mapa: toca un punto, elige clase y techo, y verás Libre, Limitado, Restringido o Prohibido. Esta guía explica el contexto para pilotos recreativos y profesionales en categoría abierta.",
-    "sections": {
-      "how": {
-        "title": "1. Comprueba el punto en el mapa",
-        "body": "Abre CanIFly, centra el mapa en tu ubicación (o busca una ciudad) y toca el punto de despegue. El estado combina las zonas geográficas UAS de ENAIRE servAIS con tu clase (C0–C2) y techo AGL. Si el resultado no es Libre, no asumas que puedes despegar: lee el detalle de zona y las fuentes oficiales."
-      },
-      "enaire": {
-        "title": "2. ENAIRE y las zonas UAS",
-        "body": "ENAIRE publica zonas geográficas UAS (CTR, aeropuertos, infraestructuras, temporales, etc.). CanIFly consume esas geometrías para pintar el mapa, pero la fuente de verdad operativa sigue siendo ENAIRE Drones / Planea. Las zonas cambian: vuelve a consultar el día del vuelo."
-      },
-      "aesa": {
-        "title": "3. AESA: registro y categoría abierta",
-        "body": "Además del espacio aéreo, en España normalmente necesitas registro de operador UAS en AESA y la formación correspondiente a tu operación. La categoría abierta tiene subcategorías y límites (altura, distancia a personas, VLOS). CanIFly no sustituye ese marco legal."
-      },
-      "cities": {
-        "title": "4. Ciudades: Madrid, Barcelona, Valencia, Sevilla, Bilbao",
-        "body": "En grandes ciudades el espacio suele estar más restringido por aeropuertos, helipuertos y núcleos urbanos. Busca la ciudad en CanIFly, toca varios puntos (parque, azotea, periferia) y compara estados. Un parque «vacío» en el mapa satélite puede seguir siendo Restringido por una zona UAS."
-      },
-      "community": {
-        "title": "5. Obstáculos y zonas de vuelo de la comunidad",
-        "body": "Los pilotos pueden marcar obstáculos (grúas, obras, líneas) y zonas de vuelo recomendadas. Son avisos de comunidad con votos: útiles para planificar, no oficiales. Contrasta siempre con ENAIRE/AESA."
-      },
-      "disclaimer": {
-        "title": "Aviso importante",
-        "body": "CanIFly es una herramienta de planificación. No es ENAIRE ni AESA. Antes de volar, confirma reglas, NOTAM/avisos y autorizaciones en canales oficiales. Tú eres responsable de la operación."
-      }
+    "countryLabel": "País",
+    "countryNames": {
+      "ES": "España",
+      "PL": "Polonia"
     },
     "ctaMap": "Abrir el mapa CanIFly",
     "ctaFaq": "Ver FAQ",
-    "backToMap": "← Volver al mapa"
+    "backToMap": "← Volver al mapa",
+    "byCountry": {
+      "ES": {
+        "eyebrow": "Guía España",
+        "title": "Cómo saber si puedes volar tu dron en España",
+        "intro": "CanIFly resume el estado del espacio aéreo UAS en un mapa: toca un punto, elige clase y techo, y verás Libre, Limitado, Restringido o Prohibido. Esta guía explica el contexto para pilotos recreativos y profesionales en categoría abierta.",
+        "sections": {
+          "how": {
+            "title": "1. Comprueba el punto en el mapa",
+            "body": "Abre CanIFly, centra el mapa en tu ubicación (o busca una ciudad) y toca el punto de despegue. El estado combina las zonas geográficas UAS de ENAIRE servAIS con tu clase (C0–C2) y techo AGL. Si el resultado no es Libre, no asumas que puedes despegar: lee el detalle de zona y las fuentes oficiales."
+          },
+          "enaire": {
+            "title": "2. ENAIRE y las zonas UAS",
+            "body": "ENAIRE publica zonas geográficas UAS (CTR, aeropuertos, infraestructuras, temporales, etc.). CanIFly consume esas geometrías para pintar el mapa, pero la fuente de verdad operativa sigue siendo ENAIRE Drones / Planea. Las zonas cambian: vuelve a consultar el día del vuelo."
+          },
+          "aesa": {
+            "title": "3. AESA: registro y categoría abierta",
+            "body": "Además del espacio aéreo, en España normalmente necesitas registro de operador UAS en AESA y la formación correspondiente a tu operación. La categoría abierta tiene subcategorías y límites (altura, distancia a personas, VLOS). CanIFly no sustituye ese marco legal."
+          },
+          "cities": {
+            "title": "4. Ciudades: Madrid, Barcelona, Valencia, Sevilla, Bilbao",
+            "body": "En grandes ciudades el espacio suele estar más restringido por aeropuertos, helipuertos y núcleos urbanos. Busca la ciudad en CanIFly, toca varios puntos (parque, azotea, periferia) y compara estados. Un parque «vacío» en el mapa satélite puede seguir siendo Restringido por una zona UAS."
+          },
+          "community": {
+            "title": "5. Obstáculos y zonas de vuelo de la comunidad",
+            "body": "Los pilotos pueden marcar obstáculos (grúas, obras, líneas) y zonas de vuelo recomendadas. Son avisos de comunidad con votos: útiles para planificar, no oficiales. Contrasta siempre con ENAIRE/AESA."
+          },
+          "disclaimer": {
+            "title": "Aviso importante",
+            "body": "CanIFly es una herramienta de planificación. No es ENAIRE ni AESA. Antes de volar, confirma reglas, NOTAM/avisos y autorizaciones en canales oficiales. Tú eres responsable de la operación."
+          }
+        }
+      },
+      "PL": {
+        "eyebrow": "Guía Polonia",
+        "title": "Cómo saber si puedes volar tu dron en Polonia",
+        "intro": "CanIFly resume el estado del espacio aéreo UAS en un mapa: toca un punto, elige clase y techo, y verás Libre, Limitado, Restringido o Prohibido. Esta guía explica el contexto para pilotos en categoría abierta en Polonia.",
+        "sections": {
+          "how": {
+            "title": "1. Comprueba el punto en el mapa",
+            "body": "Abre CanIFly, centra el mapa en tu ubicación (o busca una ciudad) y toca el punto de despegue. El estado combina las zonas geográficas UAS de PANSA DroneMap con tu clase (C0–C2) y techo AGL. Si el resultado no es Libre, no asumas que puedes despegar: lee el detalle de zona y las fuentes oficiales."
+          },
+          "pansa": {
+            "title": "2. PANSA DroneMap y zonas DRA",
+            "body": "PANSA publica zonas geográficas UAS (DRA-P prohibida si está activa, DRA-R restringida, DRA-I informativa, más buffers CTR/ATZ). CanIFly consume esas geometrías para pintar el mapa, pero la fuente de verdad operativa sigue siendo DroneMap / DroneTower. La actividad de las zonas cambia: vuelve a consultar el día del vuelo."
+          },
+          "ulc": {
+            "title": "3. ULC: registro y categoría abierta",
+            "body": "Además del espacio aéreo, en Polonia normalmente necesitas registro de operador UAS y la competencia correspondiente. La categoría abierta de la UE tiene subcategorías y límites (altura, distancia a personas, VLOS). CanIFly no sustituye ese marco legal."
+          },
+          "cities": {
+            "title": "4. Ciudades: Varsovia, Cracovia, Gdańsk, Wrocław, Poznań",
+            "body": "En grandes ciudades el espacio suele estar más restringido por aeropuertos, helipuertos y núcleos urbanos. Busca la ciudad en CanIFly, toca varios puntos (parque, azotea, periferia) y compara estados. Un parque «vacío» en el mapa satélite puede seguir siendo Restringido por una zona DRA o CTR."
+          },
+          "community": {
+            "title": "5. Obstáculos y zonas de vuelo de la comunidad",
+            "body": "Los pilotos pueden marcar obstáculos (grúas, obras, líneas) y zonas de vuelo recomendadas. Son avisos de comunidad con votos: útiles para planificar, no oficiales. Contrasta siempre con PANSA / ULC."
+          },
+          "disclaimer": {
+            "title": "Aviso importante",
+            "body": "CanIFly es una herramienta de planificación. No es PANSA ni ULC. Antes de volar, confirma reglas, avisos y autorizaciones en canales oficiales (incluido DroneTower cuando proceda). Tú eres responsable de la operación."
+          }
+        }
+      }
+    }
   },
   "privacy": {
     "eyebrow": "Legal",
@@ -320,7 +408,7 @@
     "storeOptionalLabel": "Opcional:",
     "storeOptional": "no cargamos cookies publicitarias ni de marketing de terceros. Si más adelante añadimos analítica anónima del producto, solo se ejecutará tras pulsar «Aceptar todas».",
     "thirdTitle": "Peticiones a terceros",
-    "thirdBody": "La app llama a ENAIRE servAIS (espacio aéreo), OpenSky (tráfico), Open-Meteo (tiempo) y OpenDroneList (catálogo de drones). Esos servicios reciben los datos técnicos necesarios para la petición (p. ej. coordenadas del mapa). Consulta sus propias políticas de privacidad.",
+    "thirdBody": "La app llama a ENAIRE servAIS y PANSA DroneMap (espacio aéreo), OpenSky / ADS-B comunitario (tráfico), Open-Meteo (tiempo) y OpenDroneList (catálogo de drones). Esos servicios reciben los datos técnicos necesarios para la petición (p. ej. coordenadas del mapa). Consulta sus propias políticas de privacidad.",
     "choicesTitle": "Tus opciones",
     "choicesBodyBefore": "Usa ",
     "choicesReject": "Rechazar no esenciales",

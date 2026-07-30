@@ -161,7 +161,8 @@ export function AuthModal() {
             <>
               <label className="block">
                 <span className="mb-1.5 block text-[12px] font-semibold text-[var(--as-ink)]">
-                  {t("name")}
+                  {t("name")}{" "}
+                  <span className="font-bold text-[var(--as-rausch)]">*</span>
                 </span>
                 <input
                   type="text"
@@ -194,7 +195,8 @@ export function AuthModal() {
 
           <label className="block">
             <span className="mb-1.5 block text-[12px] font-semibold text-[var(--as-ink)]">
-              {t("email")}
+              {t("email")}{" "}
+              <span className="font-bold text-[var(--as-rausch)]">*</span>
             </span>
             <input
               type="email"
@@ -207,7 +209,8 @@ export function AuthModal() {
           </label>
           <label className="block">
             <span className="mb-1.5 block text-[12px] font-semibold text-[var(--as-ink)]">
-              {t("password")}
+              {t("password")}{" "}
+              <span className="font-bold text-[var(--as-rausch)]">*</span>
             </span>
             <input
               type="password"
