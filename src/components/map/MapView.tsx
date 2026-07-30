@@ -294,7 +294,6 @@ export function MapView({ className }: MapViewProps) {
   const { collection, loadBbox } = useZoneLayers();
   const { collection: obstacles, loadBbox: loadObstaclesBbox } = useObstacles();
   const {
-    pastPaths,
     futurePaths,
     count: aircraftCount,
     error: trafficError,
@@ -426,7 +425,7 @@ export function MapView({ className }: MapViewProps) {
       touchPitch: true,
       renderWorldCopies: false,
       fadeDuration: 0,
-      canvasContextAttributes: { antialias: true },
+      antialias: true,
     });
 
     map.addControl(
@@ -973,7 +972,7 @@ export function MapView({ className }: MapViewProps) {
       geolocateControlRef.current = null;
       setMapReady(false);
     };
-  }, [isDark]);
+  }, [isDark, setSelectedPoint]);
 
   useEffect(() => {
     if (!trafficOn) clearTrack();
