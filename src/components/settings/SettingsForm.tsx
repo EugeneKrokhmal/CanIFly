@@ -87,54 +87,23 @@ export function SettingsForm() {
         <p className="mt-1 text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
           {user ? t("languageHintSaved") : t("languageHint")}
         </p>
-        <div
-          className="mt-4 flex flex-wrap items-center gap-1 rounded-full border border-[var(--as-line)] p-0.5"
-          role="group"
-          aria-label={t("languageTitle")}
-        >
-          <SegmentedOption
-            active={locale === "es"}
+        <label className="mt-4 flex flex-col gap-1.5 sm:max-w-xs">
+          <span className="sr-only">{t("languageTitle")}</span>
+          <select
+            value={locale}
             disabled={savingLocale}
-            onClick={() => void switchLocale("es")}
+            onChange={(e) => void switchLocale(e.target.value as AppLocale)}
+            aria-label={t("languageTitle")}
+            className="rounded-xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] px-3 py-2.5 text-[14px] font-medium text-[var(--as-ink)] outline-none focus:border-[#ff385c] disabled:opacity-60"
           >
-            {t("langEs")}
-          </SegmentedOption>
-          <SegmentedOption
-            active={locale === "en"}
-            disabled={savingLocale}
-            onClick={() => void switchLocale("en")}
-          >
-            {t("langEn")}
-          </SegmentedOption>
-          <SegmentedOption
-            active={locale === "de"}
-            disabled={savingLocale}
-            onClick={() => void switchLocale("de")}
-          >
-            {t("langDe")}
-          </SegmentedOption>
-          <SegmentedOption
-            active={locale === "fr"}
-            disabled={savingLocale}
-            onClick={() => void switchLocale("fr")}
-          >
-            {t("langFr")}
-          </SegmentedOption>
-          <SegmentedOption
-            active={locale === "pl"}
-            disabled={savingLocale}
-            onClick={() => void switchLocale("pl")}
-          >
-            {t("langPl")}
-          </SegmentedOption>
-          <SegmentedOption
-            active={locale === "cs"}
-            disabled={savingLocale}
-            onClick={() => void switchLocale("cs")}
-          >
-            {t("langCs")}
-          </SegmentedOption>
-        </div>
+            <option value="es">{t("langEs")}</option>
+            <option value="en">{t("langEn")}</option>
+            <option value="de">{t("langDe")}</option>
+            <option value="fr">{t("langFr")}</option>
+            <option value="pl">{t("langPl")}</option>
+            <option value="cs">{t("langCs")}</option>
+          </select>
+        </label>
         {localeError ? (
           <p className="mt-3 text-[13px] text-[var(--as-danger,#c13515)]">
             {localeError}
