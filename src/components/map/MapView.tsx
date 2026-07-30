@@ -13,6 +13,7 @@ import {
   type PinKind,
 } from "@canifly/middleware";
 import { useLocale, useTranslations } from "next-intl";
+import type { AppLocale } from "@/i18n/routing";
 import { aircraftPopupHtml, airspacePopupHtml, obstaclePopupHtml } from "@/lib/map/html";
 import {
   addObstacleImages,
@@ -208,7 +209,7 @@ interface MapViewProps {
 }
 
 export function MapView({ className }: MapViewProps) {
-  const locale = useLocale() as "es" | "en";
+  const locale = useLocale() as AppLocale;
   const tMap = useTranslations("map");
   const localeRef = useRef(locale);
   const obstacleFallbackRef = useRef(tMap("obstacleFallback"));

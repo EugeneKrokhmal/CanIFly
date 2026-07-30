@@ -1,6 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
+import type { AppLocale } from "@/i18n/routing";
 import {
   statusLabel,
   type AirspaceStatus,
@@ -46,7 +47,7 @@ function sectionLabel(text: string) {
 export function SidebarPanel() {
   const t = useTranslations("sidebar");
   const tStatus = useTranslations("status");
-  const locale = useLocale() as "es" | "en";
+  const locale = useLocale() as AppLocale;
   const status = useDroneProfileStore((s) => s.status);
   const summary = useDroneProfileStore((s) => s.summary);
   const zones = useDroneProfileStore((s) => s.zones);

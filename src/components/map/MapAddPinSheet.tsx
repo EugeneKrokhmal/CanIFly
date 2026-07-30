@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import type { AppLocale } from "@/i18n/routing";
 import {
   obstacleLabel,
   pinKindLabel,
@@ -111,7 +112,7 @@ export function MapAddPinFab() {
 
 export function MapAddPinSheet() {
   const t = useTranslations("pin");
-  const locale = useLocale() as "es" | "en";
+  const locale = useLocale() as AppLocale;
   const kind = useObstaclesStore((s) => s.kind);
   const placementMode = useObstaclesStore((s) => s.placementMode);
   const draft = useObstaclesStore((s) => s.draft);
