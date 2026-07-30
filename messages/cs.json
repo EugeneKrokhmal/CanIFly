@@ -13,7 +13,7 @@
     "accountTitle": "Můj účet | CanIFly",
     "accountDescription": "Správa profilu pilota CanIFly.",
     "settingsTitle": "Nastavení — jazyk a motiv | CanIFly",
-    "settingsDescription": "Zvolte jazyk (ES/EN/DE/PL/CS) a světlý, tmavý nebo systémový motiv CanIFly."
+    "settingsDescription": "Zvolte jazyk (ES/EN/DE/FR/PL/CS) a světlý, tmavý nebo systémový motiv CanIFly."
   },
   "nav": {
     "map": "Mapa",
@@ -46,7 +46,8 @@
     "weatherAtPin": "u vašeho pinu",
     "weatherArea": "u středu mapy",
     "weatherLoading": "Načítání počasí…",
-    "langDe": "DE"
+    "langDe": "DE",
+    "langFr": "FR"
   },
   "search": {
     "title": "Hledat místo",
@@ -807,7 +808,7 @@
     "title": "Settings",
     "intro": "Language and appearance for this device.",
     "languageTitle": "Jazyk",
-    "languageHint": "Přepínejte mezi španělštinou, angličtinou, němčinou, polštinou a češtinou. URL se aktualizuje.",
+    "languageHint": "Přepínejte mezi španělštinou, angličtinou, němčinou, francouzštinou, polštinou a češtinou. URL se aktualizuje.",
     "languageHintSaved": "When signed in, we save your language and restore it on your next login.",
     "languageSaveFailed": "Jazyk se v UI změnil, ale nepodařilo se ho uložit na server. Zkuste to znovu po přihlášení.",
     "langEs": "Español",
@@ -817,6 +818,7 @@
     "themeHint": "Světlý, tmavý nebo podle systému.",
     "backToMap": "← Back to map",
     "langCs": "Čeština",
-    "langDe": "Deutsch"
+    "langDe": "Deutsch",
+    "langFr": "Français"
   }
 }

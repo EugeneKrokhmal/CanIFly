@@ -13,7 +13,7 @@
     "accountTitle": "Moje konto | CanIFly",
     "accountDescription": "Zarządzaj profilem pilota CanIFly.",
     "settingsTitle": "Ustawienia — język i motyw | CanIFly",
-    "settingsDescription": "Wybierz język (ES/EN/DE/PL/CS) oraz jasny, ciemny lub systemowy motyw CanIFly."
+    "settingsDescription": "Wybierz język (ES/EN/DE/FR/PL/CS) oraz jasny, ciemny lub systemowy motyw CanIFly."
   },
   "nav": {
     "map": "Mapa",
@@ -46,7 +46,8 @@
     "weatherAtPin": "przy pinezce",
     "weatherArea": "w okolicy środka mapy",
     "weatherLoading": "Pobieranie pogody…",
-    "langDe": "DE"
+    "langDe": "DE",
+    "langFr": "FR"
   },
   "search": {
     "title": "Szukaj lokalizacji",
@@ -807,7 +808,7 @@
     "title": "Ustawienia",
     "intro": "Język i wygląd na tym urządzeniu.",
     "languageTitle": "Język",
-    "languageHint": "Przełącz między hiszpańskim, angielskim, niemieckim, polskim i czeskim. Adres URL się aktualizuje.",
+    "languageHint": "Przełącz między hiszpańskim, angielskim, niemieckim, francuskim, polskim i czeskim. Adres URL się aktualizuje.",
     "languageHintSaved": "Po zalogowaniu zapisujemy język i przywracamy go przy następnym logowaniu.",
     "languageSaveFailed": "Język zmieniony tutaj. Nie udało się zapisać na koncie — spróbuj później.",
     "langEs": "Español",
@@ -817,6 +818,7 @@
     "themeHint": "System podąża za urządzeniem. Jasny i ciemny blokują wygląd.",
     "backToMap": "← Wróć do mapy",
     "langCs": "Čeština",
-    "langDe": "Deutsch"
+    "langDe": "Deutsch",
+    "langFr": "Français"
   }
 }

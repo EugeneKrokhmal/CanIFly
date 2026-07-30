@@ -13,7 +13,7 @@
     "accountTitle": "My account | CanIFly",
     "accountDescription": "Manage your CanIFly pilot profile.",
     "settingsTitle": "Settings — language & theme | CanIFly",
-    "settingsDescription": "Choose language (ES/EN/DE/PL/CS) and light, dark, or system theme for CanIFly."
+    "settingsDescription": "Choose language (ES/EN/DE/FR/PL/CS) and light, dark, or system theme for CanIFly."
   },
   "nav": {
     "map": "Map",
@@ -46,7 +46,8 @@
     "weatherAtPin": "at your pin",
     "weatherArea": "near map centre",
     "weatherLoading": "Fetching weather…",
-    "langDe": "DE"
+    "langDe": "DE",
+    "langFr": "FR"
   },
   "search": {
     "title": "Search location",
@@ -807,7 +808,7 @@
     "title": "Settings",
     "intro": "Language and appearance for this device.",
     "languageTitle": "Language",
-    "languageHint": "Switch between Spanish, English, German, Polish, and Czech. The URL updates to match.",
+    "languageHint": "Switch between Spanish, English, German, French, Polish, and Czech. The URL updates to match.",
     "languageHintSaved": "When signed in, we save your language and restore it on your next login.",
     "languageSaveFailed": "Language updated here. Couldn’t save to your account yet — try again later.",
     "langEs": "Español",
@@ -817,6 +818,7 @@
     "themeHint": "System follows your device setting. Light and dark lock the look.",
     "backToMap": "← Back to map",
     "langCs": "Čeština",
-    "langDe": "Deutsch"
+    "langDe": "Deutsch",
+    "langFr": "Français"
   }
 }

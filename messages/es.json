@@ -13,7 +13,7 @@
     "accountTitle": "Mi cuenta | CanIFly",
     "accountDescription": "Gestiona tu perfil de piloto CanIFly.",
     "settingsTitle": "Ajustes — idioma y tema | CanIFly",
-    "settingsDescription": "Elige idioma (ES/EN/DE/PL/CS) y tema claro, oscuro o del sistema en CanIFly."
+    "settingsDescription": "Elige idioma (ES/EN/DE/FR/PL/CS) y tema claro, oscuro o del sistema en CanIFly."
   },
   "nav": {
     "map": "Mapa",
@@ -46,7 +46,8 @@
     "weatherAtPin": "en tu pin",
     "weatherArea": "cerca del centro del mapa",
     "weatherLoading": "Obteniendo el tiempo…",
-    "langDe": "DE"
+    "langDe": "DE",
+    "langFr": "FR"
   },
   "search": {
     "title": "Buscar ubicación",
@@ -807,7 +808,7 @@
     "title": "Ajustes",
     "intro": "Idioma y apariencia en este dispositivo.",
     "languageTitle": "Idioma",
-    "languageHint": "Cambia entre español, inglés, alemán, polaco y checo. La URL se actualiza al instante.",
+    "languageHint": "Cambia entre español, inglés, alemán, francés, polaco y checo. La URL se actualiza al instante.",
     "languageHintSaved": "Si inicias sesión, guardamos tu idioma y lo restauramos la próxima vez.",
     "languageSaveFailed": "Idioma cambiado aquí. No se pudo guardar en la cuenta; inténtalo de nuevo más tarde.",
     "langEs": "Español",
@@ -817,6 +818,7 @@
     "themeHint": "Sistema sigue el ajuste del dispositivo. Claro y oscuro fijan el aspecto.",
     "backToMap": "← Volver al mapa",
     "langCs": "Čeština",
-    "langDe": "Deutsch"
+    "langDe": "Deutsch",
+    "langFr": "Français"
   }
 }

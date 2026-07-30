@@ -50,6 +50,7 @@ function parseServerLocale(value: unknown): AppLocale | null {
   return value === "en" ||
     value === "es" ||
     value === "de" ||
+    value === "fr" ||
     value === "pl" ||
     value === "cs"
     ? value

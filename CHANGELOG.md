@@ -5,6 +5,7 @@
 ### Added
 - France in coverage: FAQ / Guide / Contacts, geocode preference, SEO (Géoportail / geopf)
 - German UI language (`de`) in Settings alongside ES / EN / PL / CS
+- French UI language (`fr`) in Settings (ES / EN / DE / FR / PL / CS)
 - Germany in coverage: FAQ / Guide / Contacts, geocode preference, SEO
 - Weather severity colours (green / orange / red) and always-on header weather ticker
 - Locale-aware ULC official link (EN general-information / PL hub)

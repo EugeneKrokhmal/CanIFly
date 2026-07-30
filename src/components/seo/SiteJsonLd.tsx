@@ -5,6 +5,7 @@ const IN_LANG: Record<AppLocale, string> = {
   es: "es-ES",
   en: "en",
   de: "de-DE",
+  fr: "fr-FR",
   pl: "pl-PL",
   cs: "cs-CZ",
 };
@@ -24,11 +25,13 @@ export function SiteJsonLd({
       ? "Mapa de estado del espacio aéreo UAS para pilotos de drones en España, Alemania, Francia, Chequia y Polonia."
       : locale === "de"
         ? "UAS-Luftraumstatuskarte für Drohnenpiloten in Spanien, Deutschland, Frankreich, Tschechien und Polen."
-        : locale === "pl"
-          ? "Mapa statusu przestrzeni powietrznej UAS dla pilotów dronów w Hiszpanii, Niemczech, Francji, Czechach i Polsce."
-          : locale === "cs"
-            ? "Mapa stavu vzdušného prostoru UAS pro piloty dronů ve Španělsku, Německu, Francii, Česku a Polsku."
-            : "UAS airspace status map for drone pilots in Spain, Germany, France, Czechia and Poland.";
+        : locale === "fr"
+          ? "Carte d’état de l’espace aérien UAS pour les pilotes de drones en Espagne, Allemagne, France, Tchéquie et Pologne."
+          : locale === "pl"
+            ? "Mapa statusu przestrzeni powietrznej UAS dla pilotów dronów w Hiszpanii, Niemczech, Francji, Czechach i Polsce."
+            : locale === "cs"
+              ? "Mapa stavu vzdušného prostoru UAS pro piloty dronů ve Španělsku, Německu, Francii, Česku a Polsku."
+              : "UAS airspace status map for drone pilots in Spain, Germany, France, Czechia and Poland.";
 
   const featureList =
     locale === "es"
@@ -45,6 +48,13 @@ export function SiteJsonLd({
             "Filter nach Klasse C0–C2 und AGL-Decke",
             "Hindernisse und Flugorte der Community",
           ]
+        : locale === "fr"
+          ? [
+              "Statut Libre / Limité / Restreint / Interdit",
+              "Zones géographiques UAS (ENAIRE / dipul / Géoportail / ANS CR / PANSA)",
+              "Filtre par classe C0–C2 et plafond AGL",
+              "Obstacles et spots de vol de la communauté",
+            ]
       : locale === "pl"
         ? [
             "Status Wolna / Ograniczona / Zastrzeżona / Zakazana",
@@ -78,7 +88,7 @@ export function SiteJsonLd({
         "CanIFly Česko",
         "CanIFly Polska",
       ],
-      inLanguage: ["es-ES", "en", "de-DE", "cs-CZ", "pl-PL"],
+      inLanguage: ["es-ES", "en", "de-DE", "fr-FR", "cs-CZ", "pl-PL"],
       description,
       potentialAction: {
         "@type": "SearchAction",

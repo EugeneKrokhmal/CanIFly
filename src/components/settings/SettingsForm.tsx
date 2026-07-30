@@ -114,6 +114,13 @@ export function SettingsForm() {
             {t("langDe")}
           </SegmentedOption>
           <SegmentedOption
+            active={locale === "fr"}
+            disabled={savingLocale}
+            onClick={() => void switchLocale("fr")}
+          >
+            {t("langFr")}
+          </SegmentedOption>
+          <SegmentedOption
             active={locale === "pl"}
             disabled={savingLocale}
             onClick={() => void switchLocale("pl")}

@@ -13,7 +13,7 @@
     "accountTitle": "Mein Konto | CanIFly",
     "accountDescription": "Verwalten Sie Ihr CanIFly-Pilotenprofil.",
     "settingsTitle": "Einstellungen — Sprache & Design | CanIFly",
-    "settingsDescription": "Wählen Sie Sprache (ES/EN/DE/PL/CS) und helles, dunkles oder System-Design für CanIFly."
+    "settingsDescription": "Sprache (ES/EN/DE/FR/PL/CS) und helles, dunkles oder System-Theme für CanIFly wählen."
   },
   "nav": {
     "map": "Karte",
@@ -46,7 +46,8 @@
     "weatherGood": "Gute Flugbedingungen",
     "weatherAtPin": "an Ihrem Pin",
     "weatherArea": "in der Nähe der Kartenmitte",
-    "weatherLoading": "Wetter wird geladen…"
+    "weatherLoading": "Wetter wird geladen…",
+    "langFr": "FR"
   },
   "search": {
     "title": "Ort suchen",
@@ -807,7 +808,7 @@
     "title": "Einstellungen",
     "intro": "Sprache und Darstellung für dieses Gerät.",
     "languageTitle": "Sprache",
-    "languageHint": "Wechseln zwischen Spanisch, Englisch, Deutsch, Polnisch und Tschechisch. Die URL passt sich an.",
+    "languageHint": "Wechseln Sie zwischen Spanisch, Englisch, Deutsch, Französisch, Polnisch und Tschechisch. Die URL wird angepasst.",
     "languageHintSaved": "Wenn Sie angemeldet sind, speichern wir Ihre Sprache und stellen sie beim nächsten Login wieder her.",
     "languageSaveFailed": "Sprache hier aktualisiert. Speichern im Konto noch nicht möglich — später erneut versuchen.",
     "langEs": "Español",
@@ -817,6 +818,7 @@
     "themeTitle": "Design",
     "themeHint": "System folgt der Geräteeinstellung. Hell und Dunkel fixieren das Erscheinungsbild.",
     "backToMap": "← Zurück zur Karte",
-    "langCs": "Čeština"
+    "langCs": "Čeština",
+    "langFr": "Français"
   }
 }
