@@ -284,7 +284,8 @@
       "ES": "Hiszpania",
       "PL": "Polska",
       "CZ": "Czechy",
-      "DE": "Niemcy"
+      "DE": "Niemcy",
+      "FR": "Francja"
     },
     "backToMap": "← Wróć do mapy",
     "byCountry": {
@@ -444,6 +445,46 @@
             "a": "uas-operations.bund.de (dipul), plus DFS / LBA guidance for your operation type."
           }
         }
+      },
+      "FR": {
+        "title": "FAQ — France",
+        "intro": "Answers for flying in France with CanIFly and Géoportail leisure-drone restrictions.",
+        "ctaGuide": "Read the France flying guide",
+        "ctaContacts": "Contacts",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in France?",
+            "a": "CanIFly summarises Géoportail restriction polygons for your drone class and ceiling. Vol interdit maps to Prohibited; height caps (30/50/100 m) map to Conditional. Always confirm on Géoportail / AlphaTango before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation to fly?",
+            "a": "Open-category flights are still banned over many agglomerations and near airports (Vol interdit). Height-limited zones allow flight only up to the published cap. Use AlphaTango / DGAC guidance for registration and scenarios."
+          },
+          "openCategory": {
+            "q": "Does CanIFly cover the open category?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter French restriction polygons that intersect that envelope. Specific / professional operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in France?",
+            "a": "Metropolitan France (including Corsica) via the Géoportail WFS layer carte_restriction_drones_lf. Overseas territories may also appear in that layer; always verify locally."
+          },
+          "paris": {
+            "q": "What about Paris / major cities?",
+            "a": "Urban cores are often Vol interdit in public space under the Arrêté Espace. Tap the map for a live status; treat it as a planning aid, not a clearance."
+          },
+          "data": {
+            "q": "Where does the French zone data come from?",
+            "a": "Live WFS queries to data.geopf.fr (IGN / Géoportail). Official ED-269 packs are also published by the SIA on AIRAC cycles — CanIFly does not download those zips for runtime."
+          },
+          "track": {
+            "q": "Is CanIFly an official tracker?",
+            "a": "No. It is a planning aid. For official French UAS restrictions use Géoportail and SIA / DGAC sources."
+          },
+          "official": {
+            "q": "Which official sites should I use?",
+            "a": "Géoportail leisure-drone restrictions, SIA UAS geographical-zone data, AlphaTango, and DGAC / Ministère de la Transition écologique pages."
+          }
+        }
       }
     }
   },
@@ -453,7 +494,8 @@
       "ES": "Hiszpania",
       "PL": "Polska",
       "CZ": "Czechy",
-      "DE": "Niemcy"
+      "DE": "Niemcy",
+      "FR": "Francja"
     },
     "ctaMap": "Otwórz mapę CanIFly",
     "ctaFaq": "Zobacz FAQ",
@@ -582,6 +624,37 @@
             "body": "CanIFly is a planning aid, not an authorisation. You remain responsible for complying with LuftVO and local rules."
           }
         }
+      },
+      "FR": {
+        "eyebrow": "France",
+        "title": "Flying drones in France",
+        "intro": "CanIFly reads live Géoportail restriction polygons so you can see Clear / Limited / Restricted / Prohibited for open-category flights. Always cross-check Géoportail before you fly.",
+        "sections": {
+          "how": {
+            "title": "How CanIFly helps",
+            "body": "Pick your class and ceiling, tap the map, and we query the official leisure-drone restriction layer for that point — flight bans and height caps."
+          },
+          "geoportail": {
+            "title": "Géoportail (official map)",
+            "body": "IGN Géoportail publishes Restrictions pour drones de loisir. CanIFly uses its public WFS; Géoportail remains the visual reference."
+          },
+          "dgac": {
+            "title": "DGAC / SIA / AlphaTango",
+            "body": "Registration and scenarios go through AlphaTango. SIA publishes ED-269 UAS geographical-zone packs each AIRAC cycle. CanIFly is not a substitute for those procedures."
+          },
+          "cities": {
+            "title": "Cities and airports",
+            "body": "Paris, Lyon, Marseille and other cities often show Vol interdit over public agglomeration space, plus airport buffers. Zoom in on CanIFly, then confirm on Géoportail."
+          },
+          "community": {
+            "title": "Community pins",
+            "body": "Obstacles and fly spots are community-reported. They do not replace official restriction polygons."
+          },
+          "disclaimer": {
+            "title": "Disclaimer",
+            "body": "CanIFly is a planning aid, not an authorisation. You remain responsible for complying with French UAS rules and local arrêtés."
+          }
+        }
       }
     }
   },
@@ -611,7 +684,8 @@
       "ES": "Hiszpania",
       "PL": "Polska",
       "CZ": "Czechy",
-      "DE": "Niemcy"
+      "DE": "Niemcy",
+      "FR": "Francja"
     },
     "backToMap": "← Wróć do mapy",
     "byCountry": {
@@ -684,22 +758,44 @@
       "DE": {
         "title": "Germany — official contacts",
         "intro": "Use these official German sources for geographical zones and UAS rules.",
-        "links": {
+        "items": {
           "dipul": {
             "title": "dipul map tool",
-            "blurb": "Official geographical zones map."
+            "detail": "Official geographical zones map"
           },
           "wms": {
             "title": "dipul WMS / WFS",
-            "blurb": "Machine-readable geoservices."
+            "detail": "Machine-readable geoservices"
           },
           "bmdv": {
             "title": "BMDV unmanned aviation",
-            "blurb": "Federal policy and dipul programme."
+            "detail": "Federal policy and dipul programme"
           },
           "lba": {
             "title": "LBA — drones",
-            "blurb": "Civil aviation authority guidance."
+            "detail": "Civil aviation authority guidance"
+          }
+        }
+      },
+      "FR": {
+        "title": "France — official contacts",
+        "intro": "Use these official French sources for leisure-drone restrictions, registration, and ED-269 data.",
+        "items": {
+          "geoportail": {
+            "title": "Géoportail — drone restrictions",
+            "detail": "Official leisure-drone restriction map (Vol interdit / height caps)"
+          },
+          "sia": {
+            "title": "SIA — UAS geographical zones",
+            "detail": "ED-269 datasets published each AIRAC cycle"
+          },
+          "dgac": {
+            "title": "DGAC / Ministry — drones",
+            "detail": "Policy and rules for professional and leisure UAS"
+          },
+          "alphatango": {
+            "title": "AlphaTango",
+            "detail": "Operator registration and flight scenarios"
           }
         }
       }

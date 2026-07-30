@@ -48,7 +48,9 @@ Changelog: each repo has `CHANGELOG.md`. Bump the three versions together when c
 | PL | PANSA DroneMap API | **Live** (0.2.0) |
 | CZ | ANS CR aimgis (ArcGIS) | **Live** (0.3.0) |
 | DE | dipul WFS (uas-betrieb.de) | **Live** (main) |
-| FR | DSAC / SIA ED-269 | Investigate |
+| FR | Géoportail WFS (data.geopf.fr) | **Live** (main) |
+
+**France in prod:** no ingest step — the API queries IGN **data.geopf.fr** WFS live (`carte_restriction_drones_lf`). SIA ED-269 AIRAC zips remain the official reference pack, not the runtime path.
 
 ---
 

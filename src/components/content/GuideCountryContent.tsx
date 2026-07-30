@@ -9,6 +9,7 @@ import { ulcDronesLabel, ulcDronesUrl } from "@/lib/official-links";
 const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
   ES: ["how", "enaire", "aesa", "cities", "community", "disclaimer"],
   DE: ["how", "dipul", "dfs", "cities", "community", "disclaimer"],
+  FR: ["how", "geoportail", "dgac", "cities", "community", "disclaimer"],
   CZ: ["how", "anscr", "caa", "cities", "community", "disclaimer"],
   PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
 };
@@ -25,6 +26,12 @@ function sectionLink(
   }
   if (country === "PL" && key === "pansa") {
     return { href: "https://dronemap.pansa.pl/", label: "dronemap.pansa.pl" };
+  }
+  if (country === "FR" && key === "geoportail") {
+    return {
+      href: "https://www.geoportail.gouv.fr/donnees/restrictions-pour-drones-de-loisir",
+      label: "geoportail.gouv.fr",
+    };
   }
   return null;
 }
@@ -54,6 +61,7 @@ export function GuideCountryContent() {
         names={{
           ES: t("countryNames.ES"),
           DE: t("countryNames.DE"),
+          FR: t("countryNames.FR"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

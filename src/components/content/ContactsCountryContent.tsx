@@ -80,6 +80,28 @@ function contactLinksFor(locale: string): Record<ContentCountryId, readonly Cont
       label: "lba.de",
     },
   ],
+  FR: [
+    {
+      key: "geoportail",
+      href: "https://www.geoportail.gouv.fr/donnees/restrictions-pour-drones-de-loisir",
+      label: "geoportail.gouv.fr",
+    },
+    {
+      key: "sia",
+      href: "https://www.sia.aviation-civile.gouv.fr/produits-numeriques-en-libre-disposition/donnees-zones-geographiques-uas.html",
+      label: "sia.aviation-civile.gouv.fr",
+    },
+    {
+      key: "dgac",
+      href: "https://www.ecologie.gouv.fr/politiques-publiques/drones-usages-professionnels-loisir",
+      label: "ecologie.gouv.fr",
+    },
+    {
+      key: "alphatango",
+      href: "https://alphatango.aviation-civile.gouv.fr/",
+      label: "alphatango.aviation-civile.gouv.fr",
+    },
+  ],
   CZ: [
     {
       key: "dronemap",
@@ -130,6 +152,7 @@ export function ContactsCountryContent() {
         names={{
           ES: t("countryNames.ES"),
           DE: t("countryNames.DE"),
+          FR: t("countryNames.FR"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

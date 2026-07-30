@@ -60,7 +60,7 @@ export default async function GuidePage({ params }: Props) {
             ? "Przestrzeń powietrzna UAS w UE (Hiszpania, Czechy i Polska)"
             : appLocale === "cs"
               ? "Vzdušný prostor UAS v EU (Španělsko, Česko a Polsko)"
-              : "UAS airspace in the EU (Spain, Czechia and Poland)",
+              : "UAS airspace in the EU (Spain, Germany, France, Czechia and Poland)",
     },
   };
 

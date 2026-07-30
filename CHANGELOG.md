@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- France in coverage: FAQ / Guide / Contacts, geocode preference, SEO (Géoportail / geopf)
 - Germany in coverage: FAQ / Guide / Contacts, geocode preference, SEO
 - Weather severity colours (green / orange / red) and always-on header weather ticker
 - Locale-aware ULC official link (EN general-information / PL hub)

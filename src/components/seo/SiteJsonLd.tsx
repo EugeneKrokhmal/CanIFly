@@ -25,7 +25,7 @@ export function SiteJsonLd({
         ? "Mapa statusu przestrzeni powietrznej UAS dla pilotów dronów w Hiszpanii, Czechach i Polsce."
         : locale === "cs"
           ? "Mapa stavu vzdušného prostoru UAS pro piloty dronů ve Španělsku, Česku a Polsku."
-          : "UAS airspace status map for drone pilots in Spain, Czechia and Poland.";
+          : "UAS airspace status map for drone pilots in Spain, Germany, France, Czechia and Poland.";
 
   const featureList =
     locale === "es"
@@ -93,6 +93,7 @@ export function SiteJsonLd({
       areaServed: [
         { "@type": "Country", name: "Spain" },
         { "@type": "Country", name: "Germany" },
+        { "@type": "Country", name: "France" },
         { "@type": "Country", name: "Czechia" },
         { "@type": "Country", name: "Poland" },
       ],
@@ -104,7 +105,7 @@ export function SiteJsonLd({
       name: "CanIFly",
       url: base,
       logo: `${base}/icon.svg`,
-      areaServed: ["ES", "DE", "CZ", "PL"],
+      areaServed: ["ES", "DE", "FR", "CZ", "PL"],
     },
   ];
 
