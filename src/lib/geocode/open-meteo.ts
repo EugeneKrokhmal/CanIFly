@@ -77,7 +77,7 @@ export async function searchLocations(
   }));
 
   const rank = (code: string | null) =>
-    code === "ES" || code === "PL" ? 0 : 1;
+    code === "ES" || code === "CZ" || code === "PL" ? 0 : 1;
 
   return hits.sort((a, b) => rank(a.countryCode) - rank(b.countryCode));
 }

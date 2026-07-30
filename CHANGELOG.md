@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0] — 2026-07-30
+
+### Added
+- Czechia in coverage: FAQ / Guide / Contacts country selector and copy
+- Geocode preference for ES + CZ + PL
+- SEO / JSON-LD areaServed includes Czechia (ANS CR)
+
 ## [0.2.2] — 2026-07-30
 
 ### Fixed

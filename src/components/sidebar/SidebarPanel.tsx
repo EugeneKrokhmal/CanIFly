@@ -97,7 +97,19 @@ export function SidebarPanel() {
     if (source === "aero") return t("sourceAero");
     if (source === "urbano") return t("sourceUrbano");
     if (source === "infra") return t("sourceInfra");
+    if (source === "servais") return t("sourceServais");
+    if (source === "pansa") return t("sourcePansa");
+    if (source === "anscr") return t("sourceAnscr");
     return source;
+  };
+
+  const backendLabel = (value: string): string => {
+    if (value === "servais") return "ENAIRE servAIS";
+    if (value === "pansa") return "PANSA DroneMap";
+    if (value === "aimgis") return "ANS CR aimgis";
+    if (value === "postgis") return "PostGIS";
+    if (value === "multi") return "multi";
+    return value;
   };
 
   const locate = () => {
@@ -361,7 +373,7 @@ export function SidebarPanel() {
 
       {(backend || dataVersion) && (
         <div className="border-t border-[var(--as-line-soft)] px-5 py-3 text-[11px] text-[var(--as-muted)]">
-          {backend ? `ENAIRE ${backend}` : t("offline")}
+          {backend ? backendLabel(backend) : t("offline")}
           {dataVersion ? ` · ${dataVersion}` : ""}
           {queryMs != null ? ` · ${queryMs}ms` : ""}
         </div>

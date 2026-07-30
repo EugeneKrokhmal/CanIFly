@@ -14,7 +14,7 @@ interface StatusApiResponse {
   meta?: {
     queryMs?: number;
     dataVersion?: string | null;
-    backend?: "servais" | "postgis" | "memory" | "pansa" | "multi";
+    backend?: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "multi";
   };
 }
 

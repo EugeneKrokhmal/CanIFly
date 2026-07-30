@@ -5,6 +5,7 @@ const IN_LANG: Record<AppLocale, string> = {
   es: "es-ES",
   en: "en",
   pl: "pl-PL",
+  cs: "cs-CZ",
 };
 
 export function SiteJsonLd({
@@ -19,32 +20,41 @@ export function SiteJsonLd({
 
   const description =
     locale === "es"
-      ? "Mapa de estado del espacio aéreo UAS para pilotos de drones en España y Polonia."
+      ? "Mapa de estado del espacio aéreo UAS para pilotos de drones en España, Chequia y Polonia."
       : locale === "pl"
-        ? "Mapa statusu przestrzeni powietrznej UAS dla pilotów dronów w Hiszpanii i Polsce."
-        : "UAS airspace status map for drone pilots in Spain and Poland.";
+        ? "Mapa statusu przestrzeni powietrznej UAS dla pilotów dronów w Hiszpanii, Czechach i Polsce."
+        : locale === "cs"
+          ? "Mapa stavu vzdušného prostoru UAS pro piloty dronů ve Španělsku, Česku a Polsku."
+          : "UAS airspace status map for drone pilots in Spain, Czechia and Poland.";
 
   const featureList =
     locale === "es"
       ? [
           "Estado Libre / Limitado / Restringido / Prohibido",
-          "Zonas geográficas UAS (ENAIRE / PANSA)",
+          "Zonas geográficas UAS (ENAIRE / ANS CR / PANSA)",
           "Filtro por clase C0–C2 y techo AGL",
           "Obstáculos y zonas de vuelo de la comunidad",
         ]
       : locale === "pl"
         ? [
             "Status Wolna / Ograniczona / Zastrzeżona / Zakazana",
-            "Strefy geograficzne UAS (ENAIRE / PANSA)",
+            "Strefy geograficzne UAS (ENAIRE / ANS CR / PANSA)",
             "Filtr klasy C0–C2 i pułapu AGL",
             "Przeszkody i miejsca do lotów społeczności",
           ]
-        : [
-            "Clear / Limited / Restricted / Prohibited status",
-            "UAS geographical zones (ENAIRE / PANSA)",
-            "Filter by C0–C2 class and AGL ceiling",
-            "Community obstacles and fly spots",
-          ];
+        : locale === "cs"
+          ? [
+              "Status Volná / Omezená / Restringovaná / Zakázaná",
+              "Geografické zóny UAS (ENAIRE / ANS CR / PANSA)",
+              "Filtr třídy C0–C2 a stropu AGL",
+              "Překážky a místa k letu od komunity",
+            ]
+          : [
+              "Clear / Limited / Restricted / Prohibited status",
+              "UAS geographical zones (ENAIRE / ANS CR / PANSA)",
+              "Filter by C0–C2 class and AGL ceiling",
+              "Community obstacles and fly spots",
+            ];
 
   const graph: Record<string, unknown>[] = [
     {
@@ -52,8 +62,13 @@ export function SiteJsonLd({
       "@id": `${base}/#website`,
       url: base,
       name: "CanIFly",
-      alternateName: ["Can I Fly", "CanIFly España", "CanIFly Polska"],
-      inLanguage: ["es-ES", "en", "pl-PL"],
+      alternateName: [
+        "Can I Fly",
+        "CanIFly España",
+        "CanIFly Česko",
+        "CanIFly Polska",
+      ],
+      inLanguage: ["es-ES", "en", "cs-CZ", "pl-PL"],
       description,
       potentialAction: {
         "@type": "SearchAction",
@@ -77,6 +92,7 @@ export function SiteJsonLd({
       },
       areaServed: [
         { "@type": "Country", name: "Spain" },
+        { "@type": "Country", name: "Czechia" },
         { "@type": "Country", name: "Poland" },
       ],
       featureList,
@@ -87,7 +103,7 @@ export function SiteJsonLd({
       name: "CanIFly",
       url: base,
       logo: `${base}/icon.svg`,
-      areaServed: ["ES", "PL"],
+      areaServed: ["ES", "CZ", "PL"],
     },
   ];
 

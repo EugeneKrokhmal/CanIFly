@@ -1,19 +1,19 @@
 {
   "meta": {
-    "title": "CanIFly — Czy mogę latać dronem? Mapa UAS UE (Hiszpania i Polska)",
-    "description": "Sprawdź jednym kliknięciem, czy możesz latać dronem. Mapa przestrzeni UAS dla Hiszpanii (ENAIRE) i Polski (PANSA): Wolna, Ograniczona, Zastrzeżona lub Zakazana według klasy C0–C2 i pułapu AGL.",
-    "faqTitle": "FAQ o dronach — przestrzeń UAS Hiszpania i Polska | CanIFly",
-    "faqDescription": "Jasne odpowiedzi o statusach Wolna/Ograniczona/Zastrzeżona/Zakazana, autoryzacji ENAIRE/PANSA, AESA/ULC, śladach ADS-B i oficjalnych źródłach dla pilotów w Hiszpanii i Polsce.",
-    "guideTitle": "Przewodnik latania dronem 2026 — Hiszpania i Polska | CanIFly",
-    "guideDescription": "Jak sprawdzić, czy możesz latać dronem w Hiszpanii i Polsce: strefy UAS, kategoria otwarta, pułap AGL i mapa CanIFly.",
+    "title": "CanIFly — Czy mogę latać dronem? Mapa UAS UE (Hiszpania, Czechy i Polska)",
+    "description": "Sprawdź jednym tapnięciem, czy możesz latać dronem. Mapa przestrzeni UAS dla Hiszpanii (ENAIRE), Czech (ANS CR) i Polski (PANSA): Clear, Limited, Restricted lub Prohibited według klasy C0–C2 i pułapu AGL.",
+    "faqTitle": "FAQ drony — przestrzeń UAS Hiszpania, Czechy i Polska | CanIFly",
+    "faqDescription": "Jasne odpowiedzi o Clear/Limited/Restricted/Prohibited, autoryzacji ENAIRE/ANS CR/PANSA, AESA/CAA/ULC, śladach ADS-B i oficjalnych źródłach dla pilotów w Hiszpanii, Czechach i Polsce.",
+    "guideTitle": "Przewodnik lotów dronem 2026 — Hiszpania, Czechy i Polska | CanIFly",
+    "guideDescription": "Jak sprawdzić, czy możesz latać dronem w Hiszpanii, Czechach i Polsce: strefy UAS, kategoria otwarta, pułap AGL i mapa CanIFly.",
     "privacyTitle": "Prywatność i pliki cookie | CanIFly",
     "privacyDescription": "Jak CanIFly przetwarza dane, pliki cookie i lokalne przechowywanie mapy przestrzeni UAS.",
-    "contactsTitle": "Oficjalne kontakty dronowe — Hiszpania i Polska | CanIFly",
-    "contactsDescription": "Oficjalne linki do autoryzacji lotów: ENAIRE/AESA (Hiszpania) oraz PANSA DroneMap, DroneTower, ULC (Polska).",
+    "contactsTitle": "Oficjalne kontakty dronowe — Hiszpania, Czechy i Polska | CanIFly",
+    "contactsDescription": "Oficjalne linki do autoryzacji lotów: ENAIRE/AESA (Hiszpania), ANS CR/CAA (Czechy) oraz PANSA DroneMap, ULC (Polska).",
     "accountTitle": "Moje konto | CanIFly",
     "accountDescription": "Zarządzaj profilem pilota CanIFly.",
     "settingsTitle": "Ustawienia — język i motyw | CanIFly",
-    "settingsDescription": "Wybierz język (ES/EN/PL) oraz jasny, ciemny lub systemowy motyw CanIFly."
+    "settingsDescription": "Wybierz język (ES/EN/PL/CS) oraz jasny, ciemny lub systemowy motyw CanIFly."
   },
   "nav": {
     "map": "Mapa",
@@ -37,12 +37,13 @@
     "themeToggle": "Motyw · {mode}",
     "themeSystem": "System",
     "themeLight": "Jasny",
-    "themeDark": "Ciemny"
+    "themeDark": "Ciemny",
+    "langCs": "CS"
   },
   "search": {
     "title": "Szukaj lokalizacji",
     "placeholder": "Miasto, miejscowość lub kod pocztowy…",
-    "hint": "Wpisz co najmniej 2 znaki. Wyniki z Hiszpanii i Polski pojawiają się pierwsze.",
+    "hint": "Wpisz co najmniej 2 znaki. Wyniki z Hiszpanii, Czech i Polski pojawiają się pierwsze.",
     "searching": "Szukam…",
     "empty": "Nie znaleziono miejsc",
     "error": "Wyszukiwanie nie powiodło się. Spróbuj ponownie.",
@@ -175,6 +176,9 @@
     "sourceAero": "Aero",
     "sourceUrbano": "Miejskie",
     "sourceInfra": "Infra",
+    "sourceServais": "servAIS",
+    "sourcePansa": "PANSA",
+    "sourceAnscr": "ANS CR",
     "offline": "offline"
   },
   "status": {
@@ -271,7 +275,8 @@
     "countryLabel": "Kraj",
     "countryNames": {
       "ES": "Hiszpania",
-      "PL": "Polska"
+      "PL": "Polska",
+      "CZ": "Czechy"
     },
     "backToMap": "← Wróć do mapy",
     "byCountry": {
@@ -352,6 +357,45 @@
             "a": "Nie. Zawsze weryfikuj z PANSA DroneMap / ULC (oraz DroneTower, gdy wymagane) przed lotem. Przepisy i aktywność stref się zmieniają; to narzędzie planowania, nie zezwolenie prawne."
           }
         }
+      },
+      "CZ": {
+        "title": "FAQ drony w Czechach",
+        "intro": "Szybkie odpowiedzi o statusach, rejestracji CAA, DroneMap ANS CR i źródłach danych do lotów w Czechach.",
+        "ctaGuide": "Przeczytaj pełny przewodnik lotów w Czechach",
+        "items": {
+          "status": {
+            "q": "Co oznaczają Clear, Limited, Restricted i Prohibited?",
+            "a": "Clear: żadna strefa UAS nie blokuje Twojego profilu na tej wysokości. Limited: obowiązują warunki lub łagodniejsze ograniczenia. Restricted: zwykle wymagana jest koordynacja lub zgoda. Prohibited: lot nie jest dozwolony w pokazanym profilu kategorii otwartej."
+          },
+          "auth": {
+            "q": "Czy Restricted oznacza rejestrację w CAA?",
+            "a": "Nie. Oznacza, że strefa może wymagać zgody lub koordynacji z zarządzającym. Osobno w Czechach zwykle wymagana jest rejestracja operatora UAS i kompetencje kategorii otwartej — sprawdź przepisy CAA."
+          },
+          "openCategory": {
+            "q": "Czy CanIFly obejmuje tylko kategorię otwartą?",
+            "a": "Tak dla statusu na mapie. Profile to C0–C2 z pułapem AGL (domyślnie 120 m). Kategoria szczególna, BVLOS i U-space są poza zakresem."
+          },
+          "where": {
+            "q": "Gdzie legalnie latać dronem w Czechach?",
+            "a": "Zależy od miejsca, wysokości, klasy drona i aktywnych stref geograficznych UAS (LKR / OOP). Sprawdzaj każdy punkt na DroneMap ANS CR i CanIFly oraz przestrzegaj przepisów CAA / kategorii otwartej."
+          },
+          "prague": {
+            "q": "Czy mogę latać w Pradze?",
+            "a": "Duża część aglomeracji jest objęta CTR/ATZ, strefami gęsto zaludnionymi i innymi warstwami LKR. Użyj mapy CanIFly, stuknij punkt startu i sprawdź status. Przy Restricted lub Prohibited sprawdź DroneMap / CAA przed lotem."
+          },
+          "data": {
+            "q": "Skąd pochodzą dane o przestrzeni powietrznej?",
+            "a": "W Czechach strefy UAS pochodzą z ANS CR aimgis (ArcGIS na żywo, ta sama rodzina co DroneMap). W Hiszpanii z ENAIRE servAIS; w Polsce z PANSA DroneMap. Ruch lotniczy — z ADS-B społecznościowego / OpenSky. Modele dronów — z OpenDroneList."
+          },
+          "track": {
+            "q": "Czym są ślady samolotów na mapie?",
+            "a": "Ruch ADS-B z feedów społecznościowych / OpenSky. Pomocny do świadomości sytuacji, nie zastępuje see-and-avoid ani oficjalnych służb ruchu."
+          },
+          "official": {
+            "q": "Czy CanIFly to oficjalny produkt ANS CR lub CAA?",
+            "a": "Nie. Zawsze weryfikuj z DroneMap ANS CR / CAA przed lotem. Przepisy się zmieniają; to pomoc planistyczna, nie zgoda prawna. Strefy są pobierane na żywo z ANS CR — wiążące granice i ogłoszenia publikowane są w AIM / DroneMap."
+          }
+        }
       }
     }
   },
@@ -359,7 +403,8 @@
     "countryLabel": "Kraj",
     "countryNames": {
       "ES": "Hiszpania",
-      "PL": "Polska"
+      "PL": "Polska",
+      "CZ": "Czechy"
     },
     "ctaMap": "Otwórz mapę CanIFly",
     "ctaFaq": "Zobacz FAQ",
@@ -426,6 +471,37 @@
             "body": "CanIFly to narzędzie planowania. To nie PANSA ani ULC. Przed lotem potwierdź przepisy, NOTAM i zezwolenia w oficjalnych kanałach (w tym DroneTower, gdy wymagane). Odpowiadasz za operację."
           }
         }
+      },
+      "CZ": {
+        "eyebrow": "Przewodnik Czechy",
+        "title": "Jak sprawdzić, czy możesz latać dronem w Czechach",
+        "intro": "CanIFly podsumowuje status przestrzeni UAS na mapie: stuknij punkt, wybierz klasę i pułap, zobaczysz Clear, Limited, Restricted lub Prohibited. Ten przewodnik wyjaśnia kontekst dla pilotów kategorii otwartej w Czechach.",
+        "sections": {
+          "how": {
+            "title": "1. Stuknij mapę",
+            "body": "Otwórz CanIFly, wyśrodkuj mapę (lub wyszukaj miasto) i stuknij punkt startu. Status łączy strefy UAS ANS CR z klasą (C0–C2) i pułapem AGL. Jeśli wynik nie jest Clear, nie zakładaj startu: przeczytaj szczegóły i źródła oficjalne."
+          },
+          "anscr": {
+            "title": "2. ANS CR i strefy UAS",
+            "body": "ANS CR publikuje strefy geograficzne UAS (LKR / OOP). CanIFly pobiera je na żywo z ANS CR aimgis do planowania w kategorii otwartej, ale źródłem operacyjnym pozostaje DroneMap / CAA. Dane aktualizowane są w cyklach AIRAC."
+          },
+          "caa": {
+            "title": "3. Rejestracja CAA i kategoria otwarta",
+            "body": "Poza przestrzenią w Czechach zwykle wymagana jest rejestracja operatora UAS i kompetencje. Kategoria otwarta UE ma podkategorie i limity. CanIFly nie zastępuje tego prawa."
+          },
+          "cities": {
+            "title": "4. Miasta i lotniska",
+            "body": "Praga, Brno, Ostrawa i inne miasta często leżą pod CTR/ATZ, warstwami gęsto zaludnionymi i infrastrukturą. Na terenach wiejskich też są koleje, drogi, przyroda lub obrona. Zawsze stukaj dokładny punkt startu."
+          },
+          "community": {
+            "title": "5. Piny społeczności",
+            "body": "Piloci mogą oznaczać przeszkody i miejsca do lotów. To wskazówki społeczności z głosami: pomocne, nieoficjalne. Zawsze sprawdzaj z ANS CR / CAA."
+          },
+          "disclaimer": {
+            "title": "6. Zastrzeżenie",
+            "body": "CanIFly to narzędzie planistyczne. To nie ANS CR ani CAA. Przed lotem potwierdź przepisy i zgody w oficjalnych kanałach. Ty odpowiadasz za operację."
+          }
+        }
       }
     }
   },
@@ -439,7 +515,7 @@
     "storeOptionalLabel": "Opcjonalne:",
     "storeOptional": "nie ładujemy reklam ani marketingowych cookie stron trzecich. Jeśli dodamy anonimową analitykę produktu, uruchomi się dopiero po „Zaakceptuj wszystkie”.",
     "thirdTitle": "Żądania do stron trzecich",
-    "thirdBody": "Aplikacja wywołuje ENAIRE servAIS i PANSA DroneMap (przestrzeń), OpenSky / community ADS-B (ruch), Open-Meteo (pogoda) i OpenDroneList (katalog dronów). Usługi te otrzymują dane techniczne żądania (np. współrzędne). Sprawdź ich polityki prywatności.",
+    "thirdBody": "Aplikacja korzysta z ENAIRE servAIS (Hiszpania), PANSA DroneMap (Polska), ANS CR aimgis (Czechy), OpenSky / społecznościowego ADS-B (ruch lotniczy), Open-Meteo (pogoda) oraz OpenDroneList (katalog dronów). Usługi te otrzymują dane techniczne potrzebne do żądania (np. współrzędne). Sprawdź ich polityki prywatności.",
     "choicesTitle": "Twoje wybory",
     "choicesBodyBefore": "Użyj ",
     "choicesReject": "Odrzuć zbędne",
@@ -453,7 +529,8 @@
     "countryLabel": "Kraj",
     "countryNames": {
       "ES": "Hiszpania",
-      "PL": "Polska"
+      "PL": "Polska",
+      "CZ": "Czechy"
     },
     "backToMap": "← Wróć do mapy",
     "byCountry": {
@@ -500,6 +577,28 @@
             "detail": "Koordynacja lotów i zapytania PansaUTM — drony@pansa.pl"
           }
         }
+      },
+      "CZ": {
+        "title": "Kontakty — Czechy",
+        "intro": "Oficjalne kanały koordynacji, rejestracji i stref UAS w Czechach. Kontakty stref mogą też pojawić się w panelu po stuknięciu punktu.",
+        "items": {
+          "dronemap": {
+            "title": "DroneMap (ANS CR)",
+            "detail": "Oficjalna mapa cyfrowa stref geograficznych UAS i planowania przed lotem w Czechach."
+          },
+          "aim": {
+            "title": "AIM — pobieranie stref UAS",
+            "detail": "Zapytania na żywo o strefy UAS przez ANS CR aimgis (ArcGIS)"
+          },
+          "caa": {
+            "title": "CAA — bezzałogowe statki powietrzne",
+            "detail": "Strony urzędu lotnictwa cywilnego o rejestracji, kategorii otwartej i strefach geograficznych (OOP / LKR)."
+          },
+          "ans": {
+            "title": "ANS CR",
+            "detail": "Służby żeglugi powietrznej Czech — informacja lotnicza i narzędzia mapy UAS."
+          }
+        }
       }
     }
   },
@@ -516,6 +615,7 @@
     "langPl": "Polski",
     "themeTitle": "Motyw",
     "themeHint": "System podąża za urządzeniem. Jasny i ciemny blokują wygląd.",
-    "backToMap": "← Wróć do mapy"
+    "backToMap": "← Wróć do mapy",
+    "langCs": "Čeština"
   }
 }

@@ -21,6 +21,8 @@ const FUTURE_HORIZON_S = 10 * 60;
 const BLEND_MS = 900;
 /** Rebuild dashed future paths at this cadence (not every frame). */
 const FUTURE_REFRESH_MS = 2_000;
+/** MapLibre setData cadence — motion stays at rAF, GPU updates ~10 Hz. */
+const MAP_PUBLISH_MS = 100;
 
 const EMPTY: GeoJSON.FeatureCollection = {
   type: "FeatureCollection",
@@ -343,6 +345,7 @@ export function useAircraftTraffic(enabled: boolean) {
   const hasDataRef = useRef(false);
   const forceFetchRef = useRef(false);
   const lastFutureAtRef = useRef(0);
+  const lastMapPublishAtRef = useRef(0);
   const liveListenersRef = useRef(
     new Set<(fc: GeoJSON.FeatureCollection) => void>(),
   );
@@ -548,11 +551,15 @@ export function useAircraftTraffic(enabled: boolean) {
       const now = Date.now();
       advancePlanes(planes, now);
       const list = [...planes.values()];
-      const fc = planesToCollection(list);
-      publishLive(fc);
+
+      if (now - lastMapPublishAtRef.current >= MAP_PUBLISH_MS) {
+        lastMapPublishAtRef.current = now;
+        publishLive(planesToCollection(list));
+      }
 
       if (now - lastFutureAtRef.current >= FUTURE_REFRESH_MS) {
         lastFutureAtRef.current = now;
+        const fc = planesToCollection(list);
         setFuturePaths(buildFutureCollection(list));
         setCollection(fc);
         setCount(list.length);

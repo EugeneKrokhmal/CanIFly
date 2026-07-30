@@ -7,6 +7,7 @@ import { CountrySelect, type ContentCountryId } from "./CountrySelect";
 
 const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
   ES: ["how", "enaire", "aesa", "cities", "community", "disclaimer"],
+  CZ: ["how", "anscr", "caa", "cities", "community", "disclaimer"],
   PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
 };
 
@@ -33,6 +34,7 @@ export function GuideCountryContent() {
         label={t("countryLabel")}
         names={{
           ES: t("countryNames.ES"),
+          CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}
       />

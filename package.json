@@ -1,6 +1,6 @@
 {
   "name": "canifly",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,7 +13,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@canifly/middleware": "github:EugeneKrokhmal/CanIFly-middleware#main",
+    "@canifly/middleware": "file:../CanIFly-middleware",
     "@turf/boolean-point-in-polygon": "^7.3.5",
     "@turf/helpers": "^7.3.5",
     "maplibre-gl": "4.7.1",

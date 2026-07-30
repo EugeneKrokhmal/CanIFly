@@ -1,19 +1,19 @@
 {
   "meta": {
-    "title": "CanIFly — ¿Puedo volar mi dron? Mapa UAS UE (España y Polonia)",
-    "description": "Consulta en un toque si puedes volar tu dron. Mapa de espacio aéreo UAS para España (ENAIRE) y Polonia (PANSA): Libre, Limitado, Restringido o Prohibido según clase C0–C2 y techo AGL.",
-    "faqTitle": "FAQ drones — espacio aéreo UAS España y Polonia | CanIFly",
-    "faqDescription": "Respuestas claras sobre Libre/Limitado/Restringido/Prohibido, autorización ENAIRE/PANSA, AESA/ULC, trazas ADS-B y fuentes oficiales para pilotos en España y Polonia.",
-    "guideTitle": "Guía para volar drones 2026 — España y Polonia | CanIFly",
-    "guideDescription": "Cómo saber si puedes volar un dron en España y Polonia: zonas UAS, categoría abierta, techo AGL y mapa CanIFly.",
+    "title": "CanIFly — ¿Puedo volar mi dron? Mapa UAS UE (España, Chequia y Polonia)",
+    "description": "Comprueba en un toque si puedes volar tu dron. Mapa de espacio aéreo UAS para España (ENAIRE), Chequia (ANS CR) y Polonia (PANSA): Libre, Limitado, Restringido o Prohibido según clase C0–C2 y techo AGL.",
+    "faqTitle": "FAQ drones — espacio aéreo UAS España, Chequia y Polonia | CanIFly",
+    "faqDescription": "Respuestas claras sobre Libre/Limitado/Restringido/Prohibido, autorización ENAIRE/ANS CR/PANSA, AESA/CAA/ULC, trazas ADS-B y fuentes oficiales para pilotos en España, Chequia y Polonia.",
+    "guideTitle": "Guía de vuelo con drones 2026 — España, Chequia y Polonia | CanIFly",
+    "guideDescription": "Cómo saber si puedes volar un dron en España, Chequia y Polonia: zonas UAS, categoría abierta, techo AGL y el mapa CanIFly.",
     "privacyTitle": "Privacidad y cookies | CanIFly",
     "privacyDescription": "Cómo CanIFly trata datos, cookies y almacenamiento local para el mapa de espacio aéreo UAS en España.",
-    "contactsTitle": "Contactos oficiales drones — España y Polonia | CanIFly",
-    "contactsDescription": "Enlaces oficiales para autorización de vuelo: ENAIRE/AESA (España) y PANSA DroneMap, DroneTower, ULC (Polonia).",
+    "contactsTitle": "Contactos oficiales drones — España, Chequia y Polonia | CanIFly",
+    "contactsDescription": "Enlaces oficiales para autorización de vuelo: ENAIRE/AESA (España), ANS CR/CAA (Chequia) y PANSA DroneMap, ULC (Polonia).",
     "accountTitle": "Mi cuenta | CanIFly",
     "accountDescription": "Gestiona tu perfil de piloto CanIFly.",
     "settingsTitle": "Ajustes — idioma y tema | CanIFly",
-    "settingsDescription": "Elige idioma (ES/EN/PL) y tema claro, oscuro o del sistema en CanIFly."
+    "settingsDescription": "Elige idioma (ES/EN/PL/CS) y tema claro, oscuro o del sistema en CanIFly."
   },
   "nav": {
     "map": "Mapa",
@@ -37,12 +37,13 @@
     "themeToggle": "Tema · {mode}",
     "themeSystem": "Sistema",
     "themeLight": "Claro",
-    "themeDark": "Oscuro"
+    "themeDark": "Oscuro",
+    "langCs": "CS"
   },
   "search": {
     "title": "Buscar ubicación",
     "placeholder": "Ciudad, pueblo o código postal…",
-    "hint": "Escribe al menos 2 caracteres. Primero aparecen resultados de España y Polonia.",
+    "hint": "Escribe al menos 2 caracteres. Los resultados de España, Chequia y Polonia aparecen primero.",
     "searching": "Buscando…",
     "empty": "No se encontraron lugares",
     "error": "La búsqueda falló. Inténtalo de nuevo.",
@@ -175,6 +176,9 @@
     "sourceAero": "Aero",
     "sourceUrbano": "Urbano",
     "sourceInfra": "Infra",
+    "sourceServais": "servAIS",
+    "sourcePansa": "PANSA",
+    "sourceAnscr": "ANS CR",
     "offline": "sin conexión"
   },
   "status": {
@@ -271,7 +275,8 @@
     "countryLabel": "País",
     "countryNames": {
       "ES": "España",
-      "PL": "Polonia"
+      "PL": "Polonia",
+      "CZ": "Chequia"
     },
     "backToMap": "← Volver al mapa",
     "byCountry": {
@@ -352,6 +357,45 @@
             "a": "No. Verifica siempre con PANSA DroneMap / ULC (y DroneTower cuando proceda) antes de volar. Las reglas y la actividad de las zonas cambian; esta app es una ayuda de planificación, no una autorización legal."
           }
         }
+      },
+      "CZ": {
+        "title": "FAQ drones en Chequia",
+        "intro": "Respuestas rápidas sobre etiquetas de estado, registro CAA, DroneMap de ANS CR y fuentes de datos para volar un dron en Chequia.",
+        "ctaGuide": "Lee la guía completa de vuelo en Chequia",
+        "items": {
+          "status": {
+            "q": "¿Qué significan Libre, Limitado, Restringido y Prohibido?",
+            "a": "Libre: ninguna zona UAS bloquea tu perfil a esa altura. Limitado: hay condiciones o restricciones más suaves. Restringido: suele hacer falta coordinación o autorización previa. Prohibido: no está permitido con el perfil de categoría abierta mostrado."
+          },
+          "auth": {
+            "q": "¿Restringido significa que estoy registrado en la CAA?",
+            "a": "No. Significa que esa zona puede exigir autorización o coordinación con el gestor. Por separado, en Chequia suele exigirse registro de operador UAS y competencia de categoría abierta — consulta las normas de la CAA."
+          },
+          "openCategory": {
+            "q": "¿CanIFly cubre solo la categoría abierta?",
+            "a": "Sí para el estado del mapa. Los perfiles son C0–C2 con techo AGL (120 m por defecto). Categoría específica, BVLOS y U-space quedan fuera de alcance."
+          },
+          "where": {
+            "q": "¿Dónde puedo volar legalmente un dron en Chequia?",
+            "a": "Depende del lugar, la altura, la clase del dron y las zonas geográficas UAS activas (medidas LKR / OOP). Comprueba cada punto en DroneMap de ANS CR y CanIFly, y sigue las normas CAA / categoría abierta."
+          },
+          "prague": {
+            "q": "¿Puedo volar en Praga?",
+            "a": "Gran parte del área metropolitana está afectada por CTR/ATZ, zonas densamente pobladas y otras capas LKR. Usa el mapa CanIFly, toca el punto de despegue y mira el estado. Si sale Restringido o Prohibido, consulta DroneMap / CAA antes de volar."
+          },
+          "data": {
+            "q": "¿De dónde salen los datos de espacio aéreo?",
+            "a": "En Chequia, las zonas UAS vienen de ANS CR aimgis (ArcGIS en vivo, misma familia que DroneMap). En España, de ENAIRE servAIS; en Polonia, de PANSA DroneMap. El tráfico aéreo viene de ADS-B comunitario / OpenSky. Los modelos de dron, de OpenDroneList."
+          },
+          "track": {
+            "q": "¿Qué son las trazas de aeronaves en el mapa?",
+            "a": "Tráfico ADS-B de feeds comunitarios / OpenSky. Útil para concienciación, no sustituye see-and-avoid ni servicios oficiales de tráfico."
+          },
+          "official": {
+            "q": "¿CanIFly es un producto oficial de ANS CR o de la CAA?",
+            "a": "No. Verifica siempre con DroneMap de ANS CR / CAA antes de volar. Las normas cambian; esta app es una ayuda de planificación, no una autorización legal. Las zonas se consultan en vivo desde ANS CR — los límites vinculantes y avisos se publican en AIM / DroneMap."
+          }
+        }
       }
     }
   },
@@ -359,7 +403,8 @@
     "countryLabel": "País",
     "countryNames": {
       "ES": "España",
-      "PL": "Polonia"
+      "PL": "Polonia",
+      "CZ": "Chequia"
     },
     "ctaMap": "Abrir el mapa CanIFly",
     "ctaFaq": "Ver FAQ",
@@ -426,6 +471,37 @@
             "body": "CanIFly es una herramienta de planificación. No es PANSA ni ULC. Antes de volar, confirma reglas, avisos y autorizaciones en canales oficiales (incluido DroneTower cuando proceda). Tú eres responsable de la operación."
           }
         }
+      },
+      "CZ": {
+        "eyebrow": "Guía Chequia",
+        "title": "Cómo saber si puedes volar tu dron en Chequia",
+        "intro": "CanIFly resume el estado del espacio aéreo UAS en un mapa: toca un punto, elige clase y techo, y verás Libre, Limitado, Restringido o Prohibido. Esta guía explica el contexto para pilotos de categoría abierta en Chequia.",
+        "sections": {
+          "how": {
+            "title": "1. Toca el mapa",
+            "body": "Abre CanIFly, centra el mapa en tu ubicación (o busca una ciudad) y toca el punto de despegue. El estado combina zonas UAS de ANS CR con tu clase (C0–C2) y techo AGL. Si no es Libre, no asumas que puedes despegar: lee el detalle y las fuentes oficiales."
+          },
+          "anscr": {
+            "title": "2. ANS CR y zonas UAS",
+            "body": "ANS CR publica zonas geográficas UAS (LKR / OOP). CanIFly las consulta en vivo desde ANS CR aimgis para planificación en categoría abierta, pero la fuente operativa sigue siendo DroneMap / CAA. Los datos se actualizan en ciclos AIRAC."
+          },
+          "caa": {
+            "title": "3. Registro CAA y categoría abierta",
+            "body": "Además del espacio aéreo, en Chequia suele exigirse registro de operador UAS y competencia. La categoría abierta UE tiene subcategorías y límites. CanIFly no sustituye ese marco legal."
+          },
+          "cities": {
+            "title": "4. Ciudades y aeropuertos",
+            "body": "Praga, Brno, Ostrava y otras ciudades suelen estar bajo CTR/ATZ, capas densamente pobladas e infraestructura. En zonas rurales también hay ferrocarriles, carreteras, naturaleza o defensa. Toca siempre el punto exacto."
+          },
+          "community": {
+            "title": "5. Pines de la comunidad",
+            "body": "Los pilotos pueden marcar obstáculos y spots recomendados. Son consejos comunitarios con votos: útiles, no oficiales. Cruza siempre con ANS CR / CAA."
+          },
+          "disclaimer": {
+            "title": "6. Aviso",
+            "body": "CanIFly es una herramienta de planificación. No es ANS CR ni la CAA. Antes de volar, confirma normas y autorizaciones en canales oficiales. Tú eres responsable de la operación."
+          }
+        }
       }
     }
   },
@@ -439,7 +515,7 @@
     "storeOptionalLabel": "Opcional:",
     "storeOptional": "no cargamos cookies publicitarias ni de marketing de terceros. Si más adelante añadimos analítica anónima del producto, solo se ejecutará tras pulsar «Aceptar todas».",
     "thirdTitle": "Peticiones a terceros",
-    "thirdBody": "La app llama a ENAIRE servAIS y PANSA DroneMap (espacio aéreo), OpenSky / ADS-B comunitario (tráfico), Open-Meteo (tiempo) y OpenDroneList (catálogo de drones). Esos servicios reciben los datos técnicos necesarios para la petición (p. ej. coordenadas del mapa). Consulta sus propias políticas de privacidad.",
+    "thirdBody": "La app consulta ENAIRE servAIS (España), PANSA DroneMap (Polonia), ANS CR aimgis (Chequia), OpenSky / ADS-B comunitario (tráfico), Open-Meteo (tiempo) y OpenDroneList (catálogo de drones). Esos servicios reciben los datos técnicos necesarios para la petición (p. ej. coordenadas). Consulta sus políticas de privacidad.",
     "choicesTitle": "Tus opciones",
     "choicesBodyBefore": "Usa ",
     "choicesReject": "Rechazar no esenciales",
@@ -453,7 +529,8 @@
     "countryLabel": "País",
     "countryNames": {
       "ES": "España",
-      "PL": "Polonia"
+      "PL": "Polonia",
+      "CZ": "Chequia"
     },
     "backToMap": "← Volver al mapa",
     "byCountry": {
@@ -500,6 +577,28 @@
             "detail": "Coordinación de vuelos y consultas PansaUTM — drony@pansa.pl"
           }
         }
+      },
+      "CZ": {
+        "title": "Contactos — Chequia",
+        "intro": "Canales oficiales de coordinación, registro y zonas UAS en Chequia. Los contactos de zona también pueden aparecer en la barra lateral al tocar un punto.",
+        "items": {
+          "dronemap": {
+            "title": "DroneMap (ANS CR)",
+            "detail": "Mapa digital oficial de zonas geográficas UAS y planificación previa al vuelo en Chequia."
+          },
+          "aim": {
+            "title": "AIM — descargas de zonas UAS",
+            "detail": "Consultas en vivo de zonas UAS vía ANS CR aimgis (ArcGIS)"
+          },
+          "caa": {
+            "title": "CAA — aeronaves no tripuladas",
+            "detail": "Páginas de la autoridad civil sobre registro, categoría abierta y zonas geográficas (OOP / LKR)."
+          },
+          "ans": {
+            "title": "ANS CR",
+            "detail": "Servicios de navegación aérea de Chequia — información aeronáutica y herramientas de mapa UAS."
+          }
+        }
       }
     }
   },
@@ -516,6 +615,7 @@
     "langPl": "Polski",
     "themeTitle": "Tema",
     "themeHint": "Sistema sigue el ajuste del dispositivo. Claro y oscuro fijan el aspecto.",
-    "backToMap": "← Volver al mapa"
+    "backToMap": "← Volver al mapa",
+    "langCs": "Čeština"
   }
 }

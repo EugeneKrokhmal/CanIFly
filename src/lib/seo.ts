@@ -39,6 +39,7 @@ const OG_LOCALE: Record<AppLocale, string> = {
   es: "es_ES",
   en: "en_GB",
   pl: "pl_PL",
+  cs: "cs_CZ",
 };
 
 const KEYWORDS: Record<AppLocale, string[]> = {
@@ -52,14 +53,18 @@ const KEYWORDS: Record<AppLocale, string[]> = {
     "CanIFly",
     "mapa drones España",
     "dron Polonia",
+    "dron Chequia",
+    "ANS CR",
     "categoría abierta C0 C1 C2",
   ],
   en: [
     "drone Spain",
     "drone Poland",
+    "drone Czechia",
     "UAS airspace",
     "ENAIRE drones",
     "PANSA DroneMap",
+    "ANS CR DroneMap",
     "AESA UAS",
     "can I fly drone",
     "UAS geographical zones",
@@ -68,14 +73,29 @@ const KEYWORDS: Record<AppLocale, string[]> = {
   ],
   pl: [
     "dron Polska",
+    "dron Czechy",
     "przestrzeń powietrzna UAS",
     "PANSA DroneMap",
+    "ANS CR",
     "ULC drony",
     "czy mogę latać dronem",
     "strefy UAS",
     "CanIFly",
     "mapa dronów Polska",
     "kategoria otwarta C0 C1 C2",
+  ],
+  cs: [
+    "dron Česko",
+    "vzdušný prostor UAS",
+    "ANS CR DroneMap",
+    "ÚCL drony",
+    "můžu létat s dronem",
+    "zóny UAS",
+    "CanIFly",
+    "mapa dronů Česko",
+    "otevřená kategorie C0 C1 C2",
+    "dron Španělsko",
+    "dron Polsko",
   ],
 };
 

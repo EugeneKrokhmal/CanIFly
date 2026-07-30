@@ -21,6 +21,7 @@ All three packages share the same semver for a coordinated release (`package.jso
 
 | Version | Tag | Coverage | Notes |
 |---------|-----|----------|--------|
+| `0.3.0` | `v0.3.0` | Spain + Poland + **Czechia** | ANS CR live aimgis ArcGIS (like PL PANSA / ES servAIS) |
 | `0.2.2` | `v0.2.2` | Spain + Poland | Status tap race fix; liberty basemap; PANSA health flag |
 | `0.2.1` | `v0.2.1` | Spain + Poland | Top pilots stack; Poland contacts; local DB SSL fix |
 | `0.2.0` | `v0.2.0` | Spain + **Poland** | PANSA live API; set `PANSA_API_KEY` on Render |
@@ -37,18 +38,17 @@ Changelog: each repo has `CHANGELOG.md`. Bump the three versions together when c
 
 **Before Poland works in prod:** add `PANSA_API_KEY` on the Render API service and redeploy.
 
-### Coverage roadmap (investigation only — not in this release)
+**Czechia in prod:** no ingest step — the API queries ANS CR **aimgis.rlp.cz** live (same pattern as PANSA for Poland).
 
-| Country | Source candidate | Status |
-|---------|------------------|--------|
-| ES | ENAIRE servAIS / PostGIS | **Live** |
+### Coverage roadmap
+
+| Country | Source | Status |
+|---------|--------|--------|
+| ES | ENAIRE servAIS / PostGIS fallback | **Live** |
 | PL | PANSA DroneMap API | **Live** (0.2.0) |
-| NL | PDOK LVNL drone no-fly WMS/WFS | **Retired** (out of production 2026-07-01); look at GoDrone / rijksoverheid |
+| CZ | ANS CR aimgis (ArcGIS) | **Live** (0.3.0) |
 | DE | dipul / DFS WMS or open data | Investigate |
-| CZ | ED-318 style / ANS CR | Investigate |
-| FR | DSAC / Géoportail drone | Investigate |
-
-Next country ships only after a durable public (or licensed) feed + accuracy audit — same bar as Poland.
+| FR | DSAC / SIA ED-269 | Investigate |
 
 ---
 

@@ -43,7 +43,7 @@ interface DroneProfileState {
   statusError: string | null;
   queryMs: number | null;
   dataVersion: string | null;
-  backend: "servais" | "postgis" | "memory" | "pansa" | "multi" | null;
+  backend: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "multi" | null;
   highlightedZoneId: string | null;
   setWeightClass: (v: WeightClass) => void;
   setMaxAltitudeAgl: (v: number) => void;
@@ -62,7 +62,7 @@ interface DroneProfileState {
     zones: MatchedZone[];
     queryMs: number | null;
     dataVersion: string | null;
-    backend: "servais" | "postgis" | "memory" | "pansa" | "multi" | null;
+    backend: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "multi" | null;
   }) => void;
   setStatusLoading: (v: boolean) => void;
   setStatusError: (v: string | null) => void;

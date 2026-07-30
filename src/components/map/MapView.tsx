@@ -26,6 +26,8 @@ import { useObstaclesStore } from "@/stores/obstacles";
 import { useZoneLayers } from "@/hooks/useZoneLayers";
 import { useObstacles } from "@/hooks/useObstacles";
 import { useAircraftTraffic } from "@/hooks/useAircraftTraffic";
+import { zoneFeatureSignature } from "@/lib/map/viewport";
+import { zoneOutlineColorExpression } from "@/lib/map/zone-style";
 
 const SOURCE_ID = "uas-zones";
 const FILL_LAYER = "uas-zones-fill";
@@ -229,6 +231,8 @@ export function MapView({ className }: MapViewProps) {
 
   const [trafficOn, setTrafficOn] = useState(true);
   const [mapZoom, setMapZoom] = useState(DEFAULT_ZOOM);
+  const mapZoomRef = useRef(DEFAULT_ZOOM);
+  const lastZoneSigRef = useRef("");
   const [trackLabel, setTrackLabel] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
 
@@ -375,6 +379,10 @@ export function MapView({ className }: MapViewProps) {
       style: styleUrl,
       center: SPAIN_CENTER,
       zoom: DEFAULT_ZOOM,
+      minZoom: 5,
+      maxZoom: 18,
+      renderWorldCopies: false,
+      fadeDuration: 0,
     });
 
     map.addControl(
@@ -423,9 +431,9 @@ export function MapView({ className }: MapViewProps) {
         type: "line",
         source: SOURCE_ID,
         paint: {
-          "line-color": ENAIRE_ZONE_STYLE.outline,
-          "line-width": ENAIRE_ZONE_STYLE.outlineWidth,
-          "line-opacity": ENAIRE_ZONE_STYLE.outlineOpacity,
+          "line-color": zoneOutlineColorExpression(),
+          "line-width": 1.15,
+          "line-opacity": 0.75,
         },
       });
       map.addLayer({
@@ -636,14 +644,16 @@ export function MapView({ className }: MapViewProps) {
       const pushViewport = () => {
         const bounds = map.getBounds();
         const zoom = map.getZoom();
-        setMapZoom(zoom);
+        const prevFloor = Math.floor(mapZoomRef.current);
+        mapZoomRef.current = zoom;
+        if (prevFloor !== Math.floor(zoom)) setMapZoom(zoom);
         const bbox = {
           west: bounds.getWest(),
           south: bounds.getSouth(),
           east: bounds.getEast(),
           north: bounds.getNorth(),
         };
-        void loadBboxRef.current(bbox);
+        void loadBboxRef.current(bbox, zoom);
         void loadObstaclesBboxRef.current(bbox);
         setViewportRef.current(bbox, zoom);
       };
@@ -656,14 +666,16 @@ export function MapView({ className }: MapViewProps) {
     map.on("moveend", () => {
       const bounds = map.getBounds();
       const zoom = map.getZoom();
-      setMapZoom(zoom);
+      const prevFloor = Math.floor(mapZoomRef.current);
+      mapZoomRef.current = zoom;
+      if (prevFloor !== Math.floor(zoom)) setMapZoom(zoom);
       const bbox = {
         west: bounds.getWest(),
         south: bounds.getSouth(),
         east: bounds.getEast(),
         north: bounds.getNorth(),
       };
-      void loadBboxRef.current(bbox);
+      void loadBboxRef.current(bbox, zoom);
       void loadObstaclesBboxRef.current(bbox);
       setViewportRef.current(bbox, zoom);
     });
@@ -1006,19 +1018,11 @@ export function MapView({ className }: MapViewProps) {
     const source = map.getSource(SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
     if (!source) return;
 
-    // Dedupe stacked identical identifiers (infra often repeats).
-    const seen = new Set<string>();
-    const features = collection.features.filter((f) => {
-      const id = String(
-        (f.properties as { identifier?: string } | null)?.identifier ?? "",
-      );
-      if (!id) return true;
-      if (seen.has(id)) return false;
-      seen.add(id);
-      return true;
-    });
+    const sig = zoneFeatureSignature(collection.features);
+    if (sig === lastZoneSigRef.current) return;
+    lastZoneSigRef.current = sig;
 
-    source.setData({ type: "FeatureCollection", features });
+    source.setData(collection);
   }, [mapReady, collection]);
 
   useEffect(() => {
@@ -1047,19 +1051,10 @@ export function MapView({ className }: MapViewProps) {
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-    const source = map.getSource(WAKE_SOURCE) as
-      | maplibregl.GeoJSONSource
-      | undefined;
-    if (source) source.setData(pastPaths);
-  }, [pastPaths]);
-
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map) return;
     const source = map.getSource(FUTURE_SOURCE) as
       | maplibregl.GeoJSONSource
       | undefined;
-    if (source) source.setData(futurePaths);
+    if (source && futurePaths.features.length > 0) source.setData(futurePaths);
   }, [futurePaths]);
 
   useEffect(() => {

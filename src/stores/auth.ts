@@ -47,7 +47,9 @@ type AuthState = {
 };
 
 function parseServerLocale(value: unknown): AppLocale | null {
-  return value === "en" || value === "es" || value === "pl" ? value : null;
+  return value === "en" || value === "es" || value === "pl" || value === "cs"
+    ? value
+    : null;
 }
 
 function normalizeLocale(value: unknown, fallback: AppLocale = "es"): AppLocale {

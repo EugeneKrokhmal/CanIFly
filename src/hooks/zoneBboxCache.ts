@@ -10,8 +10,11 @@ type BboxEntry = {
   expiresAt: number;
 };
 
+type FeatureBounds = { west: number; south: number; east: number; north: number };
+
 const bboxCache = new Map<string, BboxEntry>();
 const featuresById = new Map<string, GeoJSON.Feature>();
+const boundsById = new Map<string, FeatureBounds>();
 const featureOrder: string[] = [];
 
 function roundCoord(n: number): string {
@@ -32,9 +35,7 @@ function featureKey(f: GeoJSON.Feature): string | null {
   return `${p.country ?? ""}:${p.identifier}`;
 }
 
-function geometryBounds(
-  geometry: GeoJSON.Geometry,
-): { west: number; south: number; east: number; north: number } | null {
+function geometryBounds(geometry: GeoJSON.Geometry): FeatureBounds | null {
   const coords: number[][] = [];
 
   const walk = (g: GeoJSON.Geometry) => {
@@ -80,13 +81,6 @@ function geometryBounds(
   return { west, south, east, north };
 }
 
-function featureBounds(
-  f: GeoJSON.Feature,
-): { west: number; south: number; east: number; north: number } | null {
-  if (!f.geometry) return null;
-  return geometryBounds(f.geometry);
-}
-
 function expandBbox(bbox: Bbox, pad = VIEWPORT_PAD): Bbox {
   const w = bbox.east - bbox.west;
   const h = bbox.north - bbox.south;
@@ -98,17 +92,22 @@ function expandBbox(bbox: Bbox, pad = VIEWPORT_PAD): Bbox {
   };
 }
 
-function bboxesOverlap(
-  a: { west: number; south: number; east: number; north: number },
-  b: Bbox,
-): boolean {
-  return a.west <= b.east && a.east >= b.west && a.south <= b.north && a.north >= b.south;
+function bboxesOverlap(a: FeatureBounds, b: Bbox): boolean {
+  return (
+    a.west <= b.east &&
+    a.east >= b.west &&
+    a.south <= b.north &&
+    a.north >= b.south
+  );
 }
 
 function trimFeatureStore(): void {
   while (featuresById.size > MAX_FEATURES && featureOrder.length > 0) {
     const oldest = featureOrder.shift();
-    if (oldest) featuresById.delete(oldest);
+    if (oldest) {
+      featuresById.delete(oldest);
+      boundsById.delete(oldest);
+    }
   }
 }
 
@@ -118,21 +117,27 @@ export function mergeZoneFeatures(features: GeoJSON.Feature[]): void {
     if (!key) continue;
     if (!featuresById.has(key)) featureOrder.push(key);
     featuresById.set(key, f);
+    if (f.geometry) {
+      const bounds = geometryBounds(f.geometry);
+      if (bounds) boundsById.set(key, bounds);
+    }
   }
   trimFeatureStore();
 }
 
 export function zonesForViewport(bbox: Bbox): GeoJSON.FeatureCollection {
   const view = expandBbox(bbox);
-  const features = [...featuresById.values()].filter((f) => {
-    const bounds = featureBounds(f);
-    return bounds ? bboxesOverlap(bounds, view) : false;
-  });
+  const features: GeoJSON.Feature[] = [];
+  for (const [key, f] of featuresById) {
+    const bounds = boundsById.get(key);
+    if (bounds && bboxesOverlap(bounds, view)) features.push(f);
+  }
   return { type: "FeatureCollection", features };
 }
 
 export function clearZoneFeatureStore(): void {
   featuresById.clear();
+  boundsById.clear();
   featureOrder.length = 0;
   bboxCache.clear();
 }

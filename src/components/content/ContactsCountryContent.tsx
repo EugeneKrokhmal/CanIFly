@@ -56,6 +56,28 @@ const CONTACT_LINKS: Record<ContentCountryId, readonly ContactLink[]> = {
       label: "pansa.pl",
     },
   ],
+  CZ: [
+    {
+      key: "dronemap",
+      href: "https://dronemap.gov.cz/",
+      label: "dronemap.gov.cz",
+    },
+    {
+      key: "aim",
+      href: "https://aim.rlp.cz/?lang=en&p=uas-gz",
+      label: "aim.rlp.cz",
+    },
+    {
+      key: "caa",
+      href: "https://www.caa.gov.cz/provoz/bezpilotni-letadla/",
+      label: "caa.gov.cz",
+    },
+    {
+      key: "ans",
+      href: "https://www.rlp.cz/",
+      label: "rlp.cz",
+    },
+  ],
 };
 
 export function ContactsCountryContent() {
@@ -81,6 +103,7 @@ export function ContactsCountryContent() {
         label={t("countryLabel")}
         names={{
           ES: t("countryNames.ES"),
+          CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}
       />
