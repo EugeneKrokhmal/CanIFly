@@ -86,7 +86,10 @@
     "sendResetLink": "Envoyer le lien de réinitialisation",
     "resetEmailSent": "Si un compte existe pour {email}, nous avons envoyé un lien de réinitialisation. Consultez votre boîte de réception.",
     "backToLogin": "Retour à la connexion",
-    "rememberPassword": "Vous vous souvenez de votre mot de passe ?"
+    "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+    "continueWithGoogle": "Continuer avec Google",
+    "orContinueWith": "ou",
+    "googleSignInFailed": "Connexion Google impossible. Réessayez ou utilisez l’e-mail."
   },
   "usageBanner": {
     "message": "Vous avez consulté {count} lieux. Créez un compte gratuit pour enregistrer vos spots et signaler sur la carte.",

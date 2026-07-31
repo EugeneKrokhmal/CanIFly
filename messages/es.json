@@ -86,7 +86,10 @@
     "sendResetLink": "Enviar enlace",
     "resetEmailSent": "Si existe una cuenta para {email}, hemos enviado un enlace para restablecer la contraseña. Revisa tu bandeja de entrada.",
     "backToLogin": "Volver a entrar",
-    "rememberPassword": "¿Recuerdas la contraseña?"
+    "rememberPassword": "¿Recuerdas la contraseña?",
+    "continueWithGoogle": "Continuar con Google",
+    "orContinueWith": "o",
+    "googleSignInFailed": "No se pudo iniciar sesión con Google. Inténtalo de nuevo o usa el email."
   },
   "usageBanner": {
     "message": "Has consultado {count} lugares. Crea una cuenta gratis para guardar sitios y reportar en el mapa.",

@@ -86,7 +86,10 @@
     "sendResetLink": "Send reset link",
     "resetEmailSent": "If an account exists for {email}, we sent a password reset link. Check your inbox.",
     "backToLogin": "Back to log in",
-    "rememberPassword": "Remember your password?"
+    "rememberPassword": "Remember your password?",
+    "continueWithGoogle": "Continue with Google",
+    "orContinueWith": "or",
+    "googleSignInFailed": "Google sign-in failed. Try again or use email."
   },
   "usageBanner": {
     "message": "You've checked {count} locations. Create a free account to save your spots and report on the map.",

@@ -86,7 +86,10 @@
     "sendResetLink": "Odeslat odkaz",
     "resetEmailSent": "Pokud účet pro {email} existuje, poslali jsme odkaz pro obnovení hesla.",
     "backToLogin": "Zpět k přihlášení",
-    "rememberPassword": "Vzpomínáte si na heslo?"
+    "rememberPassword": "Vzpomínáte si na heslo?",
+    "continueWithGoogle": "Pokračovat přes Google",
+    "orContinueWith": "nebo",
+    "googleSignInFailed": "Přihlášení přes Google se nezdařilo. Zkuste to znovu nebo použijte e-mail."
   },
   "usageBanner": {
     "message": "You've checked {count} locations. Create a free account to save your spots and report on the map.",

@@ -9,7 +9,9 @@ export function AuthModal() {
   const locale = useLocale() as AppLocale;
   const open = useAuthStore((s) => s.authModalOpen);
   const mode = useAuthStore((s) => s.authModalMode);
+  const authNotice = useAuthStore((s) => s.authNotice);
   const setAuthModalOpen = useAuthStore((s) => s.setAuthModalOpen);
+  const setAuthNotice = useAuthStore((s) => s.setAuthNotice);
   const login = useAuthStore((s) => s.login);
   const register = useAuthStore((s) => s.register);
   const resendVerification = useAuthStore((s) => s.resendVerification);
@@ -26,6 +28,26 @@ export function AuthModal() {
   const [resending, setResending] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [googleEnabled, setGoogleEnabled] = useState(false);
+
+  useEffect(() => {
+    if (!open || mode === "forgot") {
+      setGoogleEnabled(false);
+      return;
+    }
+    let cancelled = false;
+    fetch("/api/auth/google/enabled", { credentials: "include" })
+      .then((res) => res.json())
+      .then((data: { enabled?: boolean }) => {
+        if (!cancelled) setGoogleEnabled(Boolean(data.enabled));
+      })
+      .catch(() => {
+        if (!cancelled) setGoogleEnabled(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, mode]);
 
   useEffect(() => {
     if (open) {
@@ -46,6 +68,7 @@ export function AuthModal() {
     setOperatorNumber("");
     setError(null);
     setInfo(null);
+    setAuthNotice(null);
     setSubmitting(false);
     setResending(false);
   }, [open, mode]);
@@ -112,6 +135,8 @@ export function AuthModal() {
       : mode === "forgot"
         ? t("forgotBlurb")
         : t("loginBlurb");
+  const googleHref = `/api/auth/google?locale=${encodeURIComponent(locale)}&returnTo=${encodeURIComponent(`/${locale}`)}`;
+  const showGoogle = googleEnabled && mode !== "forgot" && !showVerifyPrompt;
 
   return (
     <div
@@ -197,6 +222,42 @@ export function AuthModal() {
         ) : null}
 
         {!showForgotSuccess ? (
+        <>
+        {showGoogle ? (
+          <>
+            <a
+              href={googleHref}
+              className="as-press mb-4 flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--as-line)] bg-[var(--as-surface)] px-4 py-2.5 text-[14px] font-semibold text-[var(--as-ink)] hover:bg-[var(--as-surface-muted)]"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 4.75c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 1.09 14.97 0 12 0 7.7 0 3.99 2.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                />
+              </svg>
+              {t("continueWithGoogle")}
+            </a>
+            <div className="mb-4 flex items-center gap-3">
+              <div className="h-px flex-1 bg-[var(--as-line)]" />
+              <span className="text-[12px] font-medium text-[var(--as-ink-soft)]">
+                {t("orContinueWith")}
+              </span>
+              <div className="h-px flex-1 bg-[var(--as-line)]" />
+            </div>
+          </>
+        ) : null}
         <form onSubmit={onSubmit} className="space-y-3">
           {mode === "register" && (
             <>
@@ -289,6 +350,12 @@ export function AuthModal() {
             </p>
           )}
 
+          {authNotice && !error && (
+            <p className="as-rise-soft rounded-xl bg-[var(--as-hover-warm)] px-3 py-2 text-[13px] text-[var(--as-prohibited)]">
+              {authNotice === "google" ? t("googleSignInFailed") : authNotice}
+            </p>
+          )}
+
           <button
             type="submit"
             disabled={submitting}
@@ -303,6 +370,7 @@ export function AuthModal() {
                   : t("logIn")}
           </button>
         </form>
+        </>
         ) : null}
 
         {!showForgotSuccess ? (

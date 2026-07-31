@@ -10,6 +10,7 @@ import { MobileFlightSheet } from "@/components/layout/MobileFlightSheet";
 import { TopPilotsStack } from "@/components/map/TopPilotsStack";
 import { useAirspaceStatus } from "@/hooks/useAirspaceStatus";
 import { useDroneProfileStore } from "@/stores/drone-profile";
+import { useAuthStore } from "@/stores/auth";
 
 function MapLoading() {
   const t = useTranslations("map");
@@ -66,11 +67,33 @@ function MapDeepLink() {
   return null;
 }
 
+function AuthReturnHandler() {
+  const searchParams = useSearchParams();
+  const fetchMe = useAuthStore((s) => s.fetchMe);
+  const setAuthModalOpen = useAuthStore((s) => s.setAuthModalOpen);
+  const setAuthNotice = useAuthStore((s) => s.setAuthNotice);
+
+  useEffect(() => {
+    const auth = searchParams.get("auth");
+    const authError = searchParams.get("auth_error");
+    if (auth === "google") {
+      void fetchMe();
+      setAuthModalOpen(false);
+    } else if (authError === "google") {
+      setAuthNotice("google");
+      setAuthModalOpen(true, "login");
+    }
+  }, [searchParams, fetchMe, setAuthModalOpen, setAuthNotice]);
+
+  return null;
+}
+
 export default function HomePageClient() {
   return (
     <div className="relative flex h-full w-full overflow-hidden">
       <AirspaceStatusBinder />
       <MapDeepLink />
+      <AuthReturnHandler />
 
       <div className="hidden h-full w-80 shrink-0 flex-col overflow-hidden border-r border-[var(--as-line)] bg-[var(--as-surface)] shadow-[2px_0_12px_rgba(0,0,0,0.04)] md:flex">
         <SidebarPanel />

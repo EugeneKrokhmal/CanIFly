@@ -86,7 +86,10 @@
     "sendResetLink": "Link zum Zurücksetzen senden",
     "resetEmailSent": "Falls ein Konto für {email} existiert, haben wir einen Link zum Zurücksetzen des Passworts gesendet. Prüfen Sie Ihren Posteingang.",
     "backToLogin": "Zurück zur Anmeldung",
-    "rememberPassword": "Passwort wieder eingefallen?"
+    "rememberPassword": "Passwort wieder eingefallen?",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "orContinueWith": "oder",
+    "googleSignInFailed": "Google-Anmeldung fehlgeschlagen. Erneut versuchen oder E-Mail nutzen."
   },
   "usageBanner": {
     "message": "Sie haben {count} Orte geprüft. Erstellen Sie ein kostenloses Konto, um Ihre Spots zu speichern und auf der Karte zu melden.",

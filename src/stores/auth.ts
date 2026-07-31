@@ -23,6 +23,8 @@ type AuthState = {
   authModalOpen: boolean;
   authModalMode: "login" | "register" | "forgot";
   pendingVerifyEmail: string | null;
+  authNotice: string | null;
+  setAuthNotice: (message: string | null) => void;
   setAuthModalOpen: (
     open: boolean,
     mode?: "login" | "register" | "forgot",
@@ -84,12 +86,15 @@ export const useAuthStore = create<AuthState>((set) => ({
   authModalOpen: false,
   authModalMode: "login",
   pendingVerifyEmail: null,
+  authNotice: null,
+
+  setAuthNotice: (message) => set({ authNotice: message }),
 
   setAuthModalOpen: (open, mode) =>
     set((s) => ({
       authModalOpen: open,
       authModalMode: mode ?? s.authModalMode,
-      ...(open ? {} : { pendingVerifyEmail: null }),
+      ...(open ? {} : { pendingVerifyEmail: null, authNotice: null }),
     })),
 
   setUser: (user) =>

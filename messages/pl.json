@@ -86,7 +86,10 @@
     "sendResetLink": "Wyślij link resetujący",
     "resetEmailSent": "Jeśli konto dla {email} istnieje, wysłaliśmy link do resetu hasła. Sprawdź skrzynkę.",
     "backToLogin": "Wróć do logowania",
-    "rememberPassword": "Pamiętasz hasło?"
+    "rememberPassword": "Pamiętasz hasło?",
+    "continueWithGoogle": "Kontynuuj przez Google",
+    "orContinueWith": "lub",
+    "googleSignInFailed": "Logowanie przez Google nie powiodło się. Spróbuj ponownie lub użyj e-maila."
   },
   "usageBanner": {
     "message": "Sprawdziłeś {count} miejsc. Utwórz darmowe konto, aby zapisywać miejsca i zgłaszać na mapie.",

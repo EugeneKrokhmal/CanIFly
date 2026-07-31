@@ -213,6 +213,8 @@ RESEND_API_KEY=re_...
 MAIL_FROM=CanIFly <onboarding@resend.dev>
 CORS_ORIGIN=https://canifly.org
 APP_URL=https://canifly.org
+GOOGLE_CLIENT_ID=....apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-...
 NODE_ENV=production
 PORT=4000
 ```
