@@ -17,6 +17,8 @@ export function AuthModal() {
   const resendVerification = useAuthStore((s) => s.resendVerification);
   const requestPasswordReset = useAuthStore((s) => s.requestPasswordReset);
   const pendingVerifyEmail = useAuthStore((s) => s.pendingVerifyEmail);
+  const googleOAuthEnabled = useAuthStore((s) => s.googleOAuthEnabled);
+  const fetchGoogleOAuthEnabled = useAuthStore((s) => s.fetchGoogleOAuthEnabled);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,26 +30,12 @@ export function AuthModal() {
   const [resending, setResending] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [googleEnabled, setGoogleEnabled] = useState(false);
 
   useEffect(() => {
-    if (!open || mode === "forgot") {
-      setGoogleEnabled(false);
-      return;
+    if (open && googleOAuthEnabled === null) {
+      void fetchGoogleOAuthEnabled();
     }
-    let cancelled = false;
-    fetch("/api/auth/google/enabled", { credentials: "include" })
-      .then((res) => res.json())
-      .then((data: { enabled?: boolean }) => {
-        if (!cancelled) setGoogleEnabled(Boolean(data.enabled));
-      })
-      .catch(() => {
-        if (!cancelled) setGoogleEnabled(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [open, mode]);
+  }, [open, googleOAuthEnabled, fetchGoogleOAuthEnabled]);
 
   useEffect(() => {
     if (open) {
@@ -136,7 +124,9 @@ export function AuthModal() {
         ? t("forgotBlurb")
         : t("loginBlurb");
   const googleHref = `/api/auth/google?locale=${encodeURIComponent(locale)}&returnTo=${encodeURIComponent(`/${locale}`)}`;
-  const showGoogle = googleEnabled && mode !== "forgot" && !showVerifyPrompt;
+  const showGoogleBlock = mode !== "forgot" && !showVerifyPrompt;
+  const showGoogle = showGoogleBlock && googleOAuthEnabled === true;
+  const showGoogleSkeleton = showGoogleBlock && googleOAuthEnabled === null;
 
   return (
     <div
@@ -223,6 +213,21 @@ export function AuthModal() {
 
         {!showForgotSuccess ? (
         <>
+        {showGoogleSkeleton ? (
+          <>
+            <div
+              className="mb-4 h-[46px] w-full animate-pulse rounded-xl border border-[var(--as-line)] bg-[var(--as-surface-muted)]"
+              aria-hidden
+            />
+            <div className="mb-4 flex items-center gap-3" aria-hidden>
+              <div className="h-px flex-1 bg-[var(--as-line)]" />
+              <span className="text-[12px] font-medium text-[var(--as-ink-soft)]">
+                {t("orContinueWith")}
+              </span>
+              <div className="h-px flex-1 bg-[var(--as-line)]" />
+            </div>
+          </>
+        ) : null}
         {showGoogle ? (
           <>
             <a

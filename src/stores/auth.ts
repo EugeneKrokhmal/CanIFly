@@ -24,6 +24,8 @@ type AuthState = {
   authModalMode: "login" | "register" | "forgot";
   pendingVerifyEmail: string | null;
   authNotice: string | null;
+  /** null = not fetched yet; set on app boot so the login modal can show Google immediately. */
+  googleOAuthEnabled: boolean | null;
   setAuthNotice: (message: string | null) => void;
   setAuthModalOpen: (
     open: boolean,
@@ -31,6 +33,7 @@ type AuthState = {
   ) => void;
   setUser: (user: AuthUser | null) => void;
   fetchMe: () => Promise<void>;
+  fetchGoogleOAuthEnabled: () => Promise<void>;
   login: (
     email: string,
     password: string,
@@ -87,6 +90,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   authModalMode: "login",
   pendingVerifyEmail: null,
   authNotice: null,
+  googleOAuthEnabled: null,
 
   setAuthNotice: (message) => set({ authNotice: message }),
 
@@ -131,6 +135,19 @@ export const useAuthStore = create<AuthState>((set) => ({
       }));
     } catch {
       set({ user: null, serverLocale: null, loading: false });
+    }
+  },
+
+  fetchGoogleOAuthEnabled: async () => {
+    if (useAuthStore.getState().googleOAuthEnabled !== null) return;
+    try {
+      const res = await fetch("/api/auth/google/enabled", {
+        credentials: "include",
+      });
+      const data = (await res.json()) as { enabled?: boolean };
+      set({ googleOAuthEnabled: Boolean(data.enabled) });
+    } catch {
+      set({ googleOAuthEnabled: false });
     }
   },
 

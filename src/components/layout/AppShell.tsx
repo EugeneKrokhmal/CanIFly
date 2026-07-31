@@ -11,9 +11,11 @@ import { ThemeSync } from "@/stores/theme";
 
 function AuthBootstrap() {
   const fetchMe = useAuthStore((s) => s.fetchMe);
+  const fetchGoogleOAuthEnabled = useAuthStore((s) => s.fetchGoogleOAuthEnabled);
   useEffect(() => {
     void fetchMe();
-  }, [fetchMe]);
+    void fetchGoogleOAuthEnabled();
+  }, [fetchMe, fetchGoogleOAuthEnabled]);
   return null;
 }
 
