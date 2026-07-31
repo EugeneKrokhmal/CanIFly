@@ -89,6 +89,21 @@ curl -X POST "https://canifly-api.onrender.com/api/admin/ingest" \
 
 Verify: `GET /api/admin/ingest` (with the same secret) should show `count > 0` and `backend: "postgis"`.
 
+**Germany map zones (PostGIS):** map polygons load from PostGIS first (synced dipul WFS, excluding residential parcels). Tap status stays live dipul with PostGIS fallback. Sync every few hours (temporary restrictions):
+
+```bash
+# Local / one-off (tiled national crawl — several minutes)
+cd CanIFly-api && npm run sync:dipul
+
+# Production
+curl -X POST "https://canifly-api.onrender.com/api/admin/ingest" \
+  -H "Content-Type: application/json" \
+  -H "x-ingest-secret: $ENAIRE_INGEST_SECRET" \
+  -d '{"sources":["dipul"]}'
+```
+
+Cold Germany map loads become a single PostGIS query instead of ~30 live WFS round-trips.
+
 ---
 
 ## Architecture
