@@ -28,6 +28,7 @@ All three packages share the same semver for a coordinated release (`package.jso
 | — | — | + **Austria** | Austro Control ED-269 ZIP; no ingest step |
 | — | — | + **Sweden** | LFV Drönarkarta WFS (`daim.lfv.se`); viewport queries, no national cache |
 | — | — | + **Ireland** | IAA UAS GeoJSON (`iaa.ie`); scrape latest dated file, in-memory cache |
+| — | — | + **Latvia** | LGS/drz.lv ED-269 JSON; in-memory cache |
 | `0.2.2` | `v0.2.2` | Spain + Poland | Status tap race fix; liberty basemap; PANSA health flag |
 | `0.2.1` | `v0.2.1` | Spain + Poland | Top pilots stack; Poland contacts; local DB SSL fix |
 | `0.2.0` | `v0.2.0` | Spain + **Poland** | PANSA live API; set `PANSA_API_KEY` on Render |
@@ -70,6 +71,8 @@ Changelog: each repo has `CHANGELOG.md`. Bump the three versions together when c
 **Sweden in prod:** no ingest step — the API queries LFV Drönarkarta WFS layers live ([drone chart API](https://daim.lfv.se/echarts/dronechart/API/)). Attribution: LFV / CC BY-NC-ND 4.0.
 
 **Ireland in prod:** no ingest step — the API scrapes the latest IAA UAS GeoJSON from [iaa.ie UAS geographic zones](https://www.iaa.ie/general-aviation/drones/uas-geographic-zones) and caches it in memory.
+
+**Latvia in prod:** no ingest step — the API fetches the latest LGS ED-269 JSON from [drz.lv](https://drz.lv/) / [ais.lgs.lv UAS geozones](https://ais.lgs.lv/page/UAS_geozones) and caches it in memory.
 
 **Spain map zones (PostGIS):** map polygons load from PostGIS first (synced servAIS). Tap status stays live servAIS. Sync daily:
 

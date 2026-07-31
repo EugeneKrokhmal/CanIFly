@@ -234,6 +234,28 @@ function contactLinksFor(locale: string): Record<ContentCountryId, readonly Cont
       label: "iaa.ie",
     },
   ],
+  LV: [
+    {
+      key: "map",
+      href: "https://www.airspace.lv/drones/",
+      label: "airspace.lv/drones",
+    },
+    {
+      key: "zones",
+      href: "https://ais.lgs.lv/page/UAS_geozones",
+      label: "ais.lgs.lv — UAS geozones",
+    },
+    {
+      key: "lgs",
+      href: "https://www.lgs.lv/",
+      label: "lgs.lv",
+    },
+    {
+      key: "caa",
+      href: "https://www.caa.gov.lv/",
+      label: "caa.gov.lv",
+    },
+  ],
   CZ: [
     {
       key: "dronemap",
@@ -291,6 +313,7 @@ export function ContactsCountryContent() {
           AT: t("countryNames.AT"),
           SE: t("countryNames.SE"),
           IE: t("countryNames.IE"),
+          LV: t("countryNames.LV"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

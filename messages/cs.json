@@ -298,7 +298,8 @@
       "PT": "Portugalsko",
       "AT": "Rakousko",
       "SE": "Švédsko",
-      "IE": "Irsko"
+      "IE": "Irsko",
+      "LV": "Lotyšsko"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -738,6 +739,46 @@
             "a": "iaa.ie UAS geographic zones (map + GeoJSON), IAA drone pages, and AirNav Ireland for ATC contacts."
           }
         }
+      },
+      "LV": {
+        "title": "FAQ — Lotyšsko",
+        "intro": "Answers for flying in Latvia with CanIFly and LGS UAS geographical zones.",
+        "ctaGuide": "Read the Latvia flying guide",
+        "ctaContacts": "Contacts",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Latvia?",
+            "a": "CanIFly summarises LGS ED-269 UAS geographical zones for your class and ceiling. PROHIBITED and major ATZ / airport zones map to Prohibited or Restricted. Always confirm on airspace.lv / ais.lgs.lv before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation to fly?",
+            "a": "Many Latvian zones are REQ_AUTHORISATION — contact the listed zone authority. Use CAA Latvia / LGS guidance for the legal requirement."
+          },
+          "openCategory": {
+            "q": "Does CanIFly cover the open category?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter Latvian zones that intersect that envelope. Specific operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Latvia?",
+            "a": "Latvia as published in the LGS UAS geographical zone JSON dataset on ais.lgs.lv / drz.lv."
+          },
+          "riga": {
+            "q": "What about Riga / Liepāja / major cities?",
+            "a": "Cities often sit under ATZ, airport and temporary restriction zones. Tap the map for a live status; treat it as a planning aid, not a clearance."
+          },
+          "data": {
+            "q": "Where does the Latvian zone data come from?",
+            "a": "Official LGS ED-269 JSON exports (drz.lv). We fetch the latest package, cache it, and query locally — we do not replace LGS / CAA Latvia."
+          },
+          "track": {
+            "q": "Is CanIFly an official tracker?",
+            "a": "No. It is a planning aid. For official Latvian UAS geographical zones use airspace.lv and ais.lgs.lv."
+          },
+          "official": {
+            "q": "Which official sites should I use?",
+            "a": "airspace.lv/drones, ais.lgs.lv UAS geozones, lgs.lv, and caa.gov.lv."
+          }
+        }
       }
     }
   },
@@ -754,7 +795,8 @@
       "PT": "Portugalsko",
       "AT": "Rakousko",
       "SE": "Švédsko",
-      "IE": "Irsko"
+      "IE": "Irsko",
+      "LV": "Lotyšsko"
     },
     "ctaMap": "Open the CanIFly map",
     "ctaFaq": "See FAQ",
@@ -1100,6 +1142,37 @@
             "body": "CanIFly is a planning aid, not an official clearance. IAA data is reference-only; always consult current TRAs, NOTAMs and the published GeoJSON before flight."
           }
         }
+      },
+      "LV": {
+        "eyebrow": "Lotyšsko",
+        "title": "Létání s dronem v Lotyšsku",
+        "intro": "CanIFly summarises LGS UAS geographical zones on a map: tap a point, pick class and ceiling, and see Clear, Limited, Restricted or Prohibited. This guide explains the context for open-category pilots in Latvia.",
+        "sections": {
+          "how": {
+            "title": "1. Check the point on the map",
+            "body": "Open CanIFly, centre on your location and tap the takeoff point. Status combines LGS ED-269 zones with your class and AGL ceiling."
+          },
+          "airspace": {
+            "title": "2. airspace.lv map",
+            "body": "LGS publishes an interactive UAS geozone map on airspace.lv. CanIFly uses the same ED-269 JSON export; the map remains the visual reference."
+          },
+          "lgs": {
+            "title": "3. LGS and CAA Latvia",
+            "body": "Latvijas Gaisa Satiksme (LGS) publishes the digital UAS zone dataset; CAA Latvia sets the rules. Always cross-check registration and competence requirements before you fly."
+          },
+          "cities": {
+            "title": "4. Cities and airports",
+            "body": "Riga and other cities sit under layered ATZ / airport and temporary zones. Expect Restricted or Prohibited near airports."
+          },
+          "community": {
+            "title": "5. Community and local tips",
+            "body": "CanIFly shows nearby pilots and spots when available. Local clubs and zone authorities remain the best sources for day-of coordination."
+          },
+          "disclaimer": {
+            "title": "6. Disclaimer",
+            "body": "CanIFly is a planning aid, not an official clearance. LGS / CAA Latvia data and NOTAMs always prevail."
+          }
+        }
       }
     }
   },
@@ -1136,7 +1209,8 @@
       "PT": "Portugalsko",
       "AT": "Rakousko",
       "SE": "Švédsko",
-      "IE": "Irsko"
+      "IE": "Irsko",
+      "LV": "Lotyšsko"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -1356,6 +1430,16 @@
           "drones": "IAA — drones",
           "airnav": "AirNav Ireland",
           "mySRS": "Irish Aviation Authority"
+        }
+      },
+      "LV": {
+        "title": "Lotyšsko — oficiální kontakty",
+        "intro": "Official channels for coordination, registration, and UAS geographical zones in Latvia. Zone-specific contacts may also appear in the map sidebar when you tap a point.",
+        "links": {
+          "map": "airspace.lv — drones",
+          "zones": "LGS AIS — UAS geozones",
+          "lgs": "LGS",
+          "caa": "CAA Latvia"
         }
       }
     }

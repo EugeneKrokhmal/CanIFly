@@ -86,6 +86,7 @@ export async function searchLocations(
     code === "AT" ||
     code === "SE" ||
     code === "IE" ||
+    code === "LV" ||
     code === "CZ" ||
     code === "PL"
       ? 0

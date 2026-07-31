@@ -16,6 +16,7 @@ const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
   AT: ["how", "dronespace", "austro", "cities", "community", "disclaimer"],
   SE: ["how", "dronechart", "transportstyrelsen", "cities", "community", "disclaimer"],
   IE: ["how", "iaa", "airnav", "cities", "community", "disclaimer"],
+  LV: ["how", "airspace", "lgs", "cities", "community", "disclaimer"],
   CZ: ["how", "anscr", "caa", "cities", "community", "disclaimer"],
   PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
 };
@@ -63,6 +64,9 @@ function sectionLink(
       label: "iaa.ie — UAS zones",
     };
   }
+  if (country === "LV" && key === "airspace") {
+    return { href: "https://www.airspace.lv/drones/", label: "airspace.lv/drones" };
+  }
   return null;
 }
 
@@ -98,6 +102,7 @@ export function GuideCountryContent() {
           AT: t("countryNames.AT"),
           SE: t("countryNames.SE"),
           IE: t("countryNames.IE"),
+          LV: t("countryNames.LV"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

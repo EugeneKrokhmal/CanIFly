@@ -42,6 +42,7 @@ const MAP_BACKENDS = new Set<string>([
   "austro",
   "lfv",
   "iaa",
+  "lgs",
   "multi",
 ]);
 

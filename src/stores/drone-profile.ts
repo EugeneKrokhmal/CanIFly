@@ -26,6 +26,7 @@ export type MapBackendLabel =
   | "austro"
   | "lfv"
   | "iaa"
+  | "lgs"
   | "multi"
   | null;
 
