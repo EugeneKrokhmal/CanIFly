@@ -139,6 +139,16 @@ URL-encode special characters in the password (e.g. `!` → `%21`).
 
 5. Tables are created automatically on first API boot via `ensurePostgisSchema()` (users, obstacles, zones, email verification columns, etc.).
 6. Existing users created before email verification are marked verified by a one-time SQL update in that bootstrap.
+7. **Demo pilots** (`@seed.canifly.local`, scenic fly spots in ES/CZ/PL) are inserted automatically on API boot when no seed users exist yet. To re-seed manually:
+
+```bash
+curl -X POST "https://canifly-api.onrender.com/api/admin/seed-pilots" \
+  -H "Content-Type: application/json" \
+  -H "x-ingest-secret: $ENAIRE_INGEST_SECRET" \
+  -d '{"force":true}'
+```
+
+Or from the API repo with the Supabase `DATABASE_URL`: `npm run seed:pilots` (add `-- --force` to replace).
 
 **Do not commit** `DATABASE_URL` or the DB password.
 
