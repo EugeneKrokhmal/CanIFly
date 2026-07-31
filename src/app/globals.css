@@ -40,7 +40,8 @@
   --as-prohibited: #c13515;
   --as-muted: #b0b0b0;
   --as-map-bg: #ebebeb;
-  --as-sidebar-w: 22rem;
+  --as-sidebar-w: 20rem;
+  --as-header-col-w: calc((100% - var(--as-sidebar-w)) / 2);
   --background: #ffffff;
   --foreground: #222222;
   --as-radius: 12px;

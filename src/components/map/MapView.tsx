@@ -62,13 +62,6 @@ const OBSTACLE_LABEL = "obstacles-label";
 const AC_SOURCE = "aircraft";
 const AC_ICON = "aircraft-icon";
 const AC_LABEL = "aircraft-label";
-const TRACK_SOURCE = "aircraft-track";
-const TRACK_LINE = "aircraft-track-line";
-const TRACK_GLOW = "aircraft-track-glow";
-const WAKE_SOURCE = "aircraft-wakes";
-const WAKE_LINE = "aircraft-wake-line";
-const FUTURE_SOURCE = "aircraft-future";
-const FUTURE_LINE = "aircraft-future-line";
 
 const PLANE_ICON_AIR = "plane-air-v2";
 const PLANE_ICON_GND = "plane-gnd-v2";
@@ -258,14 +251,11 @@ export function MapView({ className }: MapViewProps) {
   const geolocateControlRef = useRef<maplibregl.GeolocateControl | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const statusPopupActiveRef = useRef(false);
-  const trackAbortRef = useRef<AbortController | null>(null);
-  const selectedIcaoRef = useRef<string | null>(null);
 
   const [trafficOn, setTrafficOn] = useState(true);
   const [mapZoom, setMapZoom] = useState(DEFAULT_ZOOM);
   const mapZoomRef = useRef(DEFAULT_ZOOM);
   const lastZoneSigRef = useRef("");
-  const [trackLabel, setTrackLabel] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
 
   const setSelectedPoint = useDroneProfileStore((s) => s.setSelectedPoint);
@@ -294,7 +284,6 @@ export function MapView({ className }: MapViewProps) {
   const { collection, loadBbox } = useZoneLayers();
   const { collection: obstacles, loadBbox: loadObstaclesBbox } = useObstacles();
   const {
-    futurePaths,
     count: aircraftCount,
     error: trafficError,
     setViewport,
@@ -322,87 +311,6 @@ export function MapView({ className }: MapViewProps) {
   deleteObstacleRef.current = deleteObstacle;
   voteObstacleRef.current = voteObstacle;
   setAuthModalOpenRef.current = setAuthModalOpen;
-
-  const clearTrack = () => {
-    trackAbortRef.current?.abort();
-    selectedIcaoRef.current = null;
-    setTrackLabel(null);
-    const map = mapRef.current;
-    const source = map?.getSource(TRACK_SOURCE) as
-      | maplibregl.GeoJSONSource
-      | undefined;
-    source?.setData({ type: "FeatureCollection", features: [] });
-  };
-
-  const loadTrack = async (icao24: string, callsign: string) => {
-    trackAbortRef.current?.abort();
-    const controller = new AbortController();
-    trackAbortRef.current = controller;
-    setTrackLabel(`${callsign.trim() || icao24} · …`);
-
-    try {
-      const res = await fetch(`/api/traffic/track?icao24=${icao24}`, {
-        signal: controller.signal,
-      });
-      const data = (await res.json()) as {
-        features?: GeoJSON.Feature[];
-        meta?: { error?: string; waypointCount?: number; callsign?: string };
-      };
-      if (selectedIcaoRef.current !== icao24) return;
-
-      const map = mapRef.current;
-      const source = map?.getSource(TRACK_SOURCE) as
-        | maplibregl.GeoJSONSource
-        | undefined;
-      if (!source) return;
-
-      const features = data.features ?? [];
-      source.setData({ type: "FeatureCollection", features });
-
-      const wp = data.meta?.waypointCount ?? 0;
-      const label = (data.meta?.callsign || callsign || icao24).trim();
-      if (data.meta?.error || features.length === 0) {
-        setTrackLabel(`${label} · no track`);
-        const hint = popupRef.current
-          ?.getElement()
-          ?.querySelector(".as-ac-popup-hint");
-        if (hint) hint.textContent = "No trajectory available";
-        return;
-      }
-
-      setTrackLabel(`${label} · ${wp} pts`);
-      const hint = popupRef.current
-        ?.getElement()
-        ?.querySelector(".as-ac-popup-hint");
-      if (hint) hint.textContent = `Track · ${wp} waypoints`;
-
-      const geom = features[0]?.geometry;
-      if (geom?.type === "LineString" && map) {
-        const bounds = new maplibregl.LngLatBounds(
-          geom.coordinates[0] as [number, number],
-          geom.coordinates[0] as [number, number],
-        );
-        for (const c of geom.coordinates) {
-          bounds.extend(c as [number, number]);
-        }
-        map.fitBounds(bounds, {
-          padding: 60,
-          maxZoom: 11,
-          duration: 600,
-          pitch: map.getPitch(),
-          bearing: map.getBearing(),
-        });
-      }
-    } catch (err) {
-      if (err instanceof DOMException && err.name === "AbortError") return;
-      setTrackLabel(`${callsign || icao24} · track failed`);
-    }
-  };
-
-  const clearTrackRef = useRef(clearTrack);
-  const loadTrackRef = useRef(loadTrack);
-  clearTrackRef.current = clearTrack;
-  loadTrackRef.current = loadTrack;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -565,42 +473,6 @@ export function MapView({ className }: MapViewProps) {
         type: "geojson",
         data: { type: "FeatureCollection", features: [] },
       });
-      map.addSource(WAKE_SOURCE, {
-        type: "geojson",
-        data: { type: "FeatureCollection", features: [] },
-      });
-      map.addSource(FUTURE_SOURCE, {
-        type: "geojson",
-        data: { type: "FeatureCollection", features: [] },
-      });
-      map.addSource(TRACK_SOURCE, {
-        type: "geojson",
-        data: { type: "FeatureCollection", features: [] },
-      });
-
-      // Past path (full OpenSky track) — under icons
-      map.addLayer({
-        id: WAKE_LINE,
-        type: "line",
-        source: WAKE_SOURCE,
-        paint: {
-          "line-color": "#717171",
-          "line-width": 1.5,
-          "line-opacity": 0.55,
-        },
-      });
-      // Estimated future (heading × speed) — dashed
-      map.addLayer({
-        id: FUTURE_LINE,
-        type: "line",
-        source: FUTURE_SOURCE,
-        paint: {
-          "line-color": "#b0b0b0",
-          "line-width": 1.25,
-          "line-opacity": 0.75,
-          "line-dasharray": [2, 2],
-        },
-      });
 
       addPlaneImages(map);
 
@@ -658,29 +530,8 @@ export function MapView({ className }: MapViewProps) {
         minzoom: 8,
       });
 
-      map.addLayer({
-        id: TRACK_GLOW,
-        type: "line",
-        source: TRACK_SOURCE,
-        paint: {
-          "line-color": "#222222",
-          "line-width": 6,
-          "line-opacity": 0.18,
-        },
-      });
-      map.addLayer({
-        id: TRACK_LINE,
-        type: "line",
-        source: TRACK_SOURCE,
-        paint: {
-          "line-color": "#ff385c",
-          "line-width": 2.5,
-          "line-opacity": 0.95,
-        },
-      });
-
       // Keep traffic above zone fills / basemap labels.
-      for (const id of [WAKE_LINE, FUTURE_LINE, AC_ICON, AC_LABEL, TRACK_GLOW, TRACK_LINE]) {
+      for (const id of [AC_ICON, AC_LABEL]) {
         if (map.getLayer(id)) map.moveLayer(id);
       }
 
@@ -876,7 +727,6 @@ export function MapView({ className }: MapViewProps) {
       if (!f || f.geometry.type !== "Point") return;
       const p = f.properties ?? {};
       const [lng, lat] = f.geometry.coordinates as [number, number];
-      const icao24 = String(p.icao24 ?? "").toLowerCase();
 
       statusPopupActiveRef.current = false;
       popupRef.current?.remove();
@@ -898,11 +748,6 @@ export function MapView({ className }: MapViewProps) {
           }),
         )
         .addTo(map);
-
-      if (/^[0-9a-f]{6}$/.test(icao24)) {
-        selectedIcaoRef.current = icao24;
-        void loadTrackRef.current(icao24, String(p.callsign ?? icao24));
-      }
     });
 
     map.on("mouseenter", AC_ICON, () => {
@@ -929,7 +774,6 @@ export function MapView({ className }: MapViewProps) {
         layers: [AC_ICON, OBSTACLE_ICON].filter((id) => map.getLayer(id)),
       });
       if (hits.length > 0) return;
-      clearTrackRef.current();
       statusPopupActiveRef.current = true;
       setSelectedPoint({ lat: e.lngLat.lat, lng: e.lngLat.lng });
     });
@@ -955,7 +799,6 @@ export function MapView({ className }: MapViewProps) {
     return () => {
       window.removeEventListener("resize", onResize);
       ro?.disconnect();
-      trackAbortRef.current?.abort();
       {
         const popup = popupRef.current;
         popupRef.current = null;
@@ -973,10 +816,6 @@ export function MapView({ className }: MapViewProps) {
       setMapReady(false);
     };
   }, [isDark, setSelectedPoint]);
-
-  useEffect(() => {
-    if (!trafficOn) clearTrack();
-  }, [trafficOn]);
 
   useEffect(() => {
     if (!mapReady || geolocateNonce <= 0 || suppressGeolocate) return;
@@ -1098,15 +937,6 @@ export function MapView({ className }: MapViewProps) {
       source.setData({ type: "FeatureCollection", features: [] });
     }
   }, [mapReady, trafficOn]);
-
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map) return;
-    const source = map.getSource(FUTURE_SOURCE) as
-      | maplibregl.GeoJSONSource
-      | undefined;
-    if (source && futurePaths.features.length > 0) source.setData(futurePaths);
-  }, [futurePaths]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1256,23 +1086,6 @@ export function MapView({ className }: MapViewProps) {
           Traffic {trafficOn ? "on" : "off"}
           {trafficOn ? ` · ${aircraftCount}` : ""}
         </button>
-        {trafficOn && mapZoom >= minZoom && (
-          <div className="pointer-events-none hidden max-w-[15rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-3 py-2 text-[12px] leading-snug text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:block">
-            Solid = flown path · dashed ≈ 10 min ahead (estimate)
-          </div>
-        )}
-        {trafficOn && trackLabel && (
-          <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-3 py-1.5 text-[12px] font-semibold text-[var(--as-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:py-2 sm:text-[13px]">
-            <span className="max-w-[10rem] truncate sm:max-w-[12rem]">{trackLabel}</span>
-            <button
-              type="button"
-              onClick={clearTrack}
-              className="text-[var(--as-muted)] hover:text-[var(--as-ink)]"
-            >
-              ✕
-            </button>
-          </div>
-        )}
         {trafficOn && (zoomHint || trafficError) && (
           <div className="pointer-events-none max-w-[14rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-2.5 py-1.5 text-[11px] text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:max-w-[15rem] sm:px-3 sm:py-2 sm:text-[12px]">
             {trafficError === "rate_limited"

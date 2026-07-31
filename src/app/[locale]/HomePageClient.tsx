@@ -95,7 +95,7 @@ export default function HomePageClient() {
       <MapDeepLink />
       <AuthReturnHandler />
 
-      <div className="hidden h-full w-80 shrink-0 flex-col overflow-hidden border-r border-[var(--as-line)] bg-[var(--as-surface)] shadow-[2px_0_12px_rgba(0,0,0,0.04)] md:flex">
+      <div className="hidden h-full w-[var(--as-sidebar-w)] shrink-0 flex-col overflow-hidden border-r border-[var(--as-line)] bg-[var(--as-surface)] shadow-[2px_0_12px_rgba(0,0,0,0.04)] md:flex">
         <SidebarPanel />
       </div>
 

@@ -19,7 +19,6 @@ export function aircraftPopupHtml(input: {
   return `<div class="as-ac-popup-inner">
   <strong>${escapeHtml(input.title)}</strong>
   ${body}
-  <div class="as-ac-popup-hint">Loading track…</div>
 </div>`;
 }
 

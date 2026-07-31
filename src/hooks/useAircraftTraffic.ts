@@ -7,7 +7,6 @@ import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
 /**
  * Live ADS-B positions with smooth rAF dead reckoning between snaps.
  * Uses community feeds (adsb.lol / airplanes.live / adsb.fi) via the API.
- * Past tracks load only when the user clicks an aircraft (MapView → /api/traffic/track).
  */
 const POLL_MS = 15_000;
 const MIN_FETCH_GAP_MS = 8_000;
@@ -16,11 +15,8 @@ const MIN_ZOOM = 6;
 const VIEWPORT_DEBOUNCE_MS = 600;
 /** Cap coasting — prefer a fresh poll over long extrapolation. */
 const MAX_COAST_S = 25;
-const FUTURE_HORIZON_S = 10 * 60;
 /** Soft catch-up when a new ADS-B fix arrives (avoids teleport). */
 const BLEND_MS = 900;
-/** Rebuild dashed future paths at this cadence (not every frame). */
-const FUTURE_REFRESH_MS = 2_000;
 /** MapLibre setData cadence — motion stays at rAF, GPU updates ~10 Hz. */
 const MAP_PUBLISH_MS = 100;
 
@@ -120,38 +116,6 @@ function coastFromFix(
       ? plane.fixAlt + plane.verticalRateMs * dt
       : plane.fixAlt;
   return { lng, lat, alt, heading };
-}
-
-function buildFutureCollection(
-  planes: MotionPlane[],
-): GeoJSON.FeatureCollection {
-  const features: GeoJSON.Feature[] = [];
-  for (const plane of planes) {
-    if (plane.velocityMs < 5) continue;
-    const ahead = destination(
-      plane.lng,
-      plane.lat,
-      plane.heading,
-      Math.min(plane.velocityMs * FUTURE_HORIZON_S, 120_000),
-    );
-    features.push({
-      type: "Feature",
-      geometry: {
-        type: "LineString",
-        coordinates: [
-          [plane.lng, plane.lat],
-          ahead,
-        ],
-      },
-      properties: {
-        icao24: plane.icao24,
-        callsign: plane.props?.callsign ?? null,
-        kind: "future",
-        horizonMin: FUTURE_HORIZON_S / 60,
-      },
-    });
-  }
-  return { type: "FeatureCollection", features };
 }
 
 function planesToCollection(planes: MotionPlane[]): GeoJSON.FeatureCollection {
@@ -327,8 +291,6 @@ function viewportMovedEnough(prev: Bbox | null, next: Bbox): boolean {
 export function useAircraftTraffic(enabled: boolean) {
   const [collection, setCollection] =
     useState<GeoJSON.FeatureCollection>(EMPTY);
-  const [futurePaths, setFuturePaths] =
-    useState<GeoJSON.FeatureCollection>(EMPTY);
   const [count, setCount] = useState(0);
   const [updatedAt, setUpdatedAt] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -344,7 +306,6 @@ export function useAircraftTraffic(enabled: boolean) {
   const planesRef = useRef<Map<string, MotionPlane>>(new Map());
   const hasDataRef = useRef(false);
   const forceFetchRef = useRef(false);
-  const lastFutureAtRef = useRef(0);
   const lastMapPublishAtRef = useRef(0);
   const liveListenersRef = useRef(
     new Set<(fc: GeoJSON.FeatureCollection) => void>(),
@@ -367,7 +328,6 @@ export function useAircraftTraffic(enabled: boolean) {
     planesRef.current.clear();
     hasDataRef.current = false;
     setCollection(EMPTY);
-    setFuturePaths(EMPTY);
     setCount(0);
     publishLive(EMPTY);
   }, [publishLive]);
@@ -481,8 +441,6 @@ export function useAircraftTraffic(enabled: boolean) {
       setCount(data.meta?.count ?? next.size);
       setUpdatedAt(now);
       setError(data.meta?.error ?? null);
-      setFuturePaths(buildFutureCollection([...next.values()]));
-      lastFutureAtRef.current = now;
       publishLive(fc);
       scheduleNext(POLL_MS);
     } catch (err) {
@@ -556,14 +514,6 @@ export function useAircraftTraffic(enabled: boolean) {
         lastMapPublishAtRef.current = now;
         publishLive(planesToCollection(list));
       }
-
-      if (now - lastFutureAtRef.current >= FUTURE_REFRESH_MS) {
-        lastFutureAtRef.current = now;
-        const fc = planesToCollection(list);
-        setFuturePaths(buildFutureCollection(list));
-        setCollection(fc);
-        setCount(list.length);
-      }
     };
     rafRef.current = requestAnimationFrame(tick);
 
@@ -590,11 +540,7 @@ export function useAircraftTraffic(enabled: boolean) {
 
   return {
     collection,
-    /** Wakes/past paths only from clicked aircraft (MapView track layer). */
-    pastPaths: EMPTY,
-    futurePaths,
     count,
-    tracksLoaded: 0,
     updatedAt,
     error,
     setViewport,

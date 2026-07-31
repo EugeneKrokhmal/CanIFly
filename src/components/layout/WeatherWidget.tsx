@@ -136,7 +136,7 @@ export function WeatherWidget() {
   if (error) {
     return (
       <div
-        className="inline-flex h-8 items-center rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-2.5 text-[12px] text-[var(--as-muted)] sm:px-3"
+        className="inline-flex h-8 w-full min-w-[4.75rem] items-center rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-2.5 text-[12px] text-[var(--as-muted)] sm:px-3"
         title="Weather unavailable"
       >
         —
@@ -146,7 +146,13 @@ export function WeatherWidget() {
 
   if (!weather) {
     return (
-      <div className="h-8 w-10 animate-pulse rounded-full bg-[var(--as-surface-muted)] sm:w-[7.5rem]" />
+      <div
+        className="flex h-8 w-full min-w-[4.75rem] items-center gap-1.5 rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-2.5 sm:gap-2 sm:px-3"
+        aria-hidden
+      >
+        <div className="h-4 w-4 shrink-0 animate-pulse rounded-full bg-[var(--as-surface-muted)]" />
+        <div className="h-3.5 w-7 animate-pulse rounded bg-[var(--as-surface-muted)]" />
+      </div>
     );
   }
 
@@ -158,7 +164,7 @@ export function WeatherWidget() {
 
   return (
     <div
-      className="inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 shadow-[var(--as-shadow)] sm:gap-2 sm:px-3"
+      className="inline-flex h-8 w-full min-w-[4.75rem] max-w-max items-center gap-1.5 rounded-full border px-2.5 shadow-[var(--as-shadow)] sm:gap-2 sm:px-3"
       style={{
         background: style.bg,
         borderColor: style.border,
