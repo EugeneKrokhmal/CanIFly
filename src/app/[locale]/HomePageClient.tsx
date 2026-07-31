@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { COUNTRIES, type CountryId } from "@canifly/middleware";
 import { SidebarPanel } from "@/components/sidebar/SidebarPanel";
 import { BannerStack } from "@/components/layout/BannerStack";
 import { MobileFlightSheet } from "@/components/layout/MobileFlightSheet";
@@ -61,6 +62,7 @@ function MapDeepLink() {
     }
 
     // No coordinates in the URL — show the MapLibre user-location dot.
+    // IP country framing is applied as MapView initialCenter (no pin / no status query).
     requestGeolocate();
   }, [searchParams, locateAndFocus, requestGeolocate]);
 
@@ -88,7 +90,16 @@ function AuthReturnHandler() {
   return null;
 }
 
-export default function HomePageClient() {
+type HomePageClientProps = {
+  /** Soft map frame from CDN IP geo when the visitor is in a live country. */
+  ipCountry?: CountryId | null;
+};
+
+export default function HomePageClient({
+  ipCountry = null,
+}: HomePageClientProps) {
+  const initialCenter = ipCountry ? COUNTRIES[ipCountry].center : undefined;
+
   return (
     <div className="relative flex h-full w-full overflow-hidden">
       <AirspaceStatusBinder />
@@ -102,7 +113,7 @@ export default function HomePageClient() {
       <div className="relative h-full min-w-0 flex-1 overflow-hidden bg-[var(--as-map-bg)]">
         {/* Absolute fill so overlays (sheet/popups) cannot collapse map height. */}
         <div className="absolute inset-0">
-          <MapView className="h-full w-full" />
+          <MapView className="h-full w-full" initialCenter={initialCenter} />
         </div>
         <TopPilotsStack />
         <BannerStack variant="map" />

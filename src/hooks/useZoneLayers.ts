@@ -67,7 +67,7 @@ export function useZoneLayers() {
   const [loading, setLoading] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const lastBbox = useRef<Bbox | null>(null);
-  const lastZoom = useRef(6);
+  const lastZoom = useRef(9);
   const lastShownRef = useRef<{ bbox: Bbox; zoom: number } | null>(null);
   const profileKey = `${weightClass}:${maxAltitudeAgl}`;
   const lastProfileKey = useRef(profileKey);

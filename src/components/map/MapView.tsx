@@ -221,9 +221,11 @@ function formatSpeed(ms: unknown): string {
 
 interface MapViewProps {
   className?: string;
+  /** Initial map center [lng, lat] — e.g. IP-derived live country. Defaults to Spain. */
+  initialCenter?: [number, number];
 }
 
-export function MapView({ className }: MapViewProps) {
+export function MapView({ className, initialCenter }: MapViewProps) {
   const locale = useLocale() as AppLocale;
   const tMap = useTranslations("map");
   const isDark = useIsDark();
@@ -231,6 +233,8 @@ export function MapView({ className }: MapViewProps) {
   const obstacleFallbackRef = useRef(tMap("obstacleFallback"));
   localeRef.current = locale;
   obstacleFallbackRef.current = tMap("obstacleFallback");
+
+  const startCenter = initialCenter ?? SPAIN_CENTER;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -240,7 +244,7 @@ export function MapView({ className }: MapViewProps) {
     pitch: number;
     bearing: number;
   }>({
-    center: SPAIN_CENTER,
+    center: startCenter,
     zoom: DEFAULT_ZOOM,
     pitch: DEFAULT_PITCH,
     bearing: DEFAULT_BEARING,
@@ -325,7 +329,8 @@ export function MapView({ className }: MapViewProps) {
       zoom,
       pitch,
       bearing,
-      minZoom: 5,
+      // Below ~8 a pitched viewport exceeds the API ~7° bbox clamp → empty zones.
+      minZoom: 8,
       maxZoom: 18,
       maxPitch: MAX_PITCH,
       pitchWithRotate: true,

@@ -429,6 +429,9 @@ API `.env` mirrors `.env.example` (`CORS_ORIGIN` / `APP_URL` = `http://localhost
 | DB connection errors | Password encoding / SSL | `%21` for `!`; add `?sslmode=require` |
 | Domain SSL pending | Cloudflare orange proxy | Grey cloud (DNS only) until Valid |
 | View on map → my GPS | Old deep-link/geolocate race | Fixed on `main`; hard refresh |
+| Map always opens on Spain | Local/dev has no IP country header | Prod uses Vercel/`cf-ipcountry`; try `?country=DE` |
+
+Map soft-frames to the visitor’s live country from CDN IP geo (`x-vercel-ip-country` / `cf-ipcountry`) when there is no `?lat=&lng=`. GPS geolocate still overrides. Override manually with `?country=DE` (any live ISO2).
 
 ---
 

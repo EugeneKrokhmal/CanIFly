@@ -12,7 +12,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@canifly/middleware": "github:EugeneKrokhmal/CanIFly-middleware#f82f9c0bbdf31ad63b1d456c4bcd068b524105ab",
+    "@canifly/middleware": "github:EugeneKrokhmal/CanIFly-middleware#e774ccd1a7862126f86a36a7ace390fe2fabec2c",
     "@turf/boolean-point-in-polygon": "^7.3.5",
     "@turf/helpers": "^7.3.5",
     "maplibre-gl": "4.7.1",
