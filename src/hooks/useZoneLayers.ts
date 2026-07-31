@@ -13,7 +13,10 @@ import {
   zonesForViewport,
 } from "@/hooks/zoneBboxCache";
 import { viewportMovedEnough, zoneLimitForZoom } from "@/lib/map/viewport";
-import { useDroneProfileStore } from "@/stores/drone-profile";
+import {
+  useDroneProfileStore,
+  type MapBackendLabel,
+} from "@/stores/drone-profile";
 
 const DEBOUNCE_MS = 200;
 
@@ -25,7 +28,7 @@ type BboxZoneResponse = GeoJSON.FeatureCollection & {
   };
 };
 
-const MAP_BACKENDS = new Set([
+const MAP_BACKENDS = new Set<string>([
   "servais",
   "postgis",
   "memory",
@@ -41,38 +44,9 @@ const MAP_BACKENDS = new Set([
   "multi",
 ]);
 
-function parseMapBackend(
-  value: string | undefined,
-):
-  | "servais"
-  | "postgis"
-  | "memory"
-  | "pansa"
-  | "aimgis"
-  | "dipul"
-  | "geopf"
-  | "dronezoner"
-  | "foca"
-  | "anac"
-  | "austro"
-  | "lfv"
-  | "multi"
-  | null {
+function parseMapBackend(value: string | undefined): MapBackendLabel {
   if (value && MAP_BACKENDS.has(value)) {
-    return value as
-      | "servais"
-      | "postgis"
-      | "memory"
-      | "pansa"
-      | "aimgis"
-      | "dipul"
-      | "geopf"
-      | "dronezoner"
-      | "foca"
-      | "anac"
-      | "austro"
-      | "lfv"
-      | "multi";
+    return value as Exclude<MapBackendLabel, null>;
   }
   return null;
 }

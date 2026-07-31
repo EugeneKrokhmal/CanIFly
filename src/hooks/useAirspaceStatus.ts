@@ -3,7 +3,10 @@
 import { useCallback, useEffect, useRef } from "react";
 import { recordLocationCheck } from "@/lib/auth/usage-gate";
 import { useAuthStore } from "@/stores/auth";
-import { useDroneProfileStore } from "@/stores/drone-profile";
+import {
+  useDroneProfileStore,
+  type MapBackendLabel,
+} from "@/stores/drone-profile";
 import type { AirspaceStatus, MatchedZone } from "@canifly/middleware";
 
 interface StatusApiResponse {
@@ -14,7 +17,7 @@ interface StatusApiResponse {
   meta?: {
     queryMs?: number;
     dataVersion?: string | null;
-    backend?: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "multi";
+    backend?: Exclude<MapBackendLabel, null>;
   };
 }
 

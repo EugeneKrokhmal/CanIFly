@@ -12,6 +12,22 @@ import {
 
 export type { WeightClass, OperationCategory };
 
+export type MapBackendLabel =
+  | "servais"
+  | "postgis"
+  | "memory"
+  | "pansa"
+  | "aimgis"
+  | "dipul"
+  | "geopf"
+  | "dronezoner"
+  | "foca"
+  | "anac"
+  | "austro"
+  | "lfv"
+  | "multi"
+  | null;
+
 export interface SelectedDrone {
   id: string;
   manufacturer: string;
@@ -43,8 +59,8 @@ interface DroneProfileState {
   statusError: string | null;
   queryMs: number | null;
   dataVersion: string | null;
-  backend: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi" | null;
-  mapBackend: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi" | null;
+  backend: MapBackendLabel;
+  mapBackend: MapBackendLabel;
   mapDataVersion: string | null;
   mapQueryMs: number | null;
   highlightedZoneId: string | null;
@@ -65,12 +81,12 @@ interface DroneProfileState {
     zones: MatchedZone[];
     queryMs: number | null;
     dataVersion: string | null;
-    backend: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi" | null;
+    backend: MapBackendLabel;
   }) => void;
   setStatusLoading: (v: boolean) => void;
   setStatusError: (v: string | null) => void;
   setMapZoneMeta: (payload: {
-    backend: "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi" | null;
+    backend: MapBackendLabel;
     dataVersion: string | null;
     queryMs: number | null;
   }) => void;
