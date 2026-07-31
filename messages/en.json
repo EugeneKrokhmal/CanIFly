@@ -297,7 +297,8 @@
       "CH": "Switzerland",
       "PT": "Portugal",
       "AT": "Austria",
-      "SE": "Sweden"
+      "SE": "Sweden",
+      "IE": "Ireland"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -697,6 +698,46 @@
             "a": "dronechart.lfv.se, the LFV drone-chart API docs, and Transportstyrelsen drone / geographical UAS zone pages."
           }
         }
+      },
+      "IE": {
+        "title": "FAQ — Ireland",
+        "intro": "Answers for flying in Ireland with CanIFly and Irish Aviation Authority UAS geographical zones.",
+        "ctaGuide": "Read the Ireland flying guide",
+        "ctaContacts": "Contacts",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Ireland?",
+            "a": "CanIFly summarises IAA UAS geographical zones for your drone class and ceiling. PROHIBITED and major CTR / airport zones map to Prohibited or Restricted. Always confirm on the official IAA UAS zones page before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation to fly?",
+            "a": "Many Irish zones are REQ_AUTHORIZATION — contact the listed zone authority (often AirNav Ireland ATC). Use IAA guidance for the legal requirement."
+          },
+          "openCategory": {
+            "q": "Does CanIFly cover the open category?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter Irish zones that intersect that envelope. Specific operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Ireland?",
+            "a": "Ireland as published in the IAA UAS geographical zones GeoJSON (Republic of Ireland)."
+          },
+          "dublin": {
+            "q": "What about Dublin / Cork / major cities?",
+            "a": "Cities often sit under CTR, airport colour zones, prisons and temporary event restrictions. Tap the map for a live status; treat it as a planning aid, not a clearance."
+          },
+          "data": {
+            "q": "Where does the Irish zone data come from?",
+            "a": "Official IAA GeoJSON from iaa.ie. We discover the latest dated file, cache it, and query locally — we do not replace the IAA publication."
+          },
+          "track": {
+            "q": "Is CanIFly an official tracker?",
+            "a": "No. It is a planning aid. For official Irish UAS geographical zones use iaa.ie."
+          },
+          "official": {
+            "q": "Which official sites should I use?",
+            "a": "iaa.ie UAS geographic zones (map + GeoJSON), IAA drone pages, and AirNav Ireland for ATC contacts."
+          }
+        }
       }
     }
   },
@@ -712,7 +753,8 @@
       "CH": "Switzerland",
       "PT": "Portugal",
       "AT": "Austria",
-      "SE": "Sweden"
+      "SE": "Sweden",
+      "IE": "Ireland"
     },
     "ctaMap": "Open the CanIFly map",
     "ctaFaq": "See FAQ",
@@ -1027,6 +1069,37 @@
             "body": "CanIFly is a planning aid, not an official clearance. LFV data is published for information; Transportstyrelsen rules always prevail."
           }
         }
+      },
+      "IE": {
+        "eyebrow": "Ireland",
+        "title": "Flying drones in Ireland",
+        "intro": "CanIFly summarises Irish Aviation Authority UAS geographical zones on a map: tap a point, pick class and ceiling, and see Clear, Limited, Restricted or Prohibited. This guide explains the context for open-category pilots in Ireland.",
+        "sections": {
+          "how": {
+            "title": "1. Check the point on the map",
+            "body": "Open CanIFly, centre on your location and tap the takeoff point. Status combines IAA UAS zones with your class and AGL ceiling."
+          },
+          "iaa": {
+            "title": "2. IAA UAS geographical zones",
+            "body": "The Irish Aviation Authority publishes UAS geographical zones in a common digital format (GeoJSON). CanIFly uses that file; the IAA page remains the official reference (not for navigation alone)."
+          },
+          "airnav": {
+            "title": "3. AirNav Ireland and ATC",
+            "body": "Many CTR and airport zones list AirNav Ireland ATC as the authorisation contact. Always follow IAA rules and any NOTAM / temporary zones of the day."
+          },
+          "cities": {
+            "title": "4. Cities and airports",
+            "body": "Dublin and Cork sit under layered CTR / airport colour zones and sensitive sites. Expect Restricted or Prohibited near airports and prisons."
+          },
+          "community": {
+            "title": "5. Community and local tips",
+            "body": "CanIFly shows nearby pilots and spots when available. Local clubs and zone authorities remain the best sources for day-of coordination."
+          },
+          "disclaimer": {
+            "title": "6. Disclaimer",
+            "body": "CanIFly is a planning aid, not an official clearance. IAA data is reference-only; always consult current TRAs, NOTAMs and the published GeoJSON before flight."
+          }
+        }
       }
     }
   },
@@ -1062,7 +1135,8 @@
       "CH": "Switzerland",
       "PT": "Portugal",
       "AT": "Austria",
-      "SE": "Sweden"
+      "SE": "Sweden",
+      "IE": "Ireland"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -1272,6 +1346,16 @@
           "api": "LFV drone chart API docs",
           "ts": "Transportstyrelsen — drones",
           "zones": "Transportstyrelsen — geographical UAS zones"
+        }
+      },
+      "IE": {
+        "title": "Ireland — official contacts",
+        "intro": "Official channels for coordination, registration, and UAS geographical zones in Ireland. Zone-specific contacts may also appear in the map sidebar when you tap a point.",
+        "links": {
+          "zones": "IAA — UAS geographic zones",
+          "drones": "IAA — drones",
+          "airnav": "AirNav Ireland",
+          "mySRS": "Irish Aviation Authority"
         }
       }
     }

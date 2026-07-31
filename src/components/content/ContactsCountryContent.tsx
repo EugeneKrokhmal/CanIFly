@@ -212,6 +212,28 @@ function contactLinksFor(locale: string): Record<ContentCountryId, readonly Cont
       label: "Transportstyrelsen — UAS zones",
     },
   ],
+  IE: [
+    {
+      key: "zones",
+      href: "https://www.iaa.ie/general-aviation/drones/uas-geographic-zones",
+      label: "iaa.ie — UAS geographic zones",
+    },
+    {
+      key: "drones",
+      href: "https://www.iaa.ie/general-aviation/drones",
+      label: "iaa.ie — drones",
+    },
+    {
+      key: "airnav",
+      href: "https://www.airnav.ie/",
+      label: "airnav.ie",
+    },
+    {
+      key: "mySRS",
+      href: "https://www.iaa.ie/",
+      label: "iaa.ie",
+    },
+  ],
   CZ: [
     {
       key: "dronemap",
@@ -268,6 +290,7 @@ export function ContactsCountryContent() {
           PT: t("countryNames.PT"),
           AT: t("countryNames.AT"),
           SE: t("countryNames.SE"),
+          IE: t("countryNames.IE"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

@@ -15,6 +15,7 @@ const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
   PT: ["how", "anac", "dnt", "cities", "community", "disclaimer"],
   AT: ["how", "dronespace", "austro", "cities", "community", "disclaimer"],
   SE: ["how", "dronechart", "transportstyrelsen", "cities", "community", "disclaimer"],
+  IE: ["how", "iaa", "airnav", "cities", "community", "disclaimer"],
   CZ: ["how", "anscr", "caa", "cities", "community", "disclaimer"],
   PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
 };
@@ -56,6 +57,12 @@ function sectionLink(
   if (country === "SE" && key === "dronechart") {
     return { href: "https://dronechart.lfv.se/", label: "dronechart.lfv.se" };
   }
+  if (country === "IE" && key === "iaa") {
+    return {
+      href: "https://www.iaa.ie/general-aviation/drones/uas-geographic-zones",
+      label: "iaa.ie — UAS zones",
+    };
+  }
   return null;
 }
 
@@ -90,6 +97,7 @@ export function GuideCountryContent() {
           PT: t("countryNames.PT"),
           AT: t("countryNames.AT"),
           SE: t("countryNames.SE"),
+          IE: t("countryNames.IE"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}
