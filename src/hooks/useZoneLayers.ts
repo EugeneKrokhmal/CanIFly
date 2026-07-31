@@ -33,14 +33,46 @@ const MAP_BACKENDS = new Set([
   "aimgis",
   "dipul",
   "geopf",
+  "dronezoner",
+  "foca",
+  "anac",
+  "austro",
+  "lfv",
   "multi",
 ]);
 
 function parseMapBackend(
   value: string | undefined,
-): "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi" | null {
+):
+  | "servais"
+  | "postgis"
+  | "memory"
+  | "pansa"
+  | "aimgis"
+  | "dipul"
+  | "geopf"
+  | "dronezoner"
+  | "foca"
+  | "anac"
+  | "austro"
+  | "lfv"
+  | "multi"
+  | null {
   if (value && MAP_BACKENDS.has(value)) {
-    return value as "servais" | "postgis" | "memory" | "pansa" | "aimgis" | "dipul" | "geopf" | "multi";
+    return value as
+      | "servais"
+      | "postgis"
+      | "memory"
+      | "pansa"
+      | "aimgis"
+      | "dipul"
+      | "geopf"
+      | "dronezoner"
+      | "foca"
+      | "anac"
+      | "austro"
+      | "lfv"
+      | "multi";
   }
   return null;
 }

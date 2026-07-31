@@ -14,6 +14,7 @@ const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
   CH: ["how", "foca", "bazl", "cities", "community", "disclaimer"],
   PT: ["how", "anac", "dnt", "cities", "community", "disclaimer"],
   AT: ["how", "dronespace", "austro", "cities", "community", "disclaimer"],
+  SE: ["how", "dronechart", "transportstyrelsen", "cities", "community", "disclaimer"],
   CZ: ["how", "anscr", "caa", "cities", "community", "disclaimer"],
   PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
 };
@@ -52,6 +53,9 @@ function sectionLink(
   if (country === "AT" && key === "dronespace") {
     return { href: "https://dronespace.at/", label: "dronespace.at" };
   }
+  if (country === "SE" && key === "dronechart") {
+    return { href: "https://dronechart.lfv.se/", label: "dronechart.lfv.se" };
+  }
   return null;
 }
 
@@ -85,6 +89,7 @@ export function GuideCountryContent() {
           CH: t("countryNames.CH"),
           PT: t("countryNames.PT"),
           AT: t("countryNames.AT"),
+          SE: t("countryNames.SE"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

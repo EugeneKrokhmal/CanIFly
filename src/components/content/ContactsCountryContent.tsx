@@ -190,6 +190,28 @@ function contactLinksFor(locale: string): Record<ContentCountryId, readonly Cont
       label: "bmk.gv.at",
     },
   ],
+  SE: [
+    {
+      key: "dronechart",
+      href: "https://dronechart.lfv.se/",
+      label: "dronechart.lfv.se",
+    },
+    {
+      key: "api",
+      href: "https://daim.lfv.se/echarts/dronechart/API/",
+      label: "LFV drone chart API",
+    },
+    {
+      key: "ts",
+      href: "https://www.transportstyrelsen.se/sv/luftfart/luftfartyg-och-luftvardighet/dronare/",
+      label: "transportstyrelsen.se — drönare",
+    },
+    {
+      key: "zones",
+      href: "https://www.transportstyrelsen.se/sv/luftfart/flygplatser-flygtrafiktjanst-och-luftrum/luftrum/geografiska-uas-zoner/",
+      label: "Transportstyrelsen — UAS zones",
+    },
+  ],
   CZ: [
     {
       key: "dronemap",
@@ -245,6 +267,7 @@ export function ContactsCountryContent() {
           CH: t("countryNames.CH"),
           PT: t("countryNames.PT"),
           AT: t("countryNames.AT"),
+          SE: t("countryNames.SE"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

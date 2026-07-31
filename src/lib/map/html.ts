@@ -128,6 +128,19 @@ const STATUS_POPUP_LABEL: Record<string, string> = {
   prohibited: "Prohibited",
 };
 
+function airspacePopupCoords(lat: number, lng: number): string {
+  return `<div class="as-ac-popup-hint">${escapeHtml(lat.toFixed(5))}°, ${escapeHtml(lng.toFixed(5))}°</div>`;
+}
+
+function airspacePopupSkeleton(): string {
+  return `<div class="as-ac-popup-status-body" aria-hidden="true">
+  <span class="as-ac-popup-skeleton as-ac-popup-skeleton-pill"></span>
+  <span class="as-ac-popup-skeleton as-ac-popup-skeleton-line"></span>
+  <span class="as-ac-popup-skeleton as-ac-popup-skeleton-line as-ac-popup-skeleton-line--short"></span>
+  <span class="as-ac-popup-skeleton as-ac-popup-skeleton-line as-ac-popup-skeleton-line--zone"></span>
+</div>`;
+}
+
 export function airspacePopupHtml(input: {
   loading?: boolean;
   error?: string | null;
@@ -137,17 +150,22 @@ export function airspacePopupHtml(input: {
   lat: number;
   lng: number;
 }): string {
+  const coords = airspacePopupCoords(input.lat, input.lng);
+
   if (input.loading) {
-    return `<div class="as-ac-popup-inner">
-  <strong>Checking airspace…</strong>
-  <div class="as-ac-popup-hint">${escapeHtml(input.lat.toFixed(5))}°, ${escapeHtml(input.lng.toFixed(5))}°</div>
+    return `<div class="as-ac-popup-inner as-ac-popup-status as-ac-popup-status--loading">
+  ${airspacePopupSkeleton()}
+  ${coords}
 </div>`;
   }
 
   if (input.error) {
-    return `<div class="as-ac-popup-inner">
-  <strong style="color:#c13515">Couldn’t check</strong>
-  <div>${escapeHtml(input.error)}</div>
+    return `<div class="as-ac-popup-inner as-ac-popup-status">
+  <div class="as-ac-popup-status-body">
+    <strong class="as-ac-popup-status-error">Couldn’t check</strong>
+    <div class="as-ac-popup-status-summary">${escapeHtml(input.error)}</div>
+  </div>
+  ${coords}
 </div>`;
   }
 
@@ -156,16 +174,18 @@ export function airspacePopupHtml(input: {
   const label = STATUS_POPUP_LABEL[status] ?? status;
   const zones =
     input.zoneNames && input.zoneNames.length > 0
-      ? `<div style="margin-top:8px;font-size:12px;color:var(--as-ink-soft)">${escapeHtml(
+      ? `<div class="as-ac-popup-status-zones">${escapeHtml(
           input.zoneNames.slice(0, 3).join(" · "),
         )}${input.zoneNames.length > 3 ? "…" : ""}</div>`
       : "";
 
-  return `<div class="as-ac-popup-inner">
-  <span style="display:inline-block;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;color:${color};background:${color}18">${escapeHtml(label)}</span>
-  <div style="margin-top:8px">${escapeHtml(input.summary ?? "")}</div>
-  ${zones}
-  <div class="as-ac-popup-hint">${escapeHtml(input.lat.toFixed(5))}°, ${escapeHtml(input.lng.toFixed(5))}°</div>
+  return `<div class="as-ac-popup-inner as-ac-popup-status">
+  <div class="as-ac-popup-status-body">
+    <span class="as-ac-popup-status-badge" style="color:${color};background:${color}18">${escapeHtml(label)}</span>
+    <div class="as-ac-popup-status-summary">${escapeHtml(input.summary ?? "")}</div>
+    ${zones}
+  </div>
+  ${coords}
 </div>`;
 }
 

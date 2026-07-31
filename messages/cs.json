@@ -293,7 +293,8 @@
       "DK": "Dánsko",
       "CH": "Švýcarsko",
       "PT": "Portugalsko",
-      "AT": "Rakousko"
+      "AT": "Rakousko",
+      "SE": "Švédsko"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -653,6 +654,46 @@
             "a": "dronespace.at, Austro Control geographical-zones downloads, and BMK aviation pages."
           }
         }
+      },
+      "SE": {
+        "title": "FAQ — Švédsko",
+        "intro": "Answers for flying in Sweden with CanIFly and LFV Drönarkarta airspace layers.",
+        "ctaGuide": "Read the Sweden flying guide",
+        "ctaContacts": "Contacts",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Sweden?",
+            "a": "CanIFly summarises LFV drone-chart layers (CTR, ATZ, TIZ, restriction/danger areas, runway buffers, SUP/NOTAM) for your class and ceiling. Airport control zones and runway buffers map to Prohibited for open-category planning. Always confirm on dronechart.lfv.se and Transportstyrelsen rules before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation to fly?",
+            "a": "Flying in CTR and many other UAS geographical zones requires coordination or permission under Transportstyrelsen rules. Use LFV Drönarkarta and Transportstyrelsen guidance for the legal requirement."
+          },
+          "openCategory": {
+            "q": "Does CanIFly cover the open category?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter Swedish layers that intersect that envelope. Specific operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Sweden?",
+            "a": "Sweden as published on LFV Drönarkarta WFS layers (mainland plus Gotland/Öland envelopes)."
+          },
+          "stockholm": {
+            "q": "What about Stockholm / Gothenburg / Malmö?",
+            "a": "Major cities sit under CTR, ATZ/TIZ and runway buffers. Tap the map for a live status; treat it as a planning aid, not a clearance."
+          },
+          "data": {
+            "q": "Where does the Swedish zone data come from?",
+            "a": "Official LFV GeoServer WFS used by Drönarkartan (daim.lfv.se). We query live viewports — we do not replace LFV or Transportstyrelsen."
+          },
+          "track": {
+            "q": "Is CanIFly an official tracker?",
+            "a": "No. It is a planning aid. For official Swedish UAS geographical zones use dronechart.lfv.se and Transportstyrelsen."
+          },
+          "official": {
+            "q": "Which official sites should I use?",
+            "a": "dronechart.lfv.se, the LFV drone-chart API docs, and Transportstyrelsen drone / geographical UAS zone pages."
+          }
+        }
       }
     }
   },
@@ -667,7 +708,8 @@
       "DK": "Dánsko",
       "CH": "Švýcarsko",
       "PT": "Portugalsko",
-      "AT": "Rakousko"
+      "AT": "Rakousko",
+      "SE": "Švédsko"
     },
     "ctaMap": "Open the CanIFly map",
     "ctaFaq": "See FAQ",
@@ -951,6 +993,37 @@
             "body": "CanIFly is not Austro Control or an official authorisation. Laws and zones change — verify before every flight."
           }
         }
+      },
+      "SE": {
+        "eyebrow": "Švédsko",
+        "title": "Létání s dronem ve Švédsku",
+        "intro": "CanIFly summarises LFV Drönarkarta layers on a map: tap a point, pick class and ceiling, and see Clear, Limited, Restricted or Prohibited. This guide explains the context for open-category pilots in Sweden.",
+        "sections": {
+          "how": {
+            "title": "1. Check the point on the map",
+            "body": "Open CanIFly, centre on your location and tap the takeoff point. Status combines LFV CTR/ATZ/TIZ, restriction areas and temporary SUP/NOTAM with your class and AGL ceiling."
+          },
+          "dronechart": {
+            "title": "2. LFV Drönarkarta",
+            "body": "LFV Drönarkarta is the official overview map for drone pilots in Sweden. CanIFly uses the same WFS layers; the chart remains the visual reference for situational awareness (not a certified AIS briefing)."
+          },
+          "transportstyrelsen": {
+            "title": "3. Transportstyrelsen rules",
+            "body": "Transportstyrelsen decides geographical UAS zones and pilot rules. Always cross-check registration, competence and zone permissions on transportstyrelsen.se before you fly."
+          },
+          "cities": {
+            "title": "4. Cities and airports",
+            "body": "Stockholm (Arlanda/Bromma), Gothenburg (Landvetter) and Malmö sit under dense CTR and runway buffers. Expect Prohibited or Restricted near airports."
+          },
+          "community": {
+            "title": "5. Community and local tips",
+            "body": "CanIFly shows nearby pilots and spots when available. Local clubs and airport ATS remain the best sources for day-of coordination."
+          },
+          "disclaimer": {
+            "title": "6. Disclaimer",
+            "body": "CanIFly is a planning aid, not an official clearance. LFV data is published for information; Transportstyrelsen rules always prevail."
+          }
+        }
       }
     }
   },
@@ -985,7 +1058,8 @@
       "DK": "Dánsko",
       "CH": "Švýcarsko",
       "PT": "Portugalsko",
-      "AT": "Rakousko"
+      "AT": "Rakousko",
+      "SE": "Švédsko"
     },
     "backToMap": "← Back to map",
     "byCountry": {
@@ -1185,6 +1259,16 @@
             "title": "BMK",
             "detail": "Federal ministry transport / aviation policy"
           }
+        }
+      },
+      "SE": {
+        "title": "Švédsko — oficiální kontakty",
+        "intro": "Official channels for coordination, registration, and UAS geographical zones in Sweden. Zone-specific contacts may also appear in the map sidebar when you tap a point.",
+        "links": {
+          "dronechart": "LFV Drönarkarta",
+          "api": "LFV drone chart API docs",
+          "ts": "Transportstyrelsen — drones",
+          "zones": "Transportstyrelsen — geographical UAS zones"
         }
       }
     }

@@ -77,6 +77,16 @@ const FAQ_KEYS: Record<ContentCountryId, readonly string[]> = {
     "track",
     "official",
   ],
+  SE: [
+    "status",
+    "auth",
+    "openCategory",
+    "where",
+    "stockholm",
+    "data",
+    "track",
+    "official",
+  ],
   CZ: [
     "status",
     "auth",
@@ -131,6 +141,7 @@ export function FaqCountryContent() {
           CH: t("countryNames.CH"),
           PT: t("countryNames.PT"),
           AT: t("countryNames.AT"),
+          SE: t("countryNames.SE"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}
