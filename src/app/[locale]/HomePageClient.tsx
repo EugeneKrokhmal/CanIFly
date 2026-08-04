@@ -106,7 +106,7 @@ export default function HomePageClient({
       <AuthReturnHandler />
 
       <div className="hidden h-full w-[var(--as-sidebar-w)] shrink-0 flex-col overflow-hidden border-r border-[var(--as-line)] bg-[var(--as-surface)] shadow-[2px_0_12px_rgba(0,0,0,0.04)] md:flex">
-        <SidebarPanel />
+        <SidebarPanel showDesktopAddPin />
       </div>
 
       <div className="relative h-full min-w-0 flex-1 overflow-hidden bg-[var(--as-map-bg)]">

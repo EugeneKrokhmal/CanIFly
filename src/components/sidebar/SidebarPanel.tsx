@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { type AirspaceStatus, type MatchedZone } from "@canifly/middleware";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 import { DronePicker } from "@/components/sidebar/DronePicker";
+import { MapAddPinFab } from "@/components/map/MapAddPinSheet";
 
 function statusColor(status: AirspaceStatus): string {
   if (status === "clear" || status === "limited") return "var(--as-clear)";
@@ -59,9 +60,12 @@ function sectionLabel(text: string) {
 
 export function SidebarPanel({
   sheetDragProps,
+  showDesktopAddPin = false,
 }: {
   /** Mobile sheet: drag this header to collapse/expand. */
   sheetDragProps?: SheetDragProps;
+  /** Desktop sidebar column: show the add pin control here instead of on the map. */
+  showDesktopAddPin?: boolean;
 } = {}) {
   const t = useTranslations("sidebar");
   const tStatus = useTranslations("status");
@@ -155,6 +159,11 @@ export function SidebarPanel({
         <p className="mt-1 text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
           {t("flightProfileHint")}
         </p>
+        {showDesktopAddPin ? (
+          <div className="mt-4 hidden md:block">
+            <MapAddPinFab variant="sidebar" />
+          </div>
+        ) : null}
       </div>
 
       <div className="as-scroll flex-1 overflow-y-auto px-5 py-5">

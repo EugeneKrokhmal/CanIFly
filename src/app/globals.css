@@ -119,6 +119,15 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
 .as-gpu {
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -198,6 +207,99 @@ body {
 .as-sheet-in {
   animation: as-sheet-in 320ms var(--as-ease-out) both;
   will-change: transform, opacity;
+}
+
+@keyframes as-sheet-in-spring {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.as-sheet-in-spring {
+  animation: as-sheet-in-spring 360ms var(--as-ease-spring) both;
+  transform-origin: bottom center;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 640px) {
+  .as-sheet-in-spring {
+    transform-origin: bottom left;
+  }
+}
+
+@keyframes as-menu-pop-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes as-menu-pop-down {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.as-menu-pop-up {
+  animation: as-menu-pop-up 280ms var(--as-ease-spring) both;
+  transform-origin: bottom left;
+  will-change: transform, opacity;
+}
+
+.as-menu-pop-down {
+  animation: as-menu-pop-down 280ms var(--as-ease-spring) both;
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+.as-menu-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 320ms var(--as-ease-out),
+    opacity 220ms var(--as-ease-out),
+    margin-top 320ms var(--as-ease-out);
+  pointer-events: none;
+}
+
+.as-menu-reveal[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.as-menu-reveal > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.as-add-toggle-icon {
+  display: inline-grid;
+  place-items: center;
+  transition: transform 320ms var(--as-ease-spring);
+}
+
+.as-add-toggle-icon[data-open="true"] {
+  transform: rotate(45deg);
+}
+
+.as-add-label {
+  transition: opacity 180ms var(--as-ease-out);
 }
 
 .as-scroll-hidden {
@@ -296,6 +398,7 @@ body {
 }
 
 .as-press {
+  cursor: pointer;
   transition:
     transform var(--as-dur-fast) var(--as-ease-out),
     background-color var(--as-dur-fast) var(--as-ease-out),
@@ -305,16 +408,25 @@ body {
     opacity var(--as-dur-fast) var(--as-ease-out);
 }
 
+.as-press:disabled {
+  cursor: not-allowed;
+}
+
 .as-press:active {
   transform: scale(0.97);
 }
 
 .as-press-soft {
+  cursor: pointer;
   transition:
     transform var(--as-dur-fast) var(--as-ease-out),
     background-color var(--as-dur) var(--as-ease-out),
     border-color var(--as-dur) var(--as-ease-out),
     color var(--as-dur) var(--as-ease-out);
+}
+
+.as-press-soft:disabled {
+  cursor: not-allowed;
 }
 
 .as-press-soft:hover {

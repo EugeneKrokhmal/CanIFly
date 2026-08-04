@@ -14,13 +14,14 @@ import { useAuthStore } from "@/stores/auth";
 import { useObstaclesStore } from "@/stores/obstacles";
 import { compressImageFile } from "@/lib/image/compress";
 
-export function MapAddPinFab() {
+export function MapAddPinFab({ variant = "map" }: { variant?: "map" | "sidebar" }) {
   const t = useTranslations("pin");
   const user = useAuthStore((s) => s.user);
   const setAuthModalOpen = useAuthStore((s) => s.setAuthModalOpen);
   const placementMode = useObstaclesStore((s) => s.placementMode);
   const startPlacement = useObstaclesStore((s) => s.startPlacement);
   const [menuOpen, setMenuOpen] = useState(false);
+  const isSidebar = variant === "sidebar";
 
   useEffect(() => {
     if (placementMode) setMenuOpen(false);
@@ -38,74 +39,121 @@ export function MapAddPinFab() {
 
   if (placementMode) return null;
 
+  const menuPanelClass =
+    "overflow-hidden rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] shadow-[0_8px_28px_rgba(0,0,0,0.14)]";
+
+  const menu = (
+    <div className={`${menuPanelClass} as-stagger`}>
+      <p className="border-b border-[var(--as-line-soft)] px-3.5 py-2 text-[11px] font-semibold uppercase tracking-wide text-[var(--as-ink-soft)]">
+        {t("addMenuHint")}
+      </p>
+      <button
+        type="button"
+        onClick={() => begin("obstacle")}
+        className="as-press flex w-full items-center gap-3 px-3.5 py-3 text-left hover:bg-[var(--as-hover-warm)]"
+      >
+        <span
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-[18px] font-bold text-white"
+          style={{ background: "#c13515" }}
+          aria-hidden
+        >
+          !
+        </span>
+        <span className="min-w-0">
+          <span className="block text-[14px] font-semibold text-[var(--as-ink)]">
+            {t("addObstacle")}
+          </span>
+          <span className="mt-0.5 block text-[11px] leading-snug text-[var(--as-ink-soft)]">
+            {t("addObstacleHint")}
+          </span>
+        </span>
+      </button>
+      <button
+        type="button"
+        onClick={() => begin("fly_spot")}
+        className="as-press flex w-full items-center gap-3 border-t border-[var(--as-line-soft)] px-3.5 py-3 text-left hover:bg-[var(--as-hover-green)]"
+      >
+        <span
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-[15px] font-bold text-white"
+          style={{ background: "#0d7a4f" }}
+          aria-hidden
+        >
+          +
+        </span>
+        <span className="min-w-0">
+          <span className="block text-[14px] font-semibold text-[var(--as-ink)]">
+            {t("addFlySpot")}
+          </span>
+          <span className="mt-0.5 block text-[11px] leading-snug text-[var(--as-ink-soft)]">
+            {t("addFlySpotHint")}
+          </span>
+        </span>
+      </button>
+    </div>
+  );
+
+  const toggleIcon = (
+    <span
+      className={
+        isSidebar
+          ? "as-add-toggle-icon grid h-6 w-6 place-items-center rounded-full bg-white/20 text-[18px] font-light leading-none"
+          : "as-add-toggle-icon grid h-7 w-7 place-items-center rounded-full bg-white/20 text-[22px] font-light leading-none"
+      }
+      data-open={menuOpen ? "true" : "false"}
+      aria-hidden
+    >
+      +
+    </span>
+  );
+
+  const toggleLabel = (
+    <span className="as-add-label text-[14px] font-semibold tracking-tight">
+      {menuOpen ? t("closeMenu") : t("add")}
+    </span>
+  );
+
   return (
-    <div className="pointer-events-auto relative flex flex-col items-start gap-2.5">
-      {menuOpen ? (
-        <div className="as-sheet-in w-[min(100vw-2rem,15.5rem)] overflow-hidden rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] shadow-[0_8px_28px_rgba(0,0,0,0.16)] [transform-origin:bottom_left]">
-          <p className="border-b border-[var(--as-line-soft)] px-3.5 py-2 text-[11px] font-semibold uppercase tracking-wide text-[var(--as-ink-soft)]">
-            {t("addMenuHint")}
-          </p>
-          <button
-            type="button"
-            onClick={() => begin("obstacle")}
-            className="as-press flex w-full items-center gap-3 px-3.5 py-3 text-left hover:bg-[var(--as-hover-warm)]"
-          >
-            <span
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-[18px] font-bold text-white"
-              style={{ background: "#c13515" }}
-              aria-hidden
-            >
-              !
-            </span>
-            <span className="min-w-0">
-              <span className="block text-[14px] font-semibold text-[var(--as-ink)]">
-                {t("addObstacle")}
-              </span>
-              <span className="mt-0.5 block text-[11px] leading-snug text-[var(--as-ink-soft)]">
-                {t("addObstacleHint")}
-              </span>
-            </span>
-          </button>
-          <button
-            type="button"
-            onClick={() => begin("fly_spot")}
-            className="as-press flex w-full items-center gap-3 border-t border-[var(--as-line-soft)] px-3.5 py-3 text-left hover:bg-[var(--as-hover-green)]"
-          >
-            <span
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-[15px] font-bold text-white"
-              style={{ background: "#0d7a4f" }}
-              aria-hidden
-            >
-              +
-            </span>
-            <span className="min-w-0">
-              <span className="block text-[14px] font-semibold text-[var(--as-ink)]">
-                {t("addFlySpot")}
-              </span>
-              <span className="mt-0.5 block text-[11px] leading-snug text-[var(--as-ink-soft)]">
-                {t("addFlySpotHint")}
-              </span>
-            </span>
-          </button>
+    <div
+      className={
+        isSidebar
+          ? "relative w-full"
+          : "pointer-events-auto relative flex flex-col items-start gap-2.5"
+      }
+    >
+      {!isSidebar && menuOpen ? (
+        <div className={`as-menu-pop-up w-[min(100vw-2rem,15.5rem)]`}>
+          {menu}
         </div>
       ) : null}
 
-      <div className="relative">
+      <div className={isSidebar ? "relative w-full" : "relative"}>
         <button
           type="button"
           aria-label={t("addAria")}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((v) => !v)}
-          className="as-press relative flex h-12 items-center gap-2 rounded-full border-2 border-white bg-[var(--as-rausch)] pl-3.5 pr-4 text-white shadow-[0_4px_16px_rgba(255,56,92,0.45),0_2px_6px_rgba(0,0,0,0.18)] hover:bg-[var(--as-rausch-hover)]"
+          className={
+            isSidebar
+              ? "as-press flex h-11 w-full items-center justify-center gap-2 rounded-xl border-2 border-[var(--as-rausch)] bg-[var(--as-rausch)] text-white shadow-[0_2px_8px_rgba(255,56,92,0.35)] hover:bg-[var(--as-rausch-hover)]"
+              : "as-press relative flex h-12 items-center gap-2 rounded-full border-2 border-white bg-[var(--as-rausch)] pl-3.5 pr-4 text-white shadow-[0_4px_16px_rgba(255,56,92,0.45),0_2px_6px_rgba(0,0,0,0.18)] hover:bg-[var(--as-rausch-hover)]"
+          }
         >
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-white/20 text-[22px] font-light leading-none">
-            {menuOpen ? "×" : "+"}
-          </span>
-          <span className="text-[14px] font-semibold tracking-tight">
-            {menuOpen ? t("closeMenu") : t("add")}
-          </span>
+          {toggleIcon}
+          {toggleLabel}
         </button>
       </div>
+
+      {isSidebar ? (
+        <div
+          className="as-menu-reveal mt-2.5"
+          data-open={menuOpen ? "true" : "false"}
+          aria-hidden={!menuOpen}
+        >
+          <div>
+            {menuOpen ? <div className="as-menu-pop-down">{menu}</div> : null}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -133,7 +181,7 @@ export function MapAddPinSheet() {
 
   return (
     <div className="pointer-events-auto absolute inset-x-0 bottom-0 z-[60] max-h-[min(92dvh,100%)] sm:inset-x-auto sm:bottom-3 sm:left-3 sm:w-[min(100%-1.5rem,20.5rem)]">
-      <div className="as-sheet-in as-scroll flex max-h-[min(92dvh,100%)] flex-col overflow-y-auto rounded-t-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-3.5 pb-[calc(0.875rem+env(safe-area-inset-bottom))] shadow-[0_-8px_28px_rgba(0,0,0,0.12)] sm:max-h-[min(85dvh,40rem)] sm:rounded-2xl sm:p-4 sm:pb-4 sm:shadow-[0_8px_28px_rgba(0,0,0,0.14)]">
+      <div className="as-sheet-in-spring as-scroll flex max-h-[min(92dvh,100%)] flex-col overflow-y-auto rounded-t-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-3.5 pb-[calc(0.875rem+env(safe-area-inset-bottom))] shadow-[0_-8px_28px_rgba(0,0,0,0.12)] sm:max-h-[min(85dvh,40rem)] sm:rounded-2xl sm:p-4 sm:pb-4 sm:shadow-[0_8px_28px_rgba(0,0,0,0.14)]">
         <div className="mb-2.5 flex shrink-0 items-start justify-between gap-3">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--as-ink-soft)]">
@@ -153,7 +201,7 @@ export function MapAddPinSheet() {
           </button>
         </div>
 
-        <div className="space-y-2.5">
+        <div className="as-stagger space-y-2.5">
           <label className="block">
             <span className="mb-1 block text-[12px] font-semibold text-[var(--as-ink)]">
               {t("type")}

@@ -1115,7 +1115,7 @@ export function MapView({ className, initialCenter }: MapViewProps) {
           </div>
         )}
       </div>
-      <div className="pointer-events-none absolute bottom-[calc(108px+0.75rem+env(safe-area-inset-bottom))] left-3 z-30 md:bottom-5 md:left-5">
+      <div className="pointer-events-none absolute bottom-[calc(108px+0.75rem+env(safe-area-inset-bottom))] left-3 z-30 md:hidden">
         <MapAddPinFab />
       </div>
       <MapAddPinSheet />
