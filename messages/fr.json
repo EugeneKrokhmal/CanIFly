@@ -92,7 +92,7 @@
     "googleSignInFailed": "Connexion Google impossible. Réessayez ou utilisez l’e-mail."
   },
   "usageBanner": {
-    "message": "Vous avez consulté {count} lieux. Créez un compte gratuit pour enregistrer vos spots et signaler sur la carte.",
+    "message": "Vous avez utilisé vos {count} consultations gratuites sur la carte. Créez un compte pour continuer à explorer et enregistrer vos spots.",
     "createAccount": "Créer un compte",
     "remindLater": "Me le rappeler plus tard"
   },

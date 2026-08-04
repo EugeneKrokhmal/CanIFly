@@ -92,7 +92,7 @@
     "googleSignInFailed": "Přihlášení přes Google se nezdařilo. Zkuste to znovu nebo použijte e-mail."
   },
   "usageBanner": {
-    "message": "You've checked {count} locations. Create a free account to save your spots and report on the map.",
+    "message": "You've used your {count} free map checks. Create a free account to keep exploring and save your spots.",
     "createAccount": "Create account",
     "remindLater": "Remind me later"
   },
@@ -1447,7 +1447,7 @@
   "settings": {
     "eyebrow": "Preferences",
     "title": "Settings",
-    "intro": "Language and appearance for this device.",
+    "intro": "Jazyk a vzhled na tomto zařízení.",
     "languageTitle": "Jazyk",
     "languageHint": "Přepínejte mezi španělštinou, angličtinou, němčinou, francouzštinou, polštinou a češtinou. URL se aktualizuje.",
     "languageHintSaved": "When signed in, we save your language and restore it on your next login.",

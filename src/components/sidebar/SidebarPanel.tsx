@@ -25,6 +25,28 @@ export type SheetDragProps = {
   onPointerCancel: PointerEventHandler<HTMLElement>;
 };
 
+/** Present on API zones once @canifly/middleware enrichment ships on GitHub main. */
+type EnrichedMatchedZone = MatchedZone & {
+  enrichment?: {
+    contacts?: Array<{
+      email?: string | null;
+      phone?: string | null;
+      url?: string | null;
+    }>;
+  };
+};
+
+function formatZoneContacts(z: MatchedZone): string[] {
+  const zone = z as EnrichedMatchedZone;
+  if (zone.enrichment?.contacts?.length) {
+    return zone.enrichment.contacts.flatMap((c) => {
+      const parts = [c.email, c.phone, c.url].filter(Boolean);
+      return parts.length ? [parts.join(" · ")] : [];
+    });
+  }
+  return z.contact ? [z.contact] : [];
+}
+
 function stripHtml(html: string): string {
   return html
     .replace(/<br\s*\/?>/gi, "\n")
@@ -368,11 +390,14 @@ export function SidebarPanel({
                               {plain}
                             </span>
                           )}
-                          {z.contact && (
-                            <span className="mt-2 block break-all text-[12px] text-[var(--as-ink)]">
-                              {t("contact", { contact: z.contact })}
+                          {formatZoneContacts(z).map((line) => (
+                            <span
+                              key={line}
+                              className="mt-2 block break-all text-[12px] text-[var(--as-ink)]"
+                            >
+                              {t("contact", { contact: line })}
                             </span>
-                          )}
+                          ))}
                           <span className="mt-1 block text-[11px] text-[var(--as-muted)]">
                             ID {z.identifier}
                           </span>

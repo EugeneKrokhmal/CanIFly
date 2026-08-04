@@ -33,22 +33,18 @@ import {
   zoneFillOpacityExpression,
   zoneOutlineColorExpression,
 } from "@/lib/map/zone-style";
-
-const MAP_STYLE_LIGHT =
-  process.env.NEXT_PUBLIC_MAP_STYLE ??
-  "https://tiles.openfreemap.org/styles/liberty";
-const MAP_STYLE_DARK =
-  process.env.NEXT_PUBLIC_MAP_STYLE_DARK ??
-  "https://tiles.openfreemap.org/styles/dark";
+import {
+  basemapStyleLoadOptions,
+  basemapStyleUrl,
+  installBasemapFixes,
+  openFreeMapTransformRequest,
+} from "@/lib/map/basemap";
 
 /** Initial 3D camera — Liberty/Dark include building extrusions that read with pitch. */
 const MAX_PITCH = 85;
 const DEFAULT_PITCH = 65;
 const DEFAULT_BEARING = -20;
 
-function basemapStyleUrl(dark: boolean): string {
-  return dark ? MAP_STYLE_DARK : MAP_STYLE_LIGHT;
-}
 const SOURCE_ID = "uas-zones";
 const FILL_LAYER = "uas-zones-fill";
 const LINE_LAYER = "uas-zones-outline";
@@ -324,7 +320,6 @@ export function MapView({ className, initialCenter }: MapViewProps) {
 
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: styleUrl,
       center,
       zoom,
       pitch,
@@ -335,11 +330,15 @@ export function MapView({ className, initialCenter }: MapViewProps) {
       maxPitch: MAX_PITCH,
       pitchWithRotate: true,
       dragRotate: true,
+      touchZoomRotate: true,
       touchPitch: true,
+      bearingSnap: 7,
       renderWorldCopies: false,
       fadeDuration: 0,
-      antialias: true,
+      canvasContextAttributes: { antialias: true },
+      transformRequest: openFreeMapTransformRequest,
     });
+    map.setStyle(styleUrl, basemapStyleLoadOptions);
 
     map.addControl(
       new maplibregl.NavigationControl({ showCompass: true, visualizePitch: true }),
@@ -361,14 +360,24 @@ export function MapView({ className, initialCenter }: MapViewProps) {
       if (!pos?.coords) return;
       // Prefer an explicit camera request (e.g. View on map deep-link).
       if (useDroneProfileStore.getState().mapCameraRequest) return;
-      locateAndFocusRef.current({
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-      });
+      const skipGuestGate = useDroneProfileStore.getState().geolocateSkipGuestGate;
+      if (skipGuestGate) {
+        useDroneProfileStore.setState({ geolocateSkipGuestGate: false });
+      }
+      locateAndFocusRef.current(
+        {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        },
+        14,
+        { skipGuestGate },
+      );
     });
     map.addControl(geolocate, "top-right");
 
     map.on("load", () => {
+      installBasemapFixes(map);
+
       map.addSource(SOURCE_ID, {
         type: "geojson",
         data: { type: "FeatureCollection", features: [] },
@@ -779,8 +788,13 @@ export function MapView({ className, initialCenter }: MapViewProps) {
         layers: [AC_ICON, OBSTACLE_ICON].filter((id) => map.getLayer(id)),
       });
       if (hits.length > 0) return;
+
+      if (
+        !setSelectedPoint({ lat: e.lngLat.lat, lng: e.lngLat.lng })
+      ) {
+        return;
+      }
       statusPopupActiveRef.current = true;
-      setSelectedPoint({ lat: e.lngLat.lat, lng: e.lngLat.lng });
     });
 
     const onResize = () => {

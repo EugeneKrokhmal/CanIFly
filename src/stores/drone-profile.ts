@@ -9,6 +9,19 @@ import {
   type OperationCategory,
   type WeightClass,
 } from "@canifly/middleware";
+import { tryConsumeGuestMapClick } from "@/lib/auth/usage-gate";
+import { useAuthStore } from "@/stores/auth";
+
+/** Guests must consume a free tap before any point triggers a status fetch. */
+function gateGuestMapCheck(): boolean {
+  if (useAuthStore.getState().user) return true;
+  const { allowed } = tryConsumeGuestMapClick();
+  if (!allowed) {
+    useAuthStore.getState().setAuthModalOpen(true, "register");
+    return false;
+  }
+  return true;
+}
 
 export type { WeightClass, OperationCategory };
 
@@ -69,13 +82,19 @@ interface DroneProfileState {
   setWeightClass: (v: WeightClass) => void;
   setMaxAltitudeAgl: (v: number) => void;
   setSelectedDrone: (d: SelectedDrone | null) => void;
-  setSelectedPoint: (p: { lat: number; lng: number } | null) => void;
-  locateAndFocus: (p: { lat: number; lng: number }, zoom?: number) => void;
+  /** When true, the next geolocate locateAndFocus skips guest quota (boot only). */
+  geolocateSkipGuestGate: boolean;
+  setSelectedPoint: (p: { lat: number; lng: number } | null) => boolean;
+  locateAndFocus: (
+    p: { lat: number; lng: number },
+    zoom?: number,
+    opts?: { skipGuestGate?: boolean },
+  ) => void;
   /** Bump to ask MapView's GeolocateControl to show the blue “you are here” dot. */
   geolocateNonce: number;
   /** When true, MapView must not auto-trigger geolocate (deep-link / search focus). */
   suppressGeolocate: boolean;
-  requestGeolocate: () => void;
+  requestGeolocate: (opts?: { skipGuestGate?: boolean }) => void;
   clearMapCameraRequest: () => void;
   setStatusResult: (payload: {
     status: AirspaceStatus;
@@ -107,6 +126,7 @@ export const useDroneProfileStore = create<DroneProfileState>()(
       mapCameraRequest: null,
       geolocateNonce: 0,
       suppressGeolocate: false,
+      geolocateSkipGuestGate: false,
       status: null,
       summary: null,
       zones: [],
@@ -133,7 +153,8 @@ export const useDroneProfileStore = create<DroneProfileState>()(
           selectedDrone,
           ...(selectedDrone ? { weightClass: selectedDrone.weightClass } : {}),
         }),
-      setSelectedPoint: (selectedPoint) =>
+      setSelectedPoint: (selectedPoint) => {
+        if (selectedPoint && !gateGuestMapCheck()) return false;
         set({
           selectedPoint,
           // Drop previous tap's verdict immediately so UI cannot flash the wrong status.
@@ -144,8 +165,13 @@ export const useDroneProfileStore = create<DroneProfileState>()(
           statusLoading: selectedPoint != null,
           queryMs: null,
           highlightedZoneId: null,
-        }),
-      locateAndFocus: (p, zoom = 14) =>
+        });
+        return true;
+      },
+      locateAndFocus: (p, zoom = 14, opts) => {
+        if (!opts?.skipGuestGate && !gateGuestMapCheck()) {
+          return;
+        }
         set((s) => ({
           selectedPoint: p,
           suppressGeolocate: true,
@@ -162,11 +188,13 @@ export const useDroneProfileStore = create<DroneProfileState>()(
             zoom,
             nonce: (s.mapCameraRequest?.nonce ?? 0) + 1,
           },
-        })),
-      requestGeolocate: () =>
+        }));
+      },
+      requestGeolocate: (opts) =>
         set((s) => ({
           suppressGeolocate: false,
           geolocateNonce: s.geolocateNonce + 1,
+          geolocateSkipGuestGate: opts?.skipGuestGate ?? false,
         })),
       clearMapCameraRequest: () => set({ mapCameraRequest: null }),
       setStatusResult: (payload) =>

@@ -92,7 +92,7 @@
     "googleSignInFailed": "No se pudo iniciar sesión con Google. Inténtalo de nuevo o usa el email."
   },
   "usageBanner": {
-    "message": "Has consultado {count} lugares. Crea una cuenta gratis para guardar sitios y reportar en el mapa.",
+    "message": "Has usado tus {count} consultas gratis en el mapa. Crea una cuenta para seguir explorando y guardar tus sitios.",
     "createAccount": "Crear cuenta",
     "remindLater": "Recordar más tarde"
   },

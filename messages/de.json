@@ -92,7 +92,7 @@
     "googleSignInFailed": "Google-Anmeldung fehlgeschlagen. Erneut versuchen oder E-Mail nutzen."
   },
   "usageBanner": {
-    "message": "Sie haben {count} Orte geprüft. Erstellen Sie ein kostenloses Konto, um Ihre Spots zu speichern und auf der Karte zu melden.",
+    "message": "Sie haben Ihre {count} kostenlosen Kartenabfragen genutzt. Erstellen Sie ein Konto, um weiter zu erkunden und Spots zu speichern.",
     "createAccount": "Konto erstellen",
     "remindLater": "Später erinnern"
   },

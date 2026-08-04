@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import { recordLocationCheck } from "@/lib/auth/usage-gate";
+import { shouldBlockGuestStatusFetch } from "@/lib/auth/usage-gate";
 import { useAuthStore } from "@/stores/auth";
 import {
   useDroneProfileStore,
@@ -45,6 +45,11 @@ export function useAirspaceStatus() {
 
   const fetchStatus = useCallback(
     async (lat: number, lng: number) => {
+      if (!userRef.current && shouldBlockGuestStatusFetch()) {
+        setStatusLoading(false);
+        return;
+      }
+
       abortRef.current?.abort();
       const controller = new AbortController();
       abortRef.current = controller;
@@ -77,11 +82,6 @@ export function useAirspaceStatus() {
           dataVersion: data.meta?.dataVersion ?? null,
           backend: data.meta?.backend ?? null,
         });
-        // Read auth via ref so login/usage-gate updates do not re-create
-        // fetchStatus and re-trigger a loading cycle for the same point.
-        if (!userRef.current) {
-          recordLocationCheck(lat, lng);
-        }
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return;
         if (requestId !== requestIdRef.current) return;

@@ -92,7 +92,7 @@
     "googleSignInFailed": "Logowanie przez Google nie powiodło się. Spróbuj ponownie lub użyj e-maila."
   },
   "usageBanner": {
-    "message": "Sprawdziłeś {count} miejsc. Utwórz darmowe konto, aby zapisywać miejsca i zgłaszać na mapie.",
+    "message": "Wykorzystałeś {count} darmowych sprawdzeń na mapie. Utwórz konto, aby dalej korzystać i zapisywać miejsca.",
     "createAccount": "Utwórz konto",
     "remindLater": "Przypomnij później"
   },

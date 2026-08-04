@@ -61,9 +61,8 @@ function MapDeepLink() {
       }
     }
 
-    // No coordinates in the URL — show the MapLibre user-location dot.
-    // IP country framing is applied as MapView initialCenter (no pin / no status query).
-    requestGeolocate();
+    // No coordinates in the URL — geolocate user and show flight status at their position.
+    requestGeolocate({ skipGuestGate: true });
   }, [searchParams, locateAndFocus, requestGeolocate]);
 
   return null;

@@ -95,7 +95,7 @@ Verify: `GET /api/admin/ingest` (with the same secret) should show `count > 0` a
 # Local / one-off (tiled national crawl — several minutes)
 cd CanIFly-api && npm run sync:dipul
 
-# Production
+# Production (async — returns immediately; watch Render logs ~15–30 min)
 curl -X POST "https://canifly-api.onrender.com/api/admin/ingest" \
   -H "Content-Type: application/json" \
   -H "x-ingest-secret: $ENAIRE_INGEST_SECRET" \

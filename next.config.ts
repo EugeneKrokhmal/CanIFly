@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
+        source: "/ofm/:path*",
+        destination: "https://tiles.openfreemap.org/:path*",
+      },
+      {
+        source: "/:locale/ofm/:path*",
+        destination: "https://tiles.openfreemap.org/:path*",
+      },
+      {
         source: "/api/:path*",
         destination: `${apiBase}/api/:path*`,
       },

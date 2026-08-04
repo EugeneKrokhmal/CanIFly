@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import { clearGuestUsageOnLogin } from "@/lib/auth/usage-gate";
 import type { AppLocale } from "@/i18n/routing";
 
 export type { AppLocale };
@@ -73,6 +74,20 @@ function normalizeUser(
   return { ...user, locale: normalizeLocale(user.locale, fallbackLocale) };
 }
 
+function commitAuthenticatedUser(
+  user: AuthUser,
+  serverLocale: AppLocale | null,
+  fallbackLocale: AppLocale = "es",
+) {
+  clearGuestUsageOnLogin();
+  return {
+    user: normalizeUser(user, serverLocale ?? fallbackLocale),
+    serverLocale,
+    authModalOpen: false,
+    pendingVerifyEmail: null,
+  };
+}
+
 async function parseError(res: Response): Promise<string> {
   try {
     const data = (await res.json()) as { error?: string };
@@ -102,18 +117,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     })),
 
   setUser: (user) =>
-    set((s) => ({
-      user: user
-        ? normalizeUser(
-            {
-              ...user,
-              locale: user.locale ?? s.user?.locale ?? "es",
-            },
-            s.user?.locale ?? "es",
-          )
-        : null,
-      pendingVerifyEmail: null,
-    })),
+    set((s) => {
+      if (user) clearGuestUsageOnLogin();
+      return {
+        user: user
+          ? normalizeUser(
+              {
+                ...user,
+                locale: user.locale ?? s.user?.locale ?? "es",
+              },
+              s.user?.locale ?? "es",
+            )
+          : null,
+        pendingVerifyEmail: null,
+      };
+    }),
 
   fetchMe: async () => {
     set({ loading: true });
@@ -126,11 +144,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       const data = (await res.json()) as { user: AuthUser };
       const serverLocale = parseServerLocale(data.user.locale);
       set((s) => ({
-        user: normalizeUser(
+        ...commitAuthenticatedUser(
           data.user,
+          serverLocale,
           serverLocale ?? s.user?.locale ?? "es",
         ),
-        serverLocale,
         loading: false,
       }));
     } catch {
@@ -175,12 +193,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (!res.ok) return { error: await parseError(res) };
     const data = (await res.json()) as { user: AuthUser };
     const serverLocale = parseServerLocale(data.user.locale);
-    set({
-      user: normalizeUser(data.user, serverLocale ?? "es"),
-      serverLocale,
-      authModalOpen: false,
-      pendingVerifyEmail: null,
-    });
+    set(commitAuthenticatedUser(data.user, serverLocale));
     return { error: null };
   },
 
@@ -212,12 +225,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
     if (data.user) {
       const serverLocale = parseServerLocale(data.user.locale);
-      set({
-        user: normalizeUser(data.user, serverLocale ?? "es"),
-        serverLocale,
-        authModalOpen: false,
-        pendingVerifyEmail: null,
-      });
+      set(commitAuthenticatedUser(data.user, serverLocale));
     }
     return { error: null };
   },
