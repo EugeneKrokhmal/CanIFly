@@ -25,21 +25,9 @@ export type SheetDragProps = {
   onPointerCancel: PointerEventHandler<HTMLElement>;
 };
 
-/** Present on API zones once @canifly/middleware enrichment ships on GitHub main. */
-type EnrichedMatchedZone = MatchedZone & {
-  enrichment?: {
-    contacts?: Array<{
-      email?: string | null;
-      phone?: string | null;
-      url?: string | null;
-    }>;
-  };
-};
-
 function formatZoneContacts(z: MatchedZone): string[] {
-  const zone = z as EnrichedMatchedZone;
-  if (zone.enrichment?.contacts?.length) {
-    return zone.enrichment.contacts.flatMap((c) => {
+  if (z.enrichment?.contacts?.length) {
+    return z.enrichment.contacts.flatMap((c) => {
       const parts = [c.email, c.phone, c.url].filter(Boolean);
       return parts.length ? [parts.join(" · ")] : [];
     });
