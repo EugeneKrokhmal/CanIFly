@@ -14,6 +14,7 @@ export type AuthUser = {
   bio: string | null;
   avatarUrl: string | null;
   locale: AppLocale;
+  marketingOptIn: boolean;
 };
 
 type AuthState = {
@@ -45,8 +46,11 @@ type AuthState = {
     name: string;
     operatorNumber?: string;
     locale?: AppLocale;
+    marketingOptIn?: boolean;
+    acceptTerms: true;
   }) => Promise<{ error: string | null; needsVerification?: boolean }>;
   updateLocale: (locale: AppLocale) => Promise<string | null>;
+  updateMarketingOptIn: (marketingOptIn: boolean) => Promise<string | null>;
   resendVerification: (email: string) => Promise<string | null>;
   requestPasswordReset: (email: string) => Promise<string | null>;
   logout: () => Promise<void>;
@@ -71,7 +75,11 @@ function normalizeUser(
   user: AuthUser,
   fallbackLocale: AppLocale = "es",
 ): AuthUser {
-  return { ...user, locale: normalizeLocale(user.locale, fallbackLocale) };
+  return {
+    ...user,
+    locale: normalizeLocale(user.locale, fallbackLocale),
+    marketingOptIn: Boolean(user.marketingOptIn),
+  };
 }
 
 function commitAuthenticatedUser(
@@ -208,6 +216,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         name: input.name,
         operatorNumber: input.operatorNumber || null,
         locale: normalizeLocale(input.locale),
+        marketingOptIn: Boolean(input.marketingOptIn),
+        acceptTerms: true as const,
       }),
     });
     if (!res.ok) return { error: await parseError(res) };
@@ -244,6 +254,24 @@ export const useAuthStore = create<AuthState>((set) => ({
       user: normalizeUser(data.user, serverLocale),
       serverLocale,
     });
+    return null;
+  },
+
+  updateMarketingOptIn: async (marketingOptIn) => {
+    const res = await fetch("/api/auth/marketing", {
+      method: "PATCH",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ marketingOptIn }),
+    });
+    if (!res.ok) return parseError(res);
+    const data = (await res.json()) as { user: AuthUser };
+    set((s) => ({
+      user: normalizeUser(
+        data.user,
+        parseServerLocale(data.user.locale) ?? s.user?.locale ?? "es",
+      ),
+    }));
     return null;
   },
 

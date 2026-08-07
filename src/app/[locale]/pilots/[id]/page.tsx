@@ -10,6 +10,7 @@ import {
   type PinKind,
 } from "@canifly/middleware";
 import { Link } from "@/i18n/navigation";
+import { BackToMapLink } from "@/components/layout/BackToMapLink";
 
 type Pilot = {
   id: string;
@@ -249,14 +250,7 @@ export default function PilotProfilePage({
           )}
         </section>
 
-        <p className="mt-10 text-[13px] text-[var(--as-ink-soft)]">
-          <Link
-            href="/"
-            className="font-semibold text-[#ff385c] hover:underline"
-          >
-            {t("backToMap")}
-          </Link>
-        </p>
+        <BackToMapLink namespace="pilot" />
       </div>
 
       {lightboxSrc ? (

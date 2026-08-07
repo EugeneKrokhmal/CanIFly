@@ -2,11 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
 import { useAuthStore, type AppLocale } from "@/stores/auth";
+import { preferredRegisterLocale } from "@/lib/i18n/preferred-locale";
+import { routing } from "@/i18n/routing";
 
 export function AuthModal() {
   const t = useTranslations("auth");
   const locale = useLocale() as AppLocale;
+  const pathname = usePathname();
   const open = useAuthStore((s) => s.authModalOpen);
   const mode = useAuthStore((s) => s.authModalMode);
   const authNotice = useAuthStore((s) => s.authNotice);
@@ -23,7 +27,8 @@ export function AuthModal() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [operatorNumber, setOperatorNumber] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -53,13 +58,22 @@ export function AuthModal() {
     setEmail("");
     setPassword("");
     setName("");
-    setOperatorNumber("");
+    setAcceptTerms(false);
+    setMarketingOptIn(false);
     setError(null);
     setInfo(null);
     setAuthNotice(null);
     setSubmitting(false);
     setResending(false);
-  }, [open, mode]);
+  }, [open, mode, setAuthNotice]);
+
+  const authLocale = preferredRegisterLocale(locale);
+  const acceptAll = acceptTerms && marketingOptIn;
+
+  const setAcceptAll = (next: boolean) => {
+    setAcceptTerms(next);
+    setMarketingOptIn(next);
+  };
 
   if (!mounted) return null;
 
@@ -78,16 +92,29 @@ export function AuthModal() {
       setInfo(t("resetEmailSent", { email: email.toLowerCase() }));
       return;
     }
-    const result =
-      mode === "register"
-        ? await register({
-            email,
-            password,
-            name,
-            operatorNumber: operatorNumber.trim() || undefined,
-            locale,
-          })
-        : await login(email, password);
+    if (mode === "register") {
+      if (!acceptTerms) {
+        setSubmitting(false);
+        setError(t("acceptTermsRequired"));
+        return;
+      }
+      const result = await register({
+        email,
+        password,
+        name,
+        locale: authLocale,
+        marketingOptIn,
+        acceptTerms: true,
+      });
+      setSubmitting(false);
+      if (result.needsVerification) {
+        setInfo(t("checkEmail", { email: email.toLowerCase() }));
+        return;
+      }
+      if (result.error) setError(result.error);
+      return;
+    }
+    const result = await login(email, password);
     setSubmitting(false);
     if (result.needsVerification) {
       setInfo(t("checkEmail", { email: email.toLowerCase() }));
@@ -123,7 +150,15 @@ export function AuthModal() {
       : mode === "forgot"
         ? t("forgotBlurb")
         : t("loginBlurb");
-  const googleHref = `/api/auth/google?locale=${encodeURIComponent(locale)}&returnTo=${encodeURIComponent(`/${locale}`)}`;
+  // Stay on the page the user was viewing; only use preferredRegisterLocale for
+  // new-account language (emails), not for post-OAuth navigation.
+  const googleReturnTo =
+    pathname && pathname !== "/"
+      ? pathname
+      : locale === routing.defaultLocale
+        ? "/"
+        : `/${locale}`;
+  const googleHref = `/api/auth/google?locale=${encodeURIComponent(authLocale)}&returnTo=${encodeURIComponent(googleReturnTo)}`;
   const showGoogleBlock = mode !== "forgot" && !showVerifyPrompt;
   const showGoogle = showGoogleBlock && googleOAuthEnabled === true;
   const showGoogleSkeleton = showGoogleBlock && googleOAuthEnabled === null;
@@ -254,6 +289,30 @@ export function AuthModal() {
               </svg>
               {t("continueWithGoogle")}
             </a>
+            <p className="mb-3 text-center text-[10px] leading-none whitespace-nowrap text-[var(--as-ink-soft)]">
+              {t.rich("googleLegal", {
+                terms: (chunks) => (
+                  <Link
+                    href="/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-[var(--as-ink)] underline underline-offset-2"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+                privacy: (chunks) => (
+                  <Link
+                    href="/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-[var(--as-ink)] underline underline-offset-2"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </p>
             <div className="mb-4 flex items-center gap-3">
               <div className="h-px flex-1 bg-[var(--as-line)]" />
               <span className="text-[12px] font-medium text-[var(--as-ink-soft)]">
@@ -265,39 +324,22 @@ export function AuthModal() {
         ) : null}
         <form onSubmit={onSubmit} className="space-y-3">
           {mode === "register" && (
-            <>
-              <label className="block">
-                <span className="mb-1.5 block text-[12px] font-semibold text-[var(--as-ink)]">
-                  {t("name")}{" "}
-                  <span className="font-bold text-[var(--as-rausch)]">*</span>
-                </span>
-                <input
-                  type="text"
-                  autoComplete="name"
-                  required
-                  minLength={2}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder={t("namePlaceholder")}
-                  className="w-full rounded-xl border border-[var(--as-line)] px-3 py-2.5 text-[14px] outline-none transition-[border-color,box-shadow] duration-150 focus:border-[var(--as-ink)] focus:shadow-[0_0_0_3px_rgba(34,34,34,0.08)]"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-1.5 block text-[12px] font-semibold text-[var(--as-ink)]">
-                  {t("operatorNumber")}{" "}
-                  <span className="font-normal text-[var(--as-ink-soft)]">
-                    {t("optional")}
-                  </span>
-                </span>
-                <input
-                  type="text"
-                  value={operatorNumber}
-                  onChange={(e) => setOperatorNumber(e.target.value)}
-                  placeholder={t("operatorPlaceholder")}
-                  className="w-full rounded-xl border border-[var(--as-line)] px-3 py-2.5 text-[14px] outline-none transition-[border-color,box-shadow] duration-150 focus:border-[var(--as-ink)] focus:shadow-[0_0_0_3px_rgba(34,34,34,0.08)]"
-                />
-              </label>
-            </>
+            <label className="block">
+              <span className="mb-1.5 block text-[12px] font-semibold text-[var(--as-ink)]">
+                {t("name")}{" "}
+                <span className="font-bold text-[var(--as-rausch)]">*</span>
+              </span>
+              <input
+                type="text"
+                autoComplete="name"
+                required
+                minLength={2}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={t("namePlaceholder")}
+                className="w-full rounded-xl border border-[var(--as-line)] px-3 py-2.5 text-[14px] outline-none transition-[border-color,box-shadow] duration-150 focus:border-[var(--as-ink)] focus:shadow-[0_0_0_3px_rgba(34,34,34,0.08)]"
+              />
+            </label>
           )}
 
           <label className="block">
@@ -337,6 +379,69 @@ export function AuthModal() {
           </label>
           ) : null}
 
+          {mode === "register" ? (
+            <div className="space-y-2 rounded-xl border border-[var(--as-line)] px-3 py-2.5">
+              <label className="flex cursor-pointer items-start gap-2.5">
+                <input
+                  type="checkbox"
+                  checked={acceptAll}
+                  onChange={(e) => setAcceptAll(e.target.checked)}
+                  className="mt-0.5 size-4 shrink-0 rounded border-[var(--as-line)] accent-[var(--as-ink)]"
+                />
+                <span className="text-[12px] font-semibold leading-snug text-[var(--as-ink)]">
+                  {t("acceptAll")}
+                </span>
+              </label>
+              <label className="flex cursor-pointer items-start gap-2.5">
+                <input
+                  type="checkbox"
+                  checked={acceptTerms}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  required
+                  className="mt-0.5 size-4 shrink-0 rounded border-[var(--as-line)] accent-[var(--as-ink)]"
+                />
+                <span className="text-[12px] leading-snug text-[var(--as-ink-soft)]">
+                  {t.rich("acceptTerms", {
+                    terms: (chunks) => (
+                      <Link
+                        href="/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-[var(--as-ink)] underline underline-offset-2"
+                        onClick={(ev) => ev.stopPropagation()}
+                      >
+                        {chunks}
+                      </Link>
+                    ),
+                    privacy: (chunks) => (
+                      <Link
+                        href="/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-[var(--as-ink)] underline underline-offset-2"
+                        onClick={(ev) => ev.stopPropagation()}
+                      >
+                        {chunks}
+                      </Link>
+                    ),
+                  })}{" "}
+                  <span className="font-bold text-[var(--as-rausch)]">*</span>
+                </span>
+              </label>
+              <label className="flex cursor-pointer items-start gap-2.5">
+                <input
+                  type="checkbox"
+                  checked={marketingOptIn}
+                  onChange={(e) => setMarketingOptIn(e.target.checked)}
+                  className="mt-0.5 size-4 shrink-0 rounded border-[var(--as-line)] accent-[var(--as-ink)]"
+                />
+                <span className="text-[12px] leading-snug text-[var(--as-ink-soft)]">
+                  {t("marketingOptIn")}
+                </span>
+              </label>
+            </div>
+          ) : null}
+
           {mode === "login" ? (
             <p className="text-right">
               <button
@@ -363,7 +468,9 @@ export function AuthModal() {
 
           <button
             type="submit"
-            disabled={submitting}
+            disabled={
+              submitting || (mode === "register" && !acceptTerms)
+            }
             className="as-press w-full rounded-xl bg-[var(--as-ink)] px-4 py-2.5 text-[14px] font-semibold text-[var(--as-ink-invert)] disabled:opacity-60"
           >
             {submitting

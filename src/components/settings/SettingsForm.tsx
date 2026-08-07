@@ -45,10 +45,14 @@ export function SettingsForm() {
   const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
   const updateLocale = useAuthStore((s) => s.updateLocale);
+  const updateMarketingOptIn = useAuthStore((s) => s.updateMarketingOptIn);
   const preference = useThemeStore((s) => s.preference);
   const setPreference = useThemeStore((s) => s.setPreference);
   const [savingLocale, setSavingLocale] = useState(false);
   const [localeError, setLocaleError] = useState<string | null>(null);
+  const [savingMarketing, setSavingMarketing] = useState(false);
+  const [marketingError, setMarketingError] = useState<string | null>(null);
+  const [marketingSaved, setMarketingSaved] = useState(false);
 
   const switchLocale = async (next: AppLocale) => {
     if (next === locale || savingLocale) return;
@@ -70,6 +74,25 @@ export function SettingsForm() {
       // Keep the chosen UI language; warn that it may not stick after re-login.
       setLocaleError(t("languageSaveFailed"));
     }
+  };
+
+  const switchMarketing = async (next: boolean) => {
+    if (!user || savingMarketing || user.marketingOptIn === next) return;
+    setMarketingError(null);
+    setMarketingSaved(false);
+    setUser({ ...user, marketingOptIn: next });
+    setSavingMarketing(true);
+    const err = await updateMarketingOptIn(next);
+    setSavingMarketing(false);
+    if (err) {
+      const latest = useAuthStore.getState().user;
+      if (latest) {
+        setUser({ ...latest, marketingOptIn: !next });
+      }
+      setMarketingError(t("marketingSaveFailed"));
+      return;
+    }
+    setMarketingSaved(true);
   };
 
   const themes: { id: ThemePreference; label: string }[] = [
@@ -110,6 +133,38 @@ export function SettingsForm() {
           </p>
         ) : null}
       </section>
+
+      {user ? (
+        <section className="rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <h2 className="text-[16px] font-semibold text-[var(--as-ink)]">
+            {t("marketingTitle")}
+          </h2>
+          <p className="mt-1 text-[13px] leading-relaxed text-[var(--as-ink-soft)]">
+            {t("marketingHint")}
+          </p>
+          <label className="mt-4 flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              checked={Boolean(user.marketingOptIn)}
+              disabled={savingMarketing}
+              onChange={(e) => void switchMarketing(e.target.checked)}
+              className="mt-0.5 size-4 shrink-0 rounded border-[var(--as-line)] accent-[var(--as-ink)] disabled:opacity-60"
+            />
+            <span className="text-[14px] leading-snug text-[var(--as-ink)]">
+              {t("marketingOptIn")}
+            </span>
+          </label>
+          {marketingError ? (
+            <p className="mt-3 text-[13px] text-[var(--as-danger,#c13515)]">
+              {marketingError}
+            </p>
+          ) : marketingSaved ? (
+            <p className="mt-3 text-[13px] text-[var(--as-ink-soft)]">
+              {t("marketingSaved")}
+            </p>
+          ) : null}
+        </section>
+      ) : null}
 
       <section className="rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
         <h2 className="text-[16px] font-semibold text-[var(--as-ink)]">

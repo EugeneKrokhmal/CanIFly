@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { BackToMapLink } from "@/components/layout/BackToMapLink";
 import { buildPageMetadata } from "@/lib/seo";
 
 type Props = {
@@ -75,12 +75,7 @@ export default async function PrivacyPage({ params }: Props) {
           </p>
         </section>
 
-        <Link
-          href="/"
-          className="mt-8 inline-block text-[14px] font-semibold text-[#ff385c] hover:underline"
-        >
-          {t("backToMap")}
-        </Link>
+        <BackToMapLink namespace="privacy" />
       </div>
     </div>
   );

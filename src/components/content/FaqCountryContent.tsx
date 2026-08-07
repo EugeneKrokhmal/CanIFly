@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { BackToMapLink } from "@/components/layout/BackToMapLink";
 import { CountrySelect, type ContentCountryId } from "./CountrySelect";
 import { ulcDronesLabel, ulcDronesUrl } from "@/lib/official-links";
 
@@ -204,14 +205,7 @@ export function FaqCountryContent() {
         </Link>
       </p>
 
-      <p className="mt-4">
-        <Link
-          href="/"
-          className="text-[14px] font-medium text-[var(--as-ink-soft)] hover:underline"
-        >
-          {t("backToMap")}
-        </Link>
-      </p>
+      <BackToMapLink namespace="faq" />
     </>
   );
 }

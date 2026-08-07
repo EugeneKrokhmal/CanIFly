@@ -26,6 +26,7 @@ export function SiteHeader() {
     { href: "/faq", label: t("faq") },
     { href: "/contacts", label: t("contacts") },
     { href: "/privacy", label: t("privacy") },
+    { href: "/terms", label: t("terms") },
   ] as const;
 
   const menuItemClass =

@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { BackToMapLink } from "@/components/layout/BackToMapLink";
 import { SettingsForm } from "@/components/settings/SettingsForm";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -38,12 +38,7 @@ export default async function SettingsPage({ params }: Props) {
 
         <SettingsForm />
 
-        <Link
-          href="/"
-          className="mt-8 inline-block text-[14px] font-semibold text-[var(--as-ink-soft)] hover:underline"
-        >
-          {t("backToMap")}
-        </Link>
+        <BackToMapLink namespace="settings" />
       </div>
     </div>
   );

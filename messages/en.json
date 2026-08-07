@@ -8,6 +8,8 @@
     "guideDescription": "How to know if you can fly a drone in Europe: UAS zones, open category, AGL ceiling and the CanIFly map.",
     "privacyTitle": "Privacy & cookies | CanIFly",
     "privacyDescription": "How CanIFly handles data, cookies and local storage for the Europe UAS airspace map.",
+    "termsTitle": "Terms of Service | CanIFly",
+    "termsDescription": "Terms for using CanIFly — accounts, map content, and planning-aid disclaimer.",
     "contactsTitle": "Official drone contacts — Europe | CanIFly",
     "contactsDescription": "Official links for drone flight authorization across European coverage countries.",
     "accountTitle": "My account | CanIFly",
@@ -21,6 +23,7 @@
     "guide": "Guide",
     "contacts": "Contacts",
     "privacy": "Privacy",
+    "terms": "Terms",
     "settings": "Settings",
     "account": "Account",
     "publicProfile": "Public profile",
@@ -89,7 +92,12 @@
     "rememberPassword": "Remember your password?",
     "continueWithGoogle": "Continue with Google",
     "orContinueWith": "or",
-    "googleSignInFailed": "Google sign-in failed. Try again or use email."
+    "googleSignInFailed": "Google sign-in failed. Try again or use email.",
+    "marketingOptIn": "Email me product updates and flying tips (optional)",
+    "acceptAll": "Accept all",
+    "acceptTerms": "I agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>",
+    "acceptTermsRequired": "Please accept the Terms and Privacy Policy to continue.",
+    "googleLegal": "Agree to our <terms>Terms</terms> and <privacy>Privacy Policy</privacy>."
   },
   "usageBanner": {
     "message": "You've used your {count} free map checks. Create a free account to keep exploring and save your spots.",
@@ -1195,6 +1203,22 @@
     "choicesBodyAfter": " if optional analytics are introduced. Clear site data in your browser to reset the banner.",
     "backToMap": "← Back to map"
   },
+  "terms": {
+    "eyebrow": "Legal",
+    "title": "Terms of Service",
+    "intro": "By creating a CanIFly account or using the service, you agree to these terms. CanIFly is a planning aid for recreational UAS pilots — not an official aviation authority.",
+    "serviceTitle": "The service",
+    "serviceBody": "CanIFly shows approximate UAS geographical zone status on a map. Data comes from third-party providers and may be incomplete, delayed, or wrong. Always verify with the official national source before flying.",
+    "accountTitle": "Your account",
+    "accountBody": "Keep your login details safe. You are responsible for activity under your account. Do not impersonate others or misuse map pins (obstacles / fly spots).",
+    "contentTitle": "Community content",
+    "contentBody": "Pins and photos you add may be visible to other users. Do not post illegal, harmful, or private content. We may remove content that breaks these rules.",
+    "liabilityTitle": "No flight clearance",
+    "liabilityBody": "CanIFly does not authorise flights. Status labels are informational. You fly at your own risk and must follow local law, airspace rules, and manufacturer guidance.",
+    "privacyTitle": "Privacy",
+    "privacyBody": "How we handle personal data is described in our <privacy>Privacy Policy</privacy>.",
+    "backToMap": "← Back to map"
+  },
   "contacts": {
     "eyebrow": "Links",
     "countryLabel": "Country",
@@ -1213,6 +1237,23 @@
       "LV": "Latvia"
     },
     "backToMap": "← Back to map",
+    "form": {
+      "title": "Contact CanIFly",
+      "hint": "Suggestions, bugs, or complaints — we read every message.",
+      "name": "Name",
+      "email": "Email",
+      "category": "Topic",
+      "categorySuggestion": "Suggestion",
+      "categoryComplaint": "Complaint",
+      "categoryOther": "Other",
+      "message": "Message",
+      "messagePlaceholder": "Tell us what’s on your mind…",
+      "submit": "Send message",
+      "sending": "Sending…",
+      "success": "Thanks — your message was sent. We’ll reply by email if needed.",
+      "sendAnother": "Send another message",
+      "error": "Could not send. Try again in a moment."
+    },
     "byCountry": {
       "ES": {
         "title": "Contacts — Spain",
@@ -1460,6 +1501,11 @@
     "backToMap": "← Back to map",
     "langCs": "Čeština",
     "langDe": "Deutsch",
-    "langFr": "Français"
+    "langFr": "Français",
+    "marketingTitle": "Email updates",
+    "marketingHint": "Optional product news and flying tips. You can change this anytime. Verification and security emails are always sent.",
+    "marketingOptIn": "Send me product updates and tips",
+    "marketingSaved": "Preference saved.",
+    "marketingSaveFailed": "Couldn’t save this preference. Try again."
   }
 }

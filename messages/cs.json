@@ -13,7 +13,9 @@
     "accountTitle": "Můj účet | CanIFly",
     "accountDescription": "Správa profilu pilota CanIFly.",
     "settingsTitle": "Nastavení — jazyk a motiv | CanIFly",
-    "settingsDescription": "Zvolte jazyk (ES/EN/DE/FR/PL/CS) a světlý, tmavý nebo systémový motiv CanIFly."
+    "settingsDescription": "Zvolte jazyk (ES/EN/DE/FR/PL/CS) a světlý, tmavý nebo systémový motiv CanIFly.",
+    "termsTitle": "Podmínky služby | CanIFly",
+    "termsDescription": "Podmínky používání CanIFly — účty, mapa a upozornění na plánovací pomůcku."
   },
   "nav": {
     "map": "Mapa",
@@ -47,7 +49,8 @@
     "weatherArea": "u středu mapy",
     "weatherLoading": "Načítání počasí…",
     "langDe": "DE",
-    "langFr": "FR"
+    "langFr": "FR",
+    "terms": "Podmínky"
   },
   "search": {
     "title": "Hledat místo",
@@ -89,7 +92,12 @@
     "rememberPassword": "Vzpomínáte si na heslo?",
     "continueWithGoogle": "Pokračovat přes Google",
     "orContinueWith": "nebo",
-    "googleSignInFailed": "Přihlášení přes Google se nezdařilo. Zkuste to znovu nebo použijte e-mail."
+    "googleSignInFailed": "Přihlášení přes Google se nezdařilo. Zkuste to znovu nebo použijte e-mail.",
+    "marketingOptIn": "Posílejte mi novinky o produktu a tipy k létání (volitelné)",
+    "acceptAll": "Přijmout vše",
+    "acceptTerms": "Souhlasím s <terms>Podmínkami služby</terms> a <privacy>Zásadami ochrany soukromí</privacy>",
+    "acceptTermsRequired": "Pro pokračování přijměte Podmínky a Zásady ochrany soukromí.",
+    "googleLegal": "Souhlasíte s <terms>Podmínkami</terms> a <privacy>Soukromím</privacy>."
   },
   "usageBanner": {
     "message": "You've used your {count} free map checks. Create a free account to keep exploring and save your spots.",
@@ -1195,6 +1203,22 @@
     "choicesBodyAfter": " if optional analytics are introduced. Clear site data in your browser to reset the banner.",
     "backToMap": "← Back to map"
   },
+  "terms": {
+    "eyebrow": "Právní informace",
+    "title": "Podmínky služby",
+    "intro": "Vytvořením účtu nebo používáním CanIFly souhlasíte s těmito podmínkami. CanIFly je plánovací pomůcka, nikoli oficiální letecký úřad.",
+    "serviceTitle": "Služba",
+    "serviceBody": "CanIFly zobrazuje přibližný stav UAS zón. Data pocházejí od třetích stran a mohou být neúplná nebo chybná. Před letem vždy ověřte oficiální zdroj.",
+    "accountTitle": "Váš účet",
+    "accountBody": "Chraňte přihlašovací údaje. Za aktivitu na účtu odpovídáte vy. Nesmíte se vydávat za jiné ani zneužívat špendlíky na mapě.",
+    "contentTitle": "Komunitní obsah",
+    "contentBody": "Špendlíky a fotky mohou být viditelné ostatním. Nezveřejňujte nezákonný nebo škodlivý obsah. Obsah porušující pravidla můžeme odstranit.",
+    "liabilityTitle": "Žádné povolení k letu",
+    "liabilityBody": "CanIFly nepovoluje lety. Štítky jsou informativní. Létáte na vlastní riziko a podle místních předpisů.",
+    "privacyTitle": "Soukromí",
+    "privacyBody": "Zpracování osobních údajů popisují naše <privacy>Zásady ochrany soukromí</privacy>.",
+    "backToMap": "← Zpět na mapu"
+  },
   "contacts": {
     "eyebrow": "Links",
     "countryLabel": "Country",
@@ -1442,6 +1466,23 @@
           "caa": "CAA Latvia"
         }
       }
+    },
+    "form": {
+      "title": "Kontaktovat CanIFly",
+      "hint": "Návrhy, chyby nebo stížnosti — každou zprávu čteme.",
+      "name": "Jméno",
+      "email": "E-mail",
+      "category": "Téma",
+      "categorySuggestion": "Návrh",
+      "categoryComplaint": "Stížnost",
+      "categoryOther": "Jiné",
+      "message": "Zpráva",
+      "messagePlaceholder": "Napište, co máte na mysli…",
+      "submit": "Odeslat zprávu",
+      "sending": "Odesílání…",
+      "success": "Díky — zpráva byla odeslána. V případě potřeby odpovíme e-mailem.",
+      "sendAnother": "Odeslat další zprávu",
+      "error": "Odeslání selhalo. Zkuste to za chvíli znovu."
     }
   },
   "settings": {
@@ -1460,6 +1501,11 @@
     "backToMap": "← Back to map",
     "langCs": "Čeština",
     "langDe": "Deutsch",
-    "langFr": "Français"
+    "langFr": "Français",
+    "marketingTitle": "E-mailové novinky",
+    "marketingHint": "Volitelné novinky o produktu a tipy k létání. Můžete kdykoli změnit. Ověřovací a bezpečnostní e-maily se posílají vždy.",
+    "marketingOptIn": "Posílejte mi novinky a tipy",
+    "marketingSaved": "Preference uložena.",
+    "marketingSaveFailed": "Preferenci se nepodařilo uložit. Zkuste to znovu."
   }
 }

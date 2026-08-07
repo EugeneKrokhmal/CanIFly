@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { CountrySelect, type ContentCountryId } from "./CountrySelect";
 import { ulcDronesLabel, ulcDronesUrl } from "@/lib/official-links";
 
@@ -342,13 +341,6 @@ export function ContactsCountryContent() {
           </li>
         ))}
       </ul>
-
-      <Link
-        href="/"
-        className="mt-8 inline-block text-[14px] font-semibold text-[#ff385c] hover:underline"
-      >
-        {t("backToMap")}
-      </Link>
     </>
   );
 }

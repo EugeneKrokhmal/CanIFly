@@ -13,7 +13,9 @@
     "accountTitle": "Mein Konto | CanIFly",
     "accountDescription": "Verwalten Sie Ihr CanIFly-Pilotenprofil.",
     "settingsTitle": "Einstellungen — Sprache & Design | CanIFly",
-    "settingsDescription": "Sprache (ES/EN/DE/FR/PL/CS) und helles, dunkles oder System-Theme für CanIFly wählen."
+    "settingsDescription": "Sprache (ES/EN/DE/FR/PL/CS) und helles, dunkles oder System-Theme für CanIFly wählen.",
+    "termsTitle": "Nutzungsbedingungen | CanIFly",
+    "termsDescription": "Bedingungen für CanIFly — Konten, Karteninhalte und Planungshilfe-Hinweis."
   },
   "nav": {
     "map": "Karte",
@@ -47,7 +49,8 @@
     "weatherAtPin": "an Ihrem Pin",
     "weatherArea": "in der Nähe der Kartenmitte",
     "weatherLoading": "Wetter wird geladen…",
-    "langFr": "FR"
+    "langFr": "FR",
+    "terms": "AGB"
   },
   "search": {
     "title": "Ort suchen",
@@ -89,7 +92,12 @@
     "rememberPassword": "Passwort wieder eingefallen?",
     "continueWithGoogle": "Mit Google fortfahren",
     "orContinueWith": "oder",
-    "googleSignInFailed": "Google-Anmeldung fehlgeschlagen. Erneut versuchen oder E-Mail nutzen."
+    "googleSignInFailed": "Google-Anmeldung fehlgeschlagen. Erneut versuchen oder E-Mail nutzen.",
+    "marketingOptIn": "Produkt-Updates und Flugtipps per E-Mail (optional)",
+    "acceptAll": "Alles akzeptieren",
+    "acceptTerms": "Ich stimme den <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu",
+    "acceptTermsRequired": "Bitte akzeptiere die Nutzungsbedingungen und die Datenschutzerklärung.",
+    "googleLegal": "Zustimmung zu <terms>AGB</terms> und <privacy>Datenschutz</privacy>."
   },
   "usageBanner": {
     "message": "Sie haben Ihre {count} kostenlosen Kartenabfragen genutzt. Erstellen Sie ein Konto, um weiter zu erkunden und Spots zu speichern.",
@@ -1195,6 +1203,22 @@
     "choicesBodyAfter": ", falls optionale Analysen eingeführt werden. Browser-Sitedaten löschen, um das Banner zurückzusetzen.",
     "backToMap": "← Zurück zur Karte"
   },
+  "terms": {
+    "eyebrow": "Rechtliches",
+    "title": "Nutzungsbedingungen",
+    "intro": "Mit der Kontoerstellung oder Nutzung von CanIFly akzeptierst du diese Bedingungen. CanIFly ist eine Planungshilfe — keine offizielle Luftfahrtbehörde.",
+    "serviceTitle": "Der Dienst",
+    "serviceBody": "CanIFly zeigt ungefähre UAS-Zonenstatus. Daten stammen von Dritten und können unvollständig oder falsch sein. Vor dem Flug immer die offizielle Quelle prüfen.",
+    "accountTitle": "Dein Konto",
+    "accountBody": "Schütze deine Zugangsdaten. Du bist für Aktivitäten unter deinem Konto verantwortlich. Keine Identitätsfälschung und kein Missbrauch von Kartenpins.",
+    "contentTitle": "Community-Inhalte",
+    "contentBody": "Pins und Fotos können für andere sichtbar sein. Keine illegalen oder schädlichen Inhalte. Wir können regelwidrige Inhalte entfernen.",
+    "liabilityTitle": "Keine Flugfreigabe",
+    "liabilityBody": "CanIFly autorisiert keine Flüge. Statusangaben sind informativ. Du fliegst auf eigenes Risiko und nach lokalem Recht.",
+    "privacyTitle": "Datenschutz",
+    "privacyBody": "Details zur Datenverarbeitung stehen in unserer <privacy>Datenschutzerklärung</privacy>.",
+    "backToMap": "← Zurück zur Karte"
+  },
   "contacts": {
     "eyebrow": "Links",
     "countryLabel": "Land",
@@ -1442,6 +1466,23 @@
           "caa": "CAA Latvia"
         }
       }
+    },
+    "form": {
+      "title": "CanIFly kontaktieren",
+      "hint": "Vorschläge, Fehler oder Beschwerden — wir lesen jede Nachricht.",
+      "name": "Name",
+      "email": "E-Mail",
+      "category": "Thema",
+      "categorySuggestion": "Vorschlag",
+      "categoryComplaint": "Beschwerde",
+      "categoryOther": "Sonstiges",
+      "message": "Nachricht",
+      "messagePlaceholder": "Schreib uns, was dich beschäftigt…",
+      "submit": "Nachricht senden",
+      "sending": "Wird gesendet…",
+      "success": "Danke — deine Nachricht wurde gesendet. Bei Bedarf antworten wir per E-Mail.",
+      "sendAnother": "Weitere Nachricht senden",
+      "error": "Senden fehlgeschlagen. Bitte gleich nochmal versuchen."
     }
   },
   "settings": {
@@ -1460,6 +1501,11 @@
     "themeHint": "System folgt der Geräteeinstellung. Hell und Dunkel fixieren das Erscheinungsbild.",
     "backToMap": "← Zurück zur Karte",
     "langCs": "Čeština",
-    "langFr": "Français"
+    "langFr": "Français",
+    "marketingTitle": "E-Mail-Updates",
+    "marketingHint": "Optionale Produktnews und Flugtipps. Jederzeit änderbar. Verifizierungs- und Sicherheitsmails werden immer gesendet.",
+    "marketingOptIn": "Produkt-Updates und Tipps senden",
+    "marketingSaved": "Einstellung gespeichert.",
+    "marketingSaveFailed": "Einstellung konnte nicht gespeichert werden. Bitte erneut versuchen."
   }
 }
