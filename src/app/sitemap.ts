@@ -6,7 +6,7 @@ const PATHS = [
   "/",
   "/faq",
   "/guide",
-  ...(process.env.VERCEL_ENV === "production" ? [] : (["/landing"] as const)),
+  "/landing",
   "/contacts",
   "/privacy",
   "/terms",

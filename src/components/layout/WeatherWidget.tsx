@@ -81,13 +81,14 @@ function WeatherIcon({ kind }: { kind: WeatherKind }) {
 
 export function WeatherWidget() {
   const selectedPoint = useDroneProfileStore((s) => s.selectedPoint);
+  const approxCenter = useDroneProfileStore((s) => s.approxCenter);
   const setWeatherStore = useWeatherStore((s) => s.setWeather);
   const [weather, setWeather] = useState<WeatherPayload | null>(null);
   const [error, setError] = useState(false);
 
   const atPin = Boolean(selectedPoint);
-  const lat = selectedPoint?.lat ?? SPAIN_CENTER[1];
-  const lng = selectedPoint?.lng ?? SPAIN_CENTER[0];
+  const lat = selectedPoint?.lat ?? approxCenter?.lat ?? SPAIN_CENTER[1];
+  const lng = selectedPoint?.lng ?? approxCenter?.lng ?? SPAIN_CENTER[0];
 
   useEffect(() => {
     let cancelled = false;

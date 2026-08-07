@@ -20,12 +20,9 @@ export function SiteHeader() {
   const setAuthModalOpen = useAuthStore((s) => s.setAuthModalOpen);
   const logout = useAuthStore((s) => s.logout);
 
-  const showAbout =
-    process.env.NEXT_PUBLIC_VERCEL_ENV !== "production";
-
   const NAV = [
     { href: "/", label: t("map") },
-    ...(showAbout ? [{ href: "/landing", label: t("landing") }] : []),
+    { href: "/landing", label: t("landing") },
     { href: "/guide", label: t("guide") },
     { href: "/faq", label: t("faq") },
     { href: "/contacts", label: t("contacts") },

@@ -26,13 +26,14 @@ const imageJobs = [
 ];
 
 const videoJobs = [
-  // Swipe-scrub hero: 1600 desktop (+900 mobile) / 24fps, multi-codec (AV1 → HEVC → H.264).
+  // Swipe-scrub hero: 1080p desktop (+1080-wide mobile) / 30fps H.264.
+  // Audio omitted (muted BG). Dense-ish GOPs so scroll seeks stay smooth.
   {
     file: "landing-bg.mov",
     name: "clip-coast",
-    width: 1600,
-    mobileWidth: 900,
-    fps: 24,
+    width: 1920,
+    mobileWidth: 1080,
+    fps: 30,
     scrub: true,
     codecs: {
       av1: { crf: 30, preset: "6" },
@@ -108,8 +109,8 @@ for (const job of videoJobs) {
   }
 
   const vf = `scale=${job.width}:-2,fps=${job.fps}`;
-  // ~1s keyframes at scrub fps — seeks stay usable, size stays sane.
-  const g = String(Math.max(1, Math.round(job.fps)));
+  // ~0.5s keyframes for scrub — smoother seeks than 1s, still compressible.
+  const g = String(Math.max(1, Math.round(job.fps / 2)));
 
   if (job.scrub && job.codecs) {
     const av1Out = path.join(outDir, `${job.name}.av1.mp4`);
@@ -203,8 +204,13 @@ for (const job of videoJobs) {
     logSize(`${job.name}.mp4`, h264Out);
 
     if (job.mobileWidth) {
+      // Dense keyframes (~15/s) — mobile scrub seeks stay cheap to decode.
+      const mobileG = String(Math.max(1, Math.round(job.fps / 15)));
       const mobileOut = path.join(outDir, `${job.name}-mobile.mp4`);
       const mobileVf = `scale=${job.mobileWidth}:-2,fps=${job.fps}`;
+      const mobileCrf = String(
+        Math.min(51, Number(job.codecs.h264.crf) + 2),
+      );
       runFfmpeg([
         "-i",
         input,
@@ -220,11 +226,11 @@ for (const job of videoJobs) {
         "-preset",
         String(job.codecs.h264.preset),
         "-crf",
-        String(job.codecs.h264.crf),
+        mobileCrf,
         "-g",
-        g,
+        mobileG,
         "-keyint_min",
-        g,
+        mobileG,
         "-bf",
         "0",
         "-sc_threshold",

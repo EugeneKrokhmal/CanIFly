@@ -97,7 +97,15 @@ type HomePageClientProps = {
 export default function HomePageClient({
   ipCountry = null,
 }: HomePageClientProps) {
+  const setApproxCenter = useDroneProfileStore((s) => s.setApproxCenter);
   const initialCenter = ipCountry ? COUNTRIES[ipCountry].center : undefined;
+
+  // Home may override layout IP with ?country= (or clear on deep-link).
+  useEffect(() => {
+    if (!ipCountry) return;
+    const [lng, lat] = COUNTRIES[ipCountry].center;
+    setApproxCenter({ lat, lng });
+  }, [ipCountry, setApproxCenter]);
 
   return (
     <div className="relative flex h-full w-full overflow-hidden">

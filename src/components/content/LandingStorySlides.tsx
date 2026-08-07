@@ -19,6 +19,10 @@ export type LandingSlide = {
 type Props = {
   slides: LandingSlide[];
   backLabel: string;
+  /** First-screen gesture hint (phones). */
+  swipeHint: string;
+  /** First-screen gesture hint (desktop scroll). */
+  scrollHint: string;
 };
 
 const SWIPE_PX = 56;
@@ -361,29 +365,38 @@ function SlideCopyBody({
           {slide.footnote}
         </p>
       ) : null}
-
-      {isLast ? (
-        <p className="mt-8">
-          {interactive ? (
-            <Link
-              href="/"
-              className="text-[14px] font-medium text-white/70 hover:text-white hover:underline"
-            >
-              {backLabel}
-            </Link>
-          ) : (
-            <span className="text-[14px] font-medium text-white/70">
-              {backLabel}
-            </span>
-          )}
-        </p>
-      ) : null}
     </>
   );
 }
 
-export function LandingStorySlides({ slides, backLabel }: Props) {
-  const { setProgress } = useLandingMedia();
+function SwipeHintChevron({ up }: { up: boolean }) {
+  return (
+    <svg
+      className="landing-swipe-hint__chevron h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d={up ? "M6 14l6-6 6 6" : "M6 10l6 6 6-6"}
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function LandingStorySlides({
+  slides,
+  backLabel,
+  swipeHint,
+  scrollHint,
+}: Props) {
+  const { setProgress, ready } = useLandingMedia();
+  const readyRef = useRef(ready);
+  readyRef.current = ready;
   const [active, setActive] = useState(0);
   const activeRef = useRef(0);
   const reduceMotionRef = useRef(false);
@@ -437,6 +450,7 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
   );
 
   const beginStory = useCallback(() => {
+    if (!readyRef.current) return;
     if (startedRef.current) return;
     startedRef.current = true;
     setStarted(true);
@@ -444,6 +458,7 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
 
   const syncProgress = useCallback(
     (index: number, offsetPx = 0) => {
+      if (!readyRef.current) return;
       if (last <= 0) {
         setProgress(0);
         return;
@@ -465,6 +480,7 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
 
   const goToSlide = useCallback(
     (index: number) => {
+      if (!readyRef.current) return;
       beginStory();
       const i = Math.min(last, Math.max(0, index));
       activeRef.current = i;
@@ -578,6 +594,7 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
 
     const readAndPaint = () => {
       scrollRafRef.current = null;
+      if (!readyRef.current) return;
       const viewH = root.clientHeight || window.innerHeight;
       if (viewH <= 0) return;
       const segment = viewH * SCROLL_SEGMENT;
@@ -600,6 +617,10 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
     // The final altitude is the terminal landing state. Consume further
     // forward wheel input there, but leave reverse scrolling untouched.
     const onWheelAtBoundary = (e: WheelEvent) => {
+      if (!readyRef.current) {
+        e.preventDefault();
+        return;
+      }
       if (e.deltaY <= 0) return;
       const maxScrollTop = Math.max(0, root.scrollHeight - root.clientHeight);
       if (root.scrollTop >= maxScrollTop - 1) {
@@ -668,6 +689,10 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
     };
 
     const onWheel = (e: WheelEvent) => {
+      if (!readyRef.current) {
+        e.preventDefault();
+        return;
+      }
       if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
       if (Math.abs(e.deltaY) < 1) return;
       e.preventDefault();
@@ -728,6 +753,7 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
     };
 
     const onPointerDown = (e: PointerEvent) => {
+      if (!readyRef.current) return;
       if (e.button !== 0 && e.pointerType === "mouse") return;
       const t = e.target;
       if (
@@ -971,6 +997,32 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
               </button>
             </div>
           </nav>
+
+          {ready && !started && !reduceMotion ? (
+            <div
+              className={`landing-swipe-hint pointer-events-none absolute inset-x-0 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-[40] flex flex-col items-center gap-1 text-white/80 ${
+                isDesktop ? "landing-swipe-hint--down" : "landing-swipe-hint--up"
+              }`}
+              role="status"
+              aria-live="polite"
+            >
+              {isDesktop ? (
+                <>
+                  <span className="landing-swipe-hint__label text-[11px] font-semibold uppercase tracking-[0.22em]">
+                    {scrollHint}
+                  </span>
+                  <SwipeHintChevron up={false} />
+                </>
+              ) : (
+                <>
+                  <SwipeHintChevron up />
+                  <span className="landing-swipe-hint__label text-[11px] font-semibold uppercase tracking-[0.22em]">
+                    {swipeHint}
+                  </span>
+                </>
+              )}
+            </div>
+          ) : null}
       </div>
     </div>
   );

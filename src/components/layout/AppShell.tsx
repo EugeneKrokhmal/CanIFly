@@ -2,7 +2,9 @@
 
 import { useEffect } from "react";
 import { useLocale } from "next-intl";
+import type { CountryId } from "@canifly/middleware";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { IpApproxBinder } from "@/components/layout/IpApproxBinder";
 import { BannerStack } from "@/components/layout/BannerStack";
 import { AuthModal } from "@/components/layout/AuthModal";
 import { usePathname, useRouter } from "@/i18n/navigation";
@@ -40,8 +42,11 @@ function LocaleSync() {
 
 export function AppShell({
   children,
+  ipCountry = null,
 }: {
   children: React.ReactNode;
+  /** Soft country from CDN IP — seeds weather before GPS / pin. */
+  ipCountry?: CountryId | null;
 }) {
   const pathname = usePathname();
   const isLanding = pathname === "/landing";
@@ -51,6 +56,7 @@ export function AppShell({
       <ThemeSync />
       <AuthBootstrap />
       <LocaleSync />
+      <IpApproxBinder country={ipCountry} />
       <SiteHeader />
       <div
         data-landing-scroll={isLanding ? "true" : undefined}

@@ -61,6 +61,11 @@ interface DroneProfileState {
   maxAltitudeAgl: number;
   selectedDrone: SelectedDrone | null;
   selectedPoint: { lat: number; lng: number } | null;
+  /**
+   * Soft location from CDN IP / ?country= — used for weather before a real pin.
+   * Does not trigger airspace status or guest quota.
+   */
+  approxCenter: { lat: number; lng: number } | null;
   mapCameraRequest: {
     lat: number;
     lng: number;
@@ -85,6 +90,7 @@ interface DroneProfileState {
   /** When true, the next geolocate locateAndFocus skips guest quota (boot only). */
   geolocateSkipGuestGate: boolean;
   setSelectedPoint: (p: { lat: number; lng: number } | null) => boolean;
+  setApproxCenter: (p: { lat: number; lng: number } | null) => void;
   locateAndFocus: (
     p: { lat: number; lng: number },
     zoom?: number,
@@ -123,6 +129,7 @@ export const useDroneProfileStore = create<DroneProfileState>()(
       maxAltitudeAgl: DEFAULT_DRONE_PROFILE.maxAltitudeAgl,
       selectedDrone: null,
       selectedPoint: null,
+      approxCenter: null,
       mapCameraRequest: null,
       geolocateNonce: 0,
       suppressGeolocate: false,
@@ -168,6 +175,7 @@ export const useDroneProfileStore = create<DroneProfileState>()(
         });
         return true;
       },
+      setApproxCenter: (approxCenter) => set({ approxCenter }),
       locateAndFocus: (p, zoom = 14, opts) => {
         if (!opts?.skipGuestGate && !gateGuestMapCheck()) {
           return;

@@ -12,7 +12,7 @@ Requires `ffmpeg` on your PATH for videos. Outputs go to `public/landing/`.
 
 | Source | Public name | Use |
 |--------|-------------|-----|
-| `landing-bg.mov` | `clip-coast.mp4` + `clip-coast-mobile.mp4` + poster | **Fixed viewport BG** — scroll scrubs timeline (1600 desktop / 900 mobile; AV1/HEVC optional local) |
+| `landing-bg.mov` | `clip-coast.mp4` + `clip-coast-mobile.mp4` + poster | **Fixed viewport BG** — scroll scrubs timeline (1080p30 desktop / 1080-wide mobile; H.264; AV1/HEVC optional local) |
 | `DJI_0049.JPG` | `spot-coast-*` | Plan card image |
 | `DJI_0054.JPG` | `spot-ridge-*` | Trust card image |
 | `DJI_0082.JPG` | `spot-valley-*` | SEO card image |

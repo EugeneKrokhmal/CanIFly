@@ -83,12 +83,18 @@ export async function LandingContent({ locale }: { locale: AppLocale }) {
       srcMobile="/landing/clip-coast-mobile.mp4"
       poster="/landing/clip-coast-poster.jpg"
       label={t("heroAlt")}
+      loadingLabel={t("loading")}
     >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={jsonLdScript(webPageLd)}
       />
-      <LandingStorySlides slides={slides} backLabel={t("backToMap")} />
+      <LandingStorySlides
+        slides={slides}
+        backLabel={t("backToMap")}
+        swipeHint={t("swipeHint")}
+        scrollHint={t("scrollHint")}
+      />
     </LandingScrollVideoBg>
   );
 }

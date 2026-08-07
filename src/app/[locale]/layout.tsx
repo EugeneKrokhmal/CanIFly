@@ -1,10 +1,12 @@
 import { Figtree, Plus_Jakarta_Sans } from "next/font/google";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { AppShell } from "@/components/layout/AppShell";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 import { routing, type AppLocale } from "@/i18n/routing";
+import { resolveLiveCountryFromIpHeaders } from "@/lib/geo/ip-country";
 import { buildPageMetadata } from "@/lib/seo";
 import { THEME_BOOT_SCRIPT } from "@/lib/theme-boot";
 import "../globals.css";
@@ -61,6 +63,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
   const messages = await getMessages();
   const appLocale = locale as AppLocale;
+  const ipCountry = resolveLiveCountryFromIpHeaders(await headers());
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -72,7 +75,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body className={`${display.variable} ${ui.variable} antialiased`}>
         <SiteJsonLd locale={appLocale} />
         <NextIntlClientProvider messages={messages}>
-          <AppShell>{children}</AppShell>
+          <AppShell ipCountry={ipCountry}>{children}</AppShell>
         </NextIntlClientProvider>
       </body>
     </html>
