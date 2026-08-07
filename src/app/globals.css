@@ -768,24 +768,17 @@ button:disabled {
 
 @media (min-width: 768px) {
   .landing-story-track {
-    /*
-     * The landing scroller lives below the fixed 4rem desktop header. Its
-     * scroll math uses that available height, so the track must too; 100dvh
-     * leaves one header-height of scroll room after the final slide.
-     */
-    height: calc(
-      (100dvh - 4rem) + (var(--landing-slides, 6) - 1) *
-        var(--landing-segment, 1.9) * (100dvh - 4rem)
-    );
-    overflow: visible;
-    touch-action: auto;
-    user-select: auto;
+    /* Discrete settle on desktop — no tall native-scroll track. */
+    height: 100%;
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
   }
 
   .landing-story-stage {
-    position: sticky;
-    top: 0;
-    height: calc(100dvh - 4rem);
+    position: relative;
+    top: auto;
+    height: 100%;
     overflow: hidden;
   }
 
@@ -848,9 +841,36 @@ button:disabled {
   pointer-events: none;
 }
 .landing-load-gate__veil {
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.72) 100%),
-    url("/landing/clip-coast-poster.jpg") center / cover no-repeat;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
+}
+/* Mobile load gate: same rotated landscape plate as the scrub video. */
+.landing-load-gate__plate {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.landing-load-gate__plate img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (max-width: 767px) {
+  .landing-load-gate__plate img {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    width: 100dvh;
+    height: 100dvw;
+    max-width: none;
+    transform: translate3d(-50%, -50%, 0) rotate(-90deg);
+  }
 }
 .landing-load-gate__bar {
   transition: width 0.2s ease-out;

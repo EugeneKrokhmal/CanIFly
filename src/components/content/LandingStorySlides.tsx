@@ -274,8 +274,7 @@ function paintStoryMotion(
 }
 
 /**
- * Desktop: native scroll scrub through a sticky stage.
- * Mobile: discrete swipe / wheel / drag slides.
+ * Discrete swipe / wheel / drag slides that settle onto each altitude step.
  */
 function SlideCopyBody({
   slide,
@@ -424,6 +423,8 @@ export function LandingStorySlides({
   const scrollRafRef = useRef<number | null>(null);
   const dragRafRef = useRef<number | null>(null);
   const mobileAnimRafRef = useRef<number | null>(null);
+  /** True while a slide settle animation is in flight — ignore further gestures. */
+  const settlingRef = useRef(false);
   const count = slides.length;
   const last = Math.max(0, count - 1);
 
@@ -432,6 +433,7 @@ export function LandingStorySlides({
       window.cancelAnimationFrame(mobileAnimRafRef.current);
       mobileAnimRafRef.current = null;
     }
+    settlingRef.current = false;
   }, []);
 
   const paint = useCallback(
@@ -481,8 +483,13 @@ export function LandingStorySlides({
   const goToSlide = useCallback(
     (index: number) => {
       if (!readyRef.current) return;
+      // One slide change at a time — ignore input while settling.
+      if (settlingRef.current) return;
       beginStory();
       const i = Math.min(last, Math.max(0, index));
+      if (i === activeRef.current && Math.abs(lastFloatRef.current - i) < 0.002) {
+        return;
+      }
       activeRef.current = i;
       setActive(i);
       setDragY(0);
@@ -493,29 +500,25 @@ export function LandingStorySlides({
         wheelIdleRef.current = null;
       }
 
-      if (isDesktop) {
-        cancelMobileAnim();
-        const root = getDesktopScrollRoot();
-        const viewH = root?.clientHeight || window.innerHeight;
-        const segment = viewH * SCROLL_SEGMENT;
-        root?.scrollTo({ top: i * segment, behavior: "smooth" });
-        paint(i);
-        setProgress(last <= 0 ? 0 : i / last);
-        return;
+      // Same settle animation on desktop and mobile — ease floatIndex to the
+      // target so the fly-through lands on a slide, not mid-scrub.
+      if (mobileAnimRafRef.current != null) {
+        window.cancelAnimationFrame(mobileAnimRafRef.current);
+        mobileAnimRafRef.current = null;
       }
-
-      // Mobile: ease floatIndex to the target so the fly-through reads smooth.
-      cancelMobileAnim();
       const from = lastFloatRef.current;
+      const settleMs = isDesktop ? ZOOM_MS : MOBILE_ZOOM_MS;
       if (reduceMotionRef.current || Math.abs(from - i) < 0.002) {
         syncProgress(i, 0);
         paint(i);
+        settlingRef.current = false;
         return;
       }
 
+      settlingRef.current = true;
       const start = performance.now();
       const tick = (now: number) => {
-        const t = Math.min(1, (now - start) / MOBILE_ZOOM_MS);
+        const t = Math.min(1, (now - start) / settleMs);
         const fi = from + (i - from) * smooth01(t);
         paint(fi);
         setProgress(last <= 0 ? 0 : fi / last);
@@ -524,6 +527,7 @@ export function LandingStorySlides({
           return;
         }
         mobileAnimRafRef.current = null;
+        settlingRef.current = false;
         paint(i);
         syncProgress(i, 0);
       };
@@ -531,8 +535,6 @@ export function LandingStorySlides({
     },
     [
       beginStory,
-      cancelMobileAnim,
-      getDesktopScrollRoot,
       isDesktop,
       last,
       paint,
@@ -586,97 +588,14 @@ export function LandingStorySlides({
     paint(lastFloatRef.current);
   }, [paint, started, active]);
 
-  // Desktop: rAF-coalesced scroll → imperative paint (no React per frame).
+  // Discrete swipe / wheel / drag on both platforms — settle to a slide.
   useEffect(() => {
-    if (!isDesktop) return;
-    const root = getDesktopScrollRoot();
-    if (!root) return;
-
-    const readAndPaint = () => {
-      scrollRafRef.current = null;
-      if (!readyRef.current) return;
-      const viewH = root.clientHeight || window.innerHeight;
-      if (viewH <= 0) return;
-      const segment = viewH * SCROLL_SEGMENT;
-      const fi = Math.min(last, Math.max(0, root.scrollTop / segment));
-      paint(fi);
-      const nearest = Math.min(last, Math.max(0, Math.round(fi)));
-      if (nearest !== activeRef.current) {
-        activeRef.current = nearest;
-        setActive(nearest);
-      }
-      if (fi > 0.012) beginStory();
-      setProgress(last <= 0 ? 0 : fi / last);
-    };
-
-    const onScroll = () => {
-      if (scrollRafRef.current != null) return;
-      scrollRafRef.current = window.requestAnimationFrame(readAndPaint);
-    };
-
-    // The final altitude is the terminal landing state. Consume further
-    // forward wheel input there, but leave reverse scrolling untouched.
-    const onWheelAtBoundary = (e: WheelEvent) => {
-      if (!readyRef.current) {
-        e.preventDefault();
-        return;
-      }
-      if (e.deltaY <= 0) return;
-      const maxScrollTop = Math.max(0, root.scrollHeight - root.clientHeight);
-      if (root.scrollTop >= maxScrollTop - 1) {
-        e.preventDefault();
-      }
-    };
-
-    const onKey = (e: KeyboardEvent) => {
-      if (isEditableTarget(e.target)) return;
-      if (e.key === "ArrowDown" || e.key === "PageDown") {
-        e.preventDefault();
-        goToSlide(activeRef.current + 1);
-      } else if (e.key === "ArrowUp" || e.key === "PageUp") {
-        e.preventDefault();
-        goToSlide(activeRef.current - 1);
-      } else if (e.key === "Home") {
-        e.preventDefault();
-        goToSlide(0);
-      } else if (e.key === "End") {
-        e.preventDefault();
-        goToSlide(last);
-      }
-    };
-
-    readAndPaint();
-    root.addEventListener("scroll", onScroll, { passive: true });
-    root.addEventListener("wheel", onWheelAtBoundary, { passive: false });
-    window.addEventListener("keydown", onKey);
-    return () => {
-      root.removeEventListener("scroll", onScroll);
-      root.removeEventListener("wheel", onWheelAtBoundary);
-      window.removeEventListener("keydown", onKey);
-      if (scrollRafRef.current != null) {
-        window.cancelAnimationFrame(scrollRafRef.current);
-        scrollRafRef.current = null;
-      }
-    };
-  }, [
-    beginStory,
-    getDesktopScrollRoot,
-    goToSlide,
-    isDesktop,
-    last,
-    paint,
-    setProgress,
-  ]);
-
-  // Mobile: discrete swipe / wheel / drag — 2× slower travel than desktop.
-  useEffect(() => {
-    if (isDesktop) return;
-    if (window.matchMedia("(min-width: 768px)").matches) return;
     const root = trackRef.current;
     if (!root) return;
 
+    const segmentMul = isDesktop ? SCROLL_SEGMENT : MOBILE_SEGMENT;
     const segmentPx = () =>
-      (root.clientHeight || window.innerHeight) * MOBILE_SEGMENT;
+      (root.clientHeight || window.innerHeight) * segmentMul;
 
     const settleWheel = () => {
       wheelIdleRef.current = null;
@@ -690,6 +609,10 @@ export function LandingStorySlides({
 
     const onWheel = (e: WheelEvent) => {
       if (!readyRef.current) {
+        e.preventDefault();
+        return;
+      }
+      if (settlingRef.current) {
         e.preventDefault();
         return;
       }
@@ -712,7 +635,7 @@ export function LandingStorySlides({
       wheelYRef.current = nextY;
       setDragging(true);
       setDragY(nextY);
-      syncProgress(cur, nextY / MOBILE_SEGMENT);
+      syncProgress(cur, nextY / segmentMul);
 
       const crossedNext = nextY <= -seg * WHEEL_COMMIT_FRAC;
       const crossedPrev = nextY >= seg * WHEEL_COMMIT_FRAC;
@@ -733,6 +656,19 @@ export function LandingStorySlides({
 
     const onKey = (e: KeyboardEvent) => {
       if (isEditableTarget(e.target)) return;
+      if (settlingRef.current) {
+        if (
+          e.key === "ArrowDown" ||
+          e.key === "PageDown" ||
+          e.key === "ArrowUp" ||
+          e.key === "PageUp" ||
+          e.key === "Home" ||
+          e.key === "End"
+        ) {
+          e.preventDefault();
+        }
+        return;
+      }
       if (e.key === "ArrowDown" || e.key === "PageDown") {
         e.preventDefault();
         beginStory();
@@ -754,6 +690,7 @@ export function LandingStorySlides({
 
     const onPointerDown = (e: PointerEvent) => {
       if (!readyRef.current) return;
+      if (settlingRef.current) return;
       if (e.button !== 0 && e.pointerType === "mouse") return;
       const t = e.target;
       if (
@@ -799,7 +736,7 @@ export function LandingStorySlides({
       const applied = atStart || atEnd ? dy * 0.28 : dy;
       const clamped = Math.max(-seg * 1.05, Math.min(seg * 1.05, applied));
       setDragY(clamped);
-      syncProgress(activeRef.current, clamped / MOBILE_SEGMENT);
+      syncProgress(activeRef.current, clamped / segmentMul);
     };
 
     const endDrag = (e: PointerEvent) => {
@@ -831,6 +768,11 @@ export function LandingStorySlides({
       goToSlide(next);
     };
 
+    // Block native page scroll on the landing shell while we own the gesture.
+    const shell = getDesktopScrollRoot();
+    const prevOverflow = shell?.style.overflowY ?? "";
+    if (shell) shell.style.overflowY = "hidden";
+
     root.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("keydown", onKey);
     root.addEventListener("pointerdown", onPointerDown);
@@ -839,6 +781,7 @@ export function LandingStorySlides({
     root.addEventListener("pointercancel", endDrag);
 
     return () => {
+      if (shell) shell.style.overflowY = prevOverflow;
       root.removeEventListener("wheel", onWheel);
       window.removeEventListener("keydown", onKey);
       root.removeEventListener("pointerdown", onPointerDown);
@@ -846,12 +789,20 @@ export function LandingStorySlides({
       root.removeEventListener("pointerup", endDrag);
       root.removeEventListener("pointercancel", endDrag);
     };
-  }, [beginStory, cancelMobileAnim, goToSlide, isDesktop, last, syncProgress]);
+  }, [
+    beginStory,
+    cancelMobileAnim,
+    getDesktopScrollRoot,
+    goToSlide,
+    isDesktop,
+    last,
+    syncProgress,
+  ]);
 
-  // Mobile floatIndex from discrete active + drag — paint without React.
+  // floatIndex from discrete active + drag — paint without React.
   useEffect(() => {
-    if (isDesktop) return;
     if (mobileAnimRafRef.current != null) return;
+    const segmentMul = isDesktop ? SCROLL_SEGMENT : MOBILE_SEGMENT;
     const schedule = () => {
       if (dragRafRef.current != null) return;
       dragRafRef.current = window.requestAnimationFrame(() => {
@@ -860,7 +811,7 @@ export function LandingStorySlides({
         const h = Math.max(1, trackRef.current?.clientHeight ?? 800);
         const fi = Math.min(
           last,
-          Math.max(0, active - dragY / (h * MOBILE_SEGMENT)),
+          Math.max(0, active - dragY / (h * segmentMul)),
         );
         paint(fi);
       });
@@ -868,7 +819,7 @@ export function LandingStorySlides({
     schedule();
   }, [active, dragY, isDesktop, last, paint]);
 
-  // Imperative paint drives motion on both platforms (scroll / swipe / settle).
+  // Imperative paint drives motion on both platforms (swipe / settle).
   const zoomTransition = "none";
 
   return (
@@ -879,7 +830,7 @@ export function LandingStorySlides({
         {
           ["--landing-slides" as string]: Math.max(1, count),
           ["--landing-segment" as string]: SCROLL_SEGMENT,
-          touchAction: isDesktop ? undefined : "none",
+          touchAction: "none",
         } as CSSProperties
       }
     >
@@ -987,9 +938,7 @@ export function LandingStorySlides({
                   transition:
                     reduceMotion || dragging
                       ? "none"
-                      : isDesktop
-                        ? "top 120ms linear"
-                      : `top ${ZOOM_MS}ms ${ZOOM_EASE}`,
+                      : `top ${isDesktop ? ZOOM_MS : MOBILE_ZOOM_MS}ms ${ZOOM_EASE}`,
                   willChange: "top",
                 }}
               >

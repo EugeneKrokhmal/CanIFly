@@ -479,11 +479,11 @@ export function LandingScrollVideoBg({
   return (
     <LandingMediaContext.Provider value={{ setProgress, ready }}>
       <article
-        className="landing-page relative h-full overflow-hidden text-[var(--as-ink)] md:h-auto md:min-h-full md:overflow-visible"
+        className="landing-page relative h-full overflow-hidden text-[var(--as-ink)]"
         aria-busy={gateVisible}
       >
         <div
-          className="landing-scroll-video pointer-events-none absolute inset-0 z-0 overflow-hidden bg-black md:fixed"
+          className="landing-scroll-video pointer-events-none absolute inset-0 z-0 overflow-hidden bg-black"
           aria-hidden
         >
           {!showVideo || !frameReady ? (
@@ -538,7 +538,7 @@ export function LandingScrollVideoBg({
         </div>
 
         <div
-          className={`relative z-10 h-full md:h-auto ${gateVisible ? "pointer-events-none" : ""}`}
+          className={`relative z-10 h-full ${gateVisible ? "pointer-events-none" : ""}`}
           aria-hidden={gateVisible}
         >
           {children}
@@ -546,13 +546,22 @@ export function LandingScrollVideoBg({
 
         {gateVisible ? (
           <div
-            className={`landing-load-gate fixed inset-0 z-[80] flex flex-col items-center justify-center px-8 ${
+            className={`landing-load-gate absolute inset-0 z-[80] flex flex-col items-center justify-center px-8 ${
               gateFading ? "landing-load-gate--out" : ""
             }`}
             role="status"
             aria-live="polite"
             aria-label={loadingLabel}
           >
+            <div className="landing-load-gate__plate absolute inset-0" aria-hidden>
+              <img
+                src={`${poster}?v=${MEDIA_VER}`}
+                alt=""
+                width={VIDEO_W}
+                height={VIDEO_H}
+                decoding="async"
+              />
+            </div>
             <div className="landing-load-gate__veil absolute inset-0" aria-hidden />
             <BrandLogo
               className="relative z-[1] h-9 w-auto text-white drop-shadow-[0_1px_12px_rgba(0,0,0,0.45)] sm:h-11"

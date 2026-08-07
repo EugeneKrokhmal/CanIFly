@@ -62,7 +62,7 @@ export function AppShell({
         data-landing-scroll={isLanding ? "true" : undefined}
         className={
           isLanding
-            ? "min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-y-none"
+            ? "min-h-0 min-w-0 flex-1 overflow-hidden overscroll-y-none"
             : "min-h-0 min-w-0 flex-1 overflow-hidden"
         }
       >
