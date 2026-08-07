@@ -80,8 +80,6 @@ export async function LandingContent({ locale }: { locale: AppLocale }) {
   return (
     <LandingScrollVideoBg
       src="/landing/clip-coast.mp4"
-      srcAv1="/landing/clip-coast.av1.mp4"
-      srcHevc="/landing/clip-coast.hevc.mp4"
       poster="/landing/clip-coast-poster.jpg"
       label={t("heroAlt")}
     >

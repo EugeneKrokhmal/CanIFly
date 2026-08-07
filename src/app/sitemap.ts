@@ -2,7 +2,15 @@ import type { MetadataRoute } from "next";
 import { getSiteUrl, localePath } from "@/lib/seo";
 import { routing } from "@/i18n/routing";
 
-const PATHS = ["/", "/faq", "/guide", "/landing", "/contacts", "/privacy", "/terms"] as const;
+const PATHS = [
+  "/",
+  "/faq",
+  "/guide",
+  ...(process.env.VERCEL_ENV === "production" ? [] : (["/landing"] as const)),
+  "/contacts",
+  "/privacy",
+  "/terms",
+] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = getSiteUrl();
