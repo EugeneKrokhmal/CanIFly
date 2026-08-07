@@ -1000,7 +1000,7 @@ export function LandingStorySlides({
 
           {ready && !started && !reduceMotion ? (
             <div
-              className={`landing-swipe-hint pointer-events-none absolute inset-x-0 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-[40] flex flex-col items-center gap-1 text-white/80 ${
+              className={`landing-swipe-hint pointer-events-none absolute inset-x-0 bottom-[max(3.5rem,calc(env(safe-area-inset-bottom)+2.75rem))] z-[40] flex flex-col items-center gap-1 text-white/80 ${
                 isDesktop ? "landing-swipe-hint--down" : "landing-swipe-hint--up"
               }`}
               role="status"
