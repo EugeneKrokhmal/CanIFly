@@ -15,7 +15,9 @@
     "accountTitle": "My account | CanIFly",
     "accountDescription": "Manage your CanIFly pilot profile.",
     "settingsTitle": "Settings — language & theme | CanIFly",
-    "settingsDescription": "Choose language (ES/EN/DE/FR/PL/CS) and light, dark, or system theme for CanIFly."
+    "settingsDescription": "Choose language (ES/EN/DE/FR/PL/CS) and light, dark, or system theme for CanIFly.",
+    "landingTitle": "Drone airspace map for Europe — Can I fly here? | CanIFly",
+    "landingDescription": "UAS map for Europe: Clear, Limited, Restricted or Prohibited — by class C0–C2 and AGL ceiling. Plan open-category flights with national zone data."
   },
   "nav": {
     "map": "Map",
@@ -50,7 +52,8 @@
     "weatherArea": "near map centre",
     "weatherLoading": "Fetching weather…",
     "langDe": "DE",
-    "langFr": "FR"
+    "langFr": "FR",
+    "landing": "About"
   },
   "search": {
     "title": "Search location",
@@ -1507,5 +1510,35 @@
     "marketingOptIn": "Send me product updates and tips",
     "marketingSaved": "Preference saved.",
     "marketingSaveFailed": "Couldn’t save this preference. Try again."
+  },
+  "landing": {
+    "backToMap": "← Back to map",
+    "aboutName": "UAS airspace for Europe",
+    "heroAlt": "Aerial views from a drone over the landscape",
+    "headline": "Can I fly my drone here?",
+    "subhead": "UAS airspace map for Europe. One tap: Clear, Limited, Restricted or Prohibited — by class C0–C2 and AGL ceiling.",
+    "ctaMap": "Open the map",
+    "ctaGuide": "Read the guide",
+    "howStep1": "Open the map and locate yourself (or search a place).",
+    "howStep2": "Choose class C0–C2 and AGL ceiling.",
+    "howStep3": "Read Clear / Limited / Restricted / Prohibited and the zones that apply.",
+    "planTitle": "Plan the flight in one tap",
+    "planAlt": "Drone flight along the coast",
+    "planP1": "CanIFly summarises UAS geographical zones on a map built for the open category. Instead of juggling national portals and legends, tap a point, set class C0–C2 and AGL ceiling, and get a clear status.",
+    "planP2": "Clear is not an official permit — it is a map reading for the profile you chose. Limited and Restricted mean rules, heights or authorisations still need a look. Prohibited means do not fly there with that profile.",
+    "planP3": "Use it wherever we cover national UAS layers in Europe. Pair the map with the guide and FAQ when you need regulatory context.",
+    "statusTitle": "What Clear, Limited, Restricted mean",
+    "statusP1": "Clear is not an official permit — it is a map reading for the profile you chose. Limited and Restricted mean rules, heights or authorisations still need a look. Prohibited means do not fly there with that profile.",
+    "trustTitle": "National data, country by country",
+    "trustAlt": "Mountain landscape from the air",
+    "trustP1": "Status comes from the matching national UAS sources for each country we cover — so layers stay local and current, not a single one-size-fits-all overlay.",
+    "trustP2": "Pilots also add obstacles and fly spots. That community layer helps you spot cranes, lines or usual sites early — it does not replace common sense or local rules.",
+    "trustP3": "Before take-off, always cross-check your national aviation authority. CanIFly is a fast planning aid, not a flight authorisation or an official agency product.",
+    "communityTitle": "Spots and obstacles from pilots",
+    "communityP1": "Pilots add obstacles and fly spots on the map. That community layer helps you spot cranes, lines or usual sites early — it does not replace common sense or local rules.",
+    "seoTitle": "Drone map for Europe — open category",
+    "seoP1": "Looking for UAS restrictions, or whether you can fly near airports and towns? CanIFly puts status in one tap, filtered by class and ceiling — for Europe.",
+    "seoP2": "Use it with official sources and your open-category training. Open the map, check the point, and read the country guide when you need more depth.",
+    "disclaimer": "CanIFly is not an official product of any aviation authority. Use it as a planning aid and always verify official national sources before you fly."
   }
 }

@@ -15,7 +15,9 @@
     "settingsTitle": "Ustawienia — język i motyw | CanIFly",
     "settingsDescription": "Wybierz język (ES/EN/DE/FR/PL/CS) oraz jasny, ciemny lub systemowy motyw CanIFly.",
     "termsTitle": "Regulamin | CanIFly",
-    "termsDescription": "Warunki korzystania z CanIFly — konta, mapa i zastrzeżenie pomocy w planowaniu."
+    "termsDescription": "Warunki korzystania z CanIFly — konta, mapa i zastrzeżenie pomocy w planowaniu.",
+    "landingTitle": "Mapa przestrzeni UAS dla Europy — Czy mogę latać? | CanIFly",
+    "landingDescription": "Mapa UAS dla Europy: Wolna, Ograniczona, Zastrzeżona lub Zakazana — według klasy C0–C2 i pułapu AGL. Planuj loty w kategorii otwartej na danych krajowych."
   },
   "nav": {
     "map": "Mapa",
@@ -50,7 +52,8 @@
     "weatherLoading": "Pobieranie pogody…",
     "langDe": "DE",
     "langFr": "FR",
-    "terms": "Regulamin"
+    "terms": "Regulamin",
+    "landing": "O nas"
   },
   "search": {
     "title": "Szukaj lokalizacji",
@@ -1507,5 +1510,35 @@
     "marketingOptIn": "Wysyłajcie mi nowości i wskazówki",
     "marketingSaved": "Preferencja zapisana.",
     "marketingSaveFailed": "Nie udało się zapisać preferencji. Spróbuj ponownie."
+  },
+  "landing": {
+    "backToMap": "← Wróć do mapy",
+    "aboutName": "Przestrzeń powietrzna UAS dla Europy",
+    "heroAlt": "Widoki z drona nad krajobrazem",
+    "headline": "Czy mogę tu latać dronem?",
+    "subhead": "Mapa przestrzeni UAS dla Europy. Jedno stuknięcie: Wolna, Ograniczona, Zastrzeżona lub Zakazana — według klasy C0–C2 i pułapu AGL.",
+    "ctaMap": "Otwórz mapę",
+    "ctaGuide": "Przeczytaj przewodnik",
+    "howStep1": "Otwórz mapę i ustaw lokalizację (lub wyszukaj miejsce).",
+    "howStep2": "Wybierz klasę C0–C2 i pułap AGL.",
+    "howStep3": "Odczytaj Wolna / Ograniczona / Zastrzeżona / Zakazana i pasujące strefy.",
+    "planTitle": "Zaplanuj lot jednym stuknięciem",
+    "planAlt": "Lot drona wzdłuż wybrzeża",
+    "planP1": "CanIFly zbiera strefy geograficzne UAS na mapie pod kategorię otwartą. Zamiast żonglować krajowymi portalami, stukasz punkt, ustawiasz klasę C0–C2 i pułap AGL i dostajesz jasny status.",
+    "planP2": "Wolna to nie oficjalne zezwolenie — odczyt mapy dla wybranego profilu. Ograniczona i Zastrzeżona oznaczają, że trzeba sprawdzić reguły, wysokości lub zgody. Zakazana: nie lataj tam z tym profilem.",
+    "planP3": "Korzystaj w krajach Europy, gdzie pokrywamy krajowe warstwy UAS. Łącz mapę z przewodnikiem i FAQ, gdy potrzebujesz kontekstu przepisów.",
+    "statusTitle": "Co znaczą Wolna, Ograniczona i Zastrzeżona",
+    "statusP1": "Wolna to nie oficjalne zezwolenie — odczyt mapy dla wybranego profilu. Ograniczona i Zastrzeżona oznaczają, że trzeba sprawdzić reguły, wysokości lub zgody. Zakazana: nie lataj tam z tym profilem.",
+    "trustTitle": "Dane krajowe, kraj po kraju",
+    "trustAlt": "Krajobraz górski z powietrza",
+    "trustP1": "Status pochodzi z odpowiadających krajowych źródeł UAS każdego objętego kraju — lokalnie i na bieżąco, bez jednego generycznego overlayu.",
+    "trustP2": "Piloci dodają przeszkody i miejsca do lotów. Warstwa społeczności pomaga przewidzieć dźwigi, linie lub typowe lokalizacje — nie zastępuje rozsądku ani lokalnych zasad.",
+    "trustP3": "Przed startem zawsze sprawdź swoją krajową władzę lotniczą. CanIFly to szybka pomoc w planowaniu, nie zezwolenie na lot ani produkt agencji.",
+    "communityTitle": "Spoty i przeszkody od pilotów",
+    "communityP1": "Piloci dodają przeszkody i miejsca do lotów na mapie. Warstwa społeczności pomaga przewidzieć dźwigi, linie lub typowe lokalizacje — nie zastępuje rozsądku ani lokalnych zasad.",
+    "seoTitle": "Mapa dronów dla Europy — kategoria otwarta",
+    "seoP1": "Szukasz ograniczeń UAS albo lotu koło lotnisk i miast? CanIFly pokazuje status jednym stuknięciem, z filtrem klasy i pułapu — dla Europy.",
+    "seoP2": "Używaj ze źródłami oficjalnymi i szkoleniem w kategorii otwartej. Otwórz mapę, sprawdź punkt, w razie potrzeby przeczytaj przewodnik kraju.",
+    "disclaimer": "CanIFly nie jest oficjalnym produktem żadnej władzy lotniczej. Pomoc w planowaniu — zawsze weryfikuj oficjalne źródła krajowe przed lotem."
   }
 }

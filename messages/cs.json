@@ -15,7 +15,9 @@
     "settingsTitle": "Nastavení — jazyk a motiv | CanIFly",
     "settingsDescription": "Zvolte jazyk (ES/EN/DE/FR/PL/CS) a světlý, tmavý nebo systémový motiv CanIFly.",
     "termsTitle": "Podmínky služby | CanIFly",
-    "termsDescription": "Podmínky používání CanIFly — účty, mapa a upozornění na plánovací pomůcku."
+    "termsDescription": "Podmínky používání CanIFly — účty, mapa a upozornění na plánovací pomůcku.",
+    "landingTitle": "Mapa vzdušného prostoru UAS pro Evropu — Můžu létat? | CanIFly",
+    "landingDescription": "Mapa UAS pro Evropu: Volná, Omezená, Restringovaná nebo Zakázaná — podle třídy C0–C2 a stropu AGL. Plánujte lety v otevřené kategorii s národními daty."
   },
   "nav": {
     "map": "Mapa",
@@ -50,7 +52,8 @@
     "weatherLoading": "Načítání počasí…",
     "langDe": "DE",
     "langFr": "FR",
-    "terms": "Podmínky"
+    "terms": "Podmínky",
+    "landing": "O aplikaci"
   },
   "search": {
     "title": "Hledat místo",
@@ -1507,5 +1510,35 @@
     "marketingOptIn": "Posílejte mi novinky a tipy",
     "marketingSaved": "Preference uložena.",
     "marketingSaveFailed": "Preferenci se nepodařilo uložit. Zkuste to znovu."
+  },
+  "landing": {
+    "backToMap": "← Zpět na mapu",
+    "aboutName": "Vzdušný prostor UAS pro Evropu",
+    "heroAlt": "Letecké pohledy z dronu nad krajinou",
+    "headline": "Můžu tady létat s dronem?",
+    "subhead": "Mapa vzdušného prostoru UAS pro Evropu. Jedno klepnutí: Volná, Omezená, Restringovaná nebo Zakázaná — podle třídy C0–C2 a stropu AGL.",
+    "ctaMap": "Otevřít mapu",
+    "ctaGuide": "Přečíst průvodce",
+    "howStep1": "Otevřete mapu a nastavte polohu (nebo vyhledejte místo).",
+    "howStep2": "Zvolte třídu C0–C2 a strop AGL.",
+    "howStep3": "Přečtěte Volná / Omezená / Restringovaná / Zakázaná a odpovídající zóny.",
+    "planTitle": "Naplánujte let jedním klepnutím",
+    "planAlt": "Let dronu podél pobřeží",
+    "planP1": "CanIFly shrnuje geografické zóny UAS na mapě pro otevřenou kategorii. Místo žonglování s národními portály klepnete na bod, nastavíte třídu C0–C2 a strop AGL a dostanete jasný stav.",
+    "planP2": "Volná není oficiální povolení — čtení mapy pro zvolený profil. Omezená a Restringovaná znamenají zkontrolovat pravidla, výšky nebo autorizace. Zakázaná: s tím profilem tam neleťte.",
+    "planP3": "Používejte ji v evropských zemích, kde pokrýváme národní vrstvy UAS. Mapu doplňte průvodcem a FAQ, když potřebujete regulační kontext.",
+    "statusTitle": "Co znamenají Volná, Omezená a Restringovaná",
+    "statusP1": "Volná není oficiální povolení — čtení mapy pro zvolený profil. Omezená a Restringovaná znamenají zkontrolovat pravidla, výšky nebo autorizace. Zakázaná: s tím profilem tam neleťte.",
+    "trustTitle": "Národní data, země po zemi",
+    "trustAlt": "Horská krajina ze vzduchu",
+    "trustP1": "Stav pochází z odpovídajících národních zdrojů UAS každé pokryté země — lokálně a aktuálně, ne jeden generický overlay.",
+    "trustP2": "Piloti přidávají překážky a místa k letu. Komunitní vrstva pomáhá předvídat jeřáby, vedení nebo obvyklá místa — nenahrazuje zdravý rozum ani místní pravidla.",
+    "trustP3": "Před startem vždy ověřte svou národní leteckou autoritu. CanIFly je rychlá pomůcka pro plánování, ne povolení k letu ani oficiální produkt agentury.",
+    "communityTitle": "Spoty a překážky od pilotů",
+    "communityP1": "Piloti přidávají překážky a místa k letu na mapě. Komunitní vrstva pomáhá předvídat jeřáby, vedení nebo obvyklá místa — nenahrazuje zdravý rozum ani místní pravidla.",
+    "seoTitle": "Mapa dronů pro Evropu — otevřená kategorie",
+    "seoP1": "Hledáte omezení UAS nebo let u letišť a měst? CanIFly ukáže stav jedním klepnutím, filtrovaný podle třídy a stropu — pro Evropu.",
+    "seoP2": "Používejte s oficiálními zdroji a výcvikem v otevřené kategorii. Otevřete mapu, zkontrolujte bod, případně si přečtěte průvodce země.",
+    "disclaimer": "CanIFly není oficiální produkt žádné letecké autority. Pomůcka pro plánování — před letem vždy ověřte oficiální národní zdroje."
   }
 }

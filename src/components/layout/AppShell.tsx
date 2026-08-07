@@ -43,13 +43,25 @@ export function AppShell({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isLanding = pathname === "/landing";
+
   return (
     <div className="flex h-dvh w-full flex-col overflow-hidden bg-[var(--as-surface-muted)]">
       <ThemeSync />
       <AuthBootstrap />
       <LocaleSync />
       <SiteHeader />
-      <div className="min-h-0 min-w-0 flex-1 overflow-hidden">{children}</div>
+      <div
+        data-landing-scroll={isLanding ? "true" : undefined}
+        className={
+          isLanding
+            ? "min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-y-none"
+            : "min-h-0 min-w-0 flex-1 overflow-hidden"
+        }
+      >
+        {children}
+      </div>
       <BannerStack variant="page" />
       <AuthModal />
     </div>

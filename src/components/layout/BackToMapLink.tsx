@@ -15,7 +15,8 @@ type Props = {
     | "account"
     | "verifyEmail"
     | "resetPassword"
-    | "pilot";
+    | "pilot"
+    | "landing";
 };
 
 /**

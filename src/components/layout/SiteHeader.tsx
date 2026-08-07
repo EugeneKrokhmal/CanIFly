@@ -22,6 +22,7 @@ export function SiteHeader() {
 
   const NAV = [
     { href: "/", label: t("map") },
+    { href: "/landing", label: t("landing") },
     { href: "/guide", label: t("guide") },
     { href: "/faq", label: t("faq") },
     { href: "/contacts", label: t("contacts") },
@@ -51,11 +52,11 @@ export function SiteHeader() {
       className="relative z-40 shrink-0 bg-[var(--as-surface)]"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
-      {/* Grid: logo | nav (md+) | actions — fixed action columns prevent reload shift */}
-      <header className="relative z-50 grid h-12 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 border-b border-[var(--as-line)] bg-[var(--as-surface)] px-3 sm:h-16 sm:px-8 md:grid-cols-[var(--as-sidebar-w)_var(--as-header-col-w)_var(--as-header-col-w)] md:gap-x-0 md:px-0">
+      {/* Grid: logo | nav (xl+) | actions — fixed action columns prevent reload shift */}
+      <header className="relative z-50 grid h-12 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 border-b border-[var(--as-line)] bg-[var(--as-surface)] px-3 sm:h-16 sm:px-8 xl:grid-cols-[var(--as-sidebar-w)_var(--as-header-col-w)_var(--as-header-col-w)] xl:gap-x-0 xl:px-0">
         <Link
           href="/"
-          className="flex min-w-0 items-center md:h-full md:px-5"
+          className="flex min-w-0 items-center xl:h-full xl:px-5"
         >
           <BrandLogo className="h-4 w-auto shrink-0 text-[var(--as-ink)] sm:h-5" />
           <span className="truncate font-[family-name:var(--font-display)] text-[18px] font-bold tracking-tight text-[var(--as-ink)] sm:text-[22px]">
@@ -63,7 +64,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <div className="hidden min-w-0 items-center justify-center md:flex">
+        <div className="hidden min-w-0 items-center justify-center xl:flex">
           <nav className="flex h-8 w-max max-w-full shrink-0 items-center gap-0.5 overflow-hidden rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] p-0.5 shadow-[var(--as-shadow)]">
             {NAV.map((item) => {
               const active =
@@ -169,7 +170,7 @@ export function SiteHeader() {
             </button>
             {menuOpen && (
               <div className="as-pop absolute right-0 top-[calc(100%+6px)] z-50 w-48 overflow-hidden rounded-xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] py-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
-                <div className="md:hidden">
+                <div className="xl:hidden">
                   {NAV.map((item) => {
                     const active =
                       item.href === "/"
@@ -199,7 +200,7 @@ export function SiteHeader() {
                   {t("settings")}
                 </Link>
 
-                <div className="md:hidden">
+                <div className="xl:hidden">
                   {user ? (
                     <>
                       <Link

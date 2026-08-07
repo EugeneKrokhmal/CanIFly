@@ -15,7 +15,9 @@
     "settingsTitle": "Einstellungen — Sprache & Design | CanIFly",
     "settingsDescription": "Sprache (ES/EN/DE/FR/PL/CS) und helles, dunkles oder System-Theme für CanIFly wählen.",
     "termsTitle": "Nutzungsbedingungen | CanIFly",
-    "termsDescription": "Bedingungen für CanIFly — Konten, Karteninhalte und Planungshilfe-Hinweis."
+    "termsDescription": "Bedingungen für CanIFly — Konten, Karteninhalte und Planungshilfe-Hinweis.",
+    "landingTitle": "Drohnen-Luftraumkarte für Europa — Darf ich fliegen? | CanIFly",
+    "landingDescription": "UAS-Karte für Europa: Frei, Begrenzt, Eingeschränkt oder Verboten — nach Klasse C0–C2 und AGL-Decke. Plane Flüge in der offenen Kategorie mit nationalen Zonendaten."
   },
   "nav": {
     "map": "Karte",
@@ -50,7 +52,8 @@
     "weatherArea": "in der Nähe der Kartenmitte",
     "weatherLoading": "Wetter wird geladen…",
     "langFr": "FR",
-    "terms": "AGB"
+    "terms": "AGB",
+    "landing": "Über"
   },
   "search": {
     "title": "Ort suchen",
@@ -1507,5 +1510,35 @@
     "marketingOptIn": "Produkt-Updates und Tipps senden",
     "marketingSaved": "Einstellung gespeichert.",
     "marketingSaveFailed": "Einstellung konnte nicht gespeichert werden. Bitte erneut versuchen."
+  },
+  "landing": {
+    "backToMap": "← Zurück zur Karte",
+    "aboutName": "UAS-Luftraum für Europa",
+    "heroAlt": "Luftaufnahmen aus der Drohne über der Landschaft",
+    "headline": "Darf ich hier meine Drohne fliegen?",
+    "subhead": "UAS-Luftraumkarte für Europa. Ein Tippen: Frei, Begrenzt, Eingeschränkt oder Verboten — nach Klasse C0–C2 und AGL-Decke.",
+    "ctaMap": "Karte öffnen",
+    "ctaGuide": "Leitfaden lesen",
+    "howStep1": "Karte öffnen und Standort setzen (oder Ort suchen).",
+    "howStep2": "Klasse C0–C2 und AGL-Decke wählen.",
+    "howStep3": "Frei / Begrenzt / Eingeschränkt / Verboten und passende Zonen lesen.",
+    "planTitle": "Flug in einem Tippen planen",
+    "planAlt": "Drohnenflug an der Küste",
+    "planP1": "CanIFly fasst UAS-Gebiete auf einer Karte für die offene Kategorie zusammen. Statt nationale Portale und Legenden zu jonglieren tippst du einen Punkt, setzt Klasse C0–C2 und AGL-Decke und siehst klar den Status.",
+    "planP2": "Frei ist keine offizielle Genehmigung — eine Kartenlesung für dein Profil. Begrenzt und Eingeschränkt heißen: Regeln, Höhen oder Erlaubnisse prüfen. Verboten: mit diesem Profil dort nicht fliegen.",
+    "planP3": "Nutze es in den europäischen Ländern, für die wir nationale UAS-Layer abdecken. Karte, Leitfaden und FAQ liefern den regulatorischen Kontext.",
+    "statusTitle": "Was Frei, Begrenzt und Eingeschränkt bedeuten",
+    "statusP1": "Frei ist keine offizielle Genehmigung — eine Kartenlesung für dein Profil. Begrenzt und Eingeschränkt heißen: Regeln, Höhen oder Erlaubnisse prüfen. Verboten: mit diesem Profil dort nicht fliegen.",
+    "trustTitle": "Nationale Daten, Land für Land",
+    "trustAlt": "Berglandschaft aus der Luft",
+    "trustP1": "Der Status stammt aus den passenden nationalen UAS-Quellen jedes abgedeckten Landes — lokal und aktuell, kein generisches Einheits-Overlay.",
+    "trustP2": "Piloten ergänzen Hindernisse und Spots. Die Community-Schicht hilft bei Kränen, Leitungen oder üblichen Orten — kein Ersatz für Vernunft oder lokale Regeln.",
+    "trustP3": "Vor dem Start immer die nationale Luftfahrtbehörde prüfen. CanIFly ist eine schnelle Planungshilfe, keine Flugfreigabe und kein Behördenprodukt.",
+    "communityTitle": "Spots und Hindernisse von Piloten",
+    "communityP1": "Piloten ergänzen Hindernisse und Flugspots auf der Karte. Die Community-Schicht hilft bei Kränen, Leitungen oder üblichen Orten — kein Ersatz für Vernunft oder lokale Regeln.",
+    "seoTitle": "Drohnenkarte für Europa — offene Kategorie",
+    "seoP1": "UAS-Beschränkungen oder Flug nahe Flughäfen und Ortschaften? CanIFly zeigt den Status mit einem Tippen, gefiltert nach Klasse und Decke — für Europa.",
+    "seoP2": "Nutze es mit offiziellen Quellen und deiner offenen Kategorie. Karte öffnen, Punkt prüfen, bei Bedarf den Länderleitfaden lesen.",
+    "disclaimer": "CanIFly ist kein offizielles Produkt einer Luftfahrtbehörde. Planungshilfe — offizielle nationale Quellen vor dem Flug immer prüfen."
   }
 }

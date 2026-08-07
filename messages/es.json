@@ -15,7 +15,9 @@
     "settingsTitle": "Ajustes — idioma y tema | CanIFly",
     "settingsDescription": "Elige idioma (ES/EN/DE/FR/PL/CS) y tema claro, oscuro o del sistema en CanIFly.",
     "termsTitle": "Términos de servicio | CanIFly",
-    "termsDescription": "Condiciones de uso de CanIFly: cuentas, mapa y aviso de ayuda a la planificación."
+    "termsDescription": "Condiciones de uso de CanIFly: cuentas, mapa y aviso de ayuda a la planificación.",
+    "landingTitle": "Mapa de espacio aéreo UAS para Europa — ¿Puedo volar? | CanIFly",
+    "landingDescription": "Mapa UAS para Europa: Libre, Limitado, Restringido o Prohibido — según clase C0–C2 y techo AGL. Planifica vuelos en categoría abierta con datos nacionales."
   },
   "nav": {
     "map": "Mapa",
@@ -50,7 +52,8 @@
     "weatherLoading": "Obteniendo el tiempo…",
     "langDe": "DE",
     "langFr": "FR",
-    "terms": "Términos"
+    "terms": "Términos",
+    "landing": "Qué es"
   },
   "search": {
     "title": "Buscar ubicación",
@@ -1507,5 +1510,35 @@
     "marketingOptIn": "Quiero recibir novedades y consejos",
     "marketingSaved": "Preferencia guardada.",
     "marketingSaveFailed": "No se pudo guardar esta preferencia. Inténtalo de nuevo."
+  },
+  "landing": {
+    "backToMap": "← Volver al mapa",
+    "aboutName": "Espacio aéreo UAS para Europa",
+    "heroAlt": "Vistas aéreas desde un dron sobre el paisaje",
+    "headline": "¿Puedo volar mi dron aquí?",
+    "subhead": "Mapa de espacio aéreo UAS para Europa. Un toque: Libre, Limitado, Restringido o Prohibido — según clase C0–C2 y techo AGL.",
+    "ctaMap": "Abrir el mapa",
+    "ctaGuide": "Leer la guía",
+    "howStep1": "Abre el mapa y sitúate (o busca un lugar).",
+    "howStep2": "Elige clase C0–C2 y techo AGL.",
+    "howStep3": "Lee Libre / Limitado / Restringido / Prohibido y las zonas que aplican.",
+    "planTitle": "Planifica el vuelo en un toque",
+    "planAlt": "Vuelo de dron sobre la costa",
+    "planP1": "CanIFly resume las zonas geográficas UAS en un mapa pensado para la categoría abierta. En lugar de cruzar portales nacionales y leyendas, tocas un punto, fijas clase C0–C2 y techo AGL, y obtienes un estado claro.",
+    "planP2": "Libre no es una autorización oficial: es una lectura del mapa para el perfil que has elegido. Limitado y Restringido avisan de reglas, alturas o permisos que debes revisar. Prohibido significa que, con ese perfil, no debes volar ahí.",
+    "planP3": "Úsalo en los países europeos donde cubrimos capas UAS nacionales. Combina el mapa con la guía y el FAQ cuando necesites contexto normativo.",
+    "statusTitle": "Qué significan Libre, Limitado y Restringido",
+    "statusP1": "Libre no es una autorización oficial: es una lectura del mapa para el perfil que has elegido. Limitado y Restringido avisan de reglas, alturas o permisos que debes revisar. Prohibido significa que, con ese perfil, no debes volar ahí.",
+    "trustTitle": "Datos nacionales, país a país",
+    "trustAlt": "Paisaje montañoso desde el aire",
+    "trustP1": "El estado sale de las fuentes UAS nacionales de cada país que cubrimos, para que las capas sean locales y actuales — no un único overlay genérico.",
+    "trustP2": "Los pilotos también aportan obstáculos y spots de vuelo. Esa capa comunitaria ayuda a anticipar grúas, líneas o lugares habituales, pero no sustituye el sentido común ni las reglas locales.",
+    "trustP3": "Antes de despegar, cruza siempre con la autoridad aeronáutica de tu país. CanIFly es una ayuda rápida a la planificación, no un permiso de vuelo ni un producto oficial.",
+    "communityTitle": "Spots y obstáculos de la comunidad",
+    "communityP1": "Los pilotos aportan obstáculos y spots de vuelo en el mapa. Esa capa ayuda a anticipar grúas, líneas o lugares habituales, pero no sustituye el sentido común ni las reglas locales.",
+    "seoTitle": "Mapa de drones para Europa — categoría abierta",
+    "seoP1": "¿Buscas restricciones UAS o si puedes volar cerca de aeropuertos y núcleos urbanos? CanIFly concentra el estado en un toque, filtrado por clase y techo — para Europa.",
+    "seoP2": "Úsalo junto a las fuentes oficiales y tu formación en categoría abierta. Abre el mapa, comprueba el punto y lee la guía del país cuando necesites más detalle.",
+    "disclaimer": "CanIFly no es un producto oficial de ninguna autoridad aeronáutica. Úsalo como ayuda a la planificación y verifica siempre las fuentes oficiales nacionales antes de volar."
   }
 }

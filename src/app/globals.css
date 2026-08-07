@@ -716,3 +716,118 @@ button:disabled {
 .as-btn-primary:hover {
   background: var(--as-rausch-hover);
 }
+
+/* Landing — scrub video bg + altitude-stacked copy */
+.landing-hero-copy.is-current {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.landing-hero-copy.is-current :is(h1, p, li, span, a) {
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.35);
+}
+
+.landing-hero-copy {
+  position: relative;
+  transform-origin: center center;
+}
+
+/* Stack never owns hits — only sharp copy faces + the altimeter do.
+   Full-bleed slides with pointer-events:auto sat above the ticks until
+   the first scroll paint flipped them off. */
+.landing-story-stack {
+  pointer-events: none;
+}
+
+.landing-story-slide {
+  transform-origin: center center;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: layout style;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.landing-story-slide:first-child {
+  opacity: 1;
+  z-index: 20;
+}
+
+.landing-story-slide:first-child [data-landing-copy] {
+  pointer-events: auto;
+}
+
+/* Bottom veil — centered copy readable, video open toward the top. */
+.landing-slide-shade {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.55) 55%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+@media (min-width: 768px) {
+  .landing-story-track {
+    /*
+     * The landing scroller lives below the fixed 4rem desktop header. Its
+     * scroll math uses that available height, so the track must too; 100dvh
+     * leaves one header-height of scroll room after the final slide.
+     */
+    height: calc(
+      (100dvh - 4rem) + (var(--landing-slides, 6) - 1) *
+        var(--landing-segment, 1.9) * (100dvh - 4rem)
+    );
+    overflow: visible;
+    touch-action: auto;
+    user-select: auto;
+  }
+
+  .landing-story-stage {
+    position: sticky;
+    top: 0;
+    height: calc(100dvh - 4rem);
+    overflow: hidden;
+  }
+
+  .landing-slide-shade {
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.78) 0%,
+      rgba(0, 0, 0, 0.5) 42%,
+      rgba(0, 0, 0, 0.12) 72%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+}
+
+.landing-scroll-video {
+  top: 0;
+}
+
+.landing-media-el {
+  display: block;
+}
+
+.landing-altimeter-drone {
+  pointer-events: auto;
+}
+
+.landing-altimeter-tick:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+/* Portrait phones: rotate landscape plate -90° and cover the viewport. */
+@media (max-width: 767px) {
+  .landing-scroll-video .landing-bg-media {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    width: 100dvh;
+    height: 100dvw;
+    max-width: none;
+    transform: translate(-50%, -50%) rotate(-90deg);
+  }
+}
+

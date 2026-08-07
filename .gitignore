@@ -24,6 +24,10 @@
 .DS_Store
 *.pem
 
+# Landing: keep huge camera originals local; commit optimized public/landing only
+/landing/*
+!/landing/README.md
+
 # debug
 npm-debug.log*
 yarn-debug.log*
