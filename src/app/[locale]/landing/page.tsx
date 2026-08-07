@@ -23,5 +23,24 @@ export default async function LandingPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <LandingContent locale={locale as AppLocale} />;
+  return (
+    <>
+      {/* Warm the scrub encode while the poster paints (responsive sources). */}
+      <link
+        rel="preload"
+        as="video"
+        href="/landing/clip-coast-mobile.mp4?v=scrub16"
+        type="video/mp4"
+        media="(max-width: 767px)"
+      />
+      <link
+        rel="preload"
+        as="video"
+        href="/landing/clip-coast.mp4?v=scrub16"
+        type="video/mp4"
+        media="(min-width: 768px)"
+      />
+      <LandingContent locale={locale as AppLocale} />
+    </>
+  );
 }

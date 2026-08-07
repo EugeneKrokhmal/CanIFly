@@ -11,8 +11,10 @@ import {
 } from "react";
 
 type Props = {
-  /** H.264 fallback (widest support). */
+  /** H.264 desktop / tablet scrub encode. */
   src: string;
+  /** Optional narrower encode for phones (rotated landscape plate). */
+  srcMobile?: string;
   /** Optional AV1 — preferred when the browser supports it. */
   srcAv1?: string;
   /** Optional HEVC — good for Safari without AV1. */
@@ -22,8 +24,8 @@ type Props = {
   children: ReactNode;
 };
 
-/** Matches the scrub encode (`fps=20`, short GOP). */
-const FRAME = 1 / 20;
+/** Matches the scrub encode (`fps=24`, short GOP). */
+const FRAME = 1 / 24;
 /** Do not request more seeks than the source can display. */
 const SEEK_INTERVAL_MS = 50;
 
@@ -34,10 +36,10 @@ const SEEK_INTERVAL_MS = 50;
 const CATCH_UP = 0.14;
 
 /** Intrinsic size of the scrub encode — keeps poster/video object-cover identical. */
-const VIDEO_W = 1920;
-const VIDEO_H = 1080;
+const VIDEO_W = 1600;
+const VIDEO_H = 900;
 
-const MEDIA_VER = "scrub14";
+const MEDIA_VER = "scrub16";
 
 type MediaApi = {
   /** 0–1 story progress → video playhead. */
@@ -61,6 +63,7 @@ export function useLandingMedia() {
  */
 export function LandingScrollVideoBg({
   src,
+  srcMobile,
   srcAv1,
   srcHevc,
   poster,
@@ -76,9 +79,21 @@ export function LandingScrollVideoBg({
   const reduceMotionRef = useRef(false);
   const runningRef = useRef(false);
   const scrubArmedRef = useRef(false);
+  const warmStartedRef = useRef(false);
   const [frameReady, setFrameReady] = useState(false);
   /** Keep the HQ poster until the user starts scrubbing. */
   const [showVideo, setShowVideo] = useState(false);
+  /** Once true, <source> URLs are mounted and the browser may download. */
+  const [warmLoad, setWarmLoad] = useState(false);
+  // Start false so SSR matches the first client paint; then pick mobile/desktop.
+  const [useMobileSrc, setUseMobileSrc] = useState(false);
+
+  const activeSrc = useMobileSrc && srcMobile ? srcMobile : src;
+  const mediaSrc = `${activeSrc}?v=${MEDIA_VER}`;
+  const mediaSrcAv1 =
+    !useMobileSrc && srcAv1 ? `${srcAv1}?v=${MEDIA_VER}` : null;
+  const mediaSrcHevc =
+    !useMobileSrc && srcHevc ? `${srcHevc}?v=${MEDIA_VER}` : null;
 
   const applyProgressToTarget = useCallback(() => {
     const video = videoRef.current;
@@ -162,6 +177,12 @@ export function LandingScrollVideoBg({
     rafRef.current = window.requestAnimationFrame(tick);
   }, [applyProgressToTarget, tick]);
 
+  const armWarmLoad = useCallback(() => {
+    if (warmStartedRef.current) return;
+    warmStartedRef.current = true;
+    setWarmLoad(true);
+  }, []);
+
   const setProgress = useCallback(
     (p: number) => {
       const next = Math.min(1, Math.max(0, p));
@@ -169,18 +190,53 @@ export function LandingScrollVideoBg({
       // Hold the master-frame poster until the user starts moving the story.
       if (next > 0.012 && !scrubArmedRef.current) {
         scrubArmedRef.current = true;
+        armWarmLoad();
         setShowVideo(true);
       }
       kick();
     },
-    [kick],
+    [armWarmLoad, kick],
   );
 
-  // Keep network transfer behind the poster until the visitor starts scrubbing.
+  // Pick the 900px encode on phones (rotated plate); desktop keeps 1600.
   useEffect(() => {
-    if (!showVideo) return;
-    videoRef.current?.load();
-  }, [showVideo]);
+    const mq = window.matchMedia("(max-width: 767px)");
+    const apply = () => setUseMobileSrc(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  // Warm the scrub file after first paint / on idle so the first seek is ready.
+  useEffect(() => {
+    if (reduceMotionRef.current) return;
+    let idleId: number | null = null;
+    let timeoutId: number | null = null;
+
+    const start = () => armWarmLoad();
+
+    if (typeof window.requestIdleCallback === "function") {
+      idleId = window.requestIdleCallback(start, { timeout: 1200 });
+    } else {
+      timeoutId = window.setTimeout(start, 280);
+    }
+
+    return () => {
+      if (idleId != null && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId != null) window.clearTimeout(timeoutId);
+    };
+  }, [armWarmLoad]);
+
+  // Attach sources / (re)load once warming or scrubbing begins / source swaps.
+  useEffect(() => {
+    if (!warmLoad) return;
+    const video = videoRef.current;
+    if (!video) return;
+    setFrameReady(false);
+    video.load();
+  }, [warmLoad, mediaSrc]);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -235,7 +291,7 @@ export function LandingScrollVideoBg({
       }
       runningRef.current = false;
     };
-  }, [kick]);
+  }, [kick, warmLoad]);
 
   return (
     <LandingMediaContext.Provider value={{ setProgress }}>
@@ -244,7 +300,7 @@ export function LandingScrollVideoBg({
           className="landing-scroll-video pointer-events-none absolute inset-0 z-0 overflow-hidden bg-black md:fixed"
           aria-hidden
         >
-          {!frameReady ? (
+          {!frameReady || !showVideo ? (
             <picture className="absolute inset-0 block h-full w-full">
               <source
                 type="image/webp"
@@ -269,23 +325,27 @@ export function LandingScrollVideoBg({
             height={VIDEO_H}
             muted
             playsInline
-            preload={showVideo ? "auto" : "none"}
+            preload={warmLoad ? "auto" : "none"}
             disablePictureInPicture
             aria-label={label}
           >
-            {srcAv1 ? (
-              <source
-                src={`${srcAv1}?v=${MEDIA_VER}`}
-                type='video/mp4; codecs="av01.0.08M.08"'
-              />
+            {warmLoad ? (
+              <>
+                {mediaSrcAv1 ? (
+                  <source
+                    src={mediaSrcAv1}
+                    type='video/mp4; codecs="av01.0.08M.08"'
+                  />
+                ) : null}
+                {mediaSrcHevc ? (
+                  <source
+                    src={mediaSrcHevc}
+                    type='video/mp4; codecs="hvc1.1.6.L93.B0"'
+                  />
+                ) : null}
+                <source src={mediaSrc} type="video/mp4" />
+              </>
             ) : null}
-            {srcHevc ? (
-              <source
-                src={`${srcHevc}?v=${MEDIA_VER}`}
-                type='video/mp4; codecs="hvc1.1.6.L93.B0"'
-              />
-            ) : null}
-            <source src={`${src}?v=${MEDIA_VER}`} type="video/mp4" />
           </video>
           <div className="landing-slide-shade pointer-events-none absolute inset-y-0 left-0 w-full md:inset-x-0 md:bottom-0 md:top-auto md:h-[min(72vh,42rem)]" />
         </div>

@@ -26,12 +26,13 @@ const imageJobs = [
 ];
 
 const videoJobs = [
-  // Swipe-scrub hero: 1080p / 20fps, multi-codec (AV1 → HEVC → H.264).
+  // Swipe-scrub hero: 1600 desktop (+900 mobile) / 24fps, multi-codec (AV1 → HEVC → H.264).
   {
     file: "landing-bg.mov",
     name: "clip-coast",
-    width: 1920,
-    fps: 20,
+    width: 1600,
+    mobileWidth: 900,
+    fps: 24,
     scrub: true,
     codecs: {
       av1: { crf: 30, preset: "6" },
@@ -200,6 +201,40 @@ for (const job of videoJobs) {
       h264Out,
     ]);
     logSize(`${job.name}.mp4`, h264Out);
+
+    if (job.mobileWidth) {
+      const mobileOut = path.join(outDir, `${job.name}-mobile.mp4`);
+      const mobileVf = `scale=${job.mobileWidth}:-2,fps=${job.fps}`;
+      runFfmpeg([
+        "-i",
+        input,
+        "-an",
+        "-vf",
+        mobileVf,
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-profile:v",
+        "high",
+        "-preset",
+        String(job.codecs.h264.preset),
+        "-crf",
+        String(job.codecs.h264.crf),
+        "-g",
+        g,
+        "-keyint_min",
+        g,
+        "-bf",
+        "0",
+        "-sc_threshold",
+        "0",
+        "-movflags",
+        "+faststart",
+        mobileOut,
+      ]);
+      logSize(`${job.name}-mobile.mp4`, mobileOut);
+    }
 
     const posterJpg = path.join(outDir, `${job.name}-poster.jpg`);
     const posterWebp = path.join(outDir, `${job.name}-poster.webp`);

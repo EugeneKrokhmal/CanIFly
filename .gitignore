@@ -28,9 +28,10 @@
 /landing/*
 !/landing/README.md
 
-# Landing videos: only ship the H.264 scrub clip (AV1/HEVC/extra clips stay local)
+# Landing videos: only ship the H.264 scrub clips (AV1/HEVC/extra clips stay local)
 /public/landing/*.mp4
 !/public/landing/clip-coast.mp4
+!/public/landing/clip-coast-mobile.mp4
 /public/landing/*-poster.png
 /public/landing/clip-ridge*
 

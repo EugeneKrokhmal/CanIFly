@@ -34,6 +34,10 @@ const ZOOM_EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
  * >1 slows the story relative to the wheel / trackpad.
  */
 const SCROLL_SEGMENT = 1.9;
+/** Mobile swipe distance vs desktop — twice as much travel per slide. */
+const MOBILE_SEGMENT = SCROLL_SEGMENT * 2;
+/** Mobile settle animation — twice the desktop chrome transition. */
+const MOBILE_ZOOM_MS = ZOOM_MS * 2;
 
 function isEditableTarget(target: EventTarget | null): boolean {
   return (
@@ -406,8 +410,16 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
   const lastFloatRef = useRef(0);
   const scrollRafRef = useRef<number | null>(null);
   const dragRafRef = useRef<number | null>(null);
+  const mobileAnimRafRef = useRef<number | null>(null);
   const count = slides.length;
   const last = Math.max(0, count - 1);
+
+  const cancelMobileAnim = useCallback(() => {
+    if (mobileAnimRafRef.current != null) {
+      window.cancelAnimationFrame(mobileAnimRafRef.current);
+      mobileAnimRafRef.current = null;
+    }
+  }, []);
 
   const paint = useCallback(
     (fi: number) => {
@@ -466,6 +478,7 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
       }
 
       if (isDesktop) {
+        cancelMobileAnim();
         const root = getDesktopScrollRoot();
         const viewH = root?.clientHeight || window.innerHeight;
         const segment = viewH * SCROLL_SEGMENT;
@@ -475,11 +488,34 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
         return;
       }
 
-      syncProgress(i, 0);
-      paint(i);
+      // Mobile: ease floatIndex to the target so the fly-through reads smooth.
+      cancelMobileAnim();
+      const from = lastFloatRef.current;
+      if (reduceMotionRef.current || Math.abs(from - i) < 0.002) {
+        syncProgress(i, 0);
+        paint(i);
+        return;
+      }
+
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / MOBILE_ZOOM_MS);
+        const fi = from + (i - from) * smooth01(t);
+        paint(fi);
+        setProgress(last <= 0 ? 0 : fi / last);
+        if (t < 1) {
+          mobileAnimRafRef.current = window.requestAnimationFrame(tick);
+          return;
+        }
+        mobileAnimRafRef.current = null;
+        paint(i);
+        syncProgress(i, 0);
+      };
+      mobileAnimRafRef.current = window.requestAnimationFrame(tick);
     },
     [
       beginStory,
+      cancelMobileAnim,
       getDesktopScrollRoot,
       isDesktop,
       last,
@@ -507,6 +543,9 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
       }
       if (dragRafRef.current != null) {
         window.cancelAnimationFrame(dragRafRef.current);
+      }
+      if (mobileAnimRafRef.current != null) {
+        window.cancelAnimationFrame(mobileAnimRafRef.current);
       }
     };
   }, []);
@@ -608,20 +647,23 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
     setProgress,
   ]);
 
-  // Mobile: discrete swipe / wheel / drag.
+  // Mobile: discrete swipe / wheel / drag — 2× slower travel than desktop.
   useEffect(() => {
     if (isDesktop) return;
     if (window.matchMedia("(min-width: 768px)").matches) return;
     const root = trackRef.current;
     if (!root) return;
 
+    const segmentPx = () =>
+      (root.clientHeight || window.innerHeight) * MOBILE_SEGMENT;
+
     const settleWheel = () => {
       wheelIdleRef.current = null;
-      const h = root.clientHeight || window.innerHeight;
+      const seg = segmentPx();
       const dy = wheelYRef.current;
       let next = activeRef.current;
-      if (dy < -SWIPE_PX || dy < -h * WHEEL_COMMIT_FRAC) next += 1;
-      else if (dy > SWIPE_PX || dy > h * WHEEL_COMMIT_FRAC) next -= 1;
+      if (dy < -SWIPE_PX || dy < -seg * WHEEL_COMMIT_FRAC) next += 1;
+      else if (dy > SWIPE_PX || dy > seg * WHEEL_COMMIT_FRAC) next -= 1;
       goToSlide(next);
     };
 
@@ -629,25 +671,26 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
       if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
       if (Math.abs(e.deltaY) < 1) return;
       e.preventDefault();
+      cancelMobileAnim();
       beginStory();
 
-      const h = root.clientHeight || window.innerHeight;
+      const seg = segmentPx();
       const cur = activeRef.current;
       let delta = -e.deltaY;
       if (cur === 0 && wheelYRef.current + delta > 0) delta *= 0.28;
       if (cur === last && wheelYRef.current + delta < 0) delta *= 0.28;
       const nextY = Math.max(
-        -h * 1.05,
-        Math.min(h * 1.05, wheelYRef.current + delta),
+        -seg * 1.05,
+        Math.min(seg * 1.05, wheelYRef.current + delta),
       );
 
       wheelYRef.current = nextY;
       setDragging(true);
       setDragY(nextY);
-      syncProgress(cur, nextY);
+      syncProgress(cur, nextY / MOBILE_SEGMENT);
 
-      const crossedNext = nextY <= -h * WHEEL_COMMIT_FRAC;
-      const crossedPrev = nextY >= h * WHEEL_COMMIT_FRAC;
+      const crossedNext = nextY <= -seg * WHEEL_COMMIT_FRAC;
+      const crossedPrev = nextY >= seg * WHEEL_COMMIT_FRAC;
       if (crossedNext || crossedPrev) {
         if (wheelIdleRef.current != null) {
           window.clearTimeout(wheelIdleRef.current);
@@ -693,6 +736,7 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
       ) {
         return;
       }
+      cancelMobileAnim();
       dragRef.current = {
         id: e.pointerId,
         startY: e.clientY,
@@ -723,11 +767,13 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
           /* ignore */
         }
       }
+      const seg = segmentPx();
       const atStart = activeRef.current === 0 && dy > 0;
       const atEnd = activeRef.current === last && dy < 0;
       const applied = atStart || atEnd ? dy * 0.28 : dy;
-      setDragY(applied);
-      syncProgress(activeRef.current, applied);
+      const clamped = Math.max(-seg * 1.05, Math.min(seg * 1.05, applied));
+      setDragY(clamped);
+      syncProgress(activeRef.current, clamped / MOBILE_SEGMENT);
     };
 
     const endDrag = (e: PointerEvent) => {
@@ -746,9 +792,16 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
       }
       const total = e.clientY - d.startY;
       const velocity = d.velocity;
+      const seg = segmentPx();
       let next = activeRef.current;
-      if (total < -SWIPE_PX || velocity < -0.45) next += 1;
-      else if (total > SWIPE_PX || velocity > 0.45) next -= 1;
+      if (total < -SWIPE_PX || total < -seg * WHEEL_COMMIT_FRAC || velocity < -0.45)
+        next += 1;
+      else if (
+        total > SWIPE_PX ||
+        total > seg * WHEEL_COMMIT_FRAC ||
+        velocity > 0.45
+      )
+        next -= 1;
       goToSlide(next);
     };
 
@@ -767,27 +820,30 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
       root.removeEventListener("pointerup", endDrag);
       root.removeEventListener("pointercancel", endDrag);
     };
-  }, [beginStory, goToSlide, isDesktop, last, syncProgress]);
+  }, [beginStory, cancelMobileAnim, goToSlide, isDesktop, last, syncProgress]);
 
   // Mobile floatIndex from discrete active + drag — paint without React.
   useEffect(() => {
     if (isDesktop) return;
+    if (mobileAnimRafRef.current != null) return;
     const schedule = () => {
       if (dragRafRef.current != null) return;
       dragRafRef.current = window.requestAnimationFrame(() => {
         dragRafRef.current = null;
+        if (mobileAnimRafRef.current != null) return;
         const h = Math.max(1, trackRef.current?.clientHeight ?? 800);
-        const fi = Math.min(last, Math.max(0, active - dragY / h));
+        const fi = Math.min(
+          last,
+          Math.max(0, active - dragY / (h * MOBILE_SEGMENT)),
+        );
         paint(fi);
       });
     };
     schedule();
   }, [active, dragY, isDesktop, last, paint]);
 
-  const zoomTransition =
-    isDesktop || dragging || reduceMotion
-      ? "none"
-      : `opacity ${ZOOM_MS}ms ${ZOOM_EASE}, transform ${ZOOM_MS}ms ${ZOOM_EASE}`;
+  // Imperative paint drives motion on both platforms (scroll / swipe / settle).
+  const zoomTransition = "none";
 
   return (
     <div
@@ -812,7 +868,7 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
                 <section
                   key={slide.id}
                   data-landing-slide={i}
-                  className={`landing-story-slide absolute inset-0 flex items-center justify-center py-24 pl-[4.25rem] pr-6 sm:pl-20 sm:pr-10 lg:px-24 ${
+                  className={`landing-story-slide absolute inset-0 flex items-center justify-center px-6 py-24 md:pl-20 md:pr-10 lg:px-24 ${
                     isActive ? "is-active" : ""
                   }`}
                   style={{
@@ -845,9 +901,9 @@ export function LandingStorySlides({ slides, backLabel }: Props) {
             })}
           </div>
 
-          {/* After the stack so ticks stay hittable before the first scroll paint. */}
+          {/* Desktop only — mobile uses swipe without the altitude chrome. */}
           <nav
-            className="landing-altimeter pointer-events-auto absolute left-0 top-1/2 z-[60] -translate-y-1/2 sm:left-3"
+            className="landing-altimeter pointer-events-auto absolute left-0 top-1/2 z-[60] hidden -translate-y-1/2 md:block sm:left-3"
             aria-label="Altitude"
           >
             <div className="landing-altimeter-rail relative h-[min(52dvh,22rem)] w-12">
