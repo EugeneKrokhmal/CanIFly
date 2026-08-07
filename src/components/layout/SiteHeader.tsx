@@ -88,7 +88,7 @@ export function SiteHeader() {
           </nav>
         </div>
 
-        <div className="grid w-full min-w-0 items-center justify-end gap-x-1.5 sm:gap-x-2 [grid-template-columns:2rem_minmax(4.75rem,max-content)_2rem] sm:[grid-template-columns:2rem_minmax(4.75rem,max-content)_minmax(0,max-content)_2rem]">
+        <div className="grid w-full min-w-0 items-center justify-end gap-x-1.5 sm:gap-x-2 xl:pr-5 [grid-template-columns:2rem_minmax(4.75rem,max-content)_2rem] sm:[grid-template-columns:2rem_minmax(4.75rem,max-content)_minmax(0,max-content)_2rem]">
           <button
             type="button"
             onClick={() => {
