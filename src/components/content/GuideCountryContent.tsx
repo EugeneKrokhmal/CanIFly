@@ -18,6 +18,10 @@ const SECTION_KEYS: Record<ContentCountryId, readonly string[]> = {
   SE: ["how", "dronechart", "transportstyrelsen", "cities", "community", "disclaimer"],
   IE: ["how", "iaa", "airnav", "cities", "community", "disclaimer"],
   LV: ["how", "airspace", "lgs", "cities", "community", "disclaimer"],
+  LT: ["how", "utm", "ans", "cities", "community", "disclaimer"],
+  EE: ["how", "utm", "eans", "cities", "community", "disclaimer"],
+  SK: ["how", "nsat", "caa", "cities", "community", "disclaimer"],
+  SI: ["how", "caa", "zones", "cities", "community", "disclaimer"],
   CZ: ["how", "anscr", "caa", "cities", "community", "disclaimer"],
   PL: ["how", "pansa", "ulc", "cities", "community", "disclaimer"],
 };
@@ -68,6 +72,24 @@ function sectionLink(
   if (country === "LV" && key === "airspace") {
     return { href: "https://www.airspace.lv/drones/", label: "airspace.lv/drones" };
   }
+  if (country === "LT" && key === "utm") {
+    return { href: "https://utm.ans.lt/avm/", label: "utm.ans.lt — Lithuania Drone Map" };
+  }
+  if (country === "EE" && key === "utm") {
+    return { href: "https://utm.eans.ee/avm/", label: "utm.eans.ee — drone map" };
+  }
+  if (country === "SK" && key === "nsat") {
+    return {
+      href: "https://letectvo.nsat.sk/en/unmanned-aviation/geo-zones/",
+      label: "letectvo.nsat.sk — geo-zones",
+    };
+  }
+  if (country === "SI" && key === "caa") {
+    return {
+      href: "https://www.caa.si/en/geographical-restrictions-for-uas.html",
+      label: "caa.si — UAS geographical restrictions",
+    };
+  }
   return null;
 }
 
@@ -89,6 +111,23 @@ export function GuideCountryContent() {
         {t(`byCountry.${country}.intro`)}
       </p>
 
+      <Link
+        href="/guide/flights"
+        className="as-press mt-5 flex items-start gap-3 rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] p-4 shadow-[var(--as-shadow)] hover:bg-[var(--as-hover)]"
+      >
+        <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--as-rausch-soft)] text-[14px] font-bold text-[var(--as-rausch)]">
+          DJI
+        </span>
+        <span className="min-w-0">
+          <span className="block text-[14px] font-semibold text-[var(--as-ink)]">
+            {t("flightsGuideCta")}
+          </span>
+          <span className="mt-0.5 block text-[13px] leading-snug text-[var(--as-ink-soft)]">
+            {t("flightsGuideBlurb")}
+          </span>
+        </span>
+      </Link>
+
       <CountrySelect
         value={country}
         onChange={setCountry}
@@ -104,6 +143,10 @@ export function GuideCountryContent() {
           SE: t("countryNames.SE"),
           IE: t("countryNames.IE"),
           LV: t("countryNames.LV"),
+          LT: t("countryNames.LT"),
+          EE: t("countryNames.EE"),
+          SK: t("countryNames.SK"),
+          SI: t("countryNames.SI"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

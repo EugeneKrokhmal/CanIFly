@@ -16,7 +16,8 @@ type Props = {
     | "verifyEmail"
     | "resetPassword"
     | "pilot"
-    | "landing";
+    | "landing"
+    | "guideFlights";
 };
 
 /**

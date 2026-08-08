@@ -40,6 +40,10 @@ export type MapBackendLabel =
   | "lfv"
   | "iaa"
   | "lgs"
+  | "anslt"
+  | "eans"
+  | "nsat"
+  | "caasi"
   | "multi"
   | null;
 

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAuthStore } from "@/stores/auth";
 import { compressImageFile } from "@/lib/image/compress";
+import { FlightSyncPanel } from "@/components/account/FlightSyncPanel";
 
 export default function AccountPage() {
   const t = useTranslations("account");
@@ -300,6 +301,8 @@ export default function AccountPage() {
             {saving ? t("saving") : t("saveChanges")}
           </button>
         </form>
+
+        <FlightSyncPanel pilotId={user.id} />
 
         <section className="mt-8 rounded-2xl border border-[#ffd7d7] bg-[var(--as-surface)] p-5">
           <h2 className="text-[14px] font-semibold text-[#c13515]">

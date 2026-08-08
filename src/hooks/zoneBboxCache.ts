@@ -111,15 +111,28 @@ function trimFeatureStore(): void {
   }
 }
 
+/** Reject globe / “Outside country” masks that would paint every viewport. */
+const MAX_MERGED_SPAN_DEG = 40;
+
 export function mergeZoneFeatures(features: GeoJSON.Feature[]): void {
   for (const f of features) {
     const key = featureKey(f);
     if (!key) continue;
-    if (!featuresById.has(key)) featureOrder.push(key);
-    featuresById.set(key, f);
     if (f.geometry) {
       const bounds = geometryBounds(f.geometry);
+      if (
+        bounds &&
+        (bounds.east - bounds.west >= MAX_MERGED_SPAN_DEG ||
+          bounds.north - bounds.south >= MAX_MERGED_SPAN_DEG)
+      ) {
+        continue;
+      }
+      if (!featuresById.has(key)) featureOrder.push(key);
+      featuresById.set(key, f);
       if (bounds) boundsById.set(key, bounds);
+    } else {
+      if (!featuresById.has(key)) featureOrder.push(key);
+      featuresById.set(key, f);
     }
   }
   trimFeatureStore();

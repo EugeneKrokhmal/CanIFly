@@ -43,6 +43,10 @@ const MAP_BACKENDS = new Set<string>([
   "lfv",
   "iaa",
   "lgs",
+  "anslt",
+  "eans",
+  "nsat",
+  "caasi",
   "multi",
 ]);
 

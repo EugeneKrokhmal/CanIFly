@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import type { AppLocale } from "@/i18n/routing";
 import {
@@ -11,6 +11,10 @@ import {
 } from "@canifly/middleware";
 import { Link } from "@/i18n/navigation";
 import { BackToMapLink } from "@/components/layout/BackToMapLink";
+import {
+  PilotBadges,
+  type PilotBadge,
+} from "@/components/pilots/PilotBadges";
 
 type Pilot = {
   id: string;
@@ -32,8 +36,22 @@ type ObstacleRow = {
   createdAt: string;
 };
 
+type FlightRow = {
+  id: string;
+  startedAt: string;
+  durationS: number;
+  distanceM: number;
+  maxHeightM: number | null;
+  aircraftName: string | null;
+  startLat: number | null;
+  startLng: number | null;
+  hasTrack: boolean;
+};
+
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+const PIN_PAGE_SIZE = 8;
 
 export default function PilotProfilePage({
   params,
@@ -45,11 +63,15 @@ export default function PilotProfilePage({
   const [id, setId] = useState<string | null>(null);
   const [pilot, setPilot] = useState<Pilot | null>(null);
   const [obstacles, setObstacles] = useState<ObstacleRow[]>([]);
+  const [flights, setFlights] = useState<FlightRow[]>([]);
+  const [badges, setBadges] = useState<PilotBadge[]>([]);
+  const [pinPage, setPinPage] = useState(0);
   const [state, setState] = useState<"loading" | "ready" | "missing" | "error">(
     "loading",
   );
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const lightboxTitleId = useId();
+  const pinsSectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     void params.then((p) => setId(p.id));
@@ -91,10 +113,15 @@ export default function PilotProfilePage({
         const data = (await res.json()) as {
           pilot: Pilot;
           obstacles?: ObstacleRow[];
+          flights?: FlightRow[];
+          badges?: PilotBadge[];
         };
         if (cancelled) return;
         setPilot(data.pilot);
         setObstacles(data.obstacles ?? []);
+        setFlights(data.flights ?? []);
+        setBadges(data.badges ?? []);
+        setPinPage(0);
         setState("ready");
       } catch {
         if (!cancelled) setState("error");
@@ -164,7 +191,66 @@ export default function PilotProfilePage({
           </p>
         ) : null}
 
+        <PilotBadges
+          badges={badges}
+          stats={{
+            flightCount: flights.length,
+            totalDistanceM: flights.reduce((s, f) => s + (f.distanceM || 0), 0),
+            totalDurationS: flights.reduce((s, f) => s + (f.durationS || 0), 0),
+            pinCount: obstacles.length,
+            flySpotCount: obstacles.filter((o) => o.kind === "fly_spot").length,
+            badgeCount: badges.filter((b) => b.earned).length,
+            hasOperator: Boolean(pilot.operatorNumber),
+          }}
+        />
+
         <section className="mt-8">
+          <h2 className="text-[12px] font-semibold text-[var(--as-ink)]">
+            {t("flightsHeading", { count: flights.length })}
+          </h2>
+          {flights.length === 0 ? (
+            <p className="mt-3 text-[14px] leading-relaxed text-[var(--as-ink-soft)]">
+              {t("flightsEmpty")}
+            </p>
+          ) : (
+            <ul className="mt-3 space-y-2">
+              {flights.map((f) => (
+                <li
+                  key={f.id}
+                  className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--as-line-soft)] bg-[var(--as-surface)] px-4 py-3 shadow-[var(--as-shadow)]"
+                >
+                  <div className="min-w-0">
+                    <p className="truncate text-[14px] font-semibold">
+                      {f.aircraftName ?? t("flightFallback")}
+                    </p>
+                    <p className="text-[12px] text-[var(--as-ink-soft)]">
+                      {new Date(f.startedAt).toLocaleString()} ·{" "}
+                      {Math.round(f.durationS / 60)} min ·{" "}
+                      {Math.round(f.distanceM)} m
+                      {f.hasTrack ? " · track" : ""}
+                    </p>
+                  </div>
+                  {f.startLat != null && f.startLng != null ? (
+                    <Link
+                      href={{
+                        pathname: "/",
+                        query: {
+                          lat: f.startLat.toFixed(5),
+                          lng: f.startLng.toFixed(5),
+                        },
+                      }}
+                      className="shrink-0 text-[12px] font-semibold text-[#ff385c] hover:underline"
+                    >
+                      {t("viewFlightOnMap")}
+                    </Link>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section ref={pinsSectionRef} className="mt-8">
           <h2 className="text-[12px] font-semibold text-[var(--as-ink)]">
             {t("reportedHeading", { count: obstacles.length })}
           </h2>
@@ -174,8 +260,14 @@ export default function PilotProfilePage({
               {t("noneYet")}
             </p>
           ) : (
-            <ul className="as-stagger mt-3 space-y-3">
-              {obstacles.map((o) => {
+            <>
+              <ul className="as-stagger mt-3 space-y-3">
+                {obstacles
+                  .slice(
+                    pinPage * PIN_PAGE_SIZE,
+                    pinPage * PIN_PAGE_SIZE + PIN_PAGE_SIZE,
+                  )
+                  .map((o) => {
                 const kind = (o.kind === "fly_spot" ? "fly_spot" : "obstacle") as PinKind;
                 const label = obstacleLabel(
                   o.type as ObstacleType,
@@ -246,7 +338,52 @@ export default function PilotProfilePage({
                   </li>
                 );
               })}
-            </ul>
+              </ul>
+              {obstacles.length > PIN_PAGE_SIZE ? (
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    disabled={pinPage === 0}
+                    onClick={() => {
+                      setPinPage((p) => Math.max(0, p - 1));
+                      pinsSectionRef.current?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                    }}
+                    className="as-press rounded-full border border-[var(--as-line)] px-3.5 py-1.5 text-[13px] font-semibold text-[var(--as-ink)] disabled:opacity-40"
+                  >
+                    {t("pinsPrev")}
+                  </button>
+                  <p className="text-[12px] text-[var(--as-ink-soft)]">
+                    {t("pinsPage", {
+                      from: pinPage * PIN_PAGE_SIZE + 1,
+                      to: Math.min(
+                        (pinPage + 1) * PIN_PAGE_SIZE,
+                        obstacles.length,
+                      ),
+                      total: obstacles.length,
+                    })}
+                  </p>
+                  <button
+                    type="button"
+                    disabled={
+                      (pinPage + 1) * PIN_PAGE_SIZE >= obstacles.length
+                    }
+                    onClick={() => {
+                      setPinPage((p) => p + 1);
+                      pinsSectionRef.current?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                    }}
+                    className="as-press rounded-full border border-[var(--as-line)] px-3.5 py-1.5 text-[13px] font-semibold text-[var(--as-ink)] disabled:opacity-40"
+                  >
+                    {t("pinsNext")}
+                  </button>
+                </div>
+              ) : null}
+            </>
           )}
         </section>
 

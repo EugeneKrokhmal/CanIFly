@@ -115,7 +115,8 @@
     "failed": "Dieser Bestätigungslink ist ungültig oder abgelaufen.",
     "missingToken": "Bestätigungstoken fehlt.",
     "goAccount": "Zu meinem Konto",
-    "backToMap": "Zurück zur Karte"
+    "backToMap": "Zurück zur Karte",
+    "goMapTour": "Karte öffnen und Tour starten"
   },
   "resetPassword": {
     "eyebrow": "Konto",
@@ -272,6 +273,81 @@
     "eyebrow": "Pilot",
     "operator": "Betreiber · {number}",
     "communityReporter": "Community-Melder",
+    "badgesHeading": "Abzeichen · {count}",
+    "badgesEmpty": "Willkommen — synchronisiere einen Flug oder setze einen Pin für mehr Abzeichen.",
+    "rankHeading": "Rang",
+    "rankLevel": "Stufe {level}",
+    "rankProgress": "{earned} / {total}",
+    "rank": {
+      "student": "Schülerpilot",
+      "amateur": "Amateurpilot",
+      "private": "Privatpilot",
+      "first_officer": "Erster Offizier",
+      "senior_first_officer": "Senior First Officer",
+      "captain": "Kapitän",
+      "flight_captain": "Flugkapitän",
+      "senior_flight_captain": "Senior Flugkapitän",
+      "commercial_captain": "Kommerzieller Kapitän",
+      "instructor": "Fluglehrer"
+    },
+    "badge": {
+      "joined": {
+        "title": "Neuling",
+        "hint": "Pilotenkonto erstellt"
+      },
+      "first_flight": {
+        "title": "Erster Flug",
+        "hint": "Ersten DJI-Flug synchronisiert"
+      },
+      "flights_10": {
+        "title": "10 Flüge",
+        "hint": "10 Flüge synchronisiert"
+      },
+      "distance_10km": {
+        "title": "10 km",
+        "hint": "Insgesamt 10 km geflogen"
+      },
+      "distance_100km": {
+        "title": "100 km",
+        "hint": "Insgesamt 100 km geflogen"
+      },
+      "airtime_1h": {
+        "title": "Erste Stunde",
+        "hint": "1 Stunde Flugzeit erfasst"
+      },
+      "high_flyer": {
+        "title": "Höhenflug",
+        "hint": "120 m AGL erreicht"
+      },
+      "gps_track": {
+        "title": "GPS-Track",
+        "hint": "Vollständigen Flugweg entschlüsselt"
+      },
+      "first_pin": {
+        "title": "Erster Pin",
+        "hint": "Ersten Karten-Pin gemeldet"
+      },
+      "pins_10": {
+        "title": "10 Pins",
+        "hint": "10 Pins gemeldet"
+      },
+      "fly_spot": {
+        "title": "Flugspot",
+        "hint": "Einen Flugspot geteilt"
+      },
+      "photo_pin": {
+        "title": "Foto-Pin",
+        "hint": "Foto zu einem Pin hinzugefügt"
+      },
+      "operator": {
+        "title": "Registrierter Betreiber",
+        "hint": "Betreibernummer hinterlegt"
+      }
+    },
+    "flightsHeading": "Flüge · {count}",
+    "flightsEmpty": "Noch keine synchronisierten DJI-Flüge.",
+    "flightFallback": "Flug",
+    "viewFlightOnMap": "Karte",
     "reportedHeading": "Gemeldete Pins · {count}",
     "noneYet": "Noch keine Hindernisse oder Flugspots.",
     "viewOnMap": "Auf Karte anzeigen",
@@ -280,12 +356,26 @@
     "photoFullscreen": "Foto im Vollbild",
     "backToMap": "← Zurück zur Karte",
     "unavailable": "Profil nicht verfügbar.",
-    "loading": "Profil wird geladen…"
+    "loading": "Profil wird geladen…",
+    "badgesSwipe": "Wischen",
+    "pinsPrev": "Zurück",
+    "pinsNext": "Weiter",
+    "pinsPage": "{from}–{to} von {total}",
+    "badgesPrev": "Vorherige Abzeichen",
+    "badgesNext": "Nächste Abzeichen",
+    "rankXp": "{xp} XP",
+    "rankXpNext": "{current} / {next} XP bis zur nächsten Stufe",
+    "rankHours": "{hours} h",
+    "rankHoursNext": "{current} / {next} h bis {rank}",
+    "rankBoost": "Flugzeit {airtime} h · +{bonus} h durch Erfolge",
+    "rankMax": "Höchster Rang"
   },
   "leaderboard": {
-    "aria": "Top-Piloten nach gesetzten Pins",
+    "aria": "Top-Piloten nach Rang",
     "title": "Top-Piloten",
-    "pins": "{count, plural, one {# Pin} other {# Pins}}"
+    "pins": "{count, plural, one {# Pin} other {# Pins}}",
+    "level": "Stufe {level}",
+    "rank": "{name}"
   },
   "cookie": {
     "aria": "Cookie-Einwilligung",
@@ -310,7 +400,11 @@
       "AT": "Österreich",
       "SE": "Schweden",
       "IE": "Irland",
-      "LV": "Lettland"
+      "LV": "Lettland",
+      "LT": "Lithuania",
+      "EE": "Estonia",
+      "SK": "Slovakia",
+      "SI": "Slovenia"
     },
     "backToMap": "← Zurück zur Karte",
     "byCountry": {
@@ -790,6 +884,162 @@
             "a": "airspace.lv/drones, ais.lgs.lv UAS geozones, lgs.lv, and caa.gov.lv."
           }
         }
+      },
+      "LT": {
+        "title": "FAQ — Lithuania",
+        "intro": "Answers for flying in Lithuania with CanIFly and Oro navigacija UAS geographical zones.",
+        "ctaGuide": "Read the Lithuania flying guide",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Lithuania?",
+            "a": "CanIFly summarises Oro navigacija UTM zones for your class and ceiling. PROHIBITED and major airport / security zones map to Prohibited or Restricted. Always confirm on utm.ans.lt before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation?",
+            "a": "Many Lithuanian zones are REQ_AUTHORISATION — submit flight requests via the UTM system (utm.ans.lt / Lithuania Drone Map) and contact the listed zone authority."
+          },
+          "openCategory": {
+            "q": "Does my C0–C2 class change the map?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter zones that intersect that envelope. Specific operations need additional checks outside CanIFly."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Lithuania?",
+            "a": "Lithuania as published in the Oro navigacija UTM GeoJSON (utm.ans.lt)."
+          },
+          "vilnius": {
+            "q": "What about Vilnius and airports?",
+            "a": "Vilnius, Kaunas and Palanga sit under layered airport / CTR-style zones. Expect Restricted or Prohibited near aerodromes."
+          },
+          "data": {
+            "q": "Where does the Lithuanian zone data come from?",
+            "a": "Official Oro navigacija UTM AVM GeoJSON (utm.ans.lt/avm/utm/uas.geojson). We cache and query it locally — we do not replace Oro navigacija."
+          },
+          "track": {
+            "q": "Is CanIFly an official clearance?",
+            "a": "No. It is a planning aid. For official Lithuanian UAS geographical zones use utm.ans.lt."
+          },
+          "official": {
+            "q": "Where are the official sources?",
+            "a": "utm.ans.lt, ans.lt, and Transport Competence Agency (tka.lt)."
+          }
+        }
+      },
+      "EE": {
+        "title": "FAQ — Estonia",
+        "intro": "Answers for flying in Estonia with CanIFly and EANS / Transpordiamet UAS geographical zones.",
+        "ctaGuide": "Read the Estonia flying guide",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Estonia?",
+            "a": "CanIFly summarises EANS UTM zones for your class and ceiling. Always confirm on utm.eans.ee / Transpordiamet before flying."
+          },
+          "auth": {
+            "q": "Do I need authorisation?",
+            "a": "Many Estonian zones are REQ_AUTHORISATION — contact the listed zone authority and follow Transpordiamet guidance."
+          },
+          "openCategory": {
+            "q": "Does my C0–C2 class change the map?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter zones that intersect that envelope."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Estonia?",
+            "a": "Estonia as published in the EANS UTM GeoJSON (utm.eans.ee)."
+          },
+          "tallinn": {
+            "q": "What about Tallinn Airport?",
+            "a": "Tallinn CTR / airport buffers are typically Restricted or Prohibited for open recreational flights without coordination."
+          },
+          "data": {
+            "q": "Where does the Estonian zone data come from?",
+            "a": "Official EANS / Transpordiamet UTM AVM GeoJSON (utm.eans.ee/avm/utm/uas.geojson)."
+          },
+          "track": {
+            "q": "Is CanIFly an official clearance?",
+            "a": "No. It is a planning aid. Use utm.eans.ee and Transpordiamet for official information."
+          },
+          "official": {
+            "q": "Where are the official sources?",
+            "a": "utm.eans.ee, transpordiamet.ee geographical zones page, and eans.ee."
+          }
+        }
+      },
+      "SK": {
+        "title": "FAQ — Slovakia",
+        "intro": "Answers for flying in Slovakia with CanIFly and NSAT UAS geographical zones.",
+        "ctaGuide": "Read the Slovakia flying guide",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Slovakia?",
+            "a": "CanIFly summarises NSAT KML geozones. ZAKÁZANÁ PREVÁDZKA maps to Prohibited; OBMEDZENÁ / CTR-style zones map to Restricted."
+          },
+          "auth": {
+            "q": "Do I need authorisation?",
+            "a": "Restricted and CTR zones typically require coordination with the listed authority. Follow NSAT / Dopravný úrad rules."
+          },
+          "openCategory": {
+            "q": "Does my C0–C2 class change the map?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter zones that intersect that envelope."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Slovakia?",
+            "a": "Slovakia as published in the NSAT geo-zones KML package."
+          },
+          "bratislava": {
+            "q": "What about Bratislava Airport?",
+            "a": "Bratislava and other CTR / aerodrome zones are typically Restricted or Prohibited without coordination."
+          },
+          "data": {
+            "q": "Where does the Slovak zone data come from?",
+            "a": "Official NSAT / Dopravný úrad KML ZIP from letectvo.nsat.sk."
+          },
+          "track": {
+            "q": "Is CanIFly an official clearance?",
+            "a": "No. It is a planning aid. Confirm on letectvo.nsat.sk before flying."
+          },
+          "official": {
+            "q": "Where are the official sources?",
+            "a": "letectvo.nsat.sk geo-zones page and nsat.sk."
+          }
+        }
+      },
+      "SI": {
+        "title": "FAQ — Slovenia",
+        "intro": "Answers for flying in Slovenia with CanIFly and CAA Slovenia UAS geographical zones.",
+        "ctaGuide": "Read the Slovenia flying guide",
+        "items": {
+          "status": {
+            "q": "What do Clear / Limited / Restricted / Prohibited mean in Slovenia?",
+            "a": "CanIFly summarises CAA Slovenia KML/KMZ geozones. Prepovedano / Prohibited maps to Prohibited; altitude-limited zones may show as Limited or Restricted."
+          },
+          "auth": {
+            "q": "Do I need authorisation?",
+            "a": "Many zones require prior approval from the listed contact. Follow CAA Slovenia guidance."
+          },
+          "openCategory": {
+            "q": "Does my C0–C2 class change the map?",
+            "a": "Yes. Set C0–C2 and your AGL ceiling; we filter zones that intersect that envelope."
+          },
+          "where": {
+            "q": "Where does CanIFly cover in Slovenia?",
+            "a": "Slovenia as published in the CAA SI geographical restrictions KMZ package."
+          },
+          "ljubljana": {
+            "q": "What about Ljubljana?",
+            "a": "Ljubljana and other cities include layered prohibited / restricted zones. Check the map before takeoff."
+          },
+          "data": {
+            "q": "Where does the Slovenian zone data come from?",
+            "a": "Official CAA Slovenia KMZ ZIP from caa.si geographical restrictions for UAS."
+          },
+          "track": {
+            "q": "Is CanIFly an official clearance?",
+            "a": "No. It is a planning aid. Confirm on caa.si before flying."
+          },
+          "official": {
+            "q": "Where are the official sources?",
+            "a": "caa.si geographical restrictions for UAS page."
+          }
+        }
       }
     }
   },
@@ -807,7 +1057,11 @@
       "AT": "Österreich",
       "SE": "Schweden",
       "IE": "Irland",
-      "LV": "Lettland"
+      "LV": "Lettland",
+      "LT": "Lithuania",
+      "EE": "Estonia",
+      "SK": "Slovakia",
+      "SI": "Slovenia"
     },
     "ctaMap": "CanIFly-Karte öffnen",
     "ctaFaq": "FAQ ansehen",
@@ -1184,8 +1438,134 @@
             "body": "CanIFly is a planning aid, not an official clearance. LGS / CAA Latvia data and NOTAMs always prevail."
           }
         }
+      },
+      "LT": {
+        "eyebrow": "Lithuania",
+        "title": "Flying drones in Lithuania",
+        "intro": "CanIFly summarises Oro navigacija UTM UAS geographical zones on a map: tap a point, pick class and ceiling, and see Clear, Limited, Restricted or Prohibited.",
+        "sections": {
+          "how": {
+            "title": "1. Check the point on the map",
+            "body": "Open CanIFly, centre on your location and tap the takeoff point. Status combines Oro navigacija UTM zones with your class and AGL ceiling."
+          },
+          "utm": {
+            "title": "2. Lithuania Drone Map (UTM)",
+            "body": "Oro navigacija runs the official UTM map at utm.ans.lt. Flight requests in controlled airspace go through that system or the Lithuania Drone Map app."
+          },
+          "ans": {
+            "title": "3. Oro navigacija",
+            "body": "AB Oro navigacija publishes the digital UAS zone dataset. Always cross-check registration and competence requirements with TKA before you fly."
+          },
+          "cities": {
+            "title": "4. Cities and airports",
+            "body": "Vilnius, Kaunas and Palanga sit under layered airport zones. Expect Restricted or Prohibited near aerodromes."
+          },
+          "community": {
+            "title": "5. Community and local tips",
+            "body": "CanIFly shows nearby pilots and spots when available. Local clubs and zone authorities remain the best sources for day-of coordination."
+          },
+          "disclaimer": {
+            "title": "6. Disclaimer",
+            "body": "CanIFly is a planning aid, not an official clearance. Oro navigacija / TKA data and NOTAMs always prevail."
+          }
+        }
+      },
+      "EE": {
+        "eyebrow": "Estonia",
+        "title": "Flying drones in Estonia",
+        "intro": "CanIFly summarises EANS / Transpordiamet UTM UAS geographical zones on a map.",
+        "sections": {
+          "how": {
+            "title": "1. Check the point on the map",
+            "body": "Open CanIFly, centre on your location and tap the takeoff point. Status combines EANS UTM zones with your class and AGL ceiling."
+          },
+          "utm": {
+            "title": "2. EANS drone map (UTM)",
+            "body": "EANS publishes the interactive UTM map at utm.eans.ee. Use it for coordination near Tallinn CTR and other managed airspace."
+          },
+          "eans": {
+            "title": "3. EANS and Transpordiamet",
+            "body": "EANS and the Transport Administration publish Estonian UAS geographical zones. Follow their registration and permission rules."
+          },
+          "cities": {
+            "title": "4. Cities and airports",
+            "body": "Tallinn and other cities include airport / security overlays. Expect Restricted or Prohibited near aerodromes."
+          },
+          "community": {
+            "title": "5. Community and local tips",
+            "body": "CanIFly shows nearby pilots and spots when available. Local clubs remain useful for day-of tips."
+          },
+          "disclaimer": {
+            "title": "6. Disclaimer",
+            "body": "CanIFly is a planning aid, not an official clearance. EANS / Transpordiamet data and NOTAMs always prevail."
+          }
+        }
+      },
+      "SK": {
+        "eyebrow": "Slovakia",
+        "title": "Flying drones in Slovakia",
+        "intro": "CanIFly summarises NSAT / Dopravný úrad UAS geographical zones on a map.",
+        "sections": {
+          "how": {
+            "title": "1. Check the point on the map",
+            "body": "Open CanIFly, centre on your location and tap the takeoff point. Status combines NSAT KML geozones with your class and AGL ceiling."
+          },
+          "nsat": {
+            "title": "2. NSAT geo-zones download",
+            "body": "Dopravný úrad publishes current geo-zones as a KML ZIP on letectvo.nsat.sk. CanIFly ingests that package."
+          },
+          "caa": {
+            "title": "3. Transport Authority",
+            "body": "NSAT sets Slovak UAS geographical zone rules. Always confirm registration and competence requirements before you fly."
+          },
+          "cities": {
+            "title": "4. Cities and airports",
+            "body": "Bratislava, Košice and other CTR / aerodrome zones are typically Restricted or Prohibited without coordination."
+          },
+          "community": {
+            "title": "5. Community and local tips",
+            "body": "CanIFly shows nearby pilots and spots when available."
+          },
+          "disclaimer": {
+            "title": "6. Disclaimer",
+            "body": "CanIFly is a planning aid, not an official clearance. NSAT data and NOTAMs always prevail."
+          }
+        }
+      },
+      "SI": {
+        "eyebrow": "Slovenia",
+        "title": "Flying drones in Slovenia",
+        "intro": "CanIFly summarises CAA Slovenia UAS geographical zones on a map.",
+        "sections": {
+          "how": {
+            "title": "1. Check the point on the map",
+            "body": "Open CanIFly, centre on your location and tap the takeoff point. Status combines CAA SI KMZ geozones with your class and AGL ceiling."
+          },
+          "caa": {
+            "title": "2. CAA Slovenia",
+            "body": "The Civil Aviation Agency publishes geographical restrictions for UAS on caa.si. CanIFly ingests their KMZ package."
+          },
+          "zones": {
+            "title": "3. Restriction types",
+            "body": "Many Slovenian zones are prohibited (Prepovedano). Others allow flight only under stated altitude or membership conditions."
+          },
+          "cities": {
+            "title": "4. Cities and airports",
+            "body": "Ljubljana and other cities include layered prohibited / restricted zones. Check the map carefully."
+          },
+          "community": {
+            "title": "5. Community and local tips",
+            "body": "CanIFly shows nearby pilots and spots when available."
+          },
+          "disclaimer": {
+            "title": "6. Disclaimer",
+            "body": "CanIFly is a planning aid, not an official clearance. CAA Slovenia data and NOTAMs always prevail."
+          }
+        }
       }
-    }
+    },
+    "flightsGuideCta": "Sync DJI flights — iPhone & Android",
+    "flightsGuideBlurb": "Step-by-step with screenshots: find FlightRecords and upload them to your account."
   },
   "privacy": {
     "eyebrow": "Rechtliches",
@@ -1237,7 +1617,11 @@
       "AT": "Österreich",
       "SE": "Schweden",
       "IE": "Irland",
-      "LV": "Lettland"
+      "LV": "Lettland",
+      "LT": "Lithuania",
+      "EE": "Estonia",
+      "SK": "Slovakia",
+      "SI": "Slovenia"
     },
     "backToMap": "← Zurück zur Karte",
     "byCountry": {
@@ -1468,6 +1852,40 @@
           "lgs": "LGS",
           "caa": "CAA Latvia"
         }
+      },
+      "LT": {
+        "title": "Lithuania — official contacts",
+        "intro": "Official channels for coordination and UAS geographical zones in Lithuania.",
+        "links": {
+          "utm": "Lithuania Drone Map (UTM)",
+          "ans": "Oro navigacija",
+          "tka": "Transport Competence Agency"
+        }
+      },
+      "EE": {
+        "title": "Estonia — official contacts",
+        "intro": "Official channels for coordination and UAS geographical zones in Estonia.",
+        "links": {
+          "utm": "EANS drone map (UTM)",
+          "zones": "Transpordiamet — geographical zones",
+          "eans": "EANS — unmanned aviation"
+        }
+      },
+      "SK": {
+        "title": "Slovakia — official contacts",
+        "intro": "Official channels for coordination and UAS geographical zones in Slovakia.",
+        "links": {
+          "zones": "NSAT — geo-zones",
+          "nsat": "Transport Authority (NSAT)"
+        }
+      },
+      "SI": {
+        "title": "Slovenia — official contacts",
+        "intro": "Official channels for coordination and UAS geographical zones in Slovenia.",
+        "links": {
+          "zones": "CAA SI — UAS geographical restrictions",
+          "caa": "CAA Slovenia"
+        }
       }
     },
     "form": {
@@ -1543,5 +1961,90 @@
     "seoP1": "UAS-Beschränkungen oder Flug nahe Flughäfen und Ortschaften? CanIFly zeigt den Status mit einem Tippen, gefiltert nach Klasse und Decke — für Europa.",
     "seoP2": "Nutze es mit offiziellen Quellen und deiner offenen Kategorie. Karte öffnen, Punkt prüfen, bei Bedarf den Länderleitfaden lesen.",
     "disclaimer": "CanIFly ist kein offizielles Produkt einer Luftfahrtbehörde. Planungshilfe — offizielle nationale Quellen vor dem Flug immer prüfen."
+  },
+  "guideFlights": {
+    "metaTitle": "Sync DJI flights on iPhone & Android | CanIFly",
+    "metaDescription": "How to find DJI Fly FlightRecords on iOS and Android and upload them to CanIFly so tracks appear on your map and profile.",
+    "eyebrow": "Flights",
+    "title": "Upload DJI flight data to CanIFly",
+    "intro": "CanIFly does not pull flights from the DJI cloud. Export the encrypted FlightRecord files from DJI Fly on your phone, then upload them on your account page. We decode them on the server and sync tracks to your profile and map.",
+    "ctaAccount": "Open account sync",
+    "ctaGuide": "Country flying guides",
+    "platformAria": "Choose phone platform",
+    "tabIos": "iPhone",
+    "tabAndroid": "Android",
+    "whatYouNeedTitle": "What you need",
+    "need1": "A DJI Fly (or compatible) flight history already on the phone",
+    "need2": "The Files app (iPhone) or Files / My Files (Android)",
+    "need3": "A CanIFly account signed in on the same phone or a desktop",
+    "shotIosBrowse": "iPhone Files — On My iPhone with DJI Fly folder",
+    "shotIosRecords": "iPhone Files — FlightRecords .txt list",
+    "shotAndroidBrowse": "Android Files — DJI / dji.go.v5 folders",
+    "shotAndroidRecords": "Android Files — FlightRecord .txt list",
+    "shotUpload": "CanIFly account — Upload DJI flights",
+    "ios": {
+      "title": "iPhone / iPad",
+      "note": "Safari cannot open the hidden DJI folder by URL. Use the Files app, then share or pick files into CanIFly.",
+      "s1Title": "Open Files → Browse → On My iPhone",
+      "s1Body": "Launch Apple Files. Under Browse, open On My iPhone (not iCloud Drive).",
+      "s1Caption": "Step 1 — find DJI Fly under On My iPhone",
+      "s2Title": "Open DJI Fly → FlightRecords",
+      "s2Body": "Tap DJI Fly, then FlightRecords. You should see FlightRecord_YYYY-MM-DD_[HH-MM-SS].txt files.",
+      "s2Caption": "Step 2 — select the .txt flight logs",
+      "s3Title": "Select the flights to sync",
+      "s3Body": "Long-press to multi-select, or zip the folder in Files (Share → Compress) if you prefer one upload.",
+      "s4Title": "Upload in CanIFly",
+      "s4Body": "In CanIFly → Account → Upload DJI flights, choose the .txt files or the zip. Stay on Wi‑Fi for large batches."
+    },
+    "android": {
+      "title": "Android",
+      "note": "Folder names vary slightly by DJI Fly version. Look under Internal storage → DJI → dji.go.v5 → FlightRecord (sometimes FlightRecords).",
+      "s1Title": "Open Files → Internal storage → DJI",
+      "s1Body": "Use Google Files, Samsung My Files, or any file manager. Browse Internal storage (or Device storage).",
+      "s1Caption": "Step 1 — open DJI / dji.go.v5",
+      "s2Title": "Open FlightRecord",
+      "s2Body": "Inside dji.go.v5 (or similar), open FlightRecord. You should see FlightRecord_*.txt logs.",
+      "s2Caption": "Step 2 — pick the .txt logs",
+      "s3Title": "Share or copy the files",
+      "s3Body": "Select the logs (or zip them). If Android/data is blocked on your phone, copy FlightRecord to Downloads first, then pick from there.",
+      "s4Title": "Upload in CanIFly",
+      "s4Body": "Open CanIFly in Chrome → Account → Upload DJI flights and choose the files or zip."
+    },
+    "upload": {
+      "title": "Finish on CanIFly",
+      "caption": "Account → Upload DJI flights",
+      "s1Title": "Sign in",
+      "s1Body": "Use the same account that should own the flights on your public profile.",
+      "s2Title": "Upload DJI flights",
+      "s2Body": "Accept .txt FlightRecord files or a zip of them. Re-uploading the same file refreshes stats and tracks.",
+      "s3Title": "See tracks on the map",
+      "s3Body": "Turn Flights on in the map controls. Paths color by altitude; open a track for duration, distance, and aircraft."
+    },
+    "tipsTitle": "Tips",
+    "tip1": "Apple Sign-In / Hide My Email does not give a DJI password for third-party cloud sync — local FlightRecords are the reliable path.",
+    "tip2": "Tracks need server decryption (DJI Open API key on CanIFly). Metadata still syncs without a full GPS path.",
+    "tip3": "After a flight, wait until DJI Fly finishes writing the log before copying files.",
+    "tip4": "Already synced flights are skipped or refreshed — safe to upload the whole folder again.",
+    "backToMap": "← Back to map"
+  },
+  "tour": {
+    "progress": "{current} / {total}",
+    "skip": "Skip tour",
+    "back": "Back",
+    "next": "Next",
+    "done": "Got it",
+    "flightsGuideLink": "How to upload DJI flights →",
+    "welcomeTitle": "Welcome to CanIFly",
+    "welcomeBody": "Quick tour of the map: check airspace, see traffic and your flights, drop pins, and manage your account.",
+    "mapTitle": "Tap the map",
+    "mapBody": "Tap a takeoff point to check UAS zones for your drone class and ceiling. Status shows Clear, Limited, Restricted, or Prohibited.",
+    "trafficTitle": "Aircraft traffic",
+    "trafficBody": "Toggle live ADS-B traffic on or off. Zoom in when the layer asks for more detail.",
+    "flightsTitle": "Flugspuren",
+    "flightsBody": "Schalte Flights ein für höhenfarbige Spuren. Filter All (alle) oder Mine (nur eigene), nachdem du DJI-FlightRecords synchronisiert hast.",
+    "pinTitle": "Add a pin",
+    "pinBody": "Report an obstacle or share a fly spot for other pilots. Community tips — always cross-check official sources.",
+    "accountTitle": "Your account",
+    "accountBody": "Open Account to edit your profile, sync DJI flights, and view your public pilot page with badges."
   }
 }

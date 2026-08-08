@@ -1,3 +1,6 @@
+import { rankEpauletteSvgForId } from "@/lib/map/rank-epaulette-svg";
+import type { PilotRankId } from "@/lib/pilot-rank";
+
 /** Escape text for safe insertion into HTML attribute/text contexts. */
 export function escapeHtml(value: unknown): string {
   return String(value ?? "")
@@ -19,6 +22,158 @@ export function aircraftPopupHtml(input: {
   return `<div class="as-ac-popup-inner">
   <strong>${escapeHtml(input.title)}</strong>
   ${body}
+</div>`;
+}
+
+export function flightPopupHtml(input: {
+  aircraftName: string;
+  startedAt: string | null;
+  durationS: number;
+  distanceM: number;
+  maxHeightM: number | null;
+  maxHSpeedMps?: number | null;
+  altitudeM?: number | null;
+  hasTrack: boolean;
+  authorName?: string | null;
+  authorHref?: string | null;
+  authorAvatarUrl?: string | null;
+  authorRankId?: PilotRankId | string | null;
+  startLat?: number | null;
+  startLng?: number | null;
+}): string {
+  let when = "";
+  let whenShort = "";
+  if (input.startedAt) {
+    const d = new Date(input.startedAt);
+    if (!Number.isNaN(d.getTime())) {
+      when = d.toLocaleString(undefined, {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      whenShort = d.toLocaleDateString(undefined, {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+    }
+  }
+
+  const totalS = Math.max(0, Math.round(input.durationS || 0));
+  const h = Math.floor(totalS / 3600);
+  const m = Math.floor((totalS % 3600) / 60);
+  const s = totalS % 60;
+  const duration =
+    h > 0
+      ? `${h}h ${String(m).padStart(2, "0")}m`
+      : m > 0
+        ? `${m}m ${String(s).padStart(2, "0")}s`
+        : `${s}s`;
+
+  const distKm = (input.distanceM || 0) / 1000;
+  const distanceValue =
+    distKm >= 1
+      ? distKm.toFixed(2)
+      : String(Math.round(input.distanceM || 0));
+  const distanceUnit = distKm >= 1 ? "km" : "m";
+
+  const heightValue =
+    input.maxHeightM != null && Number.isFinite(input.maxHeightM)
+      ? String(Math.round(input.maxHeightM))
+      : null;
+
+  const speedValue =
+    input.maxHSpeedMps != null &&
+    Number.isFinite(input.maxHSpeedMps) &&
+    input.maxHSpeedMps > 0
+      ? (input.maxHSpeedMps * 3.6).toFixed(1)
+      : null;
+
+  const hereAlt =
+    input.altitudeM != null && Number.isFinite(input.altitudeM)
+      ? Math.round(input.altitudeM)
+      : null;
+
+  const authorInitial = (input.authorName ?? "P").trim().charAt(0).toUpperCase() || "P";
+  const avatarInner = input.authorAvatarUrl
+    ? `<img class="as-flight-popup__avatar-img" src="${escapeHtml(input.authorAvatarUrl)}" alt="" width="36" height="36" decoding="async" />`
+    : `<span class="as-flight-popup__avatar" aria-hidden="true">${escapeHtml(authorInitial)}</span>`;
+  const rankSvg = rankEpauletteSvgForId(input.authorRankId, {
+    uid: `fp${Math.random().toString(36).slice(2, 7)}`,
+    className: "as-avatar-rank__epaulette",
+  });
+  const avatar = `<span class="as-avatar-rank as-avatar-rank--popup">${avatarInner}${rankSvg}</span>`;
+
+  const authorBlock = input.authorName
+    ? input.authorHref
+      ? `<a class="as-flight-popup__athlete" href="${escapeHtml(input.authorHref)}">
+          ${avatar}
+          <span class="as-flight-popup__athlete-meta">
+            <span class="as-flight-popup__athlete-name">${escapeHtml(input.authorName)}</span>
+            <span class="as-flight-popup__athlete-sub">${escapeHtml(when || "Flight")}</span>
+          </span>
+        </a>`
+      : `<div class="as-flight-popup__athlete">
+          ${avatar}
+          <span class="as-flight-popup__athlete-meta">
+            <span class="as-flight-popup__athlete-name">${escapeHtml(input.authorName)}</span>
+            <span class="as-flight-popup__athlete-sub">${escapeHtml(when || "Flight")}</span>
+          </span>
+        </div>`
+    : `<div class="as-flight-popup__athlete">
+        <span class="as-flight-popup__avatar as-flight-popup__avatar--drone" aria-hidden="true">D</span>
+        <span class="as-flight-popup__athlete-meta">
+          <span class="as-flight-popup__athlete-name">${escapeHtml(input.aircraftName || "Flight")}</span>
+          <span class="as-flight-popup__athlete-sub">${escapeHtml(when || whenShort || "Flight")}</span>
+        </span>
+      </div>`;
+
+  const metrics = [
+    `<div class="as-flight-popup__metric">
+      <div class="as-flight-popup__metric-label">Distance</div>
+      <div class="as-flight-popup__metric-value">${escapeHtml(distanceValue)}<span class="as-flight-popup__metric-unit">${escapeHtml(distanceUnit)}</span></div>
+    </div>`,
+    `<div class="as-flight-popup__metric">
+      <div class="as-flight-popup__metric-label">Time</div>
+      <div class="as-flight-popup__metric-value as-flight-popup__metric-value--sm">${escapeHtml(duration)}</div>
+    </div>`,
+  ];
+
+  if (heightValue != null) {
+    metrics.push(`<div class="as-flight-popup__metric">
+      <div class="as-flight-popup__metric-label">Max elev.</div>
+      <div class="as-flight-popup__metric-value">${escapeHtml(heightValue)}<span class="as-flight-popup__metric-unit">m</span></div>
+    </div>`);
+  }
+
+  const extras: string[] = [];
+  if (speedValue != null) {
+    extras.push(
+      `<span><strong>${escapeHtml(speedValue)}</strong> km/h max</span>`,
+    );
+  }
+  if (hereAlt != null) {
+    extras.push(`<span><strong>${escapeHtml(String(hereAlt))}</strong> m here</span>`);
+  }
+  extras.push(
+    `<span>${input.hasTrack ? "GPS track" : "Takeoff only"}</span>`,
+  );
+
+  const titleRow =
+    input.authorName
+      ? `<div class="as-flight-popup__title">${escapeHtml(
+          input.aircraftName || "Drone flight",
+        )}</div>`
+      : "";
+
+  return `<div class="as-ac-popup-inner as-flight-popup">
+  ${authorBlock}
+  ${titleRow}
+  <div class="as-flight-popup__metrics">${metrics.join("")}</div>
+  <div class="as-flight-popup__extras">${extras.join('<span class="as-flight-popup__dot" aria-hidden="true">·</span>')}</div>
 </div>`;
 }
 

@@ -118,6 +118,7 @@ export function SiteHeader() {
               <>
                 <Link
                   href="/account"
+                  data-tour="account"
                   className="as-press inline-flex h-8 max-w-[11rem] items-center gap-1.5 rounded-full border border-[var(--as-line)] py-0 pl-1 pr-2.5 hover:bg-[var(--as-hover)]"
                   title={t("myAccount")}
                 >
@@ -162,6 +163,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
+              data-tour="menu"
               className="as-press grid h-8 w-8 place-items-center rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] text-[var(--as-ink)]"
               aria-expanded={menuOpen}
               aria-label={t("menu")}
@@ -205,6 +207,7 @@ export function SiteHeader() {
                     <>
                       <Link
                         href="/account"
+                        data-tour="account"
                         className={`${menuItemClass} truncate text-[var(--as-ink)]`}
                       >
                         {t("account")}

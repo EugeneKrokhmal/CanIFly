@@ -12,6 +12,8 @@ import { TopPilotsStack } from "@/components/map/TopPilotsStack";
 import { useAirspaceStatus } from "@/hooks/useAirspaceStatus";
 import { useDroneProfileStore } from "@/stores/drone-profile";
 import { useAuthStore } from "@/stores/auth";
+import { markTourPending } from "@/lib/onboarding-tour";
+import { OnboardingTour } from "@/components/onboarding/OnboardingTour";
 
 function MapLoading() {
   const t = useTranslations("map");
@@ -78,6 +80,9 @@ function AuthReturnHandler() {
     const auth = searchParams.get("auth");
     const authError = searchParams.get("auth_error");
     if (auth === "google") {
+      if (searchParams.get("new") === "1") {
+        markTourPending();
+      }
       void fetchMe();
       setAuthModalOpen(false);
     } else if (authError === "google") {
@@ -112,6 +117,7 @@ export default function HomePageClient({
       <AirspaceStatusBinder />
       <MapDeepLink />
       <AuthReturnHandler />
+      <OnboardingTour />
 
       <div className="hidden h-full w-[var(--as-sidebar-w)] shrink-0 flex-col overflow-hidden border-r border-[var(--as-line)] bg-[var(--as-surface)] shadow-[2px_0_12px_rgba(0,0,0,0.04)] md:flex">
         <SidebarPanel showDesktopAddPin />

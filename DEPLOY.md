@@ -22,19 +22,15 @@ All three packages share the same semver for a coordinated release (`package.jso
 | Version | Tag | Coverage | Notes |
 |---------|-----|----------|--------|
 | `0.3.0` | `v0.3.0` | Spain + Poland + **Czechia** | ANS CR live aimgis ArcGIS (like PL PANSA / ES servAIS) |
-| — | — | + **Denmark** | Trafikstyrelsen Dronezoner GeoJSON (`dronezoner.eu`); no ingest step |
-| — | — | + **Switzerland** | FOCA SwissUASGeozones on geo.admin.ch; no ingest step |
-| — | — | + **Portugal** | ANAC ED-269 JSON (`dnt.anac.pt/json/`); no ingest step |
-| — | — | + **Austria** | Austro Control ED-269 ZIP; no ingest step |
-| — | — | + **Sweden** | LFV Drönarkarta WFS (`daim.lfv.se`); viewport queries, no national cache |
-| — | — | + **Ireland** | IAA UAS GeoJSON (`iaa.ie`); scrape latest dated file, in-memory cache |
-| — | — | + **Latvia** | LGS/drz.lv ED-269 JSON; in-memory cache |
+| — | — | + **Denmark** … **Latvia** | Extra live providers (see CHANGELOG Unreleased) |
+| — | — | Europe map | Pilot ranks / DJI flights / achievement boosts (middleware `pilot/rank`) |
 | `0.2.2` | `v0.2.2` | Spain + Poland | Status tap race fix; liberty basemap; PANSA health flag |
 | `0.2.1` | `v0.2.1` | Spain + Poland | Top pilots stack; Poland contacts; local DB SSL fix |
+
 | `0.2.0` | `v0.2.0` | Spain + **Poland** | PANSA live API; set `PANSA_API_KEY` on Render |
 | `0.1.0` | — | Spain | Initial prod |
 
-**Ship order:** middleware (`dist/` committed) → API → web. Tag each repo after push:
+**Ship order:** middleware (`dist/` committed, includes `pilot/rank`) → API → web. Tag each repo after push:
 
 ```bash
 git tag -a v0.2.0 -m "v0.2.0"

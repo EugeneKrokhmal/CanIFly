@@ -131,6 +131,7 @@ export function MapAddPinFab({ variant = "map" }: { variant?: "map" | "sidebar" 
           type="button"
           aria-label={t("addAria")}
           aria-expanded={menuOpen}
+          data-tour="add-pin"
           onClick={() => setMenuOpen((v) => !v)}
           className={
             isSidebar

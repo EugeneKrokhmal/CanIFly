@@ -255,6 +255,64 @@ function contactLinksFor(locale: string): Record<ContentCountryId, readonly Cont
       label: "caa.gov.lv",
     },
   ],
+  LT: [
+    {
+      key: "utm",
+      href: "https://utm.ans.lt/avm/",
+      label: "utm.ans.lt — Lithuania Drone Map",
+    },
+    {
+      key: "ans",
+      href: "https://www.ans.lt/",
+      label: "ans.lt — Oro navigacija",
+    },
+    {
+      key: "tka",
+      href: "https://www.tka.lt/",
+      label: "tka.lt",
+    },
+  ],
+  EE: [
+    {
+      key: "utm",
+      href: "https://utm.eans.ee/avm/",
+      label: "utm.eans.ee",
+    },
+    {
+      key: "zones",
+      href: "https://www.transpordiamet.ee/en/aviation-and-aviation-safety/flying-drones-estonia/geographical-zones",
+      label: "Transpordiamet — geographical zones",
+    },
+    {
+      key: "eans",
+      href: "https://www.eans.ee/en/tegevused/unmanned-aviation",
+      label: "eans.ee — unmanned aviation",
+    },
+  ],
+  SK: [
+    {
+      key: "zones",
+      href: "https://letectvo.nsat.sk/en/unmanned-aviation/geo-zones/",
+      label: "letectvo.nsat.sk — geo-zones",
+    },
+    {
+      key: "nsat",
+      href: "https://nsat.sk/",
+      label: "nsat.sk",
+    },
+  ],
+  SI: [
+    {
+      key: "zones",
+      href: "https://www.caa.si/en/geographical-restrictions-for-uas.html",
+      label: "caa.si — UAS geographical restrictions",
+    },
+    {
+      key: "caa",
+      href: "https://www.caa.si/",
+      label: "caa.si",
+    },
+  ],
   CZ: [
     {
       key: "dronemap",
@@ -313,6 +371,10 @@ export function ContactsCountryContent() {
           SE: t("countryNames.SE"),
           IE: t("countryNames.IE"),
           LV: t("countryNames.LV"),
+          LT: t("countryNames.LT"),
+          EE: t("countryNames.EE"),
+          SK: t("countryNames.SK"),
+          SI: t("countryNames.SI"),
           CZ: t("countryNames.CZ"),
           PL: t("countryNames.PL"),
         }}

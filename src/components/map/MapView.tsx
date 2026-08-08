@@ -14,7 +14,10 @@ import {
 } from "@canifly/middleware";
 import { useLocale, useTranslations } from "next-intl";
 import type { AppLocale } from "@/i18n/routing";
-import { aircraftPopupHtml, airspacePopupHtml, obstaclePopupHtml } from "@/lib/map/html";
+import { aircraftPopupHtml, airspacePopupHtml, flightPopupHtml, obstaclePopupHtml } from "@/lib/map/html";
+import {
+  flightAltitudeLineColor,
+} from "@/lib/map/flight-style";
 import {
   addObstacleImages,
   obstacleIconImageExpression,
@@ -26,6 +29,7 @@ import { useObstaclesStore } from "@/stores/obstacles";
 import { useIsDark } from "@/stores/theme";
 import { useZoneLayers } from "@/hooks/useZoneLayers";
 import { useObstacles } from "@/hooks/useObstacles";
+import { useMyFlights, type FlightsScope } from "@/hooks/useMyFlights";
 import { useAircraftTraffic } from "@/hooks/useAircraftTraffic";
 import { zoneFeatureSignature } from "@/lib/map/viewport";
 import {
@@ -39,6 +43,10 @@ import {
   installBasemapFixes,
   openFreeMapTransformRequest,
 } from "@/lib/map/basemap";
+import {
+  animatePaintOpacities,
+  type LayerFadeHandle,
+} from "@/lib/map/layer-fade";
 
 /** Initial 3D camera — Liberty/Dark include building extrusions that read with pitch. */
 const MAX_PITCH = 85;
@@ -52,6 +60,9 @@ const HIGHLIGHT_FILL = "uas-zones-highlight-fill";
 const HIGHLIGHT_LINE = "uas-zones-highlight-line";
 
 const OBSTACLE_SOURCE = "obstacles";
+const FLIGHT_SOURCE = "my-flights";
+const FLIGHT_LINE = "my-flights-line";
+const FLIGHT_POINT = "my-flights-point";
 const OBSTACLE_ICON = "obstacles-icon";
 const OBSTACLE_LABEL = "obstacles-label";
 
@@ -251,8 +262,17 @@ export function MapView({ className, initialCenter }: MapViewProps) {
   const geolocateControlRef = useRef<maplibregl.GeolocateControl | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const statusPopupActiveRef = useRef(false);
+  const selectedFlightIdRef = useRef<string | null>(null);
+  const selectFlightRef = useRef<(flightId: string) => void>(() => {});
+  const clearFlightSelectionRef = useRef<() => void>(() => {});
+  const flightsFadeRef = useRef<LayerFadeHandle | null>(null);
+  const trafficFadeRef = useRef<LayerFadeHandle | null>(null);
+  const flightsOnPrevRef = useRef<boolean | null>(null);
+  const trafficOnPrevRef = useRef<boolean | null>(null);
 
   const [trafficOn, setTrafficOn] = useState(true);
+  const [flightsOn, setFlightsOn] = useState(true);
+  const [flightsScope, setFlightsScope] = useState<FlightsScope>("all");
   const [mapZoom, setMapZoom] = useState(DEFAULT_ZOOM);
   const mapZoomRef = useRef(DEFAULT_ZOOM);
   const lastZoneSigRef = useRef("");
@@ -283,6 +303,8 @@ export function MapView({ className, initialCenter }: MapViewProps) {
   const setAuthModalOpen = useAuthStore((s) => s.setAuthModalOpen);
   const { collection, loadBbox } = useZoneLayers();
   const { collection: obstacles, loadBbox: loadObstaclesBbox } = useObstacles();
+  const { collection: myFlights, loadBbox: loadMyFlightsBbox } =
+    useMyFlights(flightsOn, flightsScope);
   const {
     count: aircraftCount,
     error: trafficError,
@@ -293,6 +315,7 @@ export function MapView({ className, initialCenter }: MapViewProps) {
 
   const loadBboxRef = useRef(loadBbox);
   const loadObstaclesBboxRef = useRef(loadObstaclesBbox);
+  const loadMyFlightsBboxRef = useRef(loadMyFlightsBbox);
   const setViewportRef = useRef(setViewport);
   const locateAndFocusRef = useRef(locateAndFocus);
   const placementModeRef = useRef(placementMode);
@@ -303,6 +326,7 @@ export function MapView({ className, initialCenter }: MapViewProps) {
   const setAuthModalOpenRef = useRef(setAuthModalOpen);
   loadBboxRef.current = loadBbox;
   loadObstaclesBboxRef.current = loadObstaclesBbox;
+  loadMyFlightsBboxRef.current = loadMyFlightsBbox;
   setViewportRef.current = setViewport;
   locateAndFocusRef.current = locateAndFocus;
   placementModeRef.current = placementMode;
@@ -483,6 +507,81 @@ export function MapView({ className, initialCenter }: MapViewProps) {
         minzoom: 10,
       });
 
+      map.addSource(FLIGHT_SOURCE, {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: [] },
+      });
+      map.addLayer({
+        id: FLIGHT_LINE,
+        type: "line",
+        source: FLIGHT_SOURCE,
+        filter: ["==", ["geometry-type"], "LineString"],
+        paint: {
+          "line-color": flightAltitudeLineColor(),
+          "line-width": 3.5,
+          "line-opacity": 0.92,
+          "line-blur": 0.2,
+        },
+      });
+      map.addLayer({
+        id: FLIGHT_POINT,
+        type: "circle",
+        source: FLIGHT_SOURCE,
+        filter: ["==", ["geometry-type"], "Point"],
+        paint: {
+          "circle-radius": 6,
+          "circle-color": "#ff385c",
+          "circle-opacity": 1,
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": isDark ? "#121212" : "#ffffff",
+        },
+      });
+
+      const clearFlightSelection = () => {
+        selectedFlightIdRef.current = null;
+        if (!map.getLayer(FLIGHT_LINE)) return;
+        map.setPaintProperty(FLIGHT_LINE, "line-opacity", 0.92);
+        map.setPaintProperty(FLIGHT_LINE, "line-width", 3.5);
+        if (map.getLayer(FLIGHT_POINT)) {
+          map.setPaintProperty(FLIGHT_POINT, "circle-opacity", 1);
+          map.setPaintProperty(FLIGHT_POINT, "circle-radius", 6);
+        }
+      };
+
+      const selectFlight = (flightId: string) => {
+        selectedFlightIdRef.current = flightId;
+        if (!map.getLayer(FLIGHT_LINE)) return;
+        map.setPaintProperty(FLIGHT_LINE, "line-opacity", [
+          "case",
+          ["==", ["get", "id"], flightId],
+          1,
+          0.22,
+        ]);
+        map.setPaintProperty(FLIGHT_LINE, "line-width", [
+          "case",
+          ["==", ["get", "id"], flightId],
+          5.5,
+          2.5,
+        ]);
+        if (map.getLayer(FLIGHT_POINT)) {
+          map.setPaintProperty(FLIGHT_POINT, "circle-opacity", [
+            "case",
+            ["==", ["get", "id"], flightId],
+            1,
+            0.28,
+          ]);
+          map.setPaintProperty(FLIGHT_POINT, "circle-radius", [
+            "case",
+            ["==", ["get", "id"], flightId],
+            8,
+            4,
+          ]);
+        }
+      };
+
+      clearFlightSelectionRef.current = clearFlightSelection;
+      selectFlightRef.current = selectFlight;
+
       map.addSource(AC_SOURCE, {
         type: "geojson",
         data: { type: "FeatureCollection", features: [] },
@@ -540,6 +639,7 @@ export function MapView({ className, initialCenter }: MapViewProps) {
           "text-color": isDark ? "#f2f2f2" : "#222222",
           "text-halo-color": isDark ? "#121212" : "#ffffff",
           "text-halo-width": 1.6,
+          "text-opacity": 1,
         },
         minzoom: 8,
       });
@@ -563,6 +663,7 @@ export function MapView({ className, initialCenter }: MapViewProps) {
         };
         void loadBboxRef.current(bbox, zoom);
         void loadObstaclesBboxRef.current(bbox);
+        void loadMyFlightsBboxRef.current(bbox);
         setViewportRef.current(bbox, zoom);
       };
 
@@ -592,6 +693,7 @@ export function MapView({ className, initialCenter }: MapViewProps) {
       };
       void loadBboxRef.current(bbox, zoom);
       void loadObstaclesBboxRef.current(bbox);
+      void loadMyFlightsBboxRef.current(bbox);
       setViewportRef.current(bbox, zoom);
     });
 
@@ -734,6 +836,86 @@ export function MapView({ className, initialCenter }: MapViewProps) {
         : "";
     });
 
+    const openFlightPopup = (
+      e: maplibregl.MapLayerMouseEvent,
+    ) => {
+      if (placementModeRef.current) return;
+      e.originalEvent.stopPropagation();
+      const f = e.features?.[0];
+      if (!f) return;
+      const p = f.properties ?? {};
+      const lngLat = e.lngLat;
+      const startLat = Number(p.startLat);
+      const startLng = Number(p.startLng);
+      const ownerId = String(p.userId ?? "");
+      const flightId = String(p.id ?? "");
+      const altitudeM = Number(p.altitudeM);
+      statusPopupActiveRef.current = false;
+      popupRef.current?.remove();
+      if (flightId) selectFlightRef.current(flightId);
+      const popup = new maplibregl.Popup({
+        offset: 14,
+        className: "as-ac-popup as-flight-map-popup",
+        maxWidth: "300px",
+        closeOnClick: true,
+      })
+        .setLngLat(lngLat)
+        .setHTML(
+          flightPopupHtml({
+            aircraftName: String(p.aircraftName ?? "Flight"),
+            startedAt: p.startedAt ? String(p.startedAt) : null,
+            durationS: Number(p.durationS ?? 0),
+            distanceM: Number(p.distanceM ?? 0),
+            maxHeightM: Number.isFinite(Number(p.maxHeightM))
+              ? Number(p.maxHeightM)
+              : null,
+            maxHSpeedMps: Number.isFinite(Number(p.maxHSpeedMps))
+              ? Number(p.maxHSpeedMps)
+              : null,
+            altitudeM: Number.isFinite(altitudeM) ? altitudeM : null,
+            hasTrack:
+              p.hasTrack === true ||
+              p.hasTrack === "true" ||
+              p.hasTrack === 1 ||
+              p.hasTrack === "1",
+            authorName: p.authorName ? String(p.authorName) : null,
+            authorHref: ownerId
+              ? `/${localeRef.current}/pilots/${ownerId}`
+              : null,
+            authorAvatarUrl: p.authorAvatarUrl
+              ? String(p.authorAvatarUrl)
+              : null,
+            authorRankId: p.authorRankId
+              ? String(p.authorRankId)
+              : null,
+            startLat: Number.isFinite(startLat) ? startLat : null,
+            startLng: Number.isFinite(startLng) ? startLng : null,
+          }),
+        )
+        .addTo(map);
+      popup.on("close", () => {
+        if (popupRef.current === popup) {
+          clearFlightSelectionRef.current();
+        }
+      });
+      popupRef.current = popup;
+    };
+
+    map.on("click", FLIGHT_LINE, openFlightPopup);
+    map.on("click", FLIGHT_POINT, openFlightPopup);
+    for (const layerId of [FLIGHT_LINE, FLIGHT_POINT]) {
+      map.on("mouseenter", layerId, () => {
+        if (!placementModeRef.current) {
+          map.getCanvas().style.cursor = "pointer";
+        }
+      });
+      map.on("mouseleave", layerId, () => {
+        map.getCanvas().style.cursor = placementModeRef.current
+          ? "crosshair"
+          : "";
+      });
+    }
+
     map.on("click", AC_ICON, (e) => {
       if (placementModeRef.current) return;
       e.originalEvent.stopPropagation();
@@ -785,7 +967,9 @@ export function MapView({ className, initialCenter }: MapViewProps) {
       }
 
       const hits = map.queryRenderedFeatures(e.point, {
-        layers: [AC_ICON, OBSTACLE_ICON].filter((id) => map.getLayer(id)),
+        layers: [AC_ICON, OBSTACLE_ICON, FLIGHT_LINE, FLIGHT_POINT].filter(
+          (id) => map.getLayer(id),
+        ),
       });
       if (hits.length > 0) return;
 
@@ -849,6 +1033,89 @@ export function MapView({ className, initialCenter }: MapViewProps) {
       | undefined;
     if (source) source.setData(obstacles);
   }, [mapReady, obstacles]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!mapReady || !map || !myFlights) return;
+    const source = map.getSource(FLIGHT_SOURCE) as
+      | maplibregl.GeoJSONSource
+      | undefined;
+    if (source) source.setData(myFlights);
+  }, [mapReady, myFlights]);
+
+  useEffect(() => {
+    if (!authUser && flightsScope === "mine") {
+      setFlightsScope("all");
+    }
+  }, [authUser, flightsScope]);
+
+  useEffect(() => {
+    if (mapReady) return;
+    flightsOnPrevRef.current = null;
+    trafficOnPrevRef.current = null;
+  }, [mapReady]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!mapReady || !map) return;
+
+    flightsFadeRef.current?.cancel();
+    flightsFadeRef.current = null;
+
+    const targets = [
+      { layerId: FLIGHT_LINE, property: "line-opacity", visible: 0.92 },
+      { layerId: FLIGHT_POINT, property: "circle-opacity", visible: 1 },
+    ];
+
+    const prev = flightsOnPrevRef.current;
+    flightsOnPrevRef.current = flightsOn;
+
+    // First paint after map ready — snap, don't entrance-fade.
+    if (prev === null) {
+      for (const id of [FLIGHT_LINE, FLIGHT_POINT]) {
+        if (!map.getLayer(id)) continue;
+        map.setLayoutProperty(
+          id,
+          "visibility",
+          flightsOn ? "visible" : "none",
+        );
+      }
+      return;
+    }
+
+    if (!flightsOn) {
+      popupRef.current?.remove();
+      popupRef.current = null;
+      clearFlightSelectionRef.current();
+      flightsFadeRef.current = animatePaintOpacities(map, targets, false, {
+        durationMs: 260,
+      });
+      return () => {
+        flightsFadeRef.current?.cancel();
+        flightsFadeRef.current = null;
+      };
+    }
+
+    flightsFadeRef.current = animatePaintOpacities(map, targets, true, {
+      durationMs: 320,
+    });
+    return () => {
+      flightsFadeRef.current?.cancel();
+      flightsFadeRef.current = null;
+    };
+  }, [mapReady, flightsOn]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!mapReady || !map || !flightsOn) return;
+    const bounds = map.getBounds();
+    loadMyFlightsBboxRef.current({
+      west: bounds.getWest(),
+      south: bounds.getSouth(),
+      east: bounds.getEast(),
+      north: bounds.getNorth(),
+    });
+  }, [mapReady, flightsOn, flightsScope, authUser]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -948,13 +1215,55 @@ export function MapView({ className, initialCenter }: MapViewProps) {
   useEffect(() => {
     const map = mapRef.current;
     if (!mapReady || !map) return;
-    if (trafficOn) return;
-    const source = map.getSource(AC_SOURCE) as
-      | maplibregl.GeoJSONSource
-      | undefined;
-    if (source) {
-      source.setData({ type: "FeatureCollection", features: [] });
+
+    trafficFadeRef.current?.cancel();
+    trafficFadeRef.current = null;
+
+    const targets = [
+      { layerId: AC_ICON, property: "icon-opacity", visible: 1 },
+      { layerId: AC_LABEL, property: "text-opacity", visible: 1 },
+    ];
+
+    const prev = trafficOnPrevRef.current;
+    trafficOnPrevRef.current = trafficOn;
+
+    if (prev === null) {
+      for (const id of [AC_ICON, AC_LABEL]) {
+        if (!map.getLayer(id)) continue;
+        map.setLayoutProperty(
+          id,
+          "visibility",
+          trafficOn ? "visible" : "none",
+        );
+      }
+      return;
     }
+
+    if (trafficOn) {
+      trafficFadeRef.current = animatePaintOpacities(map, targets, true, {
+        durationMs: 320,
+      });
+      return () => {
+        trafficFadeRef.current?.cancel();
+        trafficFadeRef.current = null;
+      };
+    }
+
+    trafficFadeRef.current = animatePaintOpacities(map, targets, false, {
+      durationMs: 260,
+      onDone: () => {
+        const source = map.getSource(AC_SOURCE) as
+          | maplibregl.GeoJSONSource
+          | undefined;
+        if (source) {
+          source.setData({ type: "FeatureCollection", features: [] });
+        }
+      },
+    });
+    return () => {
+      trafficFadeRef.current?.cancel();
+      trafficFadeRef.current = null;
+    };
   }, [mapReady, trafficOn]);
 
   useEffect(() => {
@@ -1095,18 +1404,87 @@ export function MapView({ className, initialCenter }: MapViewProps) {
         ref={containerRef}
         className={className ?? "h-full w-full"}
         data-testid="map-view"
+        data-tour="map"
       />
-      <div className="pointer-events-none absolute left-2 top-2 z-10 flex max-w-[calc(100%-5rem)] flex-col gap-1.5 sm:left-3 sm:top-3 sm:gap-2">
-        <button
-          type="button"
-          onClick={() => setTrafficOn((v) => !v)}
-          className="pointer-events-auto rounded-full border border-[var(--as-line)] bg-[var(--as-surface)] px-3 py-1.5 text-[12px] font-semibold text-[var(--as-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.05)] sm:px-4 sm:py-2 sm:text-[13px]"
+      <div className="pointer-events-none absolute left-2 top-2 z-10 flex max-w-[calc(100%-5rem)] flex-col items-start gap-1.5 sm:left-3 sm:top-3 sm:gap-2">
+        <div
+          data-tour="traffic"
+          data-on={trafficOn ? "true" : "false"}
+          className="as-map-chip pointer-events-auto"
         >
-          Traffic {trafficOn ? "on" : "off"}
-          {trafficOn ? ` · ${aircraftCount}` : ""}
-        </button>
+          <button
+            type="button"
+            onClick={() => setTrafficOn((v) => !v)}
+            aria-pressed={trafficOn}
+            className="as-map-chip__hit as-map-chip__main"
+          >
+            <span className="as-map-toggle-dot" aria-hidden />
+            <span>
+              Traffic {trafficOn ? "on" : "off"}
+              {trafficOn ? ` · ${aircraftCount}` : ""}
+            </span>
+          </button>
+        </div>
+        <div
+          data-tour="flights"
+          data-on={flightsOn ? "true" : "false"}
+          className="as-map-chip pointer-events-auto"
+        >
+          <button
+            type="button"
+            onClick={() => setFlightsOn((v) => !v)}
+            aria-pressed={flightsOn}
+            className="as-map-chip__hit as-map-chip__main"
+          >
+            <span className="as-map-toggle-dot" aria-hidden />
+            <span>
+              Flights {flightsOn ? "on" : "off"}
+              {flightsOn && myFlights
+                ? ` · ${new Set(
+                    myFlights.features
+                      .map((f) => f.properties?.id)
+                      .filter((id) => id != null && id !== ""),
+                  ).size}`
+                : ""}
+            </span>
+          </button>
+          <div
+            className="as-map-chip-scope"
+            data-open={flightsOn ? "true" : "false"}
+            role="group"
+            aria-label="Flight filter"
+            aria-hidden={!flightsOn}
+          >
+            <div className="as-map-chip-scope-inner">
+              <button
+                type="button"
+                onClick={() => setFlightsScope("all")}
+                data-active={flightsScope === "all" ? "true" : "false"}
+                tabIndex={flightsOn ? 0 : -1}
+                className="as-map-chip__hit as-map-chip__seg"
+              >
+                All
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!authUser) {
+                    setAuthModalOpen(true);
+                    return;
+                  }
+                  setFlightsScope("mine");
+                }}
+                data-active={flightsScope === "mine" ? "true" : "false"}
+                tabIndex={flightsOn ? 0 : -1}
+                className="as-map-chip__hit as-map-chip__seg"
+              >
+                Mine
+              </button>
+            </div>
+          </div>
+        </div>
         {trafficOn && (zoomHint || trafficError) && (
-          <div className="pointer-events-none max-w-[14rem] rounded-xl bg-[color-mix(in_srgb,var(--as-surface)_95%,transparent)] px-2.5 py-1.5 text-[11px] text-[var(--as-ink-soft)] shadow-[0_1px_2px_rgba(0,0,0,0.08)] sm:max-w-[15rem] sm:px-3 sm:py-2 sm:text-[12px]">
+          <div className="as-map-hint pointer-events-none">
             {trafficError === "rate_limited"
               ? "Traffic source busy — retrying"
               : trafficError

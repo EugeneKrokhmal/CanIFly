@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useAuthStore } from "@/stores/auth";
+import { markTourPending } from "@/lib/onboarding-tour";
 
 export default function VerifyEmailClient() {
   const t = useTranslations("verifyEmail");
@@ -41,6 +42,7 @@ export default function VerifyEmailClient() {
           return;
         }
         setUser(data.user);
+        markTourPending();
         setStatus("ok");
       } catch {
         if (!cancelled) {
@@ -73,10 +75,10 @@ export default function VerifyEmailClient() {
         </p>
         {status !== "loading" ? (
           <Link
-            href={status === "ok" ? "/account" : "/"}
+            href={status === "ok" ? "/?tour=1" : "/"}
             className="as-press mt-8 inline-flex rounded-full bg-[var(--as-ink)] px-4 py-2.5 text-[14px] font-semibold text-[var(--as-ink-invert)]"
           >
-            {status === "ok" ? t("goAccount") : t("backToMap")}
+            {status === "ok" ? t("goMapTour") : t("backToMap")}
           </Link>
         ) : null}
       </div>

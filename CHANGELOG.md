@@ -3,6 +3,12 @@
 ## Unreleased
 
 ### Added
+- Aviation pilot ranks (epaulette insignia Student → Instructor) from effective hours
+- Achievement marks as epaulettes (shared plate SVG); each badge boosts rank (+4 h eq.)
+- `joined` / Rookie achievement on account creation (welcome / engagement boost)
+- Flight map popup: pilot avatar with rank epaulette (bottom-right)
+- Map layer toggles: Traffic / Flights with shared chip UI and fade on/off; Flights All | Mine
+- DJI flight tracks on the map (altitude colouring, takeoff points, Strava-style popup)
 - Portugal and Austria in coverage: FAQ / Guide / Contacts, geocode preference (ANAC / Austro Control)
 - Switzerland in coverage: FAQ / Guide / Contacts, geocode preference (FOCA / geo.admin.ch)
 - Denmark in coverage: FAQ / Guide / Contacts, geocode preference (Trafikstyrelsen Dronezoner)
@@ -14,6 +20,8 @@
 - Locale-aware ULC official link (EN general-information / PL hub)
 
 ### Changed
+- Top pilots sorted by effective rank-hours (not pin count); avatar + small epaulette rank mark
+- Local `@canifly/middleware` via `file:../CanIFly-middleware` (rebuild middleware after ladder changes)
 - Zone map fill/outline driven by `mapStatus` severity (airports read as red)
 - Dark mode uses OpenFreeMap `dark` basemap (`liberty` remains light)
 - Map opens in 3D (pitch 65°, max 85°) so Liberty/Dark building extrusions are visible; compass control enabled

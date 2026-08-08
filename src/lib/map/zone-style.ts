@@ -1,12 +1,19 @@
 import type { ExpressionSpecification } from "maplibre-gl";
 import { ENAIRE_ZONE_STYLE, STATUS_COLORS } from "@canifly/middleware";
 
+/** Soft advisory fill for NO_RESTRICTION / INFO geozones (matches EANS yellow-ish wash). */
+const INFO_ZONE_STYLE = {
+  fill: "#e6d27a",
+  outline: "#c4a84a",
+  fillOpacity: 0.14,
+} as const;
+
 /**
  * Outline color by zone severity. Only line-color is data-driven —
  * width/opacity stay static (avoids MapLibre null-number bugs).
  */
 export function zoneOutlineColorExpression(): ExpressionSpecification {
-  const { prohibited, restricted, limited } = STATUS_COLORS;
+  const { prohibited, restricted, limited, clear } = STATUS_COLORS;
   return [
     "case",
     ["==", ["get", "mapStatus"], "prohibited"],
@@ -41,13 +48,22 @@ export function zoneOutlineColorExpression(): ExpressionSpecification {
       "CONDITIONAL",
     ],
     limited.outline,
+    // INFO overlays (majority of EE/LT) — visible but not “restricted” orange.
+    [
+      "==",
+      ["upcase", ["to-string", ["coalesce", ["get", "restriction"], ""]]],
+      "NO_RESTRICTION",
+    ],
+    INFO_ZONE_STYLE.outline,
+    ["==", ["get", "mapStatus"], "clear"],
+    clear.outline,
     ENAIRE_ZONE_STYLE.outline,
   ];
 }
 
 /** Fill tint by severity so hard no-fly (airports etc.) read as red, not uniform pink. */
 export function zoneFillColorExpression(): ExpressionSpecification {
-  const { prohibited, restricted, limited } = STATUS_COLORS;
+  const { prohibited, restricted, limited, clear } = STATUS_COLORS;
   return [
     "case",
     ["==", ["get", "mapStatus"], "prohibited"],
@@ -82,12 +98,20 @@ export function zoneFillColorExpression(): ExpressionSpecification {
       "CONDITIONAL",
     ],
     limited.fill,
+    [
+      "==",
+      ["upcase", ["to-string", ["coalesce", ["get", "restriction"], ""]]],
+      "NO_RESTRICTION",
+    ],
+    INFO_ZONE_STYLE.fill,
+    ["==", ["get", "mapStatus"], "clear"],
+    clear.fill,
     ENAIRE_ZONE_STYLE.fill,
   ];
 }
 
 export function zoneFillOpacityExpression(): ExpressionSpecification {
-  const { prohibited } = STATUS_COLORS;
+  const { prohibited, limited } = STATUS_COLORS;
   return [
     "*",
     [
@@ -100,6 +124,14 @@ export function zoneFillOpacityExpression(): ExpressionSpecification {
         "PROHIBITED",
       ],
       prohibited.fillOpacity,
+      [
+        "==",
+        ["upcase", ["to-string", ["coalesce", ["get", "restriction"], ""]]],
+        "NO_RESTRICTION",
+      ],
+      INFO_ZONE_STYLE.fillOpacity,
+      ["==", ["get", "mapStatus"], "limited"],
+      limited.fillOpacity,
       ENAIRE_ZONE_STYLE.fillOpacity,
     ],
     0.7,

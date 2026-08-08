@@ -20,9 +20,10 @@ export function viewportMovedEnough(prev: Bbox | null, next: Bbox): boolean {
 }
 
 export function zoneLimitForZoom(zoom: number): number {
-  if (zoom <= 8) return 200;
-  if (zoom <= 11) return 350;
-  return 500;
+  // Compact national layers (EE ≈245) need headroom at country zoom.
+  if (zoom <= 8) return 400;
+  if (zoom <= 11) return 500;
+  return 600;
 }
 
 export function zoneFeatureSignature(features: GeoJSON.Feature[]): string {

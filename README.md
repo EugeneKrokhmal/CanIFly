@@ -26,13 +26,37 @@ Spanish is the default language; English, German, French, Polish and Czech are a
 | **Zone map layers** | Pink ZGUAS-style fills with severity-colored outlines, filtered by altitude/profile |
 | **Drone profile** | Weight class (C0–C2) and AGL altitude drive Open-category ceilings |
 | **Community obstacles & fly spots** | Report obstacles or places to fly; photo upload; votes |
-| **Live traffic** | Aircraft overlay (OpenSky when reachable; community ADS-B fallback) |
+| **Flight tracks** | Sync DJI flight records; altitude-coloured paths on the map; All / Mine filter |
+| **Live traffic** | Aircraft overlay toggle (OpenSky when reachable; community ADS-B fallback) |
+| **Pilot ranks** | Aviation epaulette ranks (Student → Instructor) from airtime + achievements |
+| **Top pilots** | Desktop map stack ranked by effective hours; avatar + rank mark |
 | **Weather** | Point weather for the selected location |
-| **Accounts** | Register → email verification → login; profile; public pilot pages |
-| **Settings** | Language (ES/EN/PL/CS) and theme |
-| **i18n & SEO** | Four locales; sitemap, OG image, JSON-LD |
+| **Accounts** | Register → email verification → login; profile; public pilot pages with badges |
+| **Settings** | Language (ES/EN/DE/FR/PL/CS) and theme |
+| **i18n & SEO** | Six locales; sitemap, OG image, JSON-LD |
 
 ---
+
+## Pilot ranks & achievements
+
+Ranks follow an aviation epaulette ladder (thresholds in **effective hours**):
+
+| Hours (eq.) | Rank | Insignia |
+|------------:|------|----------|
+| 0–20 | Student Pilot | 1 silver bar |
+| 20–40 | Amateur Pilot | 2 silver |
+| 40–70 | Private Pilot | 3 silver |
+| 70–100 | First Officer | 2 gold |
+| 100–140 | Senior First Officer | 3 gold |
+| 140–200 | Captain | 4 gold |
+| 200–300 | Flight Captain | chevron + star |
+| 300–400 | Senior Flight Captain | 2 chevrons + star |
+| 400–500 | Commercial Captain | chevron + 2 stars |
+| 500+ | Instructor | 2 chevrons + 2 stars |
+
+**Effective hours** = synced airtime + boosts from flights, distance, pins, fly spots, operator number, and **+4 h per earned achievement**. Ladder math lives in `@canifly/middleware` (`computePilotProgress`) so web and API stay aligned.
+
+On the map: Top pilots and flight popups show the epaulette on the **bottom-right of the avatar**. Profile pages show the full rank plate plus achievement epaulettes (not chevrons).
 
 ## Production infrastructure
 
@@ -64,7 +88,7 @@ Browser  →  https://canifly.org                 (Vercel / Next.js)
 Sites/GitHub/
 ├── CanIFly/                 ← this repo — Next.js web
 ├── CanIFly-api/             ← Hono API
-└── CanIFly-middleware/      ← shared schemas, geo, labels
+└── CanIFly-middleware/      ← shared schemas, geo, labels, pilot ranks
 ```
 
 ---
@@ -94,7 +118,7 @@ cd ../CanIFly && cp .env.example .env && npm install && npm run dev
 | URL | Locale |
 |-----|--------|
 | `/`, `/faq`, … | Spanish (`es`, default) |
-| `/en`, `/pl`, `/cs`, … | English, Polish, Czech |
+| `/en`, `/de`, `/fr`, `/pl`, `/cs`, … | English, German, French, Polish, Czech |
 
 ---
 

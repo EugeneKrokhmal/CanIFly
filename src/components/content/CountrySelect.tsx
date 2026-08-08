@@ -12,7 +12,11 @@ export type ContentCountryId =
   | "PL"
   | "SE"
   | "IE"
-  | "LV";
+  | "LV"
+  | "LT"
+  | "EE"
+  | "SK"
+  | "SI";
 
 const OPTIONS: ContentCountryId[] = [
   "ES",
@@ -27,6 +31,10 @@ const OPTIONS: ContentCountryId[] = [
   "SE",
   "IE",
   "LV",
+  "LT",
+  "EE",
+  "SK",
+  "SI",
 ];
 
 type Props = {

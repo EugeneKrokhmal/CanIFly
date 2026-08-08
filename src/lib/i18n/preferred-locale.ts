@@ -46,6 +46,7 @@ export function localeFromCountryCode(
     case "LV":
     case "LT":
     case "EE":
+    case "SI":
     case "IT":
       return "en";
     default:
