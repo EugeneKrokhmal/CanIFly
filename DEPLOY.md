@@ -120,7 +120,7 @@ Browser  →  https://canifly.org          (Vercel / Next.js)
 
 Auth cookies are set on the **site origin** because the browser only talks to `canifly.org`; Vercel proxies `/api` to Render.
 
-Shared code `@canifly/middleware` is installed from GitHub (`github:EugeneKrokhmal/CanIFly-middleware#main`). The middleware repo commits a built `dist/` so Vercel/Render installs work. The API `Dockerfile` also clones and builds middleware.
+Shared code `@canifly/middleware` is installed from GitHub (`github:EugeneKrokhmal/CanIFly-middleware#main`). The middleware repo commits a built `dist/` so Vercel/Render installs work. The API `Dockerfile` **pins** middleware via `MIDDLEWARE_REF` (update that SHA whenever you ship new shared exports, e.g. `pilot/rank`).
 
 ---
 
